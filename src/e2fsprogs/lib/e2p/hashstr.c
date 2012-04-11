@@ -48,7 +48,7 @@ int e2p_string2hash(char *string)
 {
 	struct hash	*p;
 	char		*eptr;
-	int		num;
+	long		num;
 
 	for (p = hash_list; p->string; p++) {
 		if (!strcasecmp(string, p->string)) {

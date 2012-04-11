@@ -125,7 +125,7 @@ ext2_truncate(vp, length, flags, cred, p)
 	vnode_t vp;
 	off_t length;
 	int flags;
-	ucred_t cred;
+	kauth_cred_t cred;
 	proc_t p;
 {
 	vnode_t ovp = vp;

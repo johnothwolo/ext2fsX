@@ -42,7 +42,7 @@ unsigned long parse_num_blocks(const char *arg, int log_block_size)
 	return num;
 }
 
-#ifdef DEBUG
+#ifdef BUILD_DEBUG_PROGS
 #include <unistd.h>
 #include <stdio.h>
 

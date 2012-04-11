@@ -52,7 +52,7 @@ int e2p_string2mntopt(char *string, unsigned int *mask)
 {
 	struct mntopt  *f;
 	char		*eptr;
-	int		num;
+	long		num;
 
 	for (f = mntopt_list; f->string; f++) {
 		if (!strcasecmp(string, f->string)) {

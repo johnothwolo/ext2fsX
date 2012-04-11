@@ -74,9 +74,9 @@ static const char whatid[] __attribute__ ((unused)) =
 #include <CoreFoundation/CFUUID.h>
 
 #include "ext2_apple.h"
-#include <ext2_fs.h>
+#include "ext2_fs.h"
 #include <fs.h>
-#include <ext2_byteorder.h>
+#include "ext2_byteorder.h"
 
 #ifndef FSUC_ADOPT
 #define FSUC_ADOPT 'a'
@@ -109,14 +109,14 @@ static const char whatid[] __attribute__ ((unused)) =
 #define FS_TYPE			EXT2FS_NAME
 #define FS_NAME_FILE		EXT2FS_NAME
 #define FS_BUNDLE_NAME		"ext2fs.kext"
-#define FS_KEXT_DIR			"/Library/Extensions/ext2fs.kext"
-#define FS_KMOD_DIR			"/Library/Extensions/ext2fs.kext/Contents/MacOS/ext2fs"
+#define FS_KEXT_DIR			"/System/Library/Extensions/ext2fs.kext"
+#define FS_KMOD_DIR			"/System/Library/Extensions/ext2fs.kext/Contents/MacOS/ext2fs"
 #define RAWDEV_PREFIX		"/dev/r"
 #define BLOCKDEV_PREFIX		"/dev/"
 #define MOUNT_COMMAND		"/sbin/mount"
 #define UMOUNT_COMMAND		"/sbin/umount"
 #define KEXTLOAD_COMMAND	"/sbin/kextload"
-#define KMODLOAD_COMMAND	"/sbin/kmodload"
+//#define KMODLOAD_COMMAND	"/sbin/kmodload"
 #define READWRITE_OPT		"-w"
 #define READONLY_OPT		"-r"
 #define SUID_OPT			"suid"

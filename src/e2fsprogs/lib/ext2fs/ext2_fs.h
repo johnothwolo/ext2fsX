@@ -39,6 +39,8 @@
 #define EXT2FS_DATE		"95/08/09"
 #define EXT2FS_VERSION		"0.5b"
 
+#define EOPNOTSUPP  102
+
 /*
  * Special inode numbers
  */

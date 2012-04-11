@@ -33,9 +33,9 @@
 #import <ufs/ufs/dinode.h>
 #import <ufs/ffs/fs.h>
 
-#import <ext2_byteorder.h>
+#import "ext2_byteorder.h"
 #ifndef NOEXT2
-#import <gnu/ext2fs/ext2_fs.h>
+#import "gnu/ext2fs/ext2_fs.h"
 #endif
 
 #ifndef EFSM_PRIVATE

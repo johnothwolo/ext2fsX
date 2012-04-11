@@ -28,6 +28,7 @@
 int getflags (int fd, unsigned long * flags)
 {
 	struct stat buf;
+
 #if HAVE_STAT_FLAGS
 
 	if (fstat (fd, &buf) == -1)

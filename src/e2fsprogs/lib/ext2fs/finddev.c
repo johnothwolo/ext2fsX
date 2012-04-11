@@ -80,7 +80,7 @@ static int scan_dir(char *dirname, dev_t device, struct dir_list **list,
 	DIR	*dir;
 	struct dirent *dp;
 	char	path[1024], *cp;
-	int	dirlen;
+	size_t	dirlen;
 	struct stat st;
 
 	dirlen = strlen(dirname);

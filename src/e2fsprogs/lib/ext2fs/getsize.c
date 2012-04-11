@@ -286,7 +286,7 @@ out:
 
 #endif /* WIN32 */
 
-#ifdef DEBUG
+#ifdef TEST_PROGRAM
 int main(int argc, char **argv)
 {
 	blk_t	blocks;

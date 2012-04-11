@@ -35,6 +35,7 @@ static const char whatid[] __attribute__ ((unused)) =
 #import <sys/ioctl.h>
 #import <sys/syscall.h>
 #import <pthread.h>
+#import <unistd.h>
 
 #import <ext2_byteorder.h>
 #ifndef NOEXT2
@@ -396,7 +397,7 @@ init_err:
    if (!e_children)
       e_children = [[NSMutableArray alloc] init];
 
-   unsigned idx = [e_children indexOfObject:media];
+   NSUInteger idx = [e_children indexOfObject:media];
    if (NSNotFound != idx) {
       (void)[media retain]; // Just in case the ptr is the same as that at idx
       [e_children replaceObjectAtIndex:idx withObject:media];
@@ -416,7 +417,7 @@ init_err:
 {
    NSString *myname = e_bsdName, *oname = [media bsdName];
    ewlock(e_lock);
-   unsigned idx = [e_children indexOfObject:media];
+   NSUInteger idx = [e_children indexOfObject:media];
    if (nil == e_children || NSNotFound == idx) {
       eulock(e_lock);
       E2DiagLog(@"ExtFS: Oops! Parent '%@' does not contain child '%@'.\n",
@@ -460,7 +461,7 @@ init_err:
    if (e_parent && (e_icon = [e_parent icon])) {
       (void)[e_icon retain]; // For ourself
       eulock(e_lock);
-      E2DiagLog(@"ExtFS: Retrieved icon %@ from %@ (%u).\n", [e_icon name], e_parent, [e_icon retainCount]);
+      E2DiagLog(@"ExtFS: Retrieved icon %@ from %@ (%lu).\n", [e_icon name], e_parent, [e_icon retainCount]);
       return ([[e_icon retain] autorelease]);
    }
    
@@ -484,7 +485,7 @@ init_err:
       (void)[e_icon retain]; // For ourself
       eulock(e_mediaIconCacheLck);
       eulock(e_lock);
-      E2DiagLog(@"ExtFS: Retrieved icon %@ from icon cache (%u).\n", cacheKey, [e_icon retainCount]);
+      E2DiagLog(@"ExtFS: Retrieved icon %@ from icon cache (%lu).\n", cacheKey, [e_icon retainCount]);
       return ([[e_icon retain] autorelease]);
    }
    eulock(e_mediaIconCacheLck);
@@ -541,7 +542,7 @@ init_err:
          // This supposedly allows images to be cached safely across threads
          [e_icon setCachedSeparately:YES];
          [e_mediaIconCache setObject:e_icon forKey:cacheKey];
-         E2DiagLog(@"ExtFS: Added icon %@ to icon cache (%u).\n", cacheKey, [e_icon retainCount]);
+         E2DiagLog(@"ExtFS: Added icon %@ to icon cache (%lu).\n", cacheKey, [e_icon retainCount]);
       } else {
          // Use the cached icon instead of the one we found
          [ico release];
@@ -904,7 +905,7 @@ emicon_exit:
    return ([NSString stringWithFormat:@"<%@, %p>", e_bsdName, self]);
 }
 
-- (unsigned)hash
+- (NSUInteger)hash
 {
    return ([e_bsdName hash]);
 }

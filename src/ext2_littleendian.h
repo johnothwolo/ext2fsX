@@ -24,7 +24,7 @@
  * $Revision: 1.5 $
  */
 
-#ifdef __i386__
+#if defined(__i386__) || defined(__x86_64__)
 
 static __inline__ void __arch_swap_16 (u_int16_t from, volatile u_int16_t *to)
 {

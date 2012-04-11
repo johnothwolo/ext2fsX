@@ -85,9 +85,9 @@ extern ext2_ino_t ext2fs_get_inode_bitmap_start(ext2fs_inode_bitmap bitmap);
 extern blk_t ext2fs_get_block_bitmap_end(ext2fs_block_bitmap bitmap);
 extern ext2_ino_t ext2fs_get_inode_bitmap_end(ext2fs_inode_bitmap bitmap);
 
-extern void ext2fs_mark_block_bitmap_range(ext2fs_block_bitmap bitmap,
+void ext2fs_mark_block_bitmap_range(ext2fs_block_bitmap bitmap,
 					   blk_t block, int num);
-extern void ext2fs_unmark_block_bitmap_range(ext2fs_block_bitmap bitmap,
+void ext2fs_unmark_block_bitmap_range(ext2fs_block_bitmap bitmap,
 					     blk_t block, int num);
 extern int ext2fs_test_block_bitmap_range(ext2fs_block_bitmap bitmap,
 					  blk_t block, int num);
@@ -113,13 +113,14 @@ extern int ext2fs_unmark_generic_bitmap(ext2fs_generic_bitmap bitmap,
  */
 #ifdef NO_INLINE_FUNCS
 #if (defined(__GNUC__) && (defined(__i386__) || defined(__i486__) || \
-			   defined(__i586__) || defined(__mc68000__)))
+			   defined(__i586__) || defined(__x86_64__) || defined(__mc68000__)))
 	/* This prevents bitops.c from trying to include the C */
 	/* function version of these functions */
 #define _EXT2_HAVE_ASM_BITOPS_
 #endif
 #endif /* NO_INLINE_FUNCS */
 
+#if 0
 #if (defined(INCLUDE_INLINE_FUNCS) || !defined(NO_INLINE_FUNCS))
 #ifdef INCLUDE_INLINE_FUNCS
 #define _INLINE_ extern
@@ -130,6 +131,9 @@ extern int ext2fs_unmark_generic_bitmap(ext2fs_generic_bitmap bitmap,
 #define _INLINE_ extern inline
 #endif
 #endif
+#endif
+
+#define _INLINE_ static inline
 
 /*
  * Fast bit set/clear functions that doesn't need to return the
@@ -154,7 +158,7 @@ _INLINE_ void ext2fs_fast_clear_bit(unsigned int nr, void * addr)
 
 
 #if ((defined __GNUC__) && !defined(_EXT2_USE_C_VERSIONS_) && \
-     (defined(__i386__) || defined(__i486__) || defined(__i586__)))
+     (defined(__i386__) || defined(__i486__) || defined(__i586__) || defined(__x86_64__)))
 
 #define _EXT2_HAVE_ASM_BITOPS_
 #define _EXT2_HAVE_ASM_SWAB_

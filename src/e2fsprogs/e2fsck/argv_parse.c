@@ -131,7 +131,7 @@ void argv_free(char **argv)
 	free(argv);
 }
 
-#ifdef DEBUG
+#ifdef TEST_PROGRAM
 /*
  * For debugging
  */

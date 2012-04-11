@@ -395,7 +395,7 @@ errout:
 	return retval;
 }
 
-#ifdef DEBUG
+#ifdef TEST_PROGRAM
 main(int argc, char **argv)
 {
 	errcode_t	retval;

@@ -103,7 +103,7 @@ int	ext2_reallocblks(struct vnop_reallocblks_args *);
 #endif
 int	ext2_reclaim(struct vnop_reclaim_args *);
 /* void ext2_setblock(struct ext2_sb_info *, u_char *, int32_t); */
-int	ext2_truncate(vnode_t, off_t, int, ucred_t, proc_t);
+int	ext2_truncate(vnode_t, off_t, int, kauth_cred_t, proc_t);
 int	ext2_update(vnode_t, int);
 int	ext2_valloc(vnode_t, int, evalloc_args_t *, vnode_t *);
 int	ext2_vfree(vnode_t, ino_t, int);

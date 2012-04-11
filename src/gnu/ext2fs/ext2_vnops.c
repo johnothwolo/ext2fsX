@@ -69,7 +69,7 @@ static const char vwhatid[] __attribute__ ((unused)) =
 
 #include <sys/param.h>
 #include <sys/systm.h>
-#include <sys/resourcevar.h>
+//#include <sys/resourcevar.h>
 #include <sys/kernel.h>
 #include <sys/fcntl.h>
 #include <sys/stat.h>
@@ -107,8 +107,8 @@ static const char vwhatid[] __attribute__ ((unused)) =
 static int ext2_makeinode(int mode, vnode_t, vnode_t *, struct componentname *, vfs_context_t);
 
 //static int ext2_advlock(struct vnop_advlock_args *);
-static int ext2_chmod(vnode_t, int, ucred_t, proc_t);
-static int ext2_chown(struct inode *ip, uid_t, gid_t, ucred_t, proc_t);
+static int ext2_chmod(vnode_t, int, kauth_cred_t, proc_t);
+static int ext2_chown(struct inode *ip, uid_t, gid_t, kauth_cred_t, proc_t);
 static int ext2_close(struct vnop_close_args *);
 static int ext2_create(struct vnop_create_args *);
 __private_extern__ int ext2_fsync(struct vnop_fsync_args *);
@@ -586,7 +586,7 @@ ext2_setattr(ap)
 	struct vnode_attr *vap = ap->a_vap;
 	vnode_t vp = ap->a_vp;
 	struct inode *ip = VTOI(vp);
-	ucred_t cred = vfs_context_ucred(ap->a_context);
+	kauth_cred_t cred = vfs_context_ucred(ap->a_context);
 	proc_t p = vfs_context_proc(ap->a_context);
 	int error = 0;
     uid_t nuid = VNOVAL;
@@ -686,7 +686,7 @@ static int
 ext2_chmod(vp, mode, cred, p)
 	vnode_t vp;
 	int mode;
-	ucred_t cred;
+	kauth_cred_t cred;
 	proc_t p;
 {
 	struct inode *ip = VTOI(vp);
@@ -714,7 +714,7 @@ ext2_chown(ip, uid, gid, cred, p)
 	struct inode *ip;
 	uid_t uid;
 	gid_t gid;
-	ucred_t cred;
+	kauth_cred_t cred;
 	proc_t p;
 {
 	uid_t ouid;
@@ -976,7 +976,7 @@ ext2_rename(ap)
 	int doingdirectory = 0, oldparent = 0, newparent = 0;
 	int error = 0;
 	u_char namlen;
-    ucred_t cred = vfs_context_ucred(ap->a_context);
+    kauth_cred_t cred = vfs_context_ucred(ap->a_context);
    
    ext2_trace_enter();
     
@@ -1335,7 +1335,7 @@ ext2_mkdir(ap)
     uid_t duid;
     mode_t imode;
     vfs_context_t context = ap->a_context;
-    ucred_t cred = vfs_context_ucred(context);
+    kauth_cred_t cred = vfs_context_ucred(context);
     
    ext2_trace_enter();
    
@@ -1495,7 +1495,7 @@ ext2_rmdir(ap)
 	struct componentname *cnp = ap->a_cnp;
 	struct inode *ip, *dp;
 	int error;
-    ucred_t cred = vfs_context_ucred(ap->a_context);
+    kauth_cred_t cred = vfs_context_ucred(ap->a_context);
 
 	ip = VTOI(vp);
 	dp = VTOI(dvp);
@@ -2121,7 +2121,7 @@ ext2_makeinode(mode, dvp, vpp, cnp, context)
 	struct inode *ip, *pdir;
 	vnode_t tvp;
 	int error;
-    ucred_t cred = vfs_context_ucred(context);
+    kauth_cred_t cred = vfs_context_ucred(context);
 
 	pdir = VTOI(dvp);
 	*vpp = NULL;

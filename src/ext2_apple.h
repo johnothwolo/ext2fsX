@@ -56,7 +56,7 @@ struct ext2_args {
 
 #ifdef __ppc__
 #define E2_BAD_ADDRESS (void*)0xdeadbeef
-#elif defined(__i386__)
+#elif defined(__i386__) || defined(__x86_64__)
 #define E2_BAD_ADDRESS (void*)0xfeedface
 #else
 #error unknown architecture
@@ -267,7 +267,7 @@ int vop_stdfsync(struct vnop_fsync_args *ap)
 /* FreeBSD Mount flags */
 #define MNT_NOCLUSTERR 0
 #define MNT_NOCLUSTERW 0
-#define MNT_NOATIME 0
+//#define MNT_NOATIME 0
 
 /* Soft Updates */
 #define SF_SNAPSHOT 0

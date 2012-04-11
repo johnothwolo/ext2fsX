@@ -44,7 +44,7 @@ static const char whatid[] __attribute__ ((unused)) =
 #include <sys/proc.h>
 #include <sys/vnode.h>
 #include <sys/mount.h>
-#include <sys/resourcevar.h>
+//#include <sys/resourcevar.h>
 #include <sys/stat.h>
 
 //#include <sys/trace.h>

@@ -26,7 +26,13 @@
 #import <Foundation/Foundation.h>
 
 @class ExtFSMedia;
-@protocol ExtFSMCP;
+@protocol ExtFSMCP
+- (void)updateMountStatus;
+- (ExtFSMedia*)createMediaWithIOService:(io_service_t)service properties:(NSDictionary*)props;
+- (int)updateMedia:(io_iterator_t)iter remove:(BOOL)remove;
+- (BOOL)volumeDidUnmount:(NSString*)name;
+- (void)removePending:(ExtFSMedia*)media;
+@end
 
 /*!
 @class ExtFSMediaController

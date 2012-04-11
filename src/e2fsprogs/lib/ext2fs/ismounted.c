@@ -339,7 +339,7 @@ errcode_t ext2fs_check_if_mounted(const char *file, int *mount_flags)
 	return ext2fs_check_mount_point(file, mount_flags, NULL, 0);
 }
 
-#ifdef DEBUG
+#ifdef TEST_PROGRAM
 int main(int argc, char **argv)
 {
 	int	retval, mount_flags;

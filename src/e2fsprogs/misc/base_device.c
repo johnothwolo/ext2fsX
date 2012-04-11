@@ -146,7 +146,7 @@ errout:
 	return NULL;
 }
 
-#ifdef DEBUG
+#ifdef TEST_PROGRAM
 int main(int argc, char** argv)
 {
 	const char *base;

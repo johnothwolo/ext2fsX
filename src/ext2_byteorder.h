@@ -28,13 +28,14 @@
 #define _EXT2_BYTEORDER_H
 
 #include <sys/types.h>
+#include <stdint.h>
 
 #if BYTE_ORDER == BIG_ENDIAN
-#include <ext2_bigendian.h>
+#include "ext2_bigendian.h"
 #define E2Q_HIGH 0
 #define E2Q_LOW  1
 #elif BYTE_ORDER == LITTLE_ENDIAN
-#include <ext2_littleendian.h>
+#include "ext2_littleendian.h"
 #define E2Q_HIGH 1
 #define E2Q_LOW  0
 #else

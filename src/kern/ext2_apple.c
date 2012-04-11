@@ -93,7 +93,7 @@ ext2_ioctl(ap)
    struct ext2_sb_info *fs;
    int err = 0, super;
    u_int32_t flags, oldflags;
-   ucred_t cred = vfs_context_ucred(ap->a_context);
+   kauth_cred_t cred = vfs_context_ucred(ap->a_context);
    
    super = (0 == kauth_cred_getuid(cred));
    fs = ip->i_e2fs;

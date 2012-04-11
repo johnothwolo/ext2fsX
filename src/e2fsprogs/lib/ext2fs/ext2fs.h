@@ -297,13 +297,11 @@ struct struct_ext2_filsys {
 #define BLOCK_COUNT_TIND	(-3)
 #define BLOCK_COUNT_TRANSLATOR	(-4)
 
-#if 0
 /*
  * Flags for ext2fs_move_blocks
  */
 #define EXT2_BMOVE_GET_DBLIST	0x0001	
 #define EXT2_BMOVE_DEBUG	0x0002
-#endif
 
 /*
  * Flags for directory block reading and writing functions
@@ -976,6 +974,7 @@ extern blk_t ext2fs_inode_data_blocks(ext2_filsys fs,
  * If NO_INLINE_FUNCS is defined, then we won't try to do inline
  * functions at all!
  */
+#if 0
 #if (defined(INCLUDE_INLINE_FUNCS) || !defined(NO_INLINE_FUNCS))
 #ifdef INCLUDE_INLINE_FUNCS
 #define _INLINE_ extern
@@ -986,6 +985,9 @@ extern blk_t ext2fs_inode_data_blocks(ext2_filsys fs,
 #define _INLINE_ extern inline
 #endif
 #endif
+#endif
+
+#define _INLINE_ static __inline__
 
 #ifndef EXT2_CUSTOM_MEMORY_ROUTINES
 #include <string.h>

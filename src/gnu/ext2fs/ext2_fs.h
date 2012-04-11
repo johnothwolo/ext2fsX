@@ -38,7 +38,7 @@
 #define umode_t mode_t
 #define loff_t  off_t
 
-#include <ext2_byteorder.h>
+#include "ext2_byteorder.h"
 
 /*
  * The second extended filesystem constants/structures

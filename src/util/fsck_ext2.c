@@ -45,7 +45,7 @@ static const char whatid[] __attribute__ ((unused)) =
 #include <string.h>
 #include <unistd.h>
 
-#include <gnu/ext2fs/ext2_fs.h>
+#include "gnu/ext2fs/ext2_fs.h"
 
 static char *progname;
 

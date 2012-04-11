@@ -1439,7 +1439,7 @@ printf("ext2_vget(%d) dbn= %d ", ino, fsbtodb(fs, ino_to_fsba(fs, ino)));
 			ip->i_db[i] = 0;
 	} else if ((eap->va_flags & EVALLOC_CREATE) && eap->va_createmode) {
 		ip->i_mode = eap->va_createmode; // required by ext2_vinit
-		ucred_t cred = vfs_context_ucred(context);
+		kauth_cred_t cred = vfs_context_ucred(context);
 		ip->i_uid = cred->cr_uid;
 		ip->i_gid = cred->cr_rgid;
 	}

@@ -91,7 +91,7 @@ int e2p_string2feature(char *string, int *compat_type, unsigned int *mask)
 {
 	struct feature  *f;
 	char		*eptr;
-	int		num;
+	long		num;
 
 	for (f = feature_list; f->string; f++) {
 		if (!strcasecmp(string, f->string)) {

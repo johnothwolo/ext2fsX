@@ -6,19 +6,15 @@
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleGetInfoString</key>
-	<string>2.1, © 2004,2006 Brian Bergstrand</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.sourceforge.ext2fsx.ExtFSDiskManager</string>
+	<string>com.yourcompany.${PRODUCT_NAME:identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
-	<string>FMWK</string>
-	<key>CFBundleShortVersionString</key>
-	<string>2.1</string>
+	<string>BNDL</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2.1</string>
+	<string>1.0</string>
 </dict>
 </plist>
