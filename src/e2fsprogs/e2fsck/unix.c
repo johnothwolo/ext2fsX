@@ -45,6 +45,7 @@ extern int optind;
 #ifdef HAVE_DIRENT_H
 #include <dirent.h>
 #endif
+#include <sys/time.h>
 
 #include "et/com_err.h"
 #include "e2fsck.h"

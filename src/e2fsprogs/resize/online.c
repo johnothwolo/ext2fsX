@@ -15,6 +15,7 @@
 #endif
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "ext2_fs.h"
 
 extern char *program_name;
 

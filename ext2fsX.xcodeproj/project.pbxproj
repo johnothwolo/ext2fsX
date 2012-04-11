@@ -136,7 +136,7 @@
 		55E5A5BB13C1B44A00BF3DD3 /* alloc_sb.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB801013C15EBF006C2DAD /* alloc_sb.c */; };
 		55F6408A1535FDF600F6E73D /* mount_ext2fs.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB837F13C15EC1006C2DAD /* mount_ext2fs.c */; };
 		55F6408E1535FF8100F6E73D /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D376F3CD040E088100A80164 /* CoreFoundation.framework */; };
-		55F64099153600FA00F6E73D /* e2fsck.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55F64098153600FA00F6E73D /* e2fsck.1 */; };
+		55F64099153600FA00F6E73D /* e2fsck.8 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55F64098153600FA00F6E73D /* e2fsck.8 */; };
 		55F6409D1536010A00F6E73D /* argv_parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EC413C15EBE006C2DAD /* argv_parse.c */; };
 		55F6409E1536010D00F6E73D /* badblocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EC613C15EBE006C2DAD /* badblocks.c */; };
 		55F6409F1536016B00F6E73D /* dict.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EC913C15EBE006C2DAD /* dict.c */; };
@@ -164,11 +164,11 @@
 		55F640BB1536016B00F6E73D /* swapfs.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EF213C15EBE006C2DAD /* swapfs.c */; };
 		55F640BD1536016B00F6E73D /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EF413C15EBE006C2DAD /* util.c */; };
 		55F640BF15360AD600F6E73D /* libcom_err.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577045713C3CCB400457317 /* libcom_err.dylib */; };
-		55F640C015360ADE00F6E73D /* libext2fs.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E5A54C13C1A17400BF3DD3 /* libext2fs.dylib */; };
+		55F640C015360ADE00F6E73D /* libext2fs.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E5A54C13C1A17400BF3DD3 /* libext2fs.2.1.dylib */; };
 		55F640C515360B8F00F6E73D /* prof_err.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F640C315360B8C00F6E73D /* prof_err.c */; };
 		55F640C915360BC800F6E73D /* ext2_err.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F640C615360BC800F6E73D /* ext2_err.c */; };
-		55F640CD1536119200F6E73D /* libss.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577058E13C3CD5600457317 /* libss.dylib */; };
-		55F640D2153614EE00F6E73D /* libss.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577058E13C3CD5600457317 /* libss.dylib */; };
+		55F640CD1536119200F6E73D /* libss.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577058E13C3CD5600457317 /* libss.1.0.dylib */; };
+		55F640D2153614EE00F6E73D /* libss.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577058E13C3CD5600457317 /* libss.1.0.dylib */; };
 		55F640D31536152500F6E73D /* journal.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7ED813C15EBE006C2DAD /* journal.c */; };
 		55F640D4153615DE00F6E73D /* unix.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EF313C15EBE006C2DAD /* unix.c */; };
 		55F640D51536164200F6E73D /* unix_io.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB806E13C15EBF006C2DAD /* unix_io.c */; };
@@ -184,8 +184,26 @@
 		55F640E7153616C600F6E73D /* save.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7F8313C15EBF006C2DAD /* save.c */; };
 		55F640E8153616C600F6E73D /* tag.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7F8413C15EBF006C2DAD /* tag.c */; };
 		55F640EA153616C600F6E73D /* version.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7FAA13C15EBF006C2DAD /* version.c */; };
-		55F640ED1536180100F6E73D /* libblkid.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55F640DA1536169400F6E73D /* libblkid.dylib */; };
+		55F640ED1536180100F6E73D /* libblkid.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55F640DA1536169400F6E73D /* libblkid.2.0.dylib */; };
 		55F640EE1536182600F6E73D /* flushb.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB803E13C15EBF006C2DAD /* flushb.c */; };
+		55F640F91536284B00F6E73D /* resize2fs.8 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55F640F81536284B00F6E73D /* resize2fs.8 */; };
+		55F640FD1536286600F6E73D /* extent.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB812413C15EC0006C2DAD /* extent.c */; };
+		55F640FE1536286600F6E73D /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB812513C15EC0006C2DAD /* main.c */; };
+		55F640FF1536286600F6E73D /* online.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB812713C15EC0006C2DAD /* online.c */; };
+		55F641001536286600F6E73D /* resize2fs.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB812913C15EC0006C2DAD /* resize2fs.c */; };
+		55F641011536286600F6E73D /* sim_progress.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB812B13C15EC0006C2DAD /* sim_progress.c */; };
+		55F6410515362BE400F6E73D /* libext2fs.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E5A54C13C1A17400BF3DD3 /* libext2fs.2.1.dylib */; };
+		55F6410615362BFB00F6E73D /* libcom_err.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577045713C3CCB400457317 /* libcom_err.dylib */; };
+		55F6410915362C2000F6E73D /* libe2p.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E5A59B13C1A55600BF3DD3 /* libe2p.2.1.dylib */; };
+		55F641141536302000F6E73D /* mke2fs.8 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55F641131536302000F6E73D /* mke2fs.8 */; };
+		55F641181536304200F6E73D /* mke2fs.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB80EB13C15EBF006C2DAD /* mke2fs.c */; };
+		55F6411D1536316100F6E73D /* libe2p.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E5A59B13C1A55600BF3DD3 /* libe2p.2.1.dylib */; };
+		55F6411E1536316100F6E73D /* libext2fs.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E5A54C13C1A17400BF3DD3 /* libext2fs.2.1.dylib */; };
+		55F6411F1536318700F6E73D /* libcom_err.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577045713C3CCB400457317 /* libcom_err.dylib */; };
+		55F64120153631B600F6E73D /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB80F413C15EBF006C2DAD /* util.c */; };
+		55F64121153631E100F6E73D /* mkjournal.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB805913C15EBF006C2DAD /* mkjournal.c */; };
+		55F641241536320200F6E73D /* libblkid.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55F640DA1536169400F6E73D /* libblkid.2.0.dylib */; };
+		55F641251536324000F6E73D /* profile.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EE813C15EBE006C2DAD /* profile.c */; };
 		D32B1F8E09946A3B001A78A0 /* ext2_apple.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B4645704099F8700A80164 /* ext2_apple.h */; };
 		D32B1F9009946A3B001A78A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		D32B1F9209946A3B001A78A0 /* ext2_ihash.c in Sources */ = {isa = PBXBuildFile; fileRef = F53FE97F035E7DB501A80165 /* ext2_ihash.c */; };
@@ -374,6 +392,41 @@
 			remoteGlobalIDString = 55F640D91536169400F6E73D;
 			remoteInfo = blkid;
 		};
+		55F6410315362BDC00F6E73D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55E5A54B13C1A17400BF3DD3;
+			remoteInfo = ext2fs;
+		};
+		55F6410715362C1A00F6E73D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55E5A59A13C1A55600BF3DD3;
+			remoteInfo = e2p;
+		};
+		55F641191536315900F6E73D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55E5A54B13C1A17400BF3DD3;
+			remoteInfo = ext2fs;
+		};
+		55F6411B1536315900F6E73D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55E5A59A13C1A55600BF3DD3;
+			remoteInfo = e2p;
+		};
+		55F64122153631FD00F6E73D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55F640D91536169400F6E73D;
+			remoteInfo = blkid;
+		};
 		55FB838E13C162CC006C2DAD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
@@ -460,10 +513,30 @@
 		55F64091153600FA00F6E73D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man8/;
+			dstSubfolderSpec = 0;
+			files = (
+				55F64099153600FA00F6E73D /* e2fsck.8 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		55F640F11536284700F6E73D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man8/;
+			dstSubfolderSpec = 0;
+			files = (
+				55F640F91536284B00F6E73D /* resize2fs.8 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		55F6410C1536301D00F6E73D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				55F64099153600FA00F6E73D /* e2fsck.1 in CopyFiles */,
+				55F641141536302000F6E73D /* mke2fs.8 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -494,21 +567,25 @@
 		551BAD7D13C157B700080BD5 /* ext2.fs */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ext2.fs; sourceTree = BUILT_PRODUCTS_DIR; };
 		551BAD7E13C157B700080BD5 /* ext2_fs1-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ext2_fs1-Info.plist"; sourceTree = "<group>"; };
 		5577045713C3CCB400457317 /* libcom_err.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcom_err.dylib; path = usr/lib/libcom_err.dylib; sourceTree = SDKROOT; };
-		5577058E13C3CD5600457317 /* libss.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libss.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		5577058E13C3CD5600457317 /* libss.1.0.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libss.1.0.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		557705A013C3CE2C00457317 /* ss_err.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ss_err.h; sourceTree = "<group>"; };
 		557705BB13C3CF7900457317 /* ss_err.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ss_err.c; sourceTree = "<group>"; };
-		55E5A54C13C1A17400BF3DD3 /* libext2fs.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libext2fs.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		55E5A59B13C1A55600BF3DD3 /* libe2p.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libe2p.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		55E5A54C13C1A17400BF3DD3 /* libext2fs.2.1.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libext2fs.2.1.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		55E5A59B13C1A55600BF3DD3 /* libe2p.2.1.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libe2p.2.1.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		55E5A5B413C1A83C00BF3DD3 /* ext2_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ext2_types.h; sourceTree = "<group>"; };
 		55E5A5B613C1AE3800BF3DD3 /* ext2_err.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ext2_err.h; sourceTree = "<group>"; };
 		55EA77240F9DB4E50036BB09 /* ext2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ext2-Info.plist"; sourceTree = "<group>"; };
 		55F64093153600FA00F6E73D /* e2fsck */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = e2fsck; sourceTree = BUILT_PRODUCTS_DIR; };
-		55F64098153600FA00F6E73D /* e2fsck.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = e2fsck.1; sourceTree = "<group>"; };
+		55F64098153600FA00F6E73D /* e2fsck.8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2fsck.8; sourceTree = "<group>"; };
 		55F640BE1536029500F6E73D /* blkid_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blkid_types.h; sourceTree = "<group>"; };
 		55F640C315360B8C00F6E73D /* prof_err.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = prof_err.c; sourceTree = "<group>"; };
 		55F640C415360B8D00F6E73D /* prof_err.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prof_err.h; sourceTree = "<group>"; };
 		55F640C615360BC800F6E73D /* ext2_err.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ext2_err.c; sourceTree = "<group>"; };
-		55F640DA1536169400F6E73D /* libblkid.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libblkid.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		55F640DA1536169400F6E73D /* libblkid.2.0.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libblkid.2.0.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		55F640F31536284700F6E73D /* resize2fs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = resize2fs; sourceTree = BUILT_PRODUCTS_DIR; };
+		55F640F81536284B00F6E73D /* resize2fs.8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = resize2fs.8; sourceTree = "<group>"; };
+		55F6410E1536301D00F6E73D /* mke2fs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mke2fs; sourceTree = BUILT_PRODUCTS_DIR; };
+		55F641131536302000F6E73D /* mke2fs.8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = mke2fs.8; sourceTree = "<group>"; };
 		55FB784C13C15EBB006C2DAD /* dkcksum.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkcksum.c; sourceTree = "<group>"; };
 		55FB784D13C15EBB006C2DAD /* dkdisklabel.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkdisklabel.c; sourceTree = "<group>"; };
 		55FB784E13C15EBB006C2DAD /* dkopen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkopen.c; sourceTree = "<group>"; };
@@ -702,12 +779,7 @@
 		55FB7F1613C15EBF006C2DAD /* types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		55FB7F1713C15EBF006C2DAD /* ChangeLog */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
 		55FB7F1813C15EBF006C2DAD /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
-		55FB7F1913C15EBF006C2DAD /* dirent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dirent.h; sourceTree = "<group>"; };
-		55FB7F1A13C15EBF006C2DAD /* getopt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = getopt.h; sourceTree = "<group>"; };
-		55FB7F1B13C15EBF006C2DAD /* grp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = grp.h; sourceTree = "<group>"; };
 		55FB7F1D13C15EBF006C2DAD /* types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
-		55FB7F1E13C15EBF006C2DAD /* pwd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pwd.h; sourceTree = "<group>"; };
-		55FB7F2713C15EBF006C2DAD /* termios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = termios.h; sourceTree = "<group>"; };
 		55FB7F2913C15EBF006C2DAD /* utime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utime.h; sourceTree = "<group>"; };
 		55FB7F2A13C15EBF006C2DAD /* INSTALL */ = {isa = PBXFileReference; lastKnownFileType = text; path = INSTALL; sourceTree = "<group>"; };
 		55FB7F2B13C15EBF006C2DAD /* install-sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "install-sh"; sourceTree = "<group>"; };
@@ -834,7 +906,6 @@
 		55FB7FA913C15EBF006C2DAD /* tst_types.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tst_types.c; sourceTree = "<group>"; };
 		55FB7FAA13C15EBF006C2DAD /* version.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = version.c; sourceTree = "<group>"; };
 		55FB7FAB13C15EBF006C2DAD /* ChangeLog */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
-		55FB7FAD13C15EBF006C2DAD /* .cvsignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .cvsignore; sourceTree = "<group>"; };
 		55FB7FAE13C15EBF006C2DAD /* ChangeLog */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
 		55FB7FB013C15EBF006C2DAD /* jump.funcs */ = {isa = PBXFileReference; lastKnownFileType = text; path = jump.funcs; sourceTree = "<group>"; };
 		55FB7FB113C15EBF006C2DAD /* jump.ignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = jump.ignore; sourceTree = "<group>"; };
@@ -1105,7 +1176,6 @@
 		55FB80C513C15EBF006C2DAD /* uuidP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = uuidP.h; sourceTree = "<group>"; };
 		55FB80C613C15EBF006C2DAD /* Makefile.in */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		55FB80C713C15EBF006C2DAD /* MCONFIG.in */ = {isa = PBXFileReference; lastKnownFileType = text; path = MCONFIG.in; sourceTree = "<group>"; };
-		55FB80C913C15EBF006C2DAD /* .cvsignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .cvsignore; sourceTree = "<group>"; };
 		55FB80CA13C15EBF006C2DAD /* badblocks.8.in */ = {isa = PBXFileReference; lastKnownFileType = text; path = badblocks.8.in; sourceTree = "<group>"; };
 		55FB80CB13C15EBF006C2DAD /* badblocks.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = badblocks.c; sourceTree = "<group>"; };
 		55FB80CC13C15EBF006C2DAD /* base_device.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = base_device.c; sourceTree = "<group>"; };
@@ -1564,7 +1634,6 @@
 		55FB82EC13C15EC1006C2DAD /* run_mke2fs */ = {isa = PBXFileReference; lastKnownFileType = text; path = run_mke2fs; sourceTree = "<group>"; };
 		55FB82ED13C15EC1006C2DAD /* test_config */ = {isa = PBXFileReference; lastKnownFileType = text; path = test_config; sourceTree = "<group>"; };
 		55FB82EE13C15EC1006C2DAD /* test_script.in */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test_script.in; sourceTree = "<group>"; };
-		55FB82F013C15EC1006C2DAD /* .cvsignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .cvsignore; sourceTree = "<group>"; };
 		55FB82F113C15EC1006C2DAD /* all.exclude */ = {isa = PBXFileReference; lastKnownFileType = text; path = all.exclude; sourceTree = "<group>"; };
 		55FB82F213C15EC1006C2DAD /* ChangeLog */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
 		55FB82F313C15EC1006C2DAD /* copy_sparse.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = copy_sparse.c; sourceTree = "<group>"; };
@@ -1773,7 +1842,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5577045813C3CCB400457317 /* libcom_err.dylib in Frameworks */,
-				55F640CD1536119200F6E73D /* libss.dylib in Frameworks */,
+				55F640CD1536119200F6E73D /* libss.1.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1788,10 +1857,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55F640ED1536180100F6E73D /* libblkid.dylib in Frameworks */,
+				55F640ED1536180100F6E73D /* libblkid.2.0.dylib in Frameworks */,
 				55F640BF15360AD600F6E73D /* libcom_err.dylib in Frameworks */,
-				55F640C015360ADE00F6E73D /* libext2fs.dylib in Frameworks */,
-				55F640D2153614EE00F6E73D /* libss.dylib in Frameworks */,
+				55F640C015360ADE00F6E73D /* libext2fs.2.1.dylib in Frameworks */,
+				55F640D2153614EE00F6E73D /* libss.1.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1799,6 +1868,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55F640F01536284700F6E73D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55F6410915362C2000F6E73D /* libe2p.2.1.dylib in Frameworks */,
+				55F6410515362BE400F6E73D /* libext2fs.2.1.dylib in Frameworks */,
+				55F6410615362BFB00F6E73D /* libcom_err.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55F6410B1536301D00F6E73D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55F641241536320200F6E73D /* libblkid.2.0.dylib in Frameworks */,
+				55F6411D1536316100F6E73D /* libe2p.2.1.dylib in Frameworks */,
+				55F6411E1536316100F6E73D /* libext2fs.2.1.dylib in Frameworks */,
+				55F6411F1536318700F6E73D /* libcom_err.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1891,6 +1981,8 @@
 				D387FC9E059558B700C31A93 /* util */,
 				D31F7D390569E42A00A80164 /* e2undel */,
 				55F64095153600FA00F6E73D /* e2fsck */,
+				55F640F51536284700F6E73D /* resize2fs */,
+				55F641101536301D00F6E73D /* mke2fs */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
 				5577049413C3CCF200457317 /* Frameworks and Libraries */,
 				D32B1FAC09946A3B001A78A0 /* ExtFSDiskManager-Info.plist */,
@@ -1923,11 +2015,13 @@
 				D32B20E2099477DE001A78A0 /* fsck_ext2 */,
 				D32B211009947829001A78A0 /* ExtFSManager.prefPane */,
 				551BAD7D13C157B700080BD5 /* ext2.fs */,
-				55E5A54C13C1A17400BF3DD3 /* libext2fs.dylib */,
-				55E5A59B13C1A55600BF3DD3 /* libe2p.dylib */,
-				5577058E13C3CD5600457317 /* libss.dylib */,
+				55E5A54C13C1A17400BF3DD3 /* libext2fs.2.1.dylib */,
+				55E5A59B13C1A55600BF3DD3 /* libe2p.2.1.dylib */,
+				5577058E13C3CD5600457317 /* libss.1.0.dylib */,
 				55F64093153600FA00F6E73D /* e2fsck */,
-				55F640DA1536169400F6E73D /* libblkid.dylib */,
+				55F640DA1536169400F6E73D /* libblkid.2.0.dylib */,
+				55F640F31536284700F6E73D /* resize2fs */,
+				55F6410E1536301D00F6E73D /* mke2fs */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1973,9 +2067,25 @@
 		55F64095153600FA00F6E73D /* e2fsck */ = {
 			isa = PBXGroup;
 			children = (
-				55F64098153600FA00F6E73D /* e2fsck.1 */,
+				55F64098153600FA00F6E73D /* e2fsck.8 */,
 			);
 			path = e2fsck;
+			sourceTree = "<group>";
+		};
+		55F640F51536284700F6E73D /* resize2fs */ = {
+			isa = PBXGroup;
+			children = (
+				55F640F81536284B00F6E73D /* resize2fs.8 */,
+			);
+			path = resize2fs;
+			sourceTree = "<group>";
+		};
+		55F641101536301D00F6E73D /* mke2fs */ = {
+			isa = PBXGroup;
+			children = (
+				55F641131536302000F6E73D /* mke2fs.8 */,
+			);
+			path = mke2fs;
 			sourceTree = "<group>";
 		};
 		55FB784713C15EBB006C2DAD /* src */ = {
@@ -2329,12 +2439,7 @@
 				55FB7F1513C15EBF006C2DAD /* asm */,
 				55FB7F1713C15EBF006C2DAD /* ChangeLog */,
 				55FB7F1813C15EBF006C2DAD /* config.h */,
-				55FB7F1913C15EBF006C2DAD /* dirent.h */,
-				55FB7F1A13C15EBF006C2DAD /* getopt.h */,
-				55FB7F1B13C15EBF006C2DAD /* grp.h */,
 				55FB7F1C13C15EBF006C2DAD /* linux */,
-				55FB7F1E13C15EBF006C2DAD /* pwd.h */,
-				55FB7F2713C15EBF006C2DAD /* termios.h */,
 				55FB7F2913C15EBF006C2DAD /* utime.h */,
 			);
 			path = nonunix;
@@ -2533,7 +2638,6 @@
 		55FB7FAC13C15EBF006C2DAD /* e2p */ = {
 			isa = PBXGroup;
 			children = (
-				55FB7FAD13C15EBF006C2DAD /* .cvsignore */,
 				55FB7FAE13C15EBF006C2DAD /* ChangeLog */,
 				55FB7FAF13C15EBF006C2DAD /* dll */,
 				55FB7FB613C15EBF006C2DAD /* e2p.h */,
@@ -2888,7 +2992,6 @@
 		55FB80C813C15EBF006C2DAD /* misc */ = {
 			isa = PBXGroup;
 			children = (
-				55FB80C913C15EBF006C2DAD /* .cvsignore */,
 				55FB80CA13C15EBF006C2DAD /* badblocks.8.in */,
 				55FB80CB13C15EBF006C2DAD /* badblocks.c */,
 				55FB80CC13C15EBF006C2DAD /* base_device.c */,
@@ -4066,7 +4169,6 @@
 		55FB82EF13C15EC1006C2DAD /* util */ = {
 			isa = PBXGroup;
 			children = (
-				55FB82F013C15EC1006C2DAD /* .cvsignore */,
 				55FB82F113C15EC1006C2DAD /* all.exclude */,
 				55FB82F213C15EC1006C2DAD /* ChangeLog */,
 				55FB82F313C15EC1006C2DAD /* copy_sparse.c */,
@@ -4645,7 +4747,7 @@
 			);
 			name = ss;
 			productName = ss;
-			productReference = 5577058E13C3CD5600457317 /* libss.dylib */;
+			productReference = 5577058E13C3CD5600457317 /* libss.1.0.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		55E5A54B13C1A17400BF3DD3 /* ext2fs */ = {
@@ -4663,7 +4765,7 @@
 			);
 			name = ext2fs;
 			productName = libext2fs;
-			productReference = 55E5A54C13C1A17400BF3DD3 /* libext2fs.dylib */;
+			productReference = 55E5A54C13C1A17400BF3DD3 /* libext2fs.2.1.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		55E5A59A13C1A55600BF3DD3 /* e2p */ = {
@@ -4680,7 +4782,7 @@
 			);
 			name = e2p;
 			productName = e2p;
-			productReference = 55E5A59B13C1A55600BF3DD3 /* libe2p.dylib */;
+			productReference = 55E5A59B13C1A55600BF3DD3 /* libe2p.2.1.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		55F64092153600FA00F6E73D /* e2fsck */ = {
@@ -4717,8 +4819,47 @@
 			);
 			name = blkid;
 			productName = blkid;
-			productReference = 55F640DA1536169400F6E73D /* libblkid.dylib */;
+			productReference = 55F640DA1536169400F6E73D /* libblkid.2.0.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
+		};
+		55F640F21536284700F6E73D /* resize2fs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55F640FA1536284B00F6E73D /* Build configuration list for PBXNativeTarget "resize2fs" */;
+			buildPhases = (
+				55F640EF1536284700F6E73D /* Sources */,
+				55F640F01536284700F6E73D /* Frameworks */,
+				55F640F11536284700F6E73D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				55F6410815362C1A00F6E73D /* PBXTargetDependency */,
+				55F6410415362BDC00F6E73D /* PBXTargetDependency */,
+			);
+			name = resize2fs;
+			productName = resize2fs;
+			productReference = 55F640F31536284700F6E73D /* resize2fs */;
+			productType = "com.apple.product-type.tool";
+		};
+		55F6410D1536301D00F6E73D /* mke2fs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55F641151536302000F6E73D /* Build configuration list for PBXNativeTarget "mke2fs" */;
+			buildPhases = (
+				55F6410A1536301D00F6E73D /* Sources */,
+				55F6410B1536301D00F6E73D /* Frameworks */,
+				55F6410C1536301D00F6E73D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				55F64123153631FD00F6E73D /* PBXTargetDependency */,
+				55F6411A1536315900F6E73D /* PBXTargetDependency */,
+				55F6411C1536315900F6E73D /* PBXTargetDependency */,
+			);
+			name = mke2fs;
+			productName = mke2fs;
+			productReference = 55F6410E1536301D00F6E73D /* mke2fs */;
+			productType = "com.apple.product-type.tool";
 		};
 		D32B1F8B09946A3B001A78A0 /* ext2_kext */ = {
 			isa = PBXNativeTarget;
@@ -4944,6 +5085,8 @@
 				5577058D13C3CD5600457317 /* ss */,
 				55F64092153600FA00F6E73D /* e2fsck */,
 				55F640D91536169400F6E73D /* blkid */,
+				55F640F21536284700F6E73D /* resize2fs */,
+				55F6410D1536301D00F6E73D /* mke2fs */,
 			);
 		};
 /* End PBXProject section */
@@ -5103,6 +5246,7 @@
 				55F640C915360BC800F6E73D /* ext2_err.c in Sources */,
 				55F640D51536164200F6E73D /* unix_io.c in Sources */,
 				55F640EE1536182600F6E73D /* flushb.c in Sources */,
+				55F64121153631E100F6E73D /* mkjournal.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5184,6 +5328,28 @@
 				55F640E7153616C600F6E73D /* save.c in Sources */,
 				55F640E8153616C600F6E73D /* tag.c in Sources */,
 				55F640EA153616C600F6E73D /* version.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55F640EF1536284700F6E73D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55F640FD1536286600F6E73D /* extent.c in Sources */,
+				55F640FE1536286600F6E73D /* main.c in Sources */,
+				55F640FF1536286600F6E73D /* online.c in Sources */,
+				55F641001536286600F6E73D /* resize2fs.c in Sources */,
+				55F641011536286600F6E73D /* sim_progress.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55F6410A1536301D00F6E73D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55F641181536304200F6E73D /* mke2fs.c in Sources */,
+				55F64120153631B600F6E73D /* util.c in Sources */,
+				55F641251536324000F6E73D /* profile.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5301,6 +5467,31 @@
 			isa = PBXTargetDependency;
 			target = 55F640D91536169400F6E73D /* blkid */;
 			targetProxy = 55F640EB153617F900F6E73D /* PBXContainerItemProxy */;
+		};
+		55F6410415362BDC00F6E73D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55E5A54B13C1A17400BF3DD3 /* ext2fs */;
+			targetProxy = 55F6410315362BDC00F6E73D /* PBXContainerItemProxy */;
+		};
+		55F6410815362C1A00F6E73D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55E5A59A13C1A55600BF3DD3 /* e2p */;
+			targetProxy = 55F6410715362C1A00F6E73D /* PBXContainerItemProxy */;
+		};
+		55F6411A1536315900F6E73D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55E5A54B13C1A17400BF3DD3 /* ext2fs */;
+			targetProxy = 55F641191536315900F6E73D /* PBXContainerItemProxy */;
+		};
+		55F6411C1536315900F6E73D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55E5A59A13C1A55600BF3DD3 /* e2p */;
+			targetProxy = 55F6411B1536315900F6E73D /* PBXContainerItemProxy */;
+		};
+		55F64123153631FD00F6E73D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55F640D91536169400F6E73D /* blkid */;
+			targetProxy = 55F64122153631FD00F6E73D /* PBXContainerItemProxy */;
 		};
 		55FB838F13C162CC006C2DAD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5443,6 +5634,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				DYLIB_CURRENT_VERSION = 1.0;
 				EXECUTABLE_PREFIX = lib;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
@@ -5453,7 +5645,7 @@
 				);
 				HEADER_SEARCH_PATHS = "\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib";
 				INSTALL_PATH = /usr/lib;
-				PRODUCT_NAME = ss;
+				PRODUCT_NAME = "ss.${DYLIB_CURRENT_VERSION}";
 			};
 			name = Debug;
 		};
@@ -5463,6 +5655,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_CURRENT_VERSION = 1.0;
 				EXECUTABLE_PREFIX = lib;
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5471,7 +5664,7 @@
 				);
 				HEADER_SEARCH_PATHS = "\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib";
 				INSTALL_PATH = /usr/lib;
-				PRODUCT_NAME = ss;
+				PRODUCT_NAME = "ss.${DYLIB_CURRENT_VERSION}";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -5515,7 +5708,7 @@
 					"-DHAVE_GETMNTINFO",
 					"-DHAVE_SYS_IOCTL_H",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
 			};
 			name = Debug;
 		};
@@ -5550,7 +5743,7 @@
 					"-DHAVE_GETMNTINFO",
 					"-DHAVE_SYS_IOCTL_H",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
 			};
 			name = Release;
 		};
@@ -5589,7 +5782,7 @@
 					"-DSYS_fsctl=242",
 				);
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/include;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/include;
 			};
 			name = Debug;
@@ -5621,7 +5814,7 @@
 					"-DSYS_fsctl=242",
 				);
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/include;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/include;
 			};
 			name = Release;
@@ -5697,6 +5890,7 @@
 		55F640DC1536169400F6E73D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DYLIB_CURRENT_VERSION = 2.0;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5724,7 +5918,7 @@
 					"$(inherited)",
 					"-DDKIOCGETBLOCKCOUNT",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
 			};
 			name = Debug;
 		};
@@ -5732,6 +5926,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_CURRENT_VERSION = 2.0;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -5752,6 +5947,84 @@
 					"-DHAVE_SYS_STAT_H",
 					"$(inherited)",
 					"-DDKIOCGETBLOCKCOUNT",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
+			};
+			name = Release;
+		};
+		55F640FB1536284B00F6E73D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/**",
+					"\"$(SOURCE_ROOT)\"/src/gnu",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		55F640FC1536284B00F6E73D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/**",
+					"\"$(SOURCE_ROOT)\"/src/gnu",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		55F641161536302000F6E73D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/**",
+					"\"$(SOURCE_ROOT)\"/src/gnu",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		55F641171536302000F6E73D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/**",
+					"\"$(SOURCE_ROOT)\"/src/gnu",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -6350,6 +6623,11 @@
 					"-DHAVE_SETJMP_H",
 					"-DHAVE_SYS_IOCTL_H",
 					"-DHAVE_SYS_STAT_H",
+					"-DHAVE_GETOPT_H",
+					"-DHAVE_SYS_TYPES_H",
+					"-DHAVE_SYS_TIME_H",
+					"-DHAVE_UNISTD_H",
+					"-DHAVE_STRCASECMP",
 				);
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
@@ -6383,6 +6661,11 @@
 					"-DHAVE_SETJMP_H",
 					"-DHAVE_SYS_IOCTL_H",
 					"-DHAVE_SYS_STAT_H",
+					"-DHAVE_GETOPT_H",
+					"-DHAVE_SYS_TIME_H",
+					"-DHAVE_SYS_TYPES_H",
+					"-DHAVE_UNISTD_H",
+					"-DHAVE_STRCASECMP",
 				);
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
@@ -6444,6 +6727,22 @@
 			buildConfigurations = (
 				55F640DC1536169400F6E73D /* Debug */,
 				55F640DD1536169400F6E73D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		55F640FA1536284B00F6E73D /* Build configuration list for PBXNativeTarget "resize2fs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55F640FB1536284B00F6E73D /* Debug */,
+				55F640FC1536284B00F6E73D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		55F641151536302000F6E73D /* Build configuration list for PBXNativeTarget "mke2fs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55F641161536302000F6E73D /* Debug */,
+				55F641171536302000F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
