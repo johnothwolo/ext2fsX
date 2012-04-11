@@ -868,9 +868,9 @@ found:
 		 * implements append-only directories.
 		 */
 		if ((dp->i_mode & ISVTX) &&
-		    cred->cr_uid != 0 &&
-		    cred->cr_uid != dp->i_uid &&
-		    VTOI(tdp)->i_uid /* XXX Lock tdp? */ != cred->cr_uid) {
+		    cred->cr_posix.cr_uid != 0 &&
+		    cred->cr_posix.cr_uid != dp->i_uid &&
+		    VTOI(tdp)->i_uid /* XXX Lock tdp? */ != cred->cr_posix.cr_uid) {
 			
             IULOCK(dp);
             

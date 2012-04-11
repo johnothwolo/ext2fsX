@@ -108,7 +108,7 @@ ext2_ioctl(ap)
          if (ip->i_e2fs->s_rd_only)
             return (EROFS);
          
-         if (cred->cr_uid != ip->i_uid && !super)
+         if (cred->cr_posix.cr_uid != ip->i_uid && !super)
             return (EACCES);
          
          bcopy(ap->a_data, &flags, sizeof(u_int32_t));
@@ -173,7 +173,7 @@ ext2_ioctl(ap)
       break;
       
       case IOCBASECMD(EXT2_IOC_SETVERSION):
-         if (cred->cr_uid != ip->i_uid && !super)
+         if (cred->cr_posix.cr_uid != ip->i_uid && !super)
             err = EACCES;
          else
             err = ENOTSUP;

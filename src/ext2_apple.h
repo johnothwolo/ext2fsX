@@ -315,7 +315,7 @@ int vn_write_suspend_wait(vnode_t vp, mount_t mp, int flag)
 #define mtx_unlock(mp) lck_mtx_unlock((mp))
 #endif
 
-#ifndef __i386__
+#if !(defined (__i386__) || defined (__x86_64__))
 // i386-bitops.h contains a memscan implementation
 static __inline void * memscan(void * addr, int c, size_t size)
 {

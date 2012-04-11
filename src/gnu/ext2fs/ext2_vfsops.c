@@ -395,7 +395,7 @@ ext2_mount(mp, devvp, data, context)
 	// This should not be needed, but it seems there may be a kernel bug, as
 	// I've seen a divide by zero panic on Intel because statfs was not initialized
 	// before a lookup occurred in the FS.
-	(void)vfs_update_vfsstat(mp, context);
+	(void)vfs_update_vfsstat(mp, context, 0);
 	assert(vfs_statfs(mp)->f_iosize > 0);
 	return (0);
 }
@@ -1440,8 +1440,8 @@ printf("ext2_vget(%d) dbn= %d ", ino, fsbtodb(fs, ino_to_fsba(fs, ino)));
 	} else if ((eap->va_flags & EVALLOC_CREATE) && eap->va_createmode) {
 		ip->i_mode = eap->va_createmode; // required by ext2_vinit
 		kauth_cred_t cred = vfs_context_ucred(context);
-		ip->i_uid = cred->cr_uid;
-		ip->i_gid = cred->cr_rgid;
+		ip->i_uid = cred->cr_posix.cr_uid;
+		ip->i_gid = cred->cr_posix.cr_rgid;
 	}
 /*
 	ext2_print_inode(ip);

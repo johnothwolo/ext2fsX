@@ -56,7 +56,7 @@ static const char whatid[] __attribute__ ((unused)) =
 
 #include <sys/param.h>
 
-#include <sys/resourcevar.h>
+//#include <sys/resourcevar.h>
 #include <sys/proc.h>
 #include <sys/systm.h>
 #include <sys/buf.h>

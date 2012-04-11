@@ -50,7 +50,7 @@ static const char vwhatid[] __attribute__ ((unused)) =
 #include <ext2_byteorder.h>
 #include <sys/stat.h>
 
-#ifdef __i386__
+#if defined (__i386__) || defined (__x86_64__)
 #include <gnu/ext2fs/i386-bitops.h>
 #elif  __alpha__
 #include <gnu/ext2fs/alpha-bitops.h>
