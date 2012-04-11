@@ -1389,7 +1389,7 @@ ext2_mkdir(ap)
 		}
 	}
 #else
-	ip->i_uid = cred->cr_uid;
+	ip->i_uid = cred->cr_posix.cr_uid;
 #endif
 	ip->i_flag |= IN_ACCESS | IN_CHANGE | IN_UPDATE;
 	ip->i_mode = dmode;
@@ -2176,7 +2176,7 @@ ext2_makeinode(mode, dvp, vpp, cnp, context)
    if ((mode & IFMT) == IFLNK)
 		ip->i_uid = nuid;
 	else
-      ip->i_uid = cred->cr_uid;
+      ip->i_uid = cred->cr_posix.cr_uid;
 #endif
 	ip->i_flag |= IN_ACCESS | IN_CHANGE | IN_UPDATE;
 	ip->i_mode = mode;
@@ -2367,7 +2367,7 @@ filt_ext2vnode(struct knote *kn, long hint)
     if (ip) IXLOCK(ip);
 	if (kn->kn_sfflags & hint)
 		kn->kn_fflags |= hint;
-	if ((hint == NOTE_REVOKE)) {
+	if (hint == NOTE_REVOKE) {
 		kn->kn_flags |= (EV_EOF | EV_ONESHOT);
         if (ip) IULOCK(ip);
 		return (1);
@@ -2378,4 +2378,4 @@ filt_ext2vnode(struct knote *kn, long hint)
     
 	return (result);
 }
-#endif EXT_KNOTE
+#endif //EXT_KNOTE

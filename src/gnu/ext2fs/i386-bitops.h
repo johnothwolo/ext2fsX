@@ -144,7 +144,7 @@ static __inline__ unsigned long ffz(unsigned long word)
 /*
  * find the first occurrence of byte 'c', or 1 past the area if none
  */
-static __inline__ char * memscan(void * addr, unsigned char c, int size)
+static __inline__ char * memscan(void * addr, unsigned char c, size_t size)
 {
         if (!size)
                 return addr;

@@ -74,9 +74,9 @@ extern void ext2fs_fast_unmark_block_bitmap(ext2fs_block_bitmap bitmap,
 extern int ext2fs_fast_test_block_bitmap(ext2fs_block_bitmap bitmap,
 					 blk_t block);
 
-extern void ext2fs_fast_mark_inode_bitmap(ext2fs_inode_bitmap bitmap,
+static void ext2fs_fast_mark_inode_bitmap(ext2fs_inode_bitmap bitmap,
 					  ext2_ino_t inode);
-extern void ext2fs_fast_unmark_inode_bitmap(ext2fs_inode_bitmap bitmap,
+static void ext2fs_fast_unmark_inode_bitmap(ext2fs_inode_bitmap bitmap,
 					    ext2_ino_t inode);
 extern int ext2fs_fast_test_inode_bitmap(ext2fs_inode_bitmap bitmap,
 					 ext2_ino_t inode);
@@ -120,7 +120,6 @@ extern int ext2fs_unmark_generic_bitmap(ext2fs_generic_bitmap bitmap,
 #endif
 #endif /* NO_INLINE_FUNCS */
 
-#if 0
 #if (defined(INCLUDE_INLINE_FUNCS) || !defined(NO_INLINE_FUNCS))
 #ifdef INCLUDE_INLINE_FUNCS
 #define _INLINE_ extern
@@ -131,9 +130,6 @@ extern int ext2fs_unmark_generic_bitmap(ext2fs_generic_bitmap bitmap,
 #define _INLINE_ extern inline
 #endif
 #endif
-#endif
-
-#define _INLINE_ static inline
 
 /*
  * Fast bit set/clear functions that doesn't need to return the
@@ -157,8 +153,8 @@ _INLINE_ void ext2fs_fast_clear_bit(unsigned int nr, void * addr)
 }
 
 
-#if ((defined __GNUC__) && !defined(_EXT2_USE_C_VERSIONS_) && \
-     (defined(__i386__) || defined(__i486__) || defined(__i586__) || defined(__x86_64__)))
+#if ((defined (__GNUC__) && !defined(_EXT2_USE_C_VERSIONS_) && \
+     (defined(__i386__) || defined(__i486__) || defined(__i586__) || defined(__x86_64__))))
 
 #define _EXT2_HAVE_ASM_BITOPS_
 #define _EXT2_HAVE_ASM_SWAB_

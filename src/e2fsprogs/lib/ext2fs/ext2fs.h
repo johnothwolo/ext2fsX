@@ -974,7 +974,6 @@ extern blk_t ext2fs_inode_data_blocks(ext2_filsys fs,
  * If NO_INLINE_FUNCS is defined, then we won't try to do inline
  * functions at all!
  */
-#if 0
 #if (defined(INCLUDE_INLINE_FUNCS) || !defined(NO_INLINE_FUNCS))
 #ifdef INCLUDE_INLINE_FUNCS
 #define _INLINE_ extern
@@ -985,9 +984,6 @@ extern blk_t ext2fs_inode_data_blocks(ext2_filsys fs,
 #define _INLINE_ extern inline
 #endif
 #endif
-#endif
-
-#define _INLINE_ static __inline__
 
 #ifndef EXT2_CUSTOM_MEMORY_ROUTINES
 #include <string.h>

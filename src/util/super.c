@@ -26,6 +26,8 @@
 static const char super_whatid[] __attribute__ ((unused)) =
 "@(#) $Id: super.c,v 1.3 2004/02/29 22:54:54 bbergstrand Exp $";
 
+extern char* __progname;
+
 #define EXT_SUPER_SIZE 4096
 #define EXT_SUPER_OFF 1024
 static int extsuper_read (const char *device, char **bout, struct ext2_super_block **sbp)
@@ -38,7 +40,7 @@ static int extsuper_read (const char *device, char **bout, struct ext2_super_blo
    
    buf = malloc(EXT_SUPER_SIZE);
    if (!buf) {
-      fprintf(stderr, "%s: malloc failed, %s\n", progname,
+      fprintf(stderr, "%s: malloc failed, %s\n", __progname,
 			strerror(ENOMEM));
       return (ENOMEM);
    }
@@ -46,7 +48,7 @@ static int extsuper_read (const char *device, char **bout, struct ext2_super_blo
    fd = open(device, O_RDONLY, 0);
    if (fd < 0) {
       free(buf);
-      fprintf(stderr, "%s: open '%s' failed, %s\n", progname, device,
+      fprintf(stderr, "%s: open '%s' failed, %s\n", __progname, device,
 			strerror(errno));
       return (errno);
    }
@@ -58,7 +60,7 @@ static int extsuper_read (const char *device, char **bout, struct ext2_super_blo
    
    if (EXT_SUPER_SIZE != bytes) {
       free(buf);
-      fprintf(stderr, "%s: device read '%s' failed, %s\n", progname, device,
+      fprintf(stderr, "%s: device read '%s' failed, %s\n", __progname, device,
 			strerror(errno));
       return (errno);
    }
@@ -69,7 +71,7 @@ static int extsuper_read (const char *device, char **bout, struct ext2_super_blo
       free(buf);
       *sbp = NULL;
       fprintf(stderr, "%s: device '%s' appears not to contain a valid filesystem\n",
-         progname, device);
+         __progname, device);
       return (EINVAL);
    }
    

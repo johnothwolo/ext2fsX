@@ -67,6 +67,7 @@
 #ifdef HAVE_PWD_H
 #include <pwd.h>
 #endif
+#include <dirent.h>
 
 #include <et/com_err.h>
 #include "profile.h"
