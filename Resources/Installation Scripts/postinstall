@@ -1,0 +1,16 @@
+#! /bin/sh
+PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+TARGET=$2
+cd "${TARGET}"
+
+#d1 location that did not work out
+if [ -f ./Library/Filesystems/ext2.fs ]; then
+	rm -rf ./Library/Filesystems/ext2.fs
+fi
+
+#Rebuild the kext cache
+if [ -f ./Library/Extensions.kextcache ]; then
+	rm ./Library/Extensions.kextcache
+fi
+kextcache -k ./Library/Extensions
