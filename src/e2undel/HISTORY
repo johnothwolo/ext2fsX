@@ -1,0 +1,60 @@
+e2undel
+--------
+
+0.1: opens ext2 file system via libext2fs; checks arguments and warns or exits if not okay; reads log file
+
+0.11: compact_log() removes multiple entries for one inode from log file list; uses mkstemp() for write tests in check_path()
+
+0.2: find_del() (in find_del.c) builds list of deleted files; print_inode_list() prints this list; new option "-a": work on all deleted files, not only on files with a name from log file
+
+0.3: recovers deleted inodes via dump_inode()
+
+0.31: log file functions moved to log.c
+
+0.4: user can select user name, time interval, and inode to recover
+
+0.41: user/time interval table counts only deleted inodes with names from log file if '-a' is not given
+
+0.42: new function inode_name() determines name for files to recover
+
+0.5: read_log() reads entries for all devices if called with devnr 0; new element dev in struct e2undel_log; new argument '-l' for "list"; new function list_inodes_by_device() for '-l'
+
+0.51: starting to include 'file' functionality: print_inode_list() will dump files and therefore needs an ext2_filsys parameter; included 'file' sources in Makefile; added PROFILE #define
+
+0.52: added progress indicator in compact_log()
+
+0.53: struct e2undel transformed into ring/tree list; read_log() and compact_log() changed accordingly; removed progress indicator in compact_log()
+
+0.6: changes in list_inode_by_device() for ring list; read_log_tree() reads log file into a binary tree by inode numbers
+
+0.61: read_log_tree(), add_names() seem to work now
+
+0.7: including file functionality: file_type() is called in print_inode_list() for inodes without name if program is started with -a 
+
+0.71: changed name of flags magic, all, list, redir to flag_... to avoid confusion with variable magic in file determination code; changes in Makefile to allow easy build of e2undel with and w/o file functionality
+
+0.72: changed name_inode() to care for file type
+
+0.73: handling of '-t' depends on -DWITH_FILE; more specific error message in case of invalid parameter; more sophisticated 'make dist': Makefile manages VERSION info; ascmagic() prints shorter descriptions
+
+0.74 removed unnecessary undel_list array, some code and documentation clean up; removed unneeded tmp path and check of it in check_path(); compactlog.c replaces compactlog.pl
+
+0.75 adapted Makefile, e2undel.h, e2undel.c and log.c to work with different releases of e2fsprogs (thanks to Dirk Jagdmann for the hint to link errors with some versions). Tested: e2fsprogs 1.19, 1.23, and 1.26, but most other versions should work
+
+0.8  works correctly if /etc/mtab or /etc/passwd do not exist (thanks to anonymous), works with images of file systems
+
+0.81 removed bug introduced in 0.8 that prevented undeletion of files by name: read_log_tree() never found any matching file name in the libundel log file.
+
+
+libundel
+---------
+
+0.1 works
+
+0.11 _init(): no return when log file can't be opened unlink(): cast buf.st_dev to (long), not (long long) when writing to log file fflush() after writing to log file
+
+0.2 check if file f if opened before writing to it
+
+0.21 no immediate return in unlink() if pathname[] is NULL
+
+0.3 added function remove()

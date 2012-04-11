@@ -1,0 +1,6 @@
+#! /bin/sh
+PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+umount -At ext2
+#Tell Disk Arb to refresh the state of all disks
+disktool -r

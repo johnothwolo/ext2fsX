@@ -1,0 +1,96 @@
+{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;\f1\fswiss\fcharset77 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww14040\viewh10200\viewkind0
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\tx11880\tx12240\tx12600\tx12960\tx13320\tx13680\tx14040\tx14400\tx14760\tx15120\tx15480\tx15840\tx16200\tx16560\tx16920\tx17280\tx17640\tx18000\tx18360\tx18720\tx19080\tx19440\tx19800\tx20160\tx20520\tx20880\tx21240\tx21600\tx21960\tx22320\tx22680\tx23040\tx23400\tx23760\tx24120\tx24480\tx24840\tx25200\tx25560\tx25920\tx26280\tx26640\tx27000\tx27360\tx27720\tx28080\tx28440\tx28800\tx29160\tx29520\tx29880\tx30240\tx30600\tx30960\tx31320\tx31680\tx32040\tx32400\tx32760\tx33120\tx33480\tx33840\tx34200\tx34560\tx34920\tx35280\tx35640\tx36000\ql\qnatural
+
+\f0\b\fs24 \cf0 Overview
+\f1\b0 \
+\
+The Ext2 (and Ext3) source consists of several code bases culled from three different operating systems (FreeBSD, Linux, and Darwin) and brand new code written specifically for the Mac OS X port. As such, it can be rather mystifying to those wishing to understand or contribute to the project. This overview will cover the high level design of the project including the various components and how they interact.\
+\
+Kernel Driver - This is the core of the project. It implements the algorithms that translate the Ext2 on-disk format into something the Mac OS X kernel can understand. The source files for this component are located in src/gnu/ext2fs and src/kern. The files in src/kern are Mac OS X specific. Recommended starting points: src/gnu/ext2fs/ext2_vfsops.c and src/gnu/ext2fs/ext2_vnops.c -- these implement the entry points for the OS X Kernel to manipulate the file system.\
+\
+e2fsprogs - This is a collection of userland utilities that manage Ext2 filesystems. They include fsck, mke2fs, debugfs, tunefs, etc. The source for all e2fsprogs utils is located in src/e2fsprogs. The ./e2fsprogsbuild.sh script is used to build the Darwin version.\
+\
+mount_ext2 - This component mounts Ext2 volumes, loading the kernel extension if necessary. The source files are located in src/mount_ext2fs and src/util/.\
+\
+fsck_ext2 - This component is a small wrapper around e2fsck. It implements the '-q' (quick check) option for compatibility with Mac OS X tools that expect this option to be present. The source is located in src/utils/fsck_ext2.c.\
+\
+ext2.fs - This component is the glue that allows Mac OS X to "auto-mount" Ext2 partitions. Its main function is to describe the filesystem attributes so the auto-mount daemon can match a disk filesystem and then mount it. The source for the matching utility is located in src/ext2util.c. \
+\
+ExtFS Manager - This component is a Mac OS X Preference Pane plug-in. It allows the user to set mount options for Ext2 filesystems through a user-friendly GUI. It also provides detailed descriptions of all disks and filesystems. The source for this component is located in src/extfsmgr/prefpane.\
+\
+ExtFS Disk Manager - This component is a Mac OS X framework. It provides disk management functions such as determining the file system type, size, and statistics. It also includes advanced functionality such as S.M.A.R.T. disk status.  The source for this component is located in src/extfsmgr/coremgr.\
+\
+All components are written in the C language, except for ExtFS Manager and ExtFS Disk Manager which are written in Objective-C.\
+
+\f0\b \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural
+\cf0 Setup
+\f1\b0 \
+\
+Certain links must be created and permissions changed on some scripts. The "setup.sh" script performs the necessary actions. This script will also copy any missing kernel header files (see the Dependencies section), and build/install the disklib dependency.\
+\
+chmod u+x ./setup.sh\
+./setup.sh
+\f0\b \
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\tx11880\tx12240\tx12600\tx12960\tx13320\tx13680\tx14040\tx14400\tx14760\tx15120\tx15480\tx15840\tx16200\tx16560\tx16920\tx17280\tx17640\tx18000\tx18360\tx18720\tx19080\tx19440\tx19800\tx20160\tx20520\tx20880\tx21240\tx21600\tx21960\tx22320\tx22680\tx23040\tx23400\tx23760\tx24120\tx24480\tx24840\tx25200\tx25560\tx25920\tx26280\tx26640\tx27000\tx27360\tx27720\tx28080\tx28440\tx28800\tx29160\tx29520\tx29880\tx30240\tx30600\tx30960\tx31320\tx31680\tx32040\tx32400\tx32760\tx33120\tx33480\tx33840\tx34200\tx34560\tx34920\tx35280\tx35640\tx36000\ql\qnatural
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural
+\cf0 Dependencies
+\f1\b0 \
+\
+All external dependencies are included with the project. setup.sh will configure them as necessary.\
+\
+The July, August, Oct and Dec 2002 tools removed vital kernel headers from the Kernel framework. They have never been added back. The setup.sh script will copy the missing headers into place if necessary.\
+\
+Here is a list of the missing headers. These can be found in xnu/bsd/ in the Darwin source tree. \
+\
+Panther (10.3.x) / Darwin 7.x\
+\
+sys/signalvar.h\
+ufs/ufs/*.h\
+netinet/in_var.h\
+netinet/tcp_var.h\
+netinet/ip_var.h\
+netinet6/in6_var.h\
+netkey/key_var.h\
+\
+Jaguar (10.2.x) / Darwin 6.x\
+\
+sys/unistd.h\
+netinet/in_var.h\
+netinet6/in6_var.h\
+sys/signalvar.h\
+ufs/ufs/*.h\
+netinet/ip_var.h\
+netinet/tcp_var.h\
+netkey/key_var.h\
+\
+
+\f0\b e2fsprogs Notes
+\f1\b0 \
+\
+If you are having problems with e2fsprogs, do a clean build (this is necessary, if non-vendor changes have been made):\
+\
+cd src/e2fsprogs\
+rm ./.e2configdone\
+make clean\
+cd ../..\
+./e2fsprogsbuild.sh\
+\
+As a last resort, due a fresh update from the tree:\
+\
+cd src/\
+rm -rf e2fsprogs\
+cvs up e2fsprogs\
+\
+
+\f0\b e2undel Notes
+\f1\b0 \
+\
+e2fsprogs must be installed. Easiest way to do this correctly, is to install the Ext2FS package. If you want to build without installing the package, then you will have to build e2fsprogs first and then install it with 'make install'. You will also have to create the necessary symlinks by hand that the installer would have done for you. See the "#lib sym links" section in Makeinstall.sh for the symlinks that need to be created.\
+\
+After the above is done, you can build the e2undel target in the project.\
+}

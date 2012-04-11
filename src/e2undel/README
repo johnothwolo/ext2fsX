@@ -1,0 +1,218 @@
+e2undel 0.8
+------------
+
+undelete utility for the ext2 file system
+
+(C) Oliver Diedrich, e2undel@sourceforge.net
+
+e2undel may be redistributed under the terms of the GNU Public License (GPL), see www.gnu.org
+
+file type functionality from the file programm, Copyright Ian F. Darwin, 1987
+
+
+
+ATTENTION: e2undel does not work with ext3 file systems. See below for further explanations.
+
+
+
+If you just deleted this very important file ...
+=================================================
+
+... that you immediately _must_ have back (skip this part if you are not concerned):
+
+* change to root
+
+* unmount the file system where you deleted the file:
+
+  - 'mount' displays the respective file systems for your directories
+
+  - 'umount /dev/xxx' ("xxx" is something like "hdb2" or "sda6")
+
+* if the file system in question is mounted on "/" (quite bad):
+
+  - don't build e2undel on this file system!
+
+  - try to find any other file system to build the program:
+
+  - maybe, your /boot directory is located on another file system
+
+  - maybe, there is a FAT32 (windows) partition you can mount
+
+  - if nothing applies, use a different machine
+
+* build e2undel; see file INSTALL:
+
+  - ignore the libundel part
+
+  - build e2undel by issuing 'make e2undel-file'
+
+  - don't copy the e2undel binary to any other directory
+
+  - start e2undel by issuing './e2undel -d device -s path -a -t'
+
+  - "device" is the file system device you hopefully just have unmounted
+
+  - "path" is any directory not located on this file system
+
+* try to find out which file you want to recover:
+
+  - choose the user that owned the file in question
+
+  - choose the deletion interval (less than 12 hours/48 hours/1 week/etc. ago)
+
+  - select the file to recover by using the information given in the list:
+
+  - file size, deletion date, file type (given in column "name")
+
+  - files printed in red are partly overwritten
+
+* enter the inode number of the file to recover (given in the 1st column)
+
+  - the data are written to a new file in the "path" given as the "-s" parameter
+
+  - the file name will be inode-xxx-FILE_TYPE
+
+  - "xxx" is replaced by the inode number, "FILE_TYPE" by the file type
+
+  - repeat entering inode numbers for all files you want to recover
+
+* quit e2undel by pressing "enter" several times
+
+* have a look at the recovered file(s)
+
+* Got it? Fine ... now read on
+
+
+
+If you did not just delete some important data ...
+===================================================
+
+... read on to understand what e2undel can do for you in the case you accidentally rm'ed a file.
+
+
+What happens if you delete a file?
+-----------------------------------
+
+If you delete a file stored on an ext2 file system, its data is not instantly lost. What happens is:
+
+- ext2 marks the file's data blocks as avalaible in its block bitmap
+
+- ext2 marks the file's inode as available in its inode bitmap
+
+- ext2 sets the deletion time in the file's inode
+
+- ext2 invalidates the file's name in the directory entry
+
+So, the file's data is not actually deleted (but it might be overwritten in the future); and the crucial information in the inode (owner, access rights, size, data blocks occupied by the file and some more) is not touched. If you know the inode number, you can recover the file by using Ted Ts'o's debugfs tool.
+
+What is lost however is the association between the file name and the inode: You can't restore the former file name from the inode information. To recover the data of a deleted file, you must completely rely on the information in the inode like file size, owner, deletion time, etc.
+
+ext3 behaves different from ext2 in one regard: When a file is deleted, the information in the inode is also removed. Tools like e2undel (or Ted T'so's debugfs) that rely on this information when undeleting files don't work anymore.
+
+
+What e2undel does
+------------------
+
+e2undel searches all inodes marked as deleted on a file system and lists them assorted by owner and time of deletion. Additionally, it gives you the file size and tries to determine the file type in the way file(1) does. If you did not just delete a whole bunch of files with a 'rm -r *', this information should be helpful to find out which of the deleted files you would like to recover.
+
+Inluded in the package is the undel library. This library, loaded by the $LD_PRELOAD mechanism, hooks into the system calls unlink(2) and remove(3). libundel logs the device (like /dev/hdb7 etc), the inode number, and the name of each file that is deleted by these system calls in a log file (/var/e2undel/e2undel by default). With this information, it is possible to recover deleted files by name. Of course, e2undel also works without the undel library (as outlined aboved), but you lose the functionality to recover deleted files by name if you don't use libundel -- maybe the best part of this tool.
+
+e2undel does not actually undelete a file (i.e., does not manipulate ext2 internal structures like inode, block bitmap, and inode bitmap). Instead it recovers the data of a deleted file and saves it in a new file.
+
+
+Prerequisites and installation
+-------------------------------
+
+see INSTALL
+
+You can build e2undel in two different versions by issuing either a 'make e2undel-file' or a 'make e2undel'. The latter one does not contain the code for file type determination, reducing the file size of the binary from more than 200 to about 80 kByte. This can be interesting if you want to include the tool on a space limited rescue floppy. In this case, however, you might consider linking the ext2fs library statically to the binary. If you don't understand what I'm talking about, 'make e2undel-file' is probably what you want.
+
+
+Usage
+------
+
+First, if you want to use the "recover deleted files by name" feature, you need read access to libundel's log file /var/e2undel/e2undel (and, of course, the undelete library must be installed). When following the installation instructions, read access to the libundel log is granted only for root. If "ordinary" users are allowed to use e2undel, you must change the rights of the libundel log file accordingly (but see the security notes later in this file). Of course, you can only recover files by name that were deleted after installing the undelete library. Other deleted files, however, are displayed when using the "-a" option.
+
+Second, you need read access to the raw file system device (like /dev/hdb3 or /dev/sda9). Most distributions grant read access to file system devices only to root and to a special group (called "disk" on Red Hat systems, for example). If other users are allowed to use e2undel, you either have to change the access rights of the device or must add these users to the raw disk access group. See the security notes below.
+
+e2undel is started by
+
+'e2undel -d device -s path [-a] [-t]'
+
+with
+
+-d device: the file system where to look for deleted files (like /dev/hda1)
+
+-s path: the directory where to save recovered files
+
+-a: work on all files, not only on those listed in undel log file (you need this if you don't use the undel library)
+
+-t: try to determine type of deleted files without names, works only with '-a'
+
+An example:
+
+'e2undel -d /dev/hdb2 -s /tmp'
+
+tries to restore deleted files on /dev/hdb2 and saves them in /tmp. Deleted files with no name entry in the log file are ignored.
+
+Deleted files are displayed in a table user name by deletion interval. The deletion intervals are less than 12 hours/48 hours/one week/one month/one year, with for example "one month" meaning "older than one week, but less than one month ago".
+
+After selecting a user and a time interval, a list of matching files is displayed with inode number, owner, deletion date, and name. If you used the "-a" and the "-t" options, deleted files not found in the log file are displayed with their file type instead of name, starting with a '*' (to have a visual difference between file names and file types). Files printed in red are partially overwritten.
+
+Enter the inode of a file to recover. Its data is stored in the directory given with the "-s" option. If the name of the file is known, it will by used for the name of the recovered file, replacing all "/" in its path by "_". If the name is not known, the name will be built from the inode number and -- if available -- its file type in the way "inode-xxx-file_type".
+
+To explore the content of the log file,
+
+'e2undel -l'
+
+lists all non-redundant entries in the libundel log file, sorted by file systems. Redundant entries can exist after using the undel library for some time if several files are stored and deleted on the same inode. You can use the tool 'compactlog' to remove these redundant entries if the log file grows too heavy. 'compactlog -?' gives a short useage information.
+
+
+Some hints for recovering deleted files
+----------------------------------------
+
+- The device from which you want to recover deleted files should not be mounted in order to mimimize the risk that other processes overwrite data of deleted files.
+
+- If the device is mounted, the directory where you want to save the files should not reside on the same device. If it does, there is a chance the recently restored files overwrite deleted data.
+
+- As sooner as you try to recover a deleted file as higher are chances that you will succeed.
+
+
+Security, system integrity, etc.
+---------------------------------
+
+libundel: The undelete library uses standard mechanisms provided by the glibc to hook into the system calls. On several systems, there were no problems using the library. However, I did not test the library on a heavily loaded server.
+
+e2undel: The program does not manipulate any internal ext2 structures, requires only read access to the device it works on, and uses Ted Ts'o's ext2fs library for all ext2 low level operations. I never observed any damage to a file system treated with e2undel.
+
+/var/log/e2undel: Each process on the system requires write access to this file. You might consider this before using the undel library on a real multi user system.
+
+If you give all users read access to the log (needed to use e2undel), every user can access each deleted file. Access rights and owner of deleted files are ignored. This can be considered a problem in a multi user environment. This also holds true if every user has read access to the file system device files. You can't have the one without the other: If a user can recover deleted files on a file system, he can read all data on this file system. Even without e2undel, a simple 'dd /dev/xxx' reads the complete file system.
+
+
+Problems
+---------
+
+libundel only works reliabe if each process uses the library. Problems arise from programs started by scripts that overwrite the $LD_PRELOAD variable (like Netscape does on some distributions); from processes that are started by init scripts (i.e., before $LD_PRELOAD is set); by using 'su' without a user name. The effect: Not all deleted files are logged which might lead to confusion.
+
+For example: A process using libundel deletes a file: inode and name are logged in /var/e2undel/e2undel. A new file is stored on this inode and deleted by a process that does not use the undel library. e2undel now finds this inode deleted, finds the (older) entry in the libundel log, and concludes that both belong together. When recovering the file, however, the recent information in the deleted inode will be restored -- the data of the newer file is recovered under the name of the older one. This can be somewhat confusing.
+
+Files that were overwritten by 'mv' and friends can't be recovered.
+
+Processes that create and delete a lot of temporary files can flood the log file with senseless information. The /tmp directory might be concerned, but also other directories like the user's Netscape cache directories. In order to avoid these confusing entries, it might be useful to shift these directories on an own file system.
+
+
+Portability
+------------
+
+e2undel is useable only with Linux and the ext2 file system. It is only tested on the Intel IA32 platform.
+
+
+Bugs and Todo
+--------------
+
+- missing pager functionality when displaying the list of deleted files, you need a terminal with a scrollback buffer
+
+- no direct way to recover a file by name
+
+- some minor stuff, see BUGS

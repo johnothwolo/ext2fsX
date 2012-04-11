@@ -1,0 +1,61 @@
+* minor bugs / TODO
+--------------------
+
+- On Red Hat 7.0, Netscape 4.76 doesn't print when libundel is used and has opened the log file (/var/e2undel/e2undel): ghostscript seems to complain about too many file handles (?). Does not happen with newer Netscape oder Red Hat versions.
+
+- e2undel should check log file entries for (1) Inode==0 and (2) file name is not a complete path : Both can (theoretically) happen if (1) __lxstat() oder (2) realpath() fail in libundel
+
+- when naming devices, "e2undel -l" can handle only up to 8 IDE  (/dev/hda...hdh) and SCSI drives (/dev/sda...sdh). Other devices are "named" by their major and minor device numbers
+
+- no pager function when printing a long list of inodes in interactive mode
+
+- no way to recover a single file directly by its name
+
+- possibility to choose several or all inodes at once
+
+- when using the '-a' option to display all deleted files on a file system, deleted inodes should be sorted by name not by inode number
+
+- is it possible to recover names of deleted files directly from the directory files?
+
+
+
+* using libundel
+-----------------
+
+Under some circumstances, the log file entries can be inconsistent:
+
+Usually, the last log file entry for an inode should contain the name of the file that was last stored and deleted on this inode. There are, however, conditions when this is not true:
+
+- There are processes without $LD_PRELOAD=libundel, e.g. started by init scripts. Files deleted by these processes are not logged.
+
+- When doing a 'su [user name]', $LD_PRELOAD is not set in the new shell. Does not happen with a 'su - [username]'.
+
+- When overwriting files with mv, the target inode is deleted by rename(2) but does not show up in the undel log file. If another file was stored and deleted on this inode before this action, this name will appear; however, when undeleting this file, the mv target's data will appear.
+
+For example:
+
+$ ls -ali move*
+ 64280 -rw-rw-r--    1 odi      odi            12 Mai  8 13:46 move_target
+ 64175 -rw-rw-r--    1 odi      odi            11 Mai  8 13:46 moved_file
+$ mv moved_file move_target
+$ ls -ali move*
+ 64175 -rw-rw-r--    1 odi      odi            11 Mai  8 13:46 move_target
+$ /sbin/debugfs
+debugfs:  ncheck 64280
+Inode	Pathname
+64280	<inode not found>
+debugfs:  stat <64280>
+Inode: 64280   Type: regular    Mode:  0664   Flags: 0x0   Generation: 70538174
+User:   503   Group:   500   Size: 12
+File ACL: 0    Directory ACL: 0
+Links: 0   Blockcount: 8
+Fragment:  Address: 0    Number: 0    Size: 0
+ctime: 0x3af7dca8 -- Tue May  8 13:46:48 2001
+atime: 0x3af7dc87 -- Tue May  8 13:46:15 2001
+mtime: 0x3af7dc8a -- Tue May  8 13:46:18 2001
+dtime: 0x3af7dca8 -- Tue May  8 13:46:48 2001
+BLOCKS:
+133812 
+TOTAL: 1
+
+- Similar difficulties are expected when overwriting a file by cp.

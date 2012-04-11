@@ -1,0 +1,200 @@
+e2undel 0.5 (aktuelle Informationen in README)
+
+1. Voraussetzungen und Installation
+-----------------------------------
+
+siehe INSTALL
+
+
+2. Grundsätzliche Arbeitsweise
+------------------------------
+
+e2undel besteht aus zwei Programmen:
+
+- die Bibliothek 'libundel' ersetzt über den Preload-Mechnismus
+  (Enivorenment-Variable LD_PRELOAD) die Funktionen unlink(2) und remove(3)
+  der C-Bibliothek. libundel protokolliert Namen, Inode und Device-Nummer jeder
+  Datei, die über eine dieser Systemfunktionen gelöscht wird, in seinem Logfile
+  (/var/e2undel/e2undel) mit.
+
+- das Programm 'e2undel' liest diese Log-Datei und sucht auf dem spezifizierten
+  Device nach gelöschten Inodes, wobei es jedem gelöschten Inode seinen
+  (ehemaligen) Namen zuzuordnen versucht.
+
+- Die gefundenen, gelöschten Inodes fasst e2undel anschließend in einer
+  Tabelle zusammen, sortiert nach dem (früheren) Besitzer und dem Zeitpunkt des
+  Löschens. Das Sortieren nach dem Löschintervall dient dazu, die häufig sehr
+  lange Liste gelöschter Inodes etwas handhabbarer zu machen: Meist weiß man
+  ja noch, ob man eine Datei gerade erst eben, gestern, irgendwann in den
+  letzten Tagen oder schon viel früher gelöscht hat. Die Intervalle:
+  
+  - innerhalb der letzten 12 Stunden;
+  - innerhalb der letzten 48 Stunden, aber nicht in den letzten 12 Stunden
+  - innerhalb der letzten Woche, aber nicht in den letzten beiden Tagen
+  - innerhalb des letzten Monats, aber nicht in den letzten 7 Tagen
+  - innerhalb des letzten Jahres, aber nicht in den letzten 30 Tagen
+  - älter.
+
+  Nach Auswahl eines Besitzers und eines Löschintervalls erhält man eine Liste
+  der Inodes mit Größe, exaktem Löschdatum und (früherem) Namen.
+
+- Dateien, deren Daten bereits teilweise überschrieben sind, werden in rot 
+  angezeigt.
+
+- Durch Auswahl einer Inode-Nummer lässt sich die zugehörige Datei
+  wiederherstellen. Die wiederhergestellte Datei erhält den in der Liste
+  angezeigten vollständigen Pfadnamen, wobei "/" durch "_" ersetzt wird.
+
+- Auf Wunsch (Option "-a") zeigt e2undel auch gelöschte Dateien an, die nicht
+  im Logfile protokolliert sind (siehe auch Hinweise weiter unten). Bei diesen
+  Dateien kann das Programm natürlich keinen Namen anzeigen.
+  
+- Wurde die vollständig Version ('make e2undel-file') gebaut, versucht e2undel
+  bei Angabe der Option "-t", für jede Datei den Dateityp zu bestimmen. Der
+  Code für diesen Programmteil stammt aus dem file-Programm von Ian F. Darwin.
+  Wenn es einen ausreicht, anhand von Dateityp und Löschdatum das File zu
+  bestimmen, das man wiederherstellen möchte, kann man auf libundel verzichten.
+
+- Dateien, deren Name nicht bekannt ist, erhalten als Namen die Inode-Nummer
+  ("inode-nnnnn"), bei Angabe von "-t" zusätzlich den Dateityp.
+
+- Mit 'e2undel -l' erhält man eine Liste aller Dateien im Logfile, sortiert
+  nach Dateisystemen.
+
+
+3. En detail
+------------
+
+Aufruf: e2undel -d device -s path [-a] [-t]
+        e2undel -l
+
+"-d": Zu bearbeitendes Dateisystem, z.B. /dev/hda1. Sollte idealerweise nicht
+      gemountet sein.
+
+"-s": Verzeichnis, in dem e2undel wiederhergestellte Dateien speichert. Sollte
+      möglichst auf einem anderen Dateisystem als dem unter "-d" angegebenen
+      liegen, damit wiederhergestellte Dateien keine gelöschten Daten
+      überschreiben.
+
+"-a": Mit dieser Option zeigt e2undel nicht nur gelöschte Dateien an, deren
+      Namen im Logfile auftauchen, sondern alle gelöschten Dateien. Hier
+      muss man die gewünschte Datei anhand Größe, Löschdatum und (früherem)
+      Besitzer identifizieren. Der Name des wiederhergestellten Files lautet
+      "inode-nnnnn", wobei 'nnnnn' durch die Inode-Nummer ersetzt wird.
+      Dateien, deren Namen im Logfile auftauchen, werden auch dann mit ihrem 
+      Namen wiederhergestellt.
+
+"-t": In Kombination mit "-a": Bestimme den Dateityp gelöschter Dateien, deren
+      Name nicht im Logfile steht.
+
+"-l": Zeigt alle Dateien im Log-File, sortiert nach Dateisystemen.
+
+
+4. Hinweise
+-----------
+
+siehe auch BUGS
+
+1. Wieso taucht ein gerade gelöschtes File nicht in der e2undel-Liste auf?
+   Wieso enthält eine wiederhergestellte Datei nicht die Daten, die eigentlich
+   in dem File stehen müssten?
+   Wieso stehen in der e2undel-Liste Dateien, die nach Installieren der
+   libundel gelöscht wurden, aber trotzdem keinen Namen haben?
+
+Es ist eminent wichtig, dass _jeder_ Prozess gelöschte Files über libundel
+mitprotokolliert; ansonsten kann man nie sicher sein, dass zu einem Inode
+tatsächlich der im Logfile gespeicherte Name gehört: Möglicherweise wurde
+nach dem Löschen ein neues File auf demselben Inode gespeichert und (ohne
+Eintrag ins Protokoll) gelöscht. In diesem Fall wird das zuletzt dort
+gelöschte File unter dem Namen des zuvor auf diesem Inode gelöschten
+wiederhergestellt -- ganz abgesehen davon, dass ein doch gerade eben
+gelöschtes File nicht im Logfile auftaucht. Das kann für viel Verwirrung
+sorgen.
+
+- Ein 'su' (ohne angehängtes -) übernimmt die Umgebungsvariabale LD_PRELOAD
+  nicht in die root-Shell. Was man jetzt löscht, läuft am Log-File vorbei!
+
+- Da LD_PRELOAD erst übers Profile beim Einloggen gesetzt wird, bleiben alle
+  Löschaktionen in Init-Skripten sowie von aus Init-Skripten gestarteten
+  Prozessen unprotokolliert.
+  Abhilfe: LD_PRELOAD auch in Init-Skripten definieren. Achtung: libundel 
+  funktioniert beim Booten erst, nachdem das Dateisystem mit dem Verzeichnis
+  /var beschreibbar gemountet wurde. Bei den Stopp-Skripten muss man darauf
+  achten, dass beim Unmounten der Dateisysteme die libundel nicht mehr geladen
+  ist; ansonsten wird das Dateisystem mit /var nicht sauber unmountet, und beim
+  nächsten Systemstart ist ein fsck-Lauf fällig.
+  Test auf Wirkung: Die meisten laufenden Daemonen in der Prozessliste sollten
+  /usr/lib/libundel.so geöffnet haben (testen mit 'lsof' oder 'fuser -v').
+
+- Je nach Version und Distribution startet Netscape unter Umständen über ein
+  Skript, das die Umgebungsvariable $LD_PRELOAD überschreibt. Test: Via tail
+  /var/e2undel/e2undel beobachten, Netscape starten, einige Seiten anlaufen,
+  aus Netscape heraus den Festplattencache löschen (Edit -> Preferences ->
+  Advanced -> Cache). Es müssen mehrere Files aus dem Netscape-Cache-Verzeichnis
+  (normalerweise ~/.netscape/cache) auftauchen. Wenn nicht: Netscape-Startskript
+  ändern oder das Netscape-Binary direkt starten.
+
+- Überschriebene Dateien (z.B. durch ein 'mv') lassen sich nicht recovern.
+
+- Dateien, die vor der Installation von libundel gelöscht wurden, lassen sich
+  natürlich nicht über ihren Namen herstellen. e2undel zeigt die Files mit der
+  Option "-a" an, bei "-t" zusätzlich mit einem Hinweis auf ihren Inhalt, und
+  kann sie dann auch wiederherstellen.
+
+
+2. Wieso behauptet 'e2undel', mehr Einträge aus dem Logfile gelesen zu
+   haben, als nachher angezeigt werden? Und wieso enthält das Logfile in
+   Wirklichkeit noch mehr Einträge?
+
+'e2undel' gibt nach dem Einlesen des Logfiles die Anzahl der Einträge mit
+unterschiedlichen Inode-Nummmern aus. Da mehrfach Dateien auf demselben Inode
+gespeichert und gelöscht worden sein können, ist die Zahl in der Regel geringer
+als die Zahl der Zeilen im Logfile.
+
+Angezeigt werden anschließend lediglich die Einträge, die auf gelöschte Inodes
+verweisen. Wenn auf einem Inode inzwischen eine neue Datei gespeichert wurde,
+lässt sich eine zuvor auf diesem Inode gespeicherte und gelöschte Datei nicht
+mehr wiederherstellen. Logfile-Einträge für nicht mehr gelöschte Inode-Nummern
+sind daher hinfällig. Wurde 'e2undel' nicht mit Option "-l" aufgerufen, werden
+außerdem nur die Einträge für das mit "-d" ausgewählte Dateisystem angezeigt.
+
+
+3. Gibt es Sicherheitsmaßnahmen zu beachten?
+
+- Das Dateisystem, auf dem man Daten retten will, sollte nicht gemountet sein;
+  sonst besteht das Risiko, dass andere Prozesse ein als wiederherstellbar
+  angezeigtes Files während des Recoverns "im Hintergrund" überschreiben. Ist
+  das nicht möglich (z.B. weil es um Dateien auf dem /-Dateisystem geht), kann
+  es bei wichtigen Daten sinnvoll sein, die Platte in ein anderes System
+  einzubauen oder von Floppy oder CD-ROM zu booten. Ansonsten ist zumindest der
+  Single User Mode zu empfehlen.
+
+- Wenn das Dateisystem gemountet ist, kann ein vorheriges 'sync' nicht schaden.
+
+- Das Verzeichnis, in dem e2undel wiederhergestellte Dateien speichert, sollte
+  auf keinen Fall auf dem Dateisystem liegen, von dem man Daten recovern will:
+  Es besteht das Risiko, dass die gerade wiederhergestellten Dateien als
+  recoverbar angezeigte Dateien überschreiben.
+
+- Je nach Aktivität auf dem System kann das Logfile sehr schnell anwachsen;
+  eine gelegentliche Kontrolle seiner Größe ist zu empfehlen. Das Skript
+  compactlog.pl entfernt obsolete Einträge: Werden auf einem Inode mehrfach
+  Dateien gespeichert und gelöscht, lässt sich sowieso nur die letzte davon
+  wiederherstellen. Alle älteren Einträge für diesen Inode können raus.
+
+
+4. Ist das Recovern gelöschter Files nicht gefährlich? Kann e2undel das
+   Dateisystem beschädigen?
+
+- e2undel greift lediglich lesend auf das Dateisystem zu und sollte daher
+  nichts kaputt machen. Gelegentliche e2fsck-Läufe beim Testen können
+  trotzdem nicht schaden ...
+
+
+5. Wieso findet e2undel auf ext3-Dateisystemen keine gelöschten Files? ext3
+   und ext2 sind doch kompatibel.
+
+ext3 unterscheidet sich in einer Hinsicht von ext2: Werden Dateien gelöscht,
+werden auch alle Informationen im Inode inklusive der Nummern der belegten
+Blocks entfernt. Auf ext3 lassen sich Dateien daher nicht mit der e2undel-
+Methode wiederherstellen.

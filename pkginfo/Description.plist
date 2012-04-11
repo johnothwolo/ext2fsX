@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IFPkgDescriptionDeleteWarning</key>
+	<string></string>
+	<key>IFPkgDescriptionDescription</key>
+	<string>Enables the use of Linux Ext2 formatted hard disks, floppies, CD-ROM's, etc from within Mac OS X.</string>
+	<key>IFPkgDescriptionTitle</key>
+	<string>Ext2 Filesystem</string>
+	<key>IFPkgDescriptionVersion</key>
+	<string>1.4</string>
+	<key>IFPkgFlagDefaultLocation</key>
+	<string>/</string>
+</dict>
+</plist>

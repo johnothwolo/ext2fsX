@@ -1,0 +1,60 @@
+e2undel 0.8
+------------
+
+Requirements:
+--------------
+
+- Kernel 2.2 and 2.4 are tested, 2.0 should work
+
+- glibc 2.2 ist tested, older versions should work
+
+- ext2 file system; no ReiserFS, no RAID, no ext3
+
+- e2fsprogs packet (by Theodore Ts'o; called ext2fs on some distributions). Versions 1.19, 1.23, and 1.26 are tested; other versions might work
+
+- e2fsprogs-devel packet
+
+
+Installation of libundel:
+-------------------------
+
+- compile:
+  make libundel
+
+- install:
+  cp libundel.so.1.0 /usr/local/lib/libundel.so.1.0
+  cd /usr/local/lib
+  ln -s libundel.so.1.0 libundel.so.1
+  ln -s libundel.so.1 libundel.so
+  ldconfig
+
+- create libundel's log file with correct access rights:
+  mkdir /var/e2undel
+  chmod 711 /var/e2undel
+  touch /var/e2undel/e2undel
+  chmod 622 /var/e2undel/e2undel
+
+- activate libundel:
+  export LD_PRELOAD=/usr/local/lib/libundel.so
+  add this line to /etc/profile
+
+
+Installation of e2undel:
+------------------------
+
+- compile:
+  make e2undel-file
+  (or make e2undel, see README)
+      
+- install:
+  copy e2undel to a directory within your $PATH (e.g., /usr/local/bin)
+
+
+Installation of compactlog (only needed if libundel is used):
+--------------------------------------------------------------
+
+- compile:
+  make compactlog
+      
+- install:
+  copy compactlog to a directory within your $PATH (e.g., /usr/local/bin)

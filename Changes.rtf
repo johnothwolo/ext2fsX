@@ -1,0 +1,263 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf410
+{\fonttbl\f0\fswiss\fcharset77 Helvetica;\f1\fnil\fcharset77 Verdana;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww11160\viewh11700\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural
+
+\f0\fs24 \cf0 1.4d4\
+\
+Bug Fix: With a particular rename usage, it was possible for directory entries to be lost.\
+\
+Added partition probe type support for "Linux". This should enable automatic GUI mounting for those having problems with previous releases.\
+\
+EFSM changes.\
+\
+1.4d3\
+\
+Write support (excepting dir_index FS's -  I have not had a chance to test write support with that feature, so if it's enabled R/O is forced during mount).\
+\
+Updated to e2fsprogs 1.39.\
+\
+Added partition probe type support for GPT UUIDs.\
+\
+Bug Fix: Duplicate file listings and/or missing files for directories larger than 4K (or whatever buffer size is passed to readdir - ls and Finder both use 4K).\
+\
+Bug Fix: EFSM would fail when attempting to change custom options for Ext2/3 file systems.\
+\
+Bug Fix: EFSM would fail to recognize newly mounted disks.\
+\
+Bug Fix: EFSM could display garbage characters in the mount path.\
+\
+1.4d2\
+\
+Updated French translation (courtesy of Pierre Mazoyer).\
+\
+ExtFS Manager now recognizes SATA and Fibre channel bus types.\
+\
+SATA S.M.A.R.T. support.\
+\
+Bug Fix: General ExtFS Manger errors when attempting mount/unmount/eject.\
+\
+Bug Fix: possible divide by zero panic on Intel machines.\
+\
+Bug Fix (1436338): Kernel panic - Data Access at a non-zero address.\
+\
+1.4d1\
+\
+Tiger and Intel support!\
+\
+Updated to e2fsprogs 1.38.\
+\
+Big fix in ExtFS framework resulting in missed disk mounts (we weren't using UTF8 for paths).\
+\
+1.3\
+\
+Greatly enhanced ExtFS Manager  (EFSM) functionality.\
+\
+New EFSM S.M.A.R.T. hard disk monitor (see the ReadMe file).\
+\
+Workaround for bug #965119. We no longer support sparse files on filesystems with a block size less than the kernel page size (4KB). Any holes in a sparse file will be zero-filled when the file is closed. This was done because all current kernel versions have a bug that can cause panics or system hangs when a sparse file is written on these small block filesystems.\
+\
+Minor change to the driver to make sure any recycled block buffers are zero'd before going to disk.\
+\
+Fixed EFSM bug #956516. There was a catch 22 in previous versions, where a disk set to not auto-mount could not be mounted again. This was mainly caused by the inability of the disk framework to detect the filesystem on a raw device (one that was not mounted). The framework has been fixed and EFSM updated.\
+\
+Fixed a badly formed strings file in the disk framework.\
+\
+1.2\
+\
+Feature #703253: It is now possible to mount Ext2/3 volumes with permissions ignored (for files/dirs not owned by root). Note: Everything may not work as expected. If you find problems with non-root owned files, please open a bug.\
+\
+Updated ExtFS Manager (EFSM) to handle the new support for ignoring permissions.\
+\
+Added more French translations to EFSM.\
+\
+EFSM now formats and localizes file system statistic numbers.\
+\
+EFSM now detects DOS partition labels and refuses to mount them.\
+\
+Updated to e2fsprogs 1.35.\
+\
+Everything is now compiled with the latest Apple Developer Tools.\
+\
+The EFSM core is now bundled as a Framework (/Library/Frameworks) for use by other projects.\
+\
+Bug #920261: Added progress indicators and better error detection for mount/unmount to EFSM.\
+\
+Fixed some other bugs in EFSM (including a possible crasher and a memory leak every time a device was removed).\
+\
+Added ENOSPC bug fix from Linux 2.6.4 (by Chris Mason @ Suse).\
+=============================================================\
+find_group_other looks buggy for ext2 and ext3 in 2.6, it can cause -ENOSPC\
+errors when the fs has plenty of free room.\
+	\
+To hit the bug, you need a filesystem where:\
+	\
+parent_group has no free blocks (but might have free inodes) Every other\
+group with free inodes has no free blocks.\
+	\
+That gets you down to the final linear search in find_group_other.  The\
+linear search has two bugs:\
+	\
+group = parent_group + 1; means we start searching at parent_group + 2\
+because the loop increments group before using it.\
+	\
+for(i = 2 ; i < ngroups ; i++) means we don't search through all the\
+groups.\
+	\
+The end result is that parent_group and parent_group + 1 are not checked\
+for free inodes in the final linear search.  ext3 has the same problem.\
+=============================================================\
+The corresponding Darwin code can be found in ext2_linux_ialloc.c:432.\
+\
+1.1.1\
+Fixed a mount panic that should have been hit on every mount since day one. For some reason though, I've never had anyone report this panic, and I myself just hit it recently. It was a pretty stupid (but not readily apparent) error too.\
+\
+Fixed another partial inode kernel panic on an error path (related to the one fixed in 1.1 final).\
+\
+Minor behavior change to ExtFS Manager (EFSM). It will now scroll to the top of the disk info text after generating the text.\
+\
+Fixed a bug in EFSM that prevented enabling Indexed Directories.\
+\
+1.1\
+Fixed a rare kernel panic that happened on an error path where an inode was not completely initialized. (Thanks to R. Marsh for the panic data that helped track this down.)\
+\
+ExtFS Manager (EFSM) includes a German localization. (Also, fixed some localization issues exposed by this.)\
+\
+EFSM now recognizes the CD Audio filesystem.\
+\
+You no longer need to exit the EFSM preferences pane before re-mounting an Ext2/3 disk that you have changed the preferences for.\
+\
+Fixed a bug in EFSM that prevented multi-mode CD-ROM partitions from being detected correctly.\
+\
+Fixed a bug in EFSM that caused partitioned disks attached while EFSM was running to show up as having no partitions.\
+\
+1.1b1\
+The kernel driver now supports file system change notifications (KEvents) for Panther.\
+\
+Fixed a bug with indexed directories causing fsck to fail. This bug also caused indexed directories to fail on x86 Linux (and vice-versa). After upgrading (from previous 1.1 releases only), it is recommended that you run e2fsck -fy on the filesystem before using it to fix any possible problems created by this bug.\
+\
+Fixed a panic introduced with the indexed directories port.\
+\
+Fixed a problem with Ext2 drives not mounting after being unmounted on Panther (using the Finder/DiskUtility, mount_ext2 never had a problem). \
+\
+Initial French support for ExtFS Manager (not complete).\
+\
+1.1d4\
+Now includes a Preference Pane for managing Ext2/3 volumes. You can control whether a volume mounts read-only, doesn't automount, etc..\
+\
+Fixed a bug in the kernel driver that caused a query for the volume name (via getattrlist) to return a zero length name. This fixes volumes mounting as "?" in Panther (bug # 850144).\
+\
+1.1d3\
+Added support for Ext3 indexed directories (from Linux 2.6.0-test10).\
+\
+Added e2undel utility. See /usr/local/share/doc/E2UNDEL_README.\
+\
+Implemented ext2_ioctl() in the kernel driver so lsattr and chattr work with the extended EXT2 flags. We also now respect the NOATIME inode flag.\
+\
+Added support for Ext2 sysctl's. Variables appear under the "vfs.e2fs" MIB.\
+\
+Mount SYNC is now respected when writing group buffers.\
+\
+Includes 1.0.1 fix for dir corruption bug.\
+\
+1.1d2\
+Volumes can now be re-named in the Finder. This is only supported in Panther.\
+\
+Group buffers are now sync'd to disk during a sync() call. Previous versions did not sync the group buffers until a filesystem unmount.\
+\
+\pard\tx360\tx720\tx1080\tx1440\tx1800\tx2160\tx2520\tx2880\tx3240\tx3600\tx3960\tx4320\tx4680\tx5040\tx5400\tx5760\tx6120\tx6480\tx6840\tx7200\tx7560\tx7920\tx8280\tx8640\tx9000\tx9360\tx9720\tx10080\tx10440\tx10800\tx11160\tx11520\tx11880\tx12240\tx12600\tx12960\tx13320\tx13680\tx14040\tx14400\tx14760\tx15120\tx15480\tx15840\tx16200\tx16560\tx16920\tx17280\tx17640\tx18000\tx18360\tx18720\tx19080\tx19440\tx19800\tx20160\tx20520\tx20880\tx21240\tx21600\tx21960\tx22320\tx22680\tx23040\tx23400\tx23760\tx24120\tx24480\tx24840\tx25200\tx25560\tx25920\tx26280\tx26640\tx27000\tx27360\tx27720\tx28080\tx28440\tx28800\tx29160\tx29520\tx29880\tx30240\tx30600\tx30960\tx31320\tx31680\tx32040\tx32400\tx32760\tx33120\tx33480\tx33840\tx34200\tx34560\tx34920\tx35280\tx35640\tx36000\ql\qnatural
+\cf0 Upgraded to e2fsprogs 1.34.\
+\
+Implemented proper superblock locking.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural
+\cf0 \
+1.1d1 (not public)\
+Large file (> 2GB) support.\
+\
+16 bit uid/gid support for older filesystems.\
+\
+1.0.1\
+Fixed a byte swap bug that caused directory corruption when moving a directory to another directory. This manifested itself in the Finder with a busy error whenever you moved a directory to the Trash.\
+\
+1.0\
+Fixed bugs #796132 and #826406. These were caused by a kernel bug and fixed by working around the kernel bug.\
+\
+Worked around a panic bug (from corrupted kernel structures) by disabling inode/block bitmap caching.\
+\
+Fixed bug #842468. Cosmetic bug that only affected French users on Panther. Reported by L. Bigonville.\
+\
+1.0b2\
+Finally fixed bug #742939. In certain cases, we were zero-filling a valid page causing the resource fork header to be overwritten. Apps that used the ANSI C FILE routines were also affected (such as wget).\
+\
+Minor speed optimization. The device block size is now cached in the in memory superblock so we don't have to query the underlying device for it every time.\
+\
+Fixed a bug in the uninstall script that left the System kext cache in an invalid state (nothing a reboot wouldn't fix though).\
+\
+Added more feedback to the uninstall script.\
+\
+1.0b1\
+Volume labels containing plus (+), period (.), or a comma (,) are now supported by the automount plug-in.\
+\
+Enforce max file size of 2GB.\
+\
+Removed debugging code.\
+\
+1.0a3\
+Fixed directory corruption and a very possible kernel panic when renaming an object (bug #742939). This was due to some meta-data not being byte-swapped. Many thanks to J. Peel for helping to track this down (and suffering through all of those panics).\
+\
+Fixed another instance of directory corruption (and a panic from the corruption) related to bug #742939. This would happen during removal of an object. This was more elusive than the previous bug, because it would only happen when the directory contained a certain number of entries. The problem was that an integer field was being overflowed because we were doing addition AFTER byte swapping the inode sizes. Switching the addition to native byte order fixed the bug. This should also fix bug #
+\f1 737973.
+\f0  J. Peel helped track this one down too. \
+\
+Fixed filesystem corruption for drives with block sizes larger than 1K (bugs #747666 and #748535). The corruption was caused by reading too much data for the superblock, changing the superblock and then writing back all of the data. This ended up corrupting part of the superblock and most of the group descriptors (which follow the superblock). J. Troeger helped find this problem.\
+\
+Added automount content hint for the CD partition type.\
+\
+1.0a2\
+Fixed a nasty kernel panic on mount that I'm surprised more people didn't run into.\
+\
+The mount routine no longer releases the passed namei data. This is how UFS does things, so presumably this is released by the kernel mount routine.\
+\
+Added automount content hints for the following partition types: Apple_UNIX_SVR2, Ext3, and Linux_Ext2FS. This should allow more Ext2 partitions to automount. If you find any other Ext2 p-types please open a bug to have them added.\
+\
+1.0a1\
+Upgraded to e2fsprogs 1.33 (mke2fs, e2fsck, etc)\
+\
+Fixed a bug in the fs util that could cause a volume to mount as "UNKNOWN" instead of the actual volume name.\
+\
+The kext will no longer unload if there are active mounts.\
+\
+Removed some debugging code.\
+\
+Changed the partition label hint to "Ext2" to be more inline with Linux. This fixes the bug where drives formatted with Linux would fail to automount. Please note, that if you formatted a drive with a previous version of Ext2 for OS X, it will likely fail to automount.\
+\
+1.0d4\
+Write support is now enabled. This may corrupt filesystems!!\
+\
+File advisory locks are now supported by the kernel.\
+\
+The complete set of e2fsprogs commands is now included. This includes e2fsck, mke2fs, dump2fs, debugfs, etc. This is basically all ext2 userland tools that are available in Linux.\
+\
+Updated fs bundle to handle fsck and mkfs. This means ext2 volumes will be checked at boot time and disks can be formatted as ext2 volumes (include Disk Copy images).\
+\
+The fs util can now set the name of a volume.\
+\
+Fixed a UID byte swap bug that was causing wrong UID/GID's to be returned from the kernel.\
+\
+Fixed a bug in the kernel access checks that caused root access to fail for objects not owned by root.\
+\
+Fixed some kernel namei mem. leaks.\
+\
+1.0d3\
+Fixed d2 read problems. The indirect block addresses were not being byte swapped.\
+\
+Fixed 30 second mount delay problem. This was due to some errant debug code.\
+\
+extfs.util now responds to -k to return the volume's UUID.\
+\
+1.0d2\
+First release that actually works. d1 was basically useless.\
+\
+1.0d1\
+First release.}

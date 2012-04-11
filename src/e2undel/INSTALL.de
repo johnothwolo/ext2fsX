@@ -1,0 +1,63 @@
+e2undel 0.5 (aktuelle Informationen in INSTALL)
+------------
+
+Voraussetzungen:
+----------------
+
+- Kernel: 2.2 und 2.4 funktionieren, 2.0 sollte auch funktionieren
+
+- glibc 2.2 funktioniert, ältere Versionen sollten auch funktionieren
+
+- ext2 Filesystem; kein ReiserFS, kein RAID, kein ext3!
+
+- e2fsprogs-Paket (getestet: Version 1.19; etwas ältere oder neue Versionen
+  sollten auch funktionieren); heißt auf einigen Distributionen auch ext2fs.
+  Wenn's fehlt: www.rpmfind.net
+
+- e2fsprogs-devel. Sowohl die Header-Files (/usr/include/ext2/*) als auch 
+  [/usr]/lib/libext2fs.so sind nötig.
+
+
+Installation von libundel:
+--------------------------
+
+- kompilieren:
+  make libundel
+
+- installieren:
+  cp libundel.so.1.0 /usr/local/lib/libundel.so.1.0
+  cd /usr/lib
+  ln -s libundel.so.1.0 libundel.so.1
+  ln -s libundel.so.1 libundel.so
+  ldconfig
+
+- Logfile für libundel anlegen:
+  mkdir /var/e2undel
+  chmod 711 /var/e2undel
+  touch /var/e2undel/e2undel
+  chmod 622 /var/e2undel/e2undel
+
+- libundel in Betrieb nehmen:
+  export LD_PRELOAD=/usr/local/lib/libundel.so
+  in /etc/profile oder ähnliches File eintragen
+  
+WICHTIG: LD_PRELOAD muss für _alle_ Prozesse gesetzt sein, sonst funktioniert
+======== das Recovern von Files anhand ihres Namens nicht korrekt. Speziell
+         Siehe Hinweise im README!
+
+
+Installation von e2undel:
+-------------------------
+
+- kompilieren:
+  make e2undel-file
+  (mit Funktionen zum Bestimmen des Dateityps bei gelöschten Files ohne Namen;
+   funktioniert auch ohne libundel)
+  oder
+  make e2undel
+  (ohne Bestimmen des Dateityps, aber dafür deutlich kleiner;
+   lässt sich ohne libundel kaum sinnvoll verwenden)
+  Dabei sollte es keine Warnungen oder Fehler geben. Falls doch, ist
+  wahrscheinlich irgendwas mit e2fsprogs[-devel] nicht ok.
+  
+- Installieren: e2undel in das gewünschte Verzeichnis kopieren

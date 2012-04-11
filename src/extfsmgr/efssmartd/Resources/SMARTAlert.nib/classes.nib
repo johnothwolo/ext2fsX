@@ -1,0 +1,14 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {performClose = id; }; 
+            CLASS = SMARTAlertController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {"e_icon" = id; "e_text" = id; "e_title" = id; }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = "java.lang.Object"; LANGUAGE = Java; }
+    ); 
+    IBVersion = 1; 
+}

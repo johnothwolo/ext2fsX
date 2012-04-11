@@ -1,0 +1,4 @@
+#! /bin/sh
+PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+source "$1/Contents/Resources/postinstall"

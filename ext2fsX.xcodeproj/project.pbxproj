@@ -1,0 +1,2518 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		D39ED63004060E7300A80164 /* BuildAll */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D3DE35570890B0B6003B7227 /* Build configuration list for PBXAggregateTarget "BuildAll" */;
+			buildPhases = (
+			);
+			dependencies = (
+				D32B203609947096001A78A0 /* PBXTargetDependency */,
+				D32B208D09947622001A78A0 /* PBXTargetDependency */,
+				D32B20B70994770F001A78A0 /* PBXTargetDependency */,
+				D32B20D4099477D6001A78A0 /* PBXTargetDependency */,
+				D32B20EE0994781C001A78A0 /* PBXTargetDependency */,
+				D3660D630644059B009810C9 /* PBXTargetDependency */,
+				D32B2112099478D8001A78A0 /* PBXTargetDependency */,
+				D39ED63404060E8300A80164 /* PBXTargetDependency */,
+			);
+			name = BuildAll;
+			productName = BuildAll;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		D32B1F8E09946A3B001A78A0 /* ext2_apple.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B4645704099F8700A80164 /* ext2_apple.h */; };
+		D32B1F9009946A3B001A78A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
+		D32B1F9209946A3B001A78A0 /* ext2_ihash.c in Sources */ = {isa = PBXBuildFile; fileRef = F53FE97F035E7DB501A80165 /* ext2_ihash.c */; };
+		D32B1F9309946A3B001A78A0 /* ext2_inode_cnv.c in Sources */ = {isa = PBXBuildFile; fileRef = F53FE981035E84C201A80165 /* ext2_inode_cnv.c */; };
+		D32B1F9409946A3B001A78A0 /* ext2_subr.c in Sources */ = {isa = PBXBuildFile; fileRef = F53B8660035FE78601A80165 /* ext2_subr.c */; };
+		D32B1F9509946A3B001A78A0 /* rbtree.c in Sources */ = {isa = PBXBuildFile; fileRef = D381D5A2058F967200DE3D72 /* rbtree.c */; };
+		D32B1F9609946A3B001A78A0 /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = D381D59B058F967200DE3D72 /* hash.c */; };
+		D32B1F9709946A3B001A78A0 /* super.c in Sources */ = {isa = PBXBuildFile; fileRef = D381D59D058F967200DE3D72 /* super.c */; };
+		D32B1F9809946A3B001A78A0 /* ext2_io_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = D3C06DAD040A137600A80164 /* ext2_io_apple.c */; };
+		D32B1F9909946A3B001A78A0 /* ext2_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = D3B4645604099F8700A80164 /* ext2_apple.c */; };
+		D32B1F9A09946A3B001A78A0 /* ext2_vfsops.c in Sources */ = {isa = PBXBuildFile; fileRef = F5106D60035A69B701A80165 /* ext2_vfsops.c */; };
+		D32B1F9B09946A3B001A78A0 /* ext2_lookup.c in Sources */ = {isa = PBXBuildFile; fileRef = F54E5109035FDFBE01A80165 /* ext2_lookup.c */; };
+		D32B1F9C09946A3B001A78A0 /* ext2_linux_ialloc.c in Sources */ = {isa = PBXBuildFile; fileRef = F54E5107035FDEE601A80165 /* ext2_linux_ialloc.c */; };
+		D32B1F9D09946A3B001A78A0 /* ext2_linux_balloc.c in Sources */ = {isa = PBXBuildFile; fileRef = F53FE985035E8E5201A80165 /* ext2_linux_balloc.c */; };
+		D32B1F9E09946A3B001A78A0 /* ext2_inode.c in Sources */ = {isa = PBXBuildFile; fileRef = F53FE983035E84F001A80165 /* ext2_inode.c */; };
+		D32B1F9F09946A3B001A78A0 /* ext2_bmap.c in Sources */ = {isa = PBXBuildFile; fileRef = F5E7E34F035BF11D01A80165 /* ext2_bmap.c */; };
+		D32B1FA009946A3B001A78A0 /* ext2_balloc.c in Sources */ = {isa = PBXBuildFile; fileRef = F5E7E34D035BEC0801A80165 /* ext2_balloc.c */; };
+		D32B1FA109946A3B001A78A0 /* ext2_alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = F5E7E34B035BEAA101A80165 /* ext2_alloc.c */; };
+		D32B1FA209946A3B001A78A0 /* ext2_vnops.c in Sources */ = {isa = PBXBuildFile; fileRef = F53B86C10361275401A80165 /* ext2_vnops.c */; };
+		D32B2039099470A7001A78A0 /* mntopts.h in Headers */ = {isa = PBXBuildFile; fileRef = D33D91670405A28700A80164 /* mntopts.h */; };
+		D32B203A099470A7001A78A0 /* extfsmgr.h in Headers */ = {isa = PBXBuildFile; fileRef = D3A9B805058283EC00B93FC7 /* extfsmgr.h */; };
+		D32B203C099470A7001A78A0 /* mount_ext2fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D30B791004059A6B00A80164 /* mount_ext2fs.c */; };
+		D32B203D099470A7001A78A0 /* kext_load.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485770405AC0900A80164 /* kext_load.c */; };
+		D32B203F099470A7001A78A0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A9B8130582E25500B93FC7 /* CoreFoundation.framework */; };
+		D32B2040099470A7001A78A0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32E761D05FD2919002928A8 /* SystemConfiguration.framework */; };
+		D32B208009947574001A78A0 /* getmntopts.c in Sources */ = {isa = PBXBuildFile; fileRef = D32B207F09947574001A78A0 /* getmntopts.c */; };
+		D32B209309947656001A78A0 /* ext2util.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485870405C3B900A80164 /* ext2util.c */; };
+		D32B209409947656001A78A0 /* kext_load.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485770405AC0900A80164 /* kext_load.c */; };
+		D32B209609947656001A78A0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D376F3CD040E088100A80164 /* CoreFoundation.framework */; };
+		D32B20B809947744001A78A0 /* ext2fs.util in CopyFiles */ = {isa = PBXBuildFile; fileRef = D32B209F09947656001A78A0 /* ext2fs.util */; };
+		D32B20C00994777A001A78A0 /* newfs_ext2.c in Sources */ = {isa = PBXBuildFile; fileRef = D33C06890418779900A80164 /* newfs_ext2.c */; };
+		D32B20D8099477DD001A78A0 /* fsck_ext2.c in Sources */ = {isa = PBXBuildFile; fileRef = D387FC9F059558E400C31A93 /* fsck_ext2.c */; };
+		D32B20F309947828001A78A0 /* ExtFSManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D4AF3D0579166400A80164 /* ExtFSManager.h */; };
+		D32B20F409947828001A78A0 /* extfsmgr.h in Headers */ = {isa = PBXBuildFile; fileRef = D3A9B805058283EC00B93FC7 /* extfsmgr.h */; };
+		D32B20F509947828001A78A0 /* ExtFSManagerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D38A6B89068A0F1E00E9E666 /* ExtFSManagerAdditions.h */; };
+		D32B20F709947828001A78A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3D4AF3A057915F800A80164 /* InfoPlist.strings */; };
+		D32B20F809947828001A78A0 /* tux.icns in Resources */ = {isa = PBXBuildFile; fileRef = D3F22252057FB7390085CE79 /* tux.icns */; };
+		D32B20F909947828001A78A0 /* ExtFSManager.nib in Resources */ = {isa = PBXBuildFile; fileRef = D3F2223C057FB4720085CE79 /* ExtFSManager.nib */; };
+		D32B20FA09947828001A78A0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3556142058517B7008148F9 /* Localizable.strings */; };
+		D32B20FB09947828001A78A0 /* Info.icns in Resources */ = {isa = PBXBuildFile; fileRef = D3C4F1D40593730700B7812F /* Info.icns */; };
+		D32B20FC09947828001A78A0 /* Mount.icns in Resources */ = {isa = PBXBuildFile; fileRef = D3C4F1D50593730700B7812F /* Mount.icns */; };
+		D32B20FD09947828001A78A0 /* Options.icns in Resources */ = {isa = PBXBuildFile; fileRef = D3C4F1D60593730700B7812F /* Options.icns */; };
+		D32B20FE09947828001A78A0 /* Unmount.icns in Resources */ = {isa = PBXBuildFile; fileRef = D3C4F1D70593730700B7812F /* Unmount.icns */; };
+		D32B20FF09947828001A78A0 /* Eject.icns in Resources */ = {isa = PBXBuildFile; fileRef = D3C4F1DC0593733B00B7812F /* Eject.icns */; };
+		D32B210109947828001A78A0 /* ExtFSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D3D4AF3E0579166400A80164 /* ExtFSManager.m */; };
+		D32B210209947828001A78A0 /* ExtFSManagerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D38A6B8A068A0F1E00E9E666 /* ExtFSManagerAdditions.m */; };
+		D32B210409947828001A78A0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3D4AF27057913CB00A80164 /* Cocoa.framework */; };
+		D32B210509947828001A78A0 /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3D4AF28057913CB00A80164 /* PreferencePanes.framework */; };
+		D32B210609947828001A78A0 /* ExtFSDiskManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3660BFA0643ED20009810C9 /* ExtFSDiskManager.framework */; };
+		D32B210909947828001A78A0 /* efssmartd.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = D38A5F0806711DDB00E9E666 /* efssmartd.app */; };
+		D3660C160643EDA2009810C9 /* ExtFSMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = D36725B2057A698B00A80164 /* ExtFSMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3660C190643EDA5009810C9 /* ExtFSMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = D36725B3057A698B00A80164 /* ExtFSMedia.m */; };
+		D3660C1E0643EDA6009810C9 /* ExtFSMediaController.h in Headers */ = {isa = PBXBuildFile; fileRef = D36725B4057A698B00A80164 /* ExtFSMediaController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3660C240643EDAC009810C9 /* ExtFSMediaController.m in Sources */ = {isa = PBXBuildFile; fileRef = D36725B5057A698B00A80164 /* ExtFSMediaController.m */; };
+		D3660C7E0643FA4D009810C9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3660C7C0643FA4D009810C9 /* Localizable.strings */; };
+		D3660D7E064407A1009810C9 /* ExtFSDiskManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D3660D7D064407A1009810C9 /* ExtFSDiskManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D366103C064409E2009810C9 /* DiskArbitration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D36725FE057BB78100A80164 /* DiskArbitration.framework */; };
+		D366103D064409E2009810C9 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D36725BA057A6F0700A80164 /* IOKit.framework */; };
+		D376F3D9040E968300A80164 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D376F3C7040DF6C200A80164 /* InfoPlist.strings */; };
+		D38220590666B05800AD3D37 /* ExtFSMediaPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D38220580666B05800AD3D37 /* ExtFSMediaPrivate.h */; };
+		D38220C30667035500AD3D37 /* ExtFSMediaSMART.h in Headers */ = {isa = PBXBuildFile; fileRef = D38220C10667035500AD3D37 /* ExtFSMediaSMART.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D38222C40667BE5200AD3D37 /* ExtFSMediaPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = D38222C30667BE5200AD3D37 /* ExtFSMediaPrivate.m */; };
+		D382233C0667C01500AD3D37 /* ExtFSMediaSMART.m in Sources */ = {isa = PBXBuildFile; fileRef = D38220C20667035500AD3D37 /* ExtFSMediaSMART.m */; };
+		D38226F20669809A00AD3D37 /* efsprobe.m in Sources */ = {isa = PBXBuildFile; fileRef = D38226F10669809A00AD3D37 /* efsprobe.m */; };
+		D38228FC066A861F00AD3D37 /* efsprobe in CopyFiles */ = {isa = PBXBuildFile; fileRef = D38226D406697F7000AD3D37 /* efsprobe */; };
+		D38A5F1F06711E5200E9E666 /* ExtFSDiskManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3660BFA0643ED20009810C9 /* ExtFSDiskManager.framework */; };
+		D38A5F4306711FDA00E9E666 /* efssmartd-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D38A5F4206711FDA00E9E666 /* efssmartd-Info.plist */; };
+		D38A5F47067122DE00E9E666 /* SMARTAlert.nib in Resources */ = {isa = PBXBuildFile; fileRef = D38A5F46067122DE00E9E666 /* SMARTAlert.nib */; };
+		D38A5F4D0671230B00E9E666 /* SMARTAlertController.h in Headers */ = {isa = PBXBuildFile; fileRef = D38A5F4B0671230B00E9E666 /* SMARTAlertController.h */; };
+		D38A5F4E0671230B00E9E666 /* SMARTAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = D38A5F4C0671230B00E9E666 /* SMARTAlertController.m */; };
+		D38A5F540671233300E9E666 /* efssmartd.m in Sources */ = {isa = PBXBuildFile; fileRef = D38A5F530671233300E9E666 /* efssmartd.m */; };
+		D38A5FC10671262A00E9E666 /* extfsmgr.h in Headers */ = {isa = PBXBuildFile; fileRef = D3A9B805058283EC00B93FC7 /* extfsmgr.h */; };
+		D3EF01CF065FBB3F008F2E4E /* ExtFSLock.h in Headers */ = {isa = PBXBuildFile; fileRef = D3EF01CE065FBB3F008F2E4E /* ExtFSLock.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		D32B1FAD09946A3B001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B2046099470A8001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B2047099470A8001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.3_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B2048099470A8001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.3_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B209C09947656001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B209D09947656001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.3_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B209E09947656001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.3_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B20C70994777A001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B20C80994777A001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.3_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B20C90994777A001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.3_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B20DF099477DE001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B20E0099477DE001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.3_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B20E1099477DE001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.3_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D32B210F09947829001A78A0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D3E6C3F20911E86500E3B744 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D3E6C3F30911E88000E3B744 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		D3E6C3F60911E89400E3B744 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXBundleTarget section */
+		D3D485850405AEF400A80164 /* ext2_fs */ = {
+			isa = PBXBundleTarget;
+			buildConfigurationList = D3DE35390890B0B6003B7227 /* Build configuration list for PBXBundleTarget "ext2_fs" */;
+			buildPhases = (
+				D3D485810405AEF400A80164 /* Resources */,
+				D3D4858C0405F52200A80164 /* CopyFiles */,
+			);
+			dependencies = (
+			);
+			name = ext2_fs;
+			productInstallPath = "$(USER_LIBRARY_DIR)/Bundles";
+			productName = ext2_fs;
+			productReference = D3D485860405AEF400A80164 /* ext2.fs */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Copyright © 2003-2004 Brian Bergstrand</string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>net.sourceforge.ext2fs.filesystems.util.ext2</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>ext2</string>
+	<key>CFBundlePackageType</key>
+	<string>fs</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.1</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.1</string>
+	<key>FSMediaTypes</key>
+	<dict>
+		<key>55465300-0000-11AA-AA11-00306543ECAC</key>
+		<dict>
+			<key>FSMediaProperties</key>
+			<dict>
+				<key>Content Hint</key>
+				<string>55465300-0000-11AA-AA11-00306543ECAC</string>
+				<key>Leaf</key>
+				<true/>
+			</dict>
+			<key>FSProbeArguments</key>
+			<string>-p</string>
+			<key>FSProbeExecutable</key>
+			<string>../../ext2fs.util</string>
+			<key>FSProbeOrder</key>
+			<integer>1000</integer>
+		</dict>
+		<key>Apple_UNIX_SVR2</key>
+		<dict>
+			<key>FSMediaProperties</key>
+			<dict>
+				<key>Content Hint</key>
+				<string>Apple_UNIX_SVR2</string>
+				<key>Leaf</key>
+				<true/>
+			</dict>
+			<key>FSProbeArguments</key>
+			<string>-p</string>
+			<key>FSProbeExecutable</key>
+			<string>../../ext2fs.util</string>
+			<key>FSProbeOrder</key>
+			<integer>1000</integer>
+		</dict>
+		<key>CD</key>
+		<dict>
+			<key>FSMediaProperties</key>
+			<dict>
+				<key>Content Hint</key>
+				<string>CD_ROM_Mode_1</string>
+				<key>Leaf</key>
+				<true/>
+			</dict>
+			<key>FSProbeArguments</key>
+			<string>-p</string>
+			<key>FSProbeExecutable</key>
+			<string>../../ext2fs.util</string>
+			<key>FSProbeOrder</key>
+			<integer>4000</integer>
+		</dict>
+		<key>EBD0A0A2-B9E5-4433-87C0-68B6B72699C7</key>
+		<dict>
+			<key>FSMediaProperties</key>
+			<dict>
+				<key>Content Hint</key>
+				<string>EBD0A0A2-B9E5-4433-87C0-68B6B72699C7</string>
+				<key>Leaf</key>
+				<true/>
+			</dict>
+			<key>FSProbeArguments</key>
+			<string>-p</string>
+			<key>FSProbeExecutable</key>
+			<string>../../ext2fs.util</string>
+			<key>FSProbeOrder</key>
+			<integer>3000</integer>
+		</dict>
+		<key>EXT2</key>
+		<dict>
+			<key>FSMediaProperties</key>
+			<dict>
+				<key>Content Hint</key>
+				<string>EXT2</string>
+				<key>Leaf</key>
+				<true/>
+			</dict>
+			<key>FSProbeArguments</key>
+			<string>-p</string>
+			<key>FSProbeExecutable</key>
+			<string>../../ext2fs.util</string>
+			<key>FSProbeOrder</key>
+			<integer>2000</integer>
+		</dict>
+		<key>Ext2</key>
+		<dict>
+			<key>FSMediaProperties</key>
+			<dict>
+				<key>Content Hint</key>
+				<string>Ext2</string>
+				<key>Leaf</key>
+				<true/>
+			</dict>
+			<key>FSProbeArguments</key>
+			<string>-p</string>
+			<key>FSProbeExecutable</key>
+			<string>../../ext2fs.util</string>
+			<key>FSProbeOrder</key>
+			<integer>2000</integer>
+		</dict>
+		<key>Ext3</key>
+		<dict>
+			<key>FSMediaProperties</key>
+			<dict>
+				<key>Content Hint</key>
+				<string>Ext3</string>
+				<key>Leaf</key>
+				<true/>
+			</dict>
+			<key>FSProbeArguments</key>
+			<string>-p</string>
+			<key>FSProbeExecutable</key>
+			<string>../../ext2fs.util</string>
+			<key>FSProbeOrder</key>
+			<integer>3000</integer>
+		</dict>
+		<key>Linux</key>
+		<dict>
+			<key>FSMediaProperties</key>
+			<dict>
+				<key>Content Hint</key>
+				<string>Linux</string>
+				<key>Leaf</key>
+				<true/>
+			</dict>
+			<key>FSProbeArguments</key>
+			<string>-p</string>
+			<key>FSProbeExecutable</key>
+			<string>../../ext2fs.util</string>
+			<key>FSProbeOrder</key>
+			<integer>2000</integer>
+		</dict>
+		<key>Linux_Ext2FS</key>
+		<dict>
+			<key>FSMediaProperties</key>
+			<dict>
+				<key>Content Hint</key>
+				<string>Linux_Ext2FS</string>
+				<key>Leaf</key>
+				<true/>
+			</dict>
+			<key>FSProbeArguments</key>
+			<string>-p</string>
+			<key>FSProbeExecutable</key>
+			<string>../../ext2fs.util</string>
+			<key>FSProbeOrder</key>
+			<integer>2000</integer>
+		</dict>
+		<key>Partitionless</key>
+		<dict>
+			<key>FSMediaProperties</key>
+			<dict>
+				<key>Leaf</key>
+				<true/>
+				<key>Whole</key>
+				<true/>
+			</dict>
+			<key>FSProbeArguments</key>
+			<string>-p</string>
+			<key>FSProbeExecutable</key>
+			<string>../../ext2fs.util</string>
+			<key>FSProbeOrder</key>
+			<integer>5000</integer>
+		</dict>
+	</dict>
+	<key>FSPersonalities</key>
+	<dict>
+		<key>Ext2</key>
+		<dict>
+			<key>FSFormatArguments</key>
+			<string>-F</string>
+			<key>FSFormatContentMask</key>
+			<string>Ext2</string>
+			<key>FSFormatExecutable</key>
+			<string>../../../../../../sbin/newfs_ext2</string>
+			<key>FSFormatMinimumSize</key>
+			<integer>524288</integer>
+			<key>FSMountArguments</key>
+			<string>amount</string>
+			<key>FSMountExecutable</key>
+			<string>../../../../../../sbin/mount_ext2</string>
+			<key>FSName</key>
+			<string>Ext2 File System</string>
+			<key>FSRepairArguments</key>
+			<string>-y</string>
+			<key>FSRepairExecutable</key>
+			<string>../../../../../../sbin/fsck_ext2</string>
+			<key>FSVerificationArguments</key>
+			<string>-q</string>
+			<key>FSVerificationExecutable</key>
+			<string>../../../../../../sbin/fsck_ext2</string>
+		</dict>
+	</dict>
+</dict>
+</plist>
+";
+		};
+/* End PBXBundleTarget section */
+
+/* Begin PBXContainerItemProxy section */
+		D32B203509947096001A78A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D32B1F8B09946A3B001A78A0;
+			remoteInfo = ext2_kext;
+		};
+		D32B208C09947622001A78A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D32B2037099470A7001A78A0;
+			remoteInfo = mount_ext2fs;
+		};
+		D32B20B60994770F001A78A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D32B209009947656001A78A0;
+			remoteInfo = ext2_util;
+		};
+		D32B20D3099477D6001A78A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D32B20BD0994777A001A78A0;
+			remoteInfo = newfs_ext2;
+		};
+		D32B20ED0994781C001A78A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D32B20D5099477DD001A78A0;
+			remoteInfo = fsck_ext2;
+		};
+		D32B20F109947828001A78A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D38A5F0706711DDB00E9E666;
+			remoteInfo = efssmartd;
+		};
+		D32B2111099478D8001A78A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D32B20EF09947828001A78A0;
+			remoteInfo = extprefpane;
+		};
+		D32E729305F2A326002928A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3D485850405AEF400A80164;
+			remoteInfo = ext2_fs;
+		};
+		D3660D620644059B009810C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3660BF90643ED20009810C9;
+			remoteInfo = ExtFSDiskManager;
+		};
+		D38228130669985C00AD3D37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D38226D306697F7000AD3D37;
+			remoteInfo = efsprobe;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D32B210809947828001A78A0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				D32B210909947828001A78A0 /* efssmartd.app in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D382282D066998F600AD3D37 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				D38228FC066A861F00AD3D37 /* efsprobe in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3D4858C0405F52200A80164 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 1;
+			files = (
+				D32B20B809947744001A78A0 /* ext2fs.util in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D30B790F04059A6B00A80164 /* mount_ext2fs.8 */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = mount_ext2fs.8; sourceTree = "<group>"; };
+		D30B791004059A6B00A80164 /* mount_ext2fs.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = mount_ext2fs.c; sourceTree = "<group>"; };
+		D31F7D3A0569E49300A80164 /* apprentice.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = apprentice.c; sourceTree = "<group>"; };
+		D31F7D3B0569E49300A80164 /* ascmagic.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ascmagic.c; sourceTree = "<group>"; };
+		D31F7D3D0569E49300A80164 /* e2undel.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = e2undel.c; sourceTree = "<group>"; };
+		D31F7D3F0569E49300A80164 /* find_del.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = find_del.c; sourceTree = "<group>"; };
+		D31F7D400569E49300A80164 /* is_tar.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = is_tar.c; sourceTree = "<group>"; };
+		D31F7D410569E49300A80164 /* log.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = log.c; sourceTree = "<group>"; };
+		D31F7D420569E49300A80164 /* softmagic.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = softmagic.c; sourceTree = "<group>"; };
+		D32B1FAC09946A3B001A78A0 /* ExtFSDiskManager-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "ExtFSDiskManager-Info.plist"; path = "Resources/ExtFSDiskManager-Info.plist"; sourceTree = "<group>"; };
+		D32B1FAE09946A3B001A78A0 /* ext2fs.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ext2fs.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		D32B2049099470A8001A78A0 /* mount_ext2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mount_ext2; sourceTree = BUILT_PRODUCTS_DIR; };
+		D32B207F09947574001A78A0 /* getmntopts.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = getmntopts.c; path = src/depend/disklib/getmntopts.c; sourceTree = SOURCE_ROOT; };
+		D32B209F09947656001A78A0 /* ext2fs.util */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ext2fs.util; sourceTree = BUILT_PRODUCTS_DIR; };
+		D32B20CA0994777A001A78A0 /* newfs_ext2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = newfs_ext2; sourceTree = BUILT_PRODUCTS_DIR; };
+		D32B20E2099477DE001A78A0 /* fsck_ext2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fsck_ext2; sourceTree = BUILT_PRODUCTS_DIR; };
+		D32B210E09947828001A78A0 /* Info-extprefpane.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Info-extprefpane.plist"; path = "Resources/Info-extprefpane.plist"; sourceTree = "<group>"; };
+		D32B211009947829001A78A0 /* ExtFSManager.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExtFSManager.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
+		D32E761D05FD2919002928A8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
+		D33B8CED061F57DE0019AA16 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D33B8CFB061F59920019AA16 /* de */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D33C06890418779900A80164 /* newfs_ext2.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = newfs_ext2.c; path = src/newfs_ext2/newfs_ext2.c; sourceTree = "<group>"; };
+		D33D91670405A28700A80164 /* mntopts.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = mntopts.h; path = src/depend/disklib/mntopts.h; sourceTree = SOURCE_ROOT; };
+		D34D0C5C097CD18900B11D3A /* ext2_lockf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ext2_lockf.c; sourceTree = "<group>"; };
+		D3556143058517B7008148F9 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D3560A840597A33700890EA3 /* de */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D3660BFA0643ED20009810C9 /* ExtFSDiskManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ExtFSDiskManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3660BFB0643ED21009810C9 /* ExtFSDiskManager-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "ExtFSDiskManager-Info.plist"; path = "Resources/ExtFSDiskManager-Info.plist"; sourceTree = SOURCE_ROOT; };
+		D3660C7D0643FA4D009810C9 /* de */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D3660C870643FA66009810C9 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D3660D7D064407A1009810C9 /* ExtFSDiskManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ExtFSDiskManager.h; sourceTree = "<group>"; };
+		D366110106442CD1009810C9 /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D36725B2057A698B00A80164 /* ExtFSMedia.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ExtFSMedia.h; sourceTree = "<group>"; };
+		D36725B3057A698B00A80164 /* ExtFSMedia.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ExtFSMedia.m; sourceTree = "<group>"; };
+		D36725B4057A698B00A80164 /* ExtFSMediaController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ExtFSMediaController.h; sourceTree = "<group>"; };
+		D36725B5057A698B00A80164 /* ExtFSMediaController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaController.m; sourceTree = "<group>"; };
+		D36725BA057A6F0700A80164 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
+		D36725FE057BB78100A80164 /* DiskArbitration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiskArbitration.framework; path = /System/Library/Frameworks/DiskArbitration.framework; sourceTree = "<absolute>"; };
+		D376F3C8040DF6C200A80164 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = fs_bndl/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D376F3CA040DF78800A80164 /* French */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = French; path = fs_bndl/French.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D376F3CB040DF79100A80164 /* German */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = German; path = fs_bndl/German.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D376F3CD040E088100A80164 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
+		D381D59A058F967200DE3D72 /* dir.c */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 3; lastKnownFileType = sourcecode.c.c; path = dir.c; sourceTree = "<group>"; tabWidth = 3; usesTabs = 1; };
+		D381D59B058F967200DE3D72 /* hash.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = hash.c; sourceTree = "<group>"; };
+		D381D59C058F967200DE3D72 /* namei.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = namei.c; sourceTree = "<group>"; };
+		D381D59D058F967200DE3D72 /* super.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = super.c; sourceTree = "<group>"; };
+		D381D5A2058F967200DE3D72 /* rbtree.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = rbtree.c; sourceTree = "<group>"; };
+		D38220580666B05800AD3D37 /* ExtFSMediaPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtFSMediaPrivate.h; sourceTree = "<group>"; };
+		D38220C10667035500AD3D37 /* ExtFSMediaSMART.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtFSMediaSMART.h; sourceTree = "<group>"; };
+		D38220C20667035500AD3D37 /* ExtFSMediaSMART.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaSMART.m; sourceTree = "<group>"; };
+		D38222C30667BE5200AD3D37 /* ExtFSMediaPrivate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaPrivate.m; sourceTree = "<group>"; };
+		D38226D406697F7000AD3D37 /* efsprobe */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = efsprobe; sourceTree = BUILT_PRODUCTS_DIR; };
+		D38226F10669809A00AD3D37 /* efsprobe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = efsprobe.m; sourceTree = "<group>"; };
+		D387FC9F059558E400C31A93 /* fsck_ext2.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = fsck_ext2.c; sourceTree = "<group>"; };
+		D387FCA10595597500C31A93 /* spawn.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = spawn.c; sourceTree = "<group>"; };
+		D387FCA20595597500C31A93 /* super.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = super.c; sourceTree = "<group>"; };
+		D38A5F0806711DDB00E9E666 /* efssmartd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = efssmartd.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D38A5F4206711FDA00E9E666 /* efssmartd-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = "efssmartd-Info.plist"; sourceTree = "<group>"; };
+		D38A5F46067122DE00E9E666 /* SMARTAlert.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = SMARTAlert.nib; sourceTree = "<group>"; };
+		D38A5F4B0671230B00E9E666 /* SMARTAlertController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SMARTAlertController.h; sourceTree = "<group>"; };
+		D38A5F4C0671230B00E9E666 /* SMARTAlertController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SMARTAlertController.m; sourceTree = "<group>"; };
+		D38A5F530671233300E9E666 /* efssmartd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = efssmartd.m; sourceTree = "<group>"; };
+		D38A6B89068A0F1E00E9E666 /* ExtFSManagerAdditions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ExtFSManagerAdditions.h; sourceTree = "<group>"; };
+		D38A6B8A068A0F1E00E9E666 /* ExtFSManagerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ExtFSManagerAdditions.m; sourceTree = "<group>"; };
+		D393968609AE80FB009C9BBD /* Info-ext2_kext.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Info-ext2_kext.plist"; path = "Resources/Info-ext2_kext.plist"; sourceTree = "<group>"; };
+		D3A9B805058283EC00B93FC7 /* extfsmgr.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = extfsmgr.h; sourceTree = "<group>"; };
+		D3A9B8130582E25500B93FC7 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
+		D3A9B8150582E26500B93FC7 /* mount_extmgr.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = mount_extmgr.c; sourceTree = "<group>"; };
+		D3B4645604099F8700A80164 /* ext2_apple.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_apple.c; sourceTree = "<group>"; };
+		D3B4645704099F8700A80164 /* ext2_apple.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ext2_apple.h; path = src/ext2_apple.h; sourceTree = "<group>"; };
+		D3C06DAD040A137600A80164 /* ext2_io_apple.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_io_apple.c; sourceTree = "<group>"; };
+		D3C4F1D40593730700B7812F /* Info.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Info.icns; sourceTree = "<group>"; };
+		D3C4F1D50593730700B7812F /* Mount.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Mount.icns; sourceTree = "<group>"; };
+		D3C4F1D60593730700B7812F /* Options.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Options.icns; sourceTree = "<group>"; };
+		D3C4F1D70593730700B7812F /* Unmount.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Unmount.icns; sourceTree = "<group>"; };
+		D3C4F1DC0593733B00B7812F /* Eject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Eject.icns; sourceTree = "<group>"; };
+		D3D485770405AC0900A80164 /* kext_load.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = kext_load.c; path = src/kext_load.c; sourceTree = "<group>"; };
+		D3D485860405AEF400A80164 /* ext2.fs */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = ext2.fs; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3D485870405C3B900A80164 /* ext2util.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = ext2util.c; path = src/ext2util.c; sourceTree = "<group>"; };
+		D3D4AF27057913CB00A80164 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		D3D4AF28057913CB00A80164 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = /System/Library/Frameworks/PreferencePanes.framework; sourceTree = "<absolute>"; };
+		D3D4AF3B057915F800A80164 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D3D4AF3D0579166400A80164 /* ExtFSManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ExtFSManager.h; sourceTree = "<group>"; };
+		D3D4AF3E0579166400A80164 /* ExtFSManager.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ExtFSManager.m; sourceTree = "<group>"; };
+		D3EF01CE065FBB3F008F2E4E /* ExtFSLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtFSLock.h; sourceTree = "<group>"; };
+		D3F2223C057FB4720085CE79 /* ExtFSManager.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ExtFSManager.nib; sourceTree = "<group>"; };
+		D3F22252057FB7390085CE79 /* tux.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = tux.icns; sourceTree = "<group>"; };
+		D3F6BB0F0574F80A00A80164 /* linux_namei_compat.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = linux_namei_compat.c; sourceTree = "<group>"; };
+		F5106D60035A69B701A80165 /* ext2_vfsops.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_vfsops.c; sourceTree = "<group>"; usesTabs = 1; };
+		F53B8660035FE78601A80165 /* ext2_subr.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_subr.c; sourceTree = "<group>"; };
+		F53B86BF03610B5901A80165 /* ext2_readwrite.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_readwrite.c; sourceTree = "<group>"; };
+		F53B86C10361275401A80165 /* ext2_vnops.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_vnops.c; sourceTree = "<group>"; };
+		F53FE97F035E7DB501A80165 /* ext2_ihash.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_ihash.c; sourceTree = "<group>"; usesTabs = 1; };
+		F53FE981035E84C201A80165 /* ext2_inode_cnv.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_inode_cnv.c; sourceTree = "<group>"; };
+		F53FE983035E84F001A80165 /* ext2_inode.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_inode.c; sourceTree = "<group>"; usesTabs = 1; };
+		F53FE985035E8E5201A80165 /* ext2_linux_balloc.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_linux_balloc.c; sourceTree = "<group>"; usesTabs = 1; };
+		F54E5107035FDEE601A80165 /* ext2_linux_ialloc.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_linux_ialloc.c; sourceTree = "<group>"; usesTabs = 1; };
+		F54E5109035FDFBE01A80165 /* ext2_lookup.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_lookup.c; sourceTree = "<group>"; };
+		F5E7E34B035BEAA101A80165 /* ext2_alloc.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_alloc.c; sourceTree = "<group>"; };
+		F5E7E34D035BEC0801A80165 /* ext2_balloc.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_balloc.c; sourceTree = "<group>"; };
+		F5E7E34F035BF11D01A80165 /* ext2_bmap.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_bmap.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D32B1FA309946A3B001A78A0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B203E099470A7001A78A0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B203F099470A7001A78A0 /* CoreFoundation.framework in Frameworks */,
+				D32B2040099470A7001A78A0 /* SystemConfiguration.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B209509947656001A78A0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B209609947656001A78A0 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B20C10994777A001A78A0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B20D9099477DD001A78A0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B210309947828001A78A0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B210409947828001A78A0 /* Cocoa.framework in Frameworks */,
+				D32B210509947828001A78A0 /* PreferencePanes.framework in Frameworks */,
+				D32B210609947828001A78A0 /* ExtFSDiskManager.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3660BF80643ED20009810C9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D366103C064409E2009810C9 /* DiskArbitration.framework in Frameworks */,
+				D366103D064409E2009810C9 /* IOKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D38226D206697F7000AD3D37 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D38A5F0606711DDB00E9E666 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D38A5F1F06711E5200E9E666 /* ExtFSDiskManager.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* ext2fsX */ = {
+			isa = PBXGroup;
+			children = (
+				247142CAFF3F8F9811CA285C /* ext2fs */,
+				D3B4645704099F8700A80164 /* ext2_apple.h */,
+				D3D485770405AC0900A80164 /* kext_load.c */,
+				D33C06890418779900A80164 /* newfs_ext2.c */,
+				D376F3C6040DF69900A80164 /* fs_bndl */,
+				D376F3CC040E085900A80164 /* fs_util */,
+				D30B790D04059A6B00A80164 /* mount_ext2fs */,
+				D387FC9E059558B700C31A93 /* util */,
+				D31F7D390569E42A00A80164 /* e2undel */,
+				D367265B057D3E9600A80164 /* extfsmgr */,
+				19C28FB6FE9D52B211CA2CBB /* Products */,
+				D32B1FAC09946A3B001A78A0 /* ExtFSDiskManager-Info.plist */,
+				D32B210E09947828001A78A0 /* Info-extprefpane.plist */,
+			);
+			name = ext2fsX;
+			sourceTree = "<group>";
+		};
+		089C167CFE841241C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D393968609AE80FB009C9BBD /* Info-ext2_kext.plist */,
+				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = SOURCE_ROOT;
+		};
+		19C28FB6FE9D52B211CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D3D485860405AEF400A80164 /* ext2.fs */,
+				D3660BFA0643ED20009810C9 /* ExtFSDiskManager.framework */,
+				D38226D406697F7000AD3D37 /* efsprobe */,
+				D38A5F0806711DDB00E9E666 /* efssmartd.app */,
+				D32B1FAE09946A3B001A78A0 /* ext2fs.kext */,
+				D32B2049099470A8001A78A0 /* mount_ext2 */,
+				D32B209F09947656001A78A0 /* ext2fs.util */,
+				D32B20CA0994777A001A78A0 /* newfs_ext2 */,
+				D32B20E2099477DE001A78A0 /* fsck_ext2 */,
+				D32B211009947829001A78A0 /* ExtFSManager.prefPane */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		247142CAFF3F8F9811CA285C /* ext2fs */ = {
+			isa = PBXGroup;
+			children = (
+				F5E7E34B035BEAA101A80165 /* ext2_alloc.c */,
+				F5E7E34D035BEC0801A80165 /* ext2_balloc.c */,
+				F5E7E34F035BF11D01A80165 /* ext2_bmap.c */,
+				F53FE97F035E7DB501A80165 /* ext2_ihash.c */,
+				F53FE981035E84C201A80165 /* ext2_inode_cnv.c */,
+				F53FE983035E84F001A80165 /* ext2_inode.c */,
+				F53FE985035E8E5201A80165 /* ext2_linux_balloc.c */,
+				F54E5107035FDEE601A80165 /* ext2_linux_ialloc.c */,
+				F54E5109035FDFBE01A80165 /* ext2_lookup.c */,
+				F53B86BF03610B5901A80165 /* ext2_readwrite.c */,
+				F53B8660035FE78601A80165 /* ext2_subr.c */,
+				F5106D60035A69B701A80165 /* ext2_vfsops.c */,
+				F53B86C10361275401A80165 /* ext2_vnops.c */,
+				D3C06DAB040A137600A80164 /* kern */,
+				D381D597058F967200DE3D72 /* linux */,
+				089C167CFE841241C02AAC07 /* Resources */,
+			);
+			name = ext2fs;
+			path = src/gnu/ext2fs;
+			sourceTree = SOURCE_ROOT;
+		};
+		D30B790D04059A6B00A80164 /* mount_ext2fs */ = {
+			isa = PBXGroup;
+			children = (
+				D32B207F09947574001A78A0 /* getmntopts.c */,
+				D33D91670405A28700A80164 /* mntopts.h */,
+				D30B790F04059A6B00A80164 /* mount_ext2fs.8 */,
+				D30B791004059A6B00A80164 /* mount_ext2fs.c */,
+				D3A9B8150582E26500B93FC7 /* mount_extmgr.c */,
+				D3A9B8130582E25500B93FC7 /* CoreFoundation.framework */,
+				D32E761D05FD2919002928A8 /* SystemConfiguration.framework */,
+			);
+			name = mount_ext2fs;
+			path = src/mount_ext2fs;
+			sourceTree = "<group>";
+		};
+		D31F7D390569E42A00A80164 /* e2undel */ = {
+			isa = PBXGroup;
+			children = (
+				D31F7D3A0569E49300A80164 /* apprentice.c */,
+				D31F7D3B0569E49300A80164 /* ascmagic.c */,
+				D31F7D3D0569E49300A80164 /* e2undel.c */,
+				D31F7D3F0569E49300A80164 /* find_del.c */,
+				D31F7D400569E49300A80164 /* is_tar.c */,
+				D31F7D410569E49300A80164 /* log.c */,
+				D31F7D420569E49300A80164 /* softmagic.c */,
+			);
+			name = e2undel;
+			path = src/e2undel;
+			sourceTree = "<group>";
+		};
+		D3660C680643F85B009810C9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D3660C7C0643FA4D009810C9 /* Localizable.strings */,
+				D3660BFB0643ED21009810C9 /* ExtFSDiskManager-Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D367265B057D3E9600A80164 /* extfsmgr */ = {
+			isa = PBXGroup;
+			children = (
+				D38A5F3606711F7E00E9E666 /* efssmartd */,
+				D3A9B805058283EC00B93FC7 /* extfsmgr.h */,
+				D367265C057D3ECB00A80164 /* coremgr */,
+				D3D4AF1B0579126E00A80164 /* prefpane */,
+				D3A9B8080582DE1400B93FC7 /* Frameworks */,
+			);
+			name = extfsmgr;
+			path = src/extfsmgr;
+			sourceTree = "<group>";
+		};
+		D367265C057D3ECB00A80164 /* coremgr */ = {
+			isa = PBXGroup;
+			children = (
+				D3660D7D064407A1009810C9 /* ExtFSDiskManager.h */,
+				D3EF01CE065FBB3F008F2E4E /* ExtFSLock.h */,
+				D36725B2057A698B00A80164 /* ExtFSMedia.h */,
+				D36725B3057A698B00A80164 /* ExtFSMedia.m */,
+				D36725B4057A698B00A80164 /* ExtFSMediaController.h */,
+				D36725B5057A698B00A80164 /* ExtFSMediaController.m */,
+				D38220C10667035500AD3D37 /* ExtFSMediaSMART.h */,
+				D38220C20667035500AD3D37 /* ExtFSMediaSMART.m */,
+				D38220580666B05800AD3D37 /* ExtFSMediaPrivate.h */,
+				D38222C30667BE5200AD3D37 /* ExtFSMediaPrivate.m */,
+				D38226E70669806200AD3D37 /* efsprobe */,
+				D3660C680643F85B009810C9 /* Resources */,
+				D36725FE057BB78100A80164 /* DiskArbitration.framework */,
+				D36725BA057A6F0700A80164 /* IOKit.framework */,
+			);
+			path = coremgr;
+			sourceTree = "<group>";
+		};
+		D376F3C6040DF69900A80164 /* fs_bndl */ = {
+			isa = PBXGroup;
+			children = (
+				D376F3C7040DF6C200A80164 /* InfoPlist.strings */,
+			);
+			name = fs_bndl;
+			sourceTree = "<group>";
+		};
+		D376F3CC040E085900A80164 /* fs_util */ = {
+			isa = PBXGroup;
+			children = (
+				D3D485870405C3B900A80164 /* ext2util.c */,
+				D376F3CD040E088100A80164 /* CoreFoundation.framework */,
+			);
+			name = fs_util;
+			sourceTree = "<group>";
+		};
+		D381D597058F967200DE3D72 /* linux */ = {
+			isa = PBXGroup;
+			children = (
+				D381D598058F967200DE3D72 /* fs */,
+				D381D5A1058F967200DE3D72 /* lib */,
+			);
+			path = linux;
+			sourceTree = "<group>";
+		};
+		D381D598058F967200DE3D72 /* fs */ = {
+			isa = PBXGroup;
+			children = (
+				D381D599058F967200DE3D72 /* ext3 */,
+			);
+			path = fs;
+			sourceTree = "<group>";
+		};
+		D381D599058F967200DE3D72 /* ext3 */ = {
+			isa = PBXGroup;
+			children = (
+				D381D59A058F967200DE3D72 /* dir.c */,
+				D381D59B058F967200DE3D72 /* hash.c */,
+				D381D59C058F967200DE3D72 /* namei.c */,
+				D381D59D058F967200DE3D72 /* super.c */,
+			);
+			path = ext3;
+			sourceTree = "<group>";
+		};
+		D381D5A1058F967200DE3D72 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				D381D5A2058F967200DE3D72 /* rbtree.c */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		D38226E70669806200AD3D37 /* efsprobe */ = {
+			isa = PBXGroup;
+			children = (
+				D38226F10669809A00AD3D37 /* efsprobe.m */,
+			);
+			name = efsprobe;
+			path = src/extfsmgr/efsprobe;
+			sourceTree = SOURCE_ROOT;
+		};
+		D387FC9E059558B700C31A93 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				D387FC9F059558E400C31A93 /* fsck_ext2.c */,
+				D387FCA10595597500C31A93 /* spawn.c */,
+				D387FCA20595597500C31A93 /* super.c */,
+			);
+			name = util;
+			path = src/util;
+			sourceTree = "<group>";
+		};
+		D38A5F3606711F7E00E9E666 /* efssmartd */ = {
+			isa = PBXGroup;
+			children = (
+				D38A5F530671233300E9E666 /* efssmartd.m */,
+				D38A5F4B0671230B00E9E666 /* SMARTAlertController.h */,
+				D38A5F4C0671230B00E9E666 /* SMARTAlertController.m */,
+				D38A5F4106711FDA00E9E666 /* Resources */,
+			);
+			path = efssmartd;
+			sourceTree = "<group>";
+		};
+		D38A5F4106711FDA00E9E666 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D38A5F4206711FDA00E9E666 /* efssmartd-Info.plist */,
+				D38A5F46067122DE00E9E666 /* SMARTAlert.nib */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D3A9B8080582DE1400B93FC7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D3D4AF27057913CB00A80164 /* Cocoa.framework */,
+				D3D4AF28057913CB00A80164 /* PreferencePanes.framework */,
+			);
+			name = Frameworks;
+			sourceTree = SOURCE_ROOT;
+		};
+		D3C06DAB040A137600A80164 /* kern */ = {
+			isa = PBXGroup;
+			children = (
+				D34D0C5C097CD18900B11D3A /* ext2_lockf.c */,
+				D3B4645604099F8700A80164 /* ext2_apple.c */,
+				D3C06DAD040A137600A80164 /* ext2_io_apple.c */,
+				D3F6BB0F0574F80A00A80164 /* linux_namei_compat.c */,
+			);
+			name = kern;
+			path = src/kern;
+			sourceTree = SOURCE_ROOT;
+		};
+		D3D4AF1B0579126E00A80164 /* prefpane */ = {
+			isa = PBXGroup;
+			children = (
+				D3D4AF3D0579166400A80164 /* ExtFSManager.h */,
+				D3D4AF3E0579166400A80164 /* ExtFSManager.m */,
+				D38A6B89068A0F1E00E9E666 /* ExtFSManagerAdditions.h */,
+				D38A6B8A068A0F1E00E9E666 /* ExtFSManagerAdditions.m */,
+				D3D4AF36057915D900A80164 /* Resources */,
+			);
+			path = prefpane;
+			sourceTree = "<group>";
+		};
+		D3D4AF36057915D900A80164 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D3F2223C057FB4720085CE79 /* ExtFSManager.nib */,
+				D3D4AF3A057915F800A80164 /* InfoPlist.strings */,
+				D3556142058517B7008148F9 /* Localizable.strings */,
+				D3C4F1DC0593733B00B7812F /* Eject.icns */,
+				D3C4F1D40593730700B7812F /* Info.icns */,
+				D3C4F1D50593730700B7812F /* Mount.icns */,
+				D3C4F1D60593730700B7812F /* Options.icns */,
+				D3C4F1D70593730700B7812F /* Unmount.icns */,
+				D3F22252057FB7390085CE79 /* tux.icns */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D32B1F8D09946A3B001A78A0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B1F8E09946A3B001A78A0 /* ext2_apple.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B2038099470A7001A78A0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B2039099470A7001A78A0 /* mntopts.h in Headers */,
+				D32B203A099470A7001A78A0 /* extfsmgr.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B209109947656001A78A0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B20BE0994777A001A78A0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B20D6099477DD001A78A0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B20F209947828001A78A0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B20F309947828001A78A0 /* ExtFSManager.h in Headers */,
+				D32B20F409947828001A78A0 /* extfsmgr.h in Headers */,
+				D32B20F509947828001A78A0 /* ExtFSManagerAdditions.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3660BF50643ED20009810C9 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3660D7E064407A1009810C9 /* ExtFSDiskManager.h in Headers */,
+				D3660C160643EDA2009810C9 /* ExtFSMedia.h in Headers */,
+				D3660C1E0643EDA6009810C9 /* ExtFSMediaController.h in Headers */,
+				D38220C30667035500AD3D37 /* ExtFSMediaSMART.h in Headers */,
+				D3EF01CF065FBB3F008F2E4E /* ExtFSLock.h in Headers */,
+				D38220590666B05800AD3D37 /* ExtFSMediaPrivate.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D38226D006697F7000AD3D37 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D38A5F0306711DDB00E9E666 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D38A5F4D0671230B00E9E666 /* SMARTAlertController.h in Headers */,
+				D38A5FC10671262A00E9E666 /* extfsmgr.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXLegacyTarget section */
+		D34AE6840417173400A80164 /* e2fsprogs */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "${SRCROOT}/e2fsprogsbuild.sh";
+			buildConfigurationList = D3DE355D0890B0B6003B7227 /* Build configuration list for PBXLegacyTarget "e2fsprogs" */;
+			buildPhases = (
+			);
+			buildToolPath = /bin/sh;
+			buildWorkingDirectory = "${SRCROOT}";
+			dependencies = (
+			);
+			name = e2fsprogs;
+			passBuildSettingsInEnvironment = 1;
+			productName = e2fsprogs;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXNativeTarget section */
+		D32B1F8B09946A3B001A78A0 /* ext2_kext */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D32B1FA609946A3B001A78A0 /* Build configuration list for PBXNativeTarget "ext2_kext" */;
+			buildPhases = (
+				D32B1F8C09946A3B001A78A0 /* ShellScript */,
+				D32B1F8D09946A3B001A78A0 /* Headers */,
+				D32B1F8F09946A3B001A78A0 /* Resources */,
+				D32B1F9109946A3B001A78A0 /* Sources */,
+				D32B1FA309946A3B001A78A0 /* Frameworks */,
+				D32B1FA409946A3B001A78A0 /* Rez */,
+				D32B1FA509946A3B001A78A0 /* ShellScript */,
+			);
+			buildRules = (
+				D32B1FAD09946A3B001A78A0 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = ext2_kext;
+			productInstallPath = "$(SYSTEM_LIBRARY_DIR)/Extensions";
+			productName = ext2fsX;
+			productReference = D32B1FAE09946A3B001A78A0 /* ext2fs.kext */;
+			productType = "com.apple.product-type.kernel-extension";
+		};
+		D32B2037099470A7001A78A0 /* mount_ext2fs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D32B2042099470A7001A78A0 /* Build configuration list for PBXNativeTarget "mount_ext2fs" */;
+			buildPhases = (
+				D32B2038099470A7001A78A0 /* Headers */,
+				D32B203B099470A7001A78A0 /* Sources */,
+				D32B203E099470A7001A78A0 /* Frameworks */,
+				D32B2041099470A7001A78A0 /* Rez */,
+			);
+			buildRules = (
+				D32B2046099470A8001A78A0 /* PBXBuildRule */,
+				D32B2047099470A8001A78A0 /* PBXBuildRule */,
+				D32B2048099470A8001A78A0 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = mount_ext2fs;
+			productName = mount_ext2fs;
+			productReference = D32B2049099470A8001A78A0 /* mount_ext2 */;
+			productType = "com.apple.product-type.tool";
+		};
+		D32B209009947656001A78A0 /* ext2_util */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D32B209809947656001A78A0 /* Build configuration list for PBXNativeTarget "ext2_util" */;
+			buildPhases = (
+				D32B209109947656001A78A0 /* Headers */,
+				D32B209209947656001A78A0 /* Sources */,
+				D32B209509947656001A78A0 /* Frameworks */,
+				D32B209709947656001A78A0 /* Rez */,
+			);
+			buildRules = (
+				D32B209C09947656001A78A0 /* PBXBuildRule */,
+				D32B209D09947656001A78A0 /* PBXBuildRule */,
+				D32B209E09947656001A78A0 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = ext2_util;
+			productInstallPath = /usr/local/bin;
+			productName = ext2fs_util;
+			productReference = D32B209F09947656001A78A0 /* ext2fs.util */;
+			productType = "com.apple.product-type.tool";
+		};
+		D32B20BD0994777A001A78A0 /* newfs_ext2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D32B20C30994777A001A78A0 /* Build configuration list for PBXNativeTarget "newfs_ext2" */;
+			buildPhases = (
+				D32B20BE0994777A001A78A0 /* Headers */,
+				D32B20BF0994777A001A78A0 /* Sources */,
+				D32B20C10994777A001A78A0 /* Frameworks */,
+				D32B20C20994777A001A78A0 /* Rez */,
+			);
+			buildRules = (
+				D32B20C70994777A001A78A0 /* PBXBuildRule */,
+				D32B20C80994777A001A78A0 /* PBXBuildRule */,
+				D32B20C90994777A001A78A0 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = newfs_ext2;
+			productInstallPath = /usr/local/bin;
+			productName = newfs_ext2;
+			productReference = D32B20CA0994777A001A78A0 /* newfs_ext2 */;
+			productType = "com.apple.product-type.tool";
+		};
+		D32B20D5099477DD001A78A0 /* fsck_ext2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D32B20DB099477DD001A78A0 /* Build configuration list for PBXNativeTarget "fsck_ext2" */;
+			buildPhases = (
+				D32B20D6099477DD001A78A0 /* Headers */,
+				D32B20D7099477DD001A78A0 /* Sources */,
+				D32B20D9099477DD001A78A0 /* Frameworks */,
+				D32B20DA099477DD001A78A0 /* Rez */,
+			);
+			buildRules = (
+				D32B20DF099477DE001A78A0 /* PBXBuildRule */,
+				D32B20E0099477DE001A78A0 /* PBXBuildRule */,
+				D32B20E1099477DE001A78A0 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = fsck_ext2;
+			productInstallPath = /usr/local/bin;
+			productName = fsck_ext2;
+			productReference = D32B20E2099477DE001A78A0 /* fsck_ext2 */;
+			productType = "com.apple.product-type.tool";
+		};
+		D32B20EF09947828001A78A0 /* extprefpane */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D32B210A09947828001A78A0 /* Build configuration list for PBXNativeTarget "extprefpane" */;
+			buildPhases = (
+				D32B20F209947828001A78A0 /* Headers */,
+				D32B20F609947828001A78A0 /* Resources */,
+				D32B210009947828001A78A0 /* Sources */,
+				D32B210309947828001A78A0 /* Frameworks */,
+				D32B210709947828001A78A0 /* Rez */,
+				D32B210809947828001A78A0 /* CopyFiles */,
+			);
+			buildRules = (
+				D32B210F09947829001A78A0 /* PBXBuildRule */,
+			);
+			dependencies = (
+				D32B20F009947828001A78A0 /* PBXTargetDependency */,
+			);
+			name = extprefpane;
+			productInstallPath = "$(USER_LIBRARY_DIR)/Bundles";
+			productName = e2prefpane;
+			productReference = D32B211009947829001A78A0 /* ExtFSManager.prefPane */;
+			productType = "com.apple.product-type.bundle";
+		};
+		D3660BF90643ED20009810C9 /* ExtFSDiskManager */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3DE35450890B0B6003B7227 /* Build configuration list for PBXNativeTarget "ExtFSDiskManager" */;
+			buildPhases = (
+				D3660BF50643ED20009810C9 /* Headers */,
+				D3660BF60643ED20009810C9 /* Resources */,
+				D3660BF70643ED20009810C9 /* Sources */,
+				D3660BF80643ED20009810C9 /* Frameworks */,
+				D382282D066998F600AD3D37 /* CopyFiles */,
+			);
+			buildRules = (
+				D3E6C3F30911E88000E3B744 /* PBXBuildRule */,
+			);
+			dependencies = (
+				D38228140669985C00AD3D37 /* PBXTargetDependency */,
+			);
+			name = ExtFSDiskManager;
+			productName = ExtFSDiskManager;
+			productReference = D3660BFA0643ED20009810C9 /* ExtFSDiskManager.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D38226D306697F7000AD3D37 /* efsprobe */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3DE353F0890B0B6003B7227 /* Build configuration list for PBXNativeTarget "efsprobe" */;
+			buildPhases = (
+				D38226D006697F7000AD3D37 /* Headers */,
+				D38226D106697F7000AD3D37 /* Sources */,
+				D38226D206697F7000AD3D37 /* Frameworks */,
+			);
+			buildRules = (
+				D3E6C3F60911E89400E3B744 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = efsprobe;
+			productName = efsprobe;
+			productReference = D38226D406697F7000AD3D37 /* efsprobe */;
+			productType = "com.apple.product-type.tool";
+		};
+		D38A5F0706711DDB00E9E666 /* efssmartd */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3DE354B0890B0B6003B7227 /* Build configuration list for PBXNativeTarget "efssmartd" */;
+			buildPhases = (
+				D38A5F0306711DDB00E9E666 /* Headers */,
+				D38A5F0406711DDB00E9E666 /* Resources */,
+				D38A5F0506711DDB00E9E666 /* Sources */,
+				D38A5F0606711DDB00E9E666 /* Frameworks */,
+			);
+			buildRules = (
+				D3E6C3F20911E86500E3B744 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = efssmartd;
+			productName = efssmartd;
+			productReference = D38A5F0806711DDB00E9E666 /* efssmartd.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = D3DE35630890B0B6003B7227 /* Build configuration list for PBXProject "ext2fsX" */;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				fr,
+				de,
+				en,
+			);
+			mainGroup = 089C166AFE841209C02AAC07 /* ext2fsX */;
+			projectDirPath = "";
+			targets = (
+				D39ED63004060E7300A80164 /* BuildAll */,
+				D32B1F8B09946A3B001A78A0 /* ext2_kext */,
+				D32B2037099470A7001A78A0 /* mount_ext2fs */,
+				D32B209009947656001A78A0 /* ext2_util */,
+				D32B20BD0994777A001A78A0 /* newfs_ext2 */,
+				D32B20D5099477DD001A78A0 /* fsck_ext2 */,
+				D32B20EF09947828001A78A0 /* extprefpane */,
+				D3660BF90643ED20009810C9 /* ExtFSDiskManager */,
+				D38A5F0706711DDB00E9E666 /* efssmartd */,
+				D38226D306697F7000AD3D37 /* efsprobe */,
+				D3D485850405AEF400A80164 /* ext2_fs */,
+				D34AE6840417173400A80164 /* e2fsprogs */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D32B1F8F09946A3B001A78A0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B1F9009946A3B001A78A0 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B20F609947828001A78A0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B20F709947828001A78A0 /* InfoPlist.strings in Resources */,
+				D32B20F809947828001A78A0 /* tux.icns in Resources */,
+				D32B20F909947828001A78A0 /* ExtFSManager.nib in Resources */,
+				D32B20FA09947828001A78A0 /* Localizable.strings in Resources */,
+				D32B20FB09947828001A78A0 /* Info.icns in Resources */,
+				D32B20FC09947828001A78A0 /* Mount.icns in Resources */,
+				D32B20FD09947828001A78A0 /* Options.icns in Resources */,
+				D32B20FE09947828001A78A0 /* Unmount.icns in Resources */,
+				D32B20FF09947828001A78A0 /* Eject.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3660BF60643ED20009810C9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3660C7E0643FA4D009810C9 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D38A5F0406711DDB00E9E666 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D38A5F4306711FDA00E9E666 /* efssmartd-Info.plist in Resources */,
+				D38A5F47067122DE00E9E666 /* SMARTAlert.nib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3D485810405AEF400A80164 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D376F3D9040E968300A80164 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		D32B1FA409946A3B001A78A0 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B2041099470A7001A78A0 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B209709947656001A78A0 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B20C20994777A001A78A0 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B20DA099477DD001A78A0 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B210709947828001A78A0 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D32B1F8C09946A3B001A78A0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "script=\"${SYSTEM_DEVELOPER_DIR}/ProjectBuilder Extras/Kernel Extension Support/KEXTPreprocess\";\nif [ -x \"$script\" ]; then\n    . \"$script\"\nfi";
+		};
+		D32B1FA509946A3B001A78A0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "script=\"${SYSTEM_DEVELOPER_DIR}/ProjectBuilder Extras/Kernel Extension Support/KEXTPostprocess\";\nif [ -x \"$script\" ]; then\n    . \"$script\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D32B1F9109946A3B001A78A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B1F9209946A3B001A78A0 /* ext2_ihash.c in Sources */,
+				D32B1F9309946A3B001A78A0 /* ext2_inode_cnv.c in Sources */,
+				D32B1F9409946A3B001A78A0 /* ext2_subr.c in Sources */,
+				D32B1F9509946A3B001A78A0 /* rbtree.c in Sources */,
+				D32B1F9609946A3B001A78A0 /* hash.c in Sources */,
+				D32B1F9709946A3B001A78A0 /* super.c in Sources */,
+				D32B1F9809946A3B001A78A0 /* ext2_io_apple.c in Sources */,
+				D32B1F9909946A3B001A78A0 /* ext2_apple.c in Sources */,
+				D32B1F9A09946A3B001A78A0 /* ext2_vfsops.c in Sources */,
+				D32B1F9B09946A3B001A78A0 /* ext2_lookup.c in Sources */,
+				D32B1F9C09946A3B001A78A0 /* ext2_linux_ialloc.c in Sources */,
+				D32B1F9D09946A3B001A78A0 /* ext2_linux_balloc.c in Sources */,
+				D32B1F9E09946A3B001A78A0 /* ext2_inode.c in Sources */,
+				D32B1F9F09946A3B001A78A0 /* ext2_bmap.c in Sources */,
+				D32B1FA009946A3B001A78A0 /* ext2_balloc.c in Sources */,
+				D32B1FA109946A3B001A78A0 /* ext2_alloc.c in Sources */,
+				D32B1FA209946A3B001A78A0 /* ext2_vnops.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B203B099470A7001A78A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B203C099470A7001A78A0 /* mount_ext2fs.c in Sources */,
+				D32B203D099470A7001A78A0 /* kext_load.c in Sources */,
+				D32B208009947574001A78A0 /* getmntopts.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B209209947656001A78A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B209309947656001A78A0 /* ext2util.c in Sources */,
+				D32B209409947656001A78A0 /* kext_load.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B20BF0994777A001A78A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B20C00994777A001A78A0 /* newfs_ext2.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B20D7099477DD001A78A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B20D8099477DD001A78A0 /* fsck_ext2.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D32B210009947828001A78A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32B210109947828001A78A0 /* ExtFSManager.m in Sources */,
+				D32B210209947828001A78A0 /* ExtFSManagerAdditions.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3660BF70643ED20009810C9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3660C190643EDA5009810C9 /* ExtFSMedia.m in Sources */,
+				D3660C240643EDAC009810C9 /* ExtFSMediaController.m in Sources */,
+				D38222C40667BE5200AD3D37 /* ExtFSMediaPrivate.m in Sources */,
+				D382233C0667C01500AD3D37 /* ExtFSMediaSMART.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D38226D106697F7000AD3D37 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D38226F20669809A00AD3D37 /* efsprobe.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D38A5F0506711DDB00E9E666 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D38A5F4E0671230B00E9E666 /* SMARTAlertController.m in Sources */,
+				D38A5F540671233300E9E666 /* efssmartd.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D32B203609947096001A78A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D32B1F8B09946A3B001A78A0 /* ext2_kext */;
+			targetProxy = D32B203509947096001A78A0 /* PBXContainerItemProxy */;
+		};
+		D32B208D09947622001A78A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D32B2037099470A7001A78A0 /* mount_ext2fs */;
+			targetProxy = D32B208C09947622001A78A0 /* PBXContainerItemProxy */;
+		};
+		D32B20B70994770F001A78A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D32B209009947656001A78A0 /* ext2_util */;
+			targetProxy = D32B20B60994770F001A78A0 /* PBXContainerItemProxy */;
+		};
+		D32B20D4099477D6001A78A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D32B20BD0994777A001A78A0 /* newfs_ext2 */;
+			targetProxy = D32B20D3099477D6001A78A0 /* PBXContainerItemProxy */;
+		};
+		D32B20EE0994781C001A78A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D32B20D5099477DD001A78A0 /* fsck_ext2 */;
+			targetProxy = D32B20ED0994781C001A78A0 /* PBXContainerItemProxy */;
+		};
+		D32B20F009947828001A78A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D38A5F0706711DDB00E9E666 /* efssmartd */;
+			targetProxy = D32B20F109947828001A78A0 /* PBXContainerItemProxy */;
+		};
+		D32B2112099478D8001A78A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D32B20EF09947828001A78A0 /* extprefpane */;
+			targetProxy = D32B2111099478D8001A78A0 /* PBXContainerItemProxy */;
+		};
+		D3660D630644059B009810C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3660BF90643ED20009810C9 /* ExtFSDiskManager */;
+			targetProxy = D3660D620644059B009810C9 /* PBXContainerItemProxy */;
+		};
+		D38228140669985C00AD3D37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D38226D306697F7000AD3D37 /* efsprobe */;
+			targetProxy = D38228130669985C00AD3D37 /* PBXContainerItemProxy */;
+		};
+		D39ED63404060E8300A80164 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3D485850405AEF400A80164 /* ext2_fs */;
+			targetProxy = D32E729305F2A326002928A8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		089C167DFE841241C02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C167EFE841241C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D3556142058517B7008148F9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D3560A840597A33700890EA3 /* de */,
+				D3556143058517B7008148F9 /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		D3660C7C0643FA4D009810C9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D3660C7D0643FA4D009810C9 /* de */,
+				D366110106442CD1009810C9 /* en */,
+				D3660C870643FA66009810C9 /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		D376F3C7040DF6C200A80164 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D376F3C8040DF6C200A80164 /* English */,
+				D376F3CA040DF78800A80164 /* French */,
+				D376F3CB040DF79100A80164 /* German */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D3D4AF3A057915F800A80164 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D3D4AF3B057915F800A80164 /* English */,
+				D33B8CED061F57DE0019AA16 /* fr */,
+				D33B8CFB061F59920019AA16 /* de */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D32B1FA709946A3B001A78A0 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					_KERNEL,
+					OSX,
+					DEBUG,
+					"EXT2FS_DEBUG=1",
+					DIAGNOSTIC,
+					DX_DEBUG,
+					EXT2FS_TRACE,
+				);
+				HEADER_SEARCH_PATHS = (
+					src,
+					src/gnu/ext2fs/linux/include,
+				);
+				INFOPLIST_FILE = "Resources/Info-ext2_kext.plist";
+				INSTALL_PATH = "$(SYSTEM_LIBRARY_DIR)/Extensions";
+				KERNEL_MODULE = YES;
+				MODULE_NAME = net.sourceforge.ext2fs.fs.ext2;
+				MODULE_START = ext2fs_start;
+				MODULE_STOP = ext2fs_stop;
+				MODULE_VERSION = 1.4;
+				OTHER_CFLAGS = "\U0001-no-cpp-precomp";
+				PRODUCT_NAME = ext2fs;
+				WRAPPER_EXTENSION = kext;
+			};
+			name = Development;
+		};
+		D32B1FA809946A3B001A78A0 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					_KERNEL,
+					OSX,
+				);
+				HEADER_SEARCH_PATHS = (
+					src,
+					src/gnu/ext2fs/linux/include,
+				);
+				INFOPLIST_FILE = "Resources/Info-ext2_kext.plist";
+				INSTALL_PATH = "$(SYSTEM_LIBRARY_DIR)/Extensions";
+				KERNEL_MODULE = YES;
+				MODULE_NAME = net.sourceforge.ext2fs.fs.ext2;
+				MODULE_START = ext2fs_start;
+				MODULE_STOP = ext2fs_stop;
+				MODULE_VERSION = 1.4;
+				OTHER_CFLAGS = "\U0001-no-cpp-precomp";
+				PRODUCT_NAME = ext2fs;
+				WRAPPER_EXTENSION = kext;
+			};
+			name = Deployment;
+		};
+		D32B2043099470A7001A78A0 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					APPLE,
+					OSX,
+					EXT_KNOTE,
+					DEBUG,
+					"EXT2FS_DEBUG=1",
+					DIAGNOSTIC,
+					DX_DEBUG,
+					EXT2FS_TRACE,
+				);
+				HEADER_SEARCH_PATHS = (
+					src,
+					src/gnu/ext2fs/linux/include,
+					src/depend/disklib,
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = mount_ext2;
+			};
+			name = Development;
+		};
+		D32B2044099470A7001A78A0 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					APPLE,
+					OSX,
+					EXT_KNOTE,
+				);
+				HEADER_SEARCH_PATHS = (
+					src,
+					src/gnu/ext2fs/linux/include,
+					src/depend/disklib,
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = mount_ext2;
+			};
+			name = Deployment;
+		};
+		D32B209909947656001A78A0 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OSX,
+					EXT_KNOTE,
+					DEBUG,
+					"EXT2FS_DEBUG=1",
+					DIAGNOSTIC,
+					DX_DEBUG,
+					EXT2FS_TRACE,
+				);
+				HEADER_SEARCH_PATHS = (
+					src/gnu/ext2fs,
+					src/gnu/ext2fs/linux/include,
+				);
+				PRODUCT_NAME = ext2fs.util;
+			};
+			name = Development;
+		};
+		D32B209A09947656001A78A0 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OSX,
+					EXT_KNOTE,
+				);
+				HEADER_SEARCH_PATHS = (
+					src/gnu/ext2fs,
+					src/gnu/ext2fs/linux/include,
+				);
+				PRODUCT_NAME = ext2fs.util;
+			};
+			name = Deployment;
+		};
+		D32B20C40994777A001A78A0 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OSX,
+					EXT_KNOTE,
+					DEBUG,
+					"EXT2FS_DEBUG=1",
+					DIAGNOSTIC,
+					DX_DEBUG,
+					EXT2FS_TRACE,
+				);
+				HEADER_SEARCH_PATHS = src;
+				PRODUCT_NAME = newfs_ext2;
+			};
+			name = Development;
+		};
+		D32B20C50994777A001A78A0 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OSX,
+					EXT_KNOTE,
+				);
+				HEADER_SEARCH_PATHS = src;
+				PRODUCT_NAME = newfs_ext2;
+			};
+			name = Deployment;
+		};
+		D32B20DC099477DD001A78A0 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OSX,
+					EXT_KNOTE,
+					DEBUG,
+					"EXT2FS_DEBUG=1",
+					DIAGNOSTIC,
+					DX_DEBUG,
+					EXT2FS_TRACE,
+				);
+				HEADER_SEARCH_PATHS = (
+					src,
+					src/gnu/ext2fs/linux/include,
+				);
+				PRODUCT_NAME = fsck_ext2;
+			};
+			name = Development;
+		};
+		D32B20DD099477DD001A78A0 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OSX,
+					EXT_KNOTE,
+				);
+				HEADER_SEARCH_PATHS = (
+					src,
+					src/gnu/ext2fs/linux/include,
+				);
+				PRODUCT_NAME = fsck_ext2;
+			};
+			name = Deployment;
+		};
+		D32B210B09947828001A78A0 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_FAST_OBJC_DISPATCH = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(BUILT_PRODUCTS_DIR)/ExtFSDiskManager.framework/Headers/ExtFSDiskManager.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OSX,
+					EXT_KNOTE,
+					DEBUG,
+					"EXT2FS_DEBUG=1",
+					DIAGNOSTIC,
+					DX_DEBUG,
+					EXT2FS_TRACE,
+				);
+				INFOPLIST_FILE = "Resources/Info-extprefpane.plist";
+				OTHER_CFLAGS = "\U0001";
+				OTHER_LDFLAGS = (
+					"-bundle",
+					"-twolevel_namespace",
+				);
+				PRODUCT_NAME = ExtFSManager;
+				WARNING_CFLAGS = (
+					"$(value)",
+					"-Wunreachable-code",
+				);
+				WRAPPER_EXTENSION = prefPane;
+			};
+			name = Development;
+		};
+		D32B210C09947828001A78A0 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_FAST_OBJC_DISPATCH = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(BUILT_PRODUCTS_DIR)/ExtFSDiskManager.framework/Headers/ExtFSDiskManager.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OSX,
+					EXT_KNOTE,
+				);
+				INFOPLIST_FILE = "Resources/Info-extprefpane.plist";
+				OTHER_LDFLAGS = (
+					"-bundle",
+					"-twolevel_namespace",
+				);
+				PRODUCT_NAME = ExtFSManager;
+				WRAPPER_EXTENSION = prefPane;
+			};
+			name = Deployment;
+		};
+		D3DE353A0890B0B6003B7227 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = 4.0;
+				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DEXT_KNOTE",
+					"-DDEBUG",
+					"-DEXT2FS_DEBUG=1",
+					"-DDIAGNOSTIC",
+					"-DDX_DEBUG",
+					"-DEXT2FS_TRACE",
+				);
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = ext2;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = fs;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		D3DE353B0890B0B6003B7227 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_VERSION = 3.3;
+				OPTIMIZATION_CFLAGS = "-Os";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DEXT_KNOTE",
+				);
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ext2;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = fs;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		D3DE35400890B0B6003B7227 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = (
+					src,
+					src/gnu/ext2fs/linux/include,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DEXT_KNOTE",
+					"-DDEBUG",
+					"-DEXT2FS_DEBUG=1",
+					"-DDIAGNOSTIC",
+					"-DDX_DEBUG",
+					"-DEXT2FS_TRACE",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = efsprobe;
+				SECTORDER_FLAGS = "";
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		D3DE35410890B0B6003B7227 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = (
+					src,
+					src/gnu/ext2fs/linux/include,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				OPTIMIZATION_CFLAGS = "-Os";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DEXT_KNOTE",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = efsprobe;
+				SECTORDER_FLAGS = "";
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		D3DE35460890B0B6003B7227 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 4;
+				DYLIB_CURRENT_VERSION = 4;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"";
+				FRAMEWORK_VERSION = C;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREFIX_HEADER = src/extfsmgr/coremgr/ExtFSDiskManager.h;
+				HEADER_SEARCH_PATHS = (
+					src,
+					src/gnu/ext2fs/linux/include,
+				);
+				INFOPLIST_FILE = "Resources/ExtFSDiskManager-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DDEBUG",
+					"-DEXT2FS_DEBUG=1",
+					"-DDIAGNOSTIC",
+					"-DDX_DEBUG",
+					"-DEXT2FS_TRACE",
+					"-DEFSM_PRIVATE",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-seg1addr",
+					0xEB110000,
+				);
+				PRODUCT_NAME = ExtFSDiskManager;
+				WARNING_CFLAGS = (
+					"$(value)",
+					"-Wunreachable-code",
+				);
+			};
+			name = Development;
+		};
+		D3DE35470890B0B6003B7227 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DYLIB_COMPATIBILITY_VERSION = 4;
+				DYLIB_CURRENT_VERSION = 4;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"";
+				FRAMEWORK_VERSION = C;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/extfsmgr/coremgr/ExtFSDiskManager.h;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				HEADER_SEARCH_PATHS = (
+					src,
+					src/gnu/ext2fs/linux/include,
+				);
+				INFOPLIST_FILE = "Resources/ExtFSDiskManager-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OPTIMIZATION_CFLAGS = "-Os";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DEFSM_PRIVATE",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-seg1addr",
+					0xEB110000,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = ExtFSDiskManager;
+				SECTORDER_FLAGS = "";
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		D3DE354C0890B0B6003B7227 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(BUILT_PRODUCTS_DIR)/ExtFSDiskManager.framework/Headers/ExtFSDiskManager.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "src/extfsmgr/efssmartd/Resources/efssmartd-Info.plist";
+				INSTALL_PATH = "$(USER_APPS_DIR)";
+				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DEXT_KNOTE",
+					"-DDEBUG",
+					"-DEXT2FS_DEBUG=1",
+					"-DDIAGNOSTIC",
+					"-DDX_DEBUG",
+					"-DEXT2FS_TRACE",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = efssmartd;
+				SECTORDER_FLAGS = "";
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		D3DE354D0890B0B6003B7227 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(BUILT_PRODUCTS_DIR)/ExtFSDiskManager.framework/Headers/ExtFSDiskManager.h";
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "src/extfsmgr/efssmartd/Resources/efssmartd-Info.plist";
+				INSTALL_PATH = "$(USER_APPS_DIR)";
+				OPTIMIZATION_CFLAGS = "-Os";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DEXT_KNOTE",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = efssmartd;
+				SECTORDER_FLAGS = "";
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		D3DE35580890B0B6003B7227 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DEXT_KNOTE",
+					"-DDEBUG",
+					"-DEXT2FS_DEBUG=1",
+					"-DDIAGNOSTIC",
+					"-DDX_DEBUG",
+					"-DEXT2FS_TRACE",
+				);
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = BuildAll;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		D3DE35590890B0B6003B7227 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				OPTIMIZATION_CFLAGS = "-Os";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DEXT_KNOTE",
+				);
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = BuildAll;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		D3DE355E0890B0B6003B7227 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DEXT_KNOTE",
+					"-DDEBUG",
+					"-DEXT2FS_DEBUG=1",
+					"-DDIAGNOSTIC",
+					"-DDX_DEBUG",
+					"-DEXT2FS_TRACE",
+				);
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = e2fsprogs;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		D3DE355F0890B0B6003B7227 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				OPTIMIZATION_CFLAGS = "-Os";
+				OTHER_CFLAGS = (
+					"-DOSX",
+					"-DEXT_KNOTE",
+				);
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = e2fsprogs;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		D3DE35640890B0B6003B7227 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_FAST_OBJC_DISPATCH = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_THREADSAFE_STATICS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wfloat-equal",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Development;
+		};
+		D3DE35650890B0B6003B7227 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_FAST_OBJC_DISPATCH = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_THREADSAFE_STATICS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wfloat-equal",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Deployment;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D32B1FA609946A3B001A78A0 /* Build configuration list for PBXNativeTarget "ext2_kext" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D32B1FA709946A3B001A78A0 /* Development */,
+				D32B1FA809946A3B001A78A0 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D32B2042099470A7001A78A0 /* Build configuration list for PBXNativeTarget "mount_ext2fs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D32B2043099470A7001A78A0 /* Development */,
+				D32B2044099470A7001A78A0 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D32B209809947656001A78A0 /* Build configuration list for PBXNativeTarget "ext2_util" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D32B209909947656001A78A0 /* Development */,
+				D32B209A09947656001A78A0 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D32B20C30994777A001A78A0 /* Build configuration list for PBXNativeTarget "newfs_ext2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D32B20C40994777A001A78A0 /* Development */,
+				D32B20C50994777A001A78A0 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D32B20DB099477DD001A78A0 /* Build configuration list for PBXNativeTarget "fsck_ext2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D32B20DC099477DD001A78A0 /* Development */,
+				D32B20DD099477DD001A78A0 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D32B210A09947828001A78A0 /* Build configuration list for PBXNativeTarget "extprefpane" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D32B210B09947828001A78A0 /* Development */,
+				D32B210C09947828001A78A0 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D3DE35390890B0B6003B7227 /* Build configuration list for PBXBundleTarget "ext2_fs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3DE353A0890B0B6003B7227 /* Development */,
+				D3DE353B0890B0B6003B7227 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D3DE353F0890B0B6003B7227 /* Build configuration list for PBXNativeTarget "efsprobe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3DE35400890B0B6003B7227 /* Development */,
+				D3DE35410890B0B6003B7227 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D3DE35450890B0B6003B7227 /* Build configuration list for PBXNativeTarget "ExtFSDiskManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3DE35460890B0B6003B7227 /* Development */,
+				D3DE35470890B0B6003B7227 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D3DE354B0890B0B6003B7227 /* Build configuration list for PBXNativeTarget "efssmartd" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3DE354C0890B0B6003B7227 /* Development */,
+				D3DE354D0890B0B6003B7227 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D3DE35570890B0B6003B7227 /* Build configuration list for PBXAggregateTarget "BuildAll" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3DE35580890B0B6003B7227 /* Development */,
+				D3DE35590890B0B6003B7227 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D3DE355D0890B0B6003B7227 /* Build configuration list for PBXLegacyTarget "e2fsprogs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3DE355E0890B0B6003B7227 /* Development */,
+				D3DE355F0890B0B6003B7227 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		D3DE35630890B0B6003B7227 /* Build configuration list for PBXProject "ext2fsX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3DE35640890B0B6003B7227 /* Development */,
+				D3DE35650890B0B6003B7227 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}
