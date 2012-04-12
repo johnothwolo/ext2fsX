@@ -110,6 +110,7 @@ static __inline__ long find_first_zero_bit(void * addr, unsigned long size)
 		: "ax");
 	return res;
 #else
+	//TODO: use asm code?
 #define BITS_PER_LONG 64
 	const unsigned long *p = addr;
 	unsigned long result = 0;
@@ -182,9 +183,7 @@ static __inline__ long find_next_zero_bit (const unsigned long * addr, long size
 	 * No zero yet, search remaining full words for a zero
 	 */
 	res = find_first_zero_bit (p, size - 64 * (p - addr));
-	
 	return (offset + set + res);
-
 #endif
 }
 
