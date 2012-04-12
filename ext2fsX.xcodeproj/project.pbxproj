@@ -214,25 +214,22 @@
 		55F6413A1536382F00F6E73D /* e2label.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB80D913C15EBF006C2DAD /* e2label.c */; };
 		55F641451536397300F6E73D /* blkid.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB7F7113C15EBF006C2DAD /* blkid.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55F641461536397D00F6E73D /* blkid_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F640BE1536029500F6E73D /* blkid_types.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55F641AB153652D500F6E73D /* ext2_alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB835313C15EC1006C2DAD /* ext2_alloc.c */; };
+		55F641AC153652FA00F6E73D /* ext2_balloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB835413C15EC1006C2DAD /* ext2_balloc.c */; };
+		55F641AD153652FA00F6E73D /* ext2_bmap.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB835513C15EC1006C2DAD /* ext2_bmap.c */; };
+		55F641AE153652FA00F6E73D /* ext2_ihash.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB835913C15EC1006C2DAD /* ext2_ihash.c */; };
+		55F641AF153652FB00F6E73D /* ext2_inode.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB835A13C15EC1006C2DAD /* ext2_inode.c */; };
+		55F641B0153652FB00F6E73D /* ext2_inode_cnv.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB835B13C15EC1006C2DAD /* ext2_inode_cnv.c */; };
+		55F641B1153652FB00F6E73D /* ext2_linux_balloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB835C13C15EC1006C2DAD /* ext2_linux_balloc.c */; };
+		55F641B2153652FB00F6E73D /* ext2_linux_ialloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB835D13C15EC1006C2DAD /* ext2_linux_ialloc.c */; };
+		55F641B3153652FB00F6E73D /* ext2_lookup.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB835E13C15EC1006C2DAD /* ext2_lookup.c */; };
+		55F641B4153652FB00F6E73D /* ext2_subr.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB836113C15EC1006C2DAD /* ext2_subr.c */; };
+		55F641B5153652FB00F6E73D /* ext2_vfsops.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB836213C15EC1006C2DAD /* ext2_vfsops.c */; };
+		55F641B6153652FB00F6E73D /* ext2_vnops.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB836313C15EC1006C2DAD /* ext2_vnops.c */; };
+		55F641B71536530600F6E73D /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB836B13C15EC1006C2DAD /* hash.c */; };
+		55F641B81536530A00F6E73D /* super.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB836D13C15EC1006C2DAD /* super.c */; };
+		55F641B91536530F00F6E73D /* rbtree.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB837213C15EC1006C2DAD /* rbtree.c */; };
 		D32B1F8E09946A3B001A78A0 /* ext2_apple.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B4645704099F8700A80164 /* ext2_apple.h */; };
-		D32B1F9009946A3B001A78A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
-		D32B1F9209946A3B001A78A0 /* ext2_ihash.c in Sources */ = {isa = PBXBuildFile; fileRef = F53FE97F035E7DB501A80165 /* ext2_ihash.c */; };
-		D32B1F9309946A3B001A78A0 /* ext2_inode_cnv.c in Sources */ = {isa = PBXBuildFile; fileRef = F53FE981035E84C201A80165 /* ext2_inode_cnv.c */; };
-		D32B1F9409946A3B001A78A0 /* ext2_subr.c in Sources */ = {isa = PBXBuildFile; fileRef = F53B8660035FE78601A80165 /* ext2_subr.c */; };
-		D32B1F9509946A3B001A78A0 /* rbtree.c in Sources */ = {isa = PBXBuildFile; fileRef = D381D5A2058F967200DE3D72 /* rbtree.c */; };
-		D32B1F9609946A3B001A78A0 /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = D381D59B058F967200DE3D72 /* hash.c */; };
-		D32B1F9709946A3B001A78A0 /* super.c in Sources */ = {isa = PBXBuildFile; fileRef = D381D59D058F967200DE3D72 /* super.c */; };
-		D32B1F9809946A3B001A78A0 /* ext2_io_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = D3C06DAD040A137600A80164 /* ext2_io_apple.c */; };
-		D32B1F9909946A3B001A78A0 /* ext2_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = D3B4645604099F8700A80164 /* ext2_apple.c */; };
-		D32B1F9A09946A3B001A78A0 /* ext2_vfsops.c in Sources */ = {isa = PBXBuildFile; fileRef = F5106D60035A69B701A80165 /* ext2_vfsops.c */; };
-		D32B1F9B09946A3B001A78A0 /* ext2_lookup.c in Sources */ = {isa = PBXBuildFile; fileRef = F54E5109035FDFBE01A80165 /* ext2_lookup.c */; };
-		D32B1F9C09946A3B001A78A0 /* ext2_linux_ialloc.c in Sources */ = {isa = PBXBuildFile; fileRef = F54E5107035FDEE601A80165 /* ext2_linux_ialloc.c */; };
-		D32B1F9D09946A3B001A78A0 /* ext2_linux_balloc.c in Sources */ = {isa = PBXBuildFile; fileRef = F53FE985035E8E5201A80165 /* ext2_linux_balloc.c */; };
-		D32B1F9E09946A3B001A78A0 /* ext2_inode.c in Sources */ = {isa = PBXBuildFile; fileRef = F53FE983035E84F001A80165 /* ext2_inode.c */; };
-		D32B1F9F09946A3B001A78A0 /* ext2_bmap.c in Sources */ = {isa = PBXBuildFile; fileRef = F5E7E34F035BF11D01A80165 /* ext2_bmap.c */; };
-		D32B1FA009946A3B001A78A0 /* ext2_balloc.c in Sources */ = {isa = PBXBuildFile; fileRef = F5E7E34D035BEC0801A80165 /* ext2_balloc.c */; };
-		D32B1FA109946A3B001A78A0 /* ext2_alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = F5E7E34B035BEAA101A80165 /* ext2_alloc.c */; };
-		D32B1FA209946A3B001A78A0 /* ext2_vnops.c in Sources */ = {isa = PBXBuildFile; fileRef = F53B86C10361275401A80165 /* ext2_vnops.c */; };
 		D32B203D099470A7001A78A0 /* kext_load.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485770405AC0900A80164 /* kext_load.c */; };
 		D32B2040099470A7001A78A0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32E761D05FD2919002928A8 /* SystemConfiguration.framework */; };
 		D32B208009947574001A78A0 /* getmntopts.c in Sources */ = {isa = PBXBuildFile; fileRef = D32B207F09947574001A78A0 /* getmntopts.c */; };
@@ -624,7 +621,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		551BAD7D13C157B700080BD5 /* ext2.fs */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ext2.fs; sourceTree = BUILT_PRODUCTS_DIR; };
 		551BAD7E13C157B700080BD5 /* ext2_fs1-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ext2_fs1-Info.plist"; sourceTree = "<group>"; };
 		5577045713C3CCB400457317 /* libcom_err.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcom_err.dylib; path = usr/lib/libcom_err.dylib; sourceTree = SDKROOT; };
@@ -1841,7 +1837,6 @@
 		D32E761D05FD2919002928A8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		D33C06890418779900A80164 /* newfs_ext2.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = newfs_ext2.c; path = src/newfs_ext2/newfs_ext2.c; sourceTree = "<group>"; };
 		D33D91670405A28700A80164 /* mntopts.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = mntopts.h; path = src/depend/disklib/mntopts.h; sourceTree = SOURCE_ROOT; };
-		D34D0C5C097CD18900B11D3A /* ext2_lockf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ext2_lockf.c; sourceTree = "<group>"; };
 		D3660BFA0643ED20009810C9 /* ExtFSDiskManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ExtFSDiskManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D36725BA057A6F0700A80164 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
 		D36725FE057BB78100A80164 /* DiskArbitration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiskArbitration.framework; path = /System/Library/Frameworks/DiskArbitration.framework; sourceTree = "<absolute>"; };
@@ -1849,39 +1844,17 @@
 		D376F3CA040DF78800A80164 /* French */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = French; path = fs_bndl/French.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D376F3CB040DF79100A80164 /* German */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = German; path = fs_bndl/German.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D376F3CD040E088100A80164 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
-		D381D59A058F967200DE3D72 /* dir.c */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 3; lastKnownFileType = sourcecode.c.c; path = dir.c; sourceTree = "<group>"; tabWidth = 3; usesTabs = 1; };
-		D381D59B058F967200DE3D72 /* hash.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = hash.c; sourceTree = "<group>"; };
-		D381D59C058F967200DE3D72 /* namei.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = namei.c; sourceTree = "<group>"; };
-		D381D59D058F967200DE3D72 /* super.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = super.c; sourceTree = "<group>"; };
-		D381D5A2058F967200DE3D72 /* rbtree.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = rbtree.c; sourceTree = "<group>"; };
 		D38226D406697F7000AD3D37 /* efsprobe */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = efsprobe; sourceTree = BUILT_PRODUCTS_DIR; };
 		D387FC9F059558E400C31A93 /* fsck_ext2.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = fsck_ext2.c; sourceTree = "<group>"; };
 		D387FCA10595597500C31A93 /* spawn.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = spawn.c; sourceTree = "<group>"; };
 		D387FCA20595597500C31A93 /* super.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = super.c; sourceTree = "<group>"; };
 		D38A5F0806711DDB00E9E666 /* efssmartd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = efssmartd.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D393968609AE80FB009C9BBD /* Info-ext2_kext.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-ext2_kext.plist"; path = "Resources/Info-ext2_kext.plist"; sourceTree = "<group>"; };
 		D3A9B8150582E26500B93FC7 /* mount_extmgr.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = mount_extmgr.c; sourceTree = "<group>"; };
-		D3B4645604099F8700A80164 /* ext2_apple.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_apple.c; sourceTree = "<group>"; };
 		D3B4645704099F8700A80164 /* ext2_apple.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ext2_apple.h; path = src/ext2_apple.h; sourceTree = "<group>"; };
-		D3C06DAD040A137600A80164 /* ext2_io_apple.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_io_apple.c; sourceTree = "<group>"; };
 		D3D485770405AC0900A80164 /* kext_load.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = kext_load.c; path = src/kext_load.c; sourceTree = "<group>"; };
 		D3D485870405C3B900A80164 /* ext2util.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = ext2util.c; path = src/ext2util.c; sourceTree = "<group>"; };
 		D3D4AF27057913CB00A80164 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D3D4AF28057913CB00A80164 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = /System/Library/Frameworks/PreferencePanes.framework; sourceTree = "<absolute>"; };
-		D3F6BB0F0574F80A00A80164 /* linux_namei_compat.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = linux_namei_compat.c; sourceTree = "<group>"; };
-		F5106D60035A69B701A80165 /* ext2_vfsops.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_vfsops.c; sourceTree = "<group>"; usesTabs = 1; };
-		F53B8660035FE78601A80165 /* ext2_subr.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_subr.c; sourceTree = "<group>"; };
-		F53B86BF03610B5901A80165 /* ext2_readwrite.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_readwrite.c; sourceTree = "<group>"; };
-		F53B86C10361275401A80165 /* ext2_vnops.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_vnops.c; sourceTree = "<group>"; };
-		F53FE97F035E7DB501A80165 /* ext2_ihash.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_ihash.c; sourceTree = "<group>"; usesTabs = 1; };
-		F53FE981035E84C201A80165 /* ext2_inode_cnv.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_inode_cnv.c; sourceTree = "<group>"; };
-		F53FE983035E84F001A80165 /* ext2_inode.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_inode.c; sourceTree = "<group>"; usesTabs = 1; };
-		F53FE985035E8E5201A80165 /* ext2_linux_balloc.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_linux_balloc.c; sourceTree = "<group>"; usesTabs = 1; };
-		F54E5107035FDEE601A80165 /* ext2_linux_ialloc.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_linux_ialloc.c; sourceTree = "<group>"; usesTabs = 1; };
-		F54E5109035FDFBE01A80165 /* ext2_lookup.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_lookup.c; sourceTree = "<group>"; };
-		F5E7E34B035BEAA101A80165 /* ext2_alloc.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_alloc.c; sourceTree = "<group>"; };
-		F5E7E34D035BEC0801A80165 /* ext2_balloc.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_balloc.c; sourceTree = "<group>"; };
-		F5E7E34F035BF11D01A80165 /* ext2_bmap.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = ext2_bmap.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2041,7 +2014,6 @@
 			isa = PBXGroup;
 			children = (
 				55FB784713C15EBB006C2DAD /* src */,
-				247142CAFF3F8F9811CA285C /* ext2fs */,
 				D3B4645704099F8700A80164 /* ext2_apple.h */,
 				D3D485770405AC0900A80164 /* kext_load.c */,
 				D33C06890418779900A80164 /* newfs_ext2.c */,
@@ -2063,15 +2035,6 @@
 			);
 			name = ext2fsX;
 			sourceTree = "<group>";
-		};
-		089C167CFE841241C02AAC07 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				D393968609AE80FB009C9BBD /* Info-ext2_kext.plist */,
-				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
-			);
-			name = Resources;
-			sourceTree = SOURCE_ROOT;
 		};
 		19C28FB6FE9D52B211CA2CBB /* Products */ = {
 			isa = PBXGroup;
@@ -2097,30 +2060,6 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
-		};
-		247142CAFF3F8F9811CA285C /* ext2fs */ = {
-			isa = PBXGroup;
-			children = (
-				F5E7E34B035BEAA101A80165 /* ext2_alloc.c */,
-				F5E7E34D035BEC0801A80165 /* ext2_balloc.c */,
-				F5E7E34F035BF11D01A80165 /* ext2_bmap.c */,
-				F53FE97F035E7DB501A80165 /* ext2_ihash.c */,
-				F53FE981035E84C201A80165 /* ext2_inode_cnv.c */,
-				F53FE983035E84F001A80165 /* ext2_inode.c */,
-				F53FE985035E8E5201A80165 /* ext2_linux_balloc.c */,
-				F54E5107035FDEE601A80165 /* ext2_linux_ialloc.c */,
-				F54E5109035FDFBE01A80165 /* ext2_lookup.c */,
-				F53B86BF03610B5901A80165 /* ext2_readwrite.c */,
-				F53B8660035FE78601A80165 /* ext2_subr.c */,
-				F5106D60035A69B701A80165 /* ext2_vfsops.c */,
-				F53B86C10361275401A80165 /* ext2_vnops.c */,
-				D3C06DAB040A137600A80164 /* kern */,
-				D381D597058F967200DE3D72 /* linux */,
-				089C167CFE841241C02AAC07 /* Resources */,
-			);
-			name = ext2fs;
-			path = src/gnu/ext2fs;
-			sourceTree = SOURCE_ROOT;
 		};
 		5577049413C3CCF200457317 /* Frameworks and Libraries */ = {
 			isa = PBXGroup;
@@ -4609,42 +4548,6 @@
 			name = fs_util;
 			sourceTree = "<group>";
 		};
-		D381D597058F967200DE3D72 /* linux */ = {
-			isa = PBXGroup;
-			children = (
-				D381D598058F967200DE3D72 /* fs */,
-				D381D5A1058F967200DE3D72 /* lib */,
-			);
-			path = linux;
-			sourceTree = "<group>";
-		};
-		D381D598058F967200DE3D72 /* fs */ = {
-			isa = PBXGroup;
-			children = (
-				D381D599058F967200DE3D72 /* ext3 */,
-			);
-			path = fs;
-			sourceTree = "<group>";
-		};
-		D381D599058F967200DE3D72 /* ext3 */ = {
-			isa = PBXGroup;
-			children = (
-				D381D59A058F967200DE3D72 /* dir.c */,
-				D381D59B058F967200DE3D72 /* hash.c */,
-				D381D59C058F967200DE3D72 /* namei.c */,
-				D381D59D058F967200DE3D72 /* super.c */,
-			);
-			path = ext3;
-			sourceTree = "<group>";
-		};
-		D381D5A1058F967200DE3D72 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				D381D5A2058F967200DE3D72 /* rbtree.c */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
 		D387FC9E059558B700C31A93 /* util */ = {
 			isa = PBXGroup;
 			children = (
@@ -4655,18 +4558,6 @@
 			name = util;
 			path = src/util;
 			sourceTree = "<group>";
-		};
-		D3C06DAB040A137600A80164 /* kern */ = {
-			isa = PBXGroup;
-			children = (
-				D34D0C5C097CD18900B11D3A /* ext2_lockf.c */,
-				D3B4645604099F8700A80164 /* ext2_apple.c */,
-				D3C06DAD040A137600A80164 /* ext2_io_apple.c */,
-				D3F6BB0F0574F80A00A80164 /* linux_namei_compat.c */,
-			);
-			name = kern;
-			path = src/kern;
-			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -5129,7 +5020,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D32B1F9009946A3B001A78A0 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5390,23 +5280,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D32B1F9209946A3B001A78A0 /* ext2_ihash.c in Sources */,
-				D32B1F9309946A3B001A78A0 /* ext2_inode_cnv.c in Sources */,
-				D32B1F9409946A3B001A78A0 /* ext2_subr.c in Sources */,
-				D32B1F9509946A3B001A78A0 /* rbtree.c in Sources */,
-				D32B1F9609946A3B001A78A0 /* hash.c in Sources */,
-				D32B1F9709946A3B001A78A0 /* super.c in Sources */,
-				D32B1F9809946A3B001A78A0 /* ext2_io_apple.c in Sources */,
-				D32B1F9909946A3B001A78A0 /* ext2_apple.c in Sources */,
-				D32B1F9A09946A3B001A78A0 /* ext2_vfsops.c in Sources */,
-				D32B1F9B09946A3B001A78A0 /* ext2_lookup.c in Sources */,
-				D32B1F9C09946A3B001A78A0 /* ext2_linux_ialloc.c in Sources */,
-				D32B1F9D09946A3B001A78A0 /* ext2_linux_balloc.c in Sources */,
-				D32B1F9E09946A3B001A78A0 /* ext2_inode.c in Sources */,
-				D32B1F9F09946A3B001A78A0 /* ext2_bmap.c in Sources */,
-				D32B1FA009946A3B001A78A0 /* ext2_balloc.c in Sources */,
-				D32B1FA109946A3B001A78A0 /* ext2_alloc.c in Sources */,
-				D32B1FA209946A3B001A78A0 /* ext2_vnops.c in Sources */,
+				55F641AB153652D500F6E73D /* ext2_alloc.c in Sources */,
+				55F641AC153652FA00F6E73D /* ext2_balloc.c in Sources */,
+				55F641AD153652FA00F6E73D /* ext2_bmap.c in Sources */,
+				55F641AE153652FA00F6E73D /* ext2_ihash.c in Sources */,
+				55F641AF153652FB00F6E73D /* ext2_inode.c in Sources */,
+				55F641B0153652FB00F6E73D /* ext2_inode_cnv.c in Sources */,
+				55F641B1153652FB00F6E73D /* ext2_linux_balloc.c in Sources */,
+				55F641B2153652FB00F6E73D /* ext2_linux_ialloc.c in Sources */,
+				55F641B3153652FB00F6E73D /* ext2_lookup.c in Sources */,
+				55F641B4153652FB00F6E73D /* ext2_subr.c in Sources */,
+				55F641B5153652FB00F6E73D /* ext2_vfsops.c in Sources */,
+				55F641B6153652FB00F6E73D /* ext2_vnops.c in Sources */,
+				55F641B71536530600F6E73D /* hash.c in Sources */,
+				55F641B81536530A00F6E73D /* super.c in Sources */,
+				55F641B91536530F00F6E73D /* rbtree.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5609,14 +5497,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		089C167DFE841241C02AAC07 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				089C167EFE841241C02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		55FB832B13C15EC1006C2DAD /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -6661,7 +6541,6 @@
 					"-DHAVE_UNISTD_H",
 					"-DHAVE_STRCASECMP",
 					"-DEXT2FS_REQUIRE_486",
-					"-DDKIOCGETBLOCKCOUNT",
 				);
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
@@ -6701,7 +6580,6 @@
 					"-DHAVE_UNISTD_H",
 					"-DHAVE_STRCASECMP",
 					"-DEXT2FS_REQUIRE_486",
-					"-DDKIOCGETBLOCKCOUNT",
 				);
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
@@ -6757,6 +6635,7 @@
 				55F6409C153600FA00F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55F640DB1536169400F6E73D /* Build configuration list for PBXNativeTarget "blkid" */ = {
 			isa = XCConfigurationList;
@@ -6765,6 +6644,7 @@
 				55F640DD1536169400F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55F640FA1536284B00F6E73D /* Build configuration list for PBXNativeTarget "resize2fs" */ = {
 			isa = XCConfigurationList;
@@ -6773,6 +6653,7 @@
 				55F640FC1536284B00F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55F641151536302000F6E73D /* Build configuration list for PBXNativeTarget "mke2fs" */ = {
 			isa = XCConfigurationList;
@@ -6781,6 +6662,7 @@
 				55F641171536302000F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55F64137153637D500F6E73D /* Build configuration list for PBXNativeTarget "e2label" */ = {
 			isa = XCConfigurationList;
@@ -6789,6 +6671,7 @@
 				55F64139153637D500F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D32B1FA609946A3B001A78A0 /* Build configuration list for PBXNativeTarget "ext2_kext" */ = {
 			isa = XCConfigurationList;
