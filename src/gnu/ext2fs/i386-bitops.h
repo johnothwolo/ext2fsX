@@ -71,10 +71,23 @@ static __inline__ int test_bit(int nr, void * addr)
 }
 
 /*
+ * ffz = Find First Zero in word. Undefined if no zero exists,
+ * so code should check against ~0UL first..
+ */
+static __inline__ unsigned long ffz(unsigned long word)
+{
+	__asm__("bsf %1,%0"
+		:"=r" (word)
+		:"r" (~word));
+	return word;
+}
+
+/*
  * Find-bit routines..
  */
-static __inline__ int find_first_zero_bit(void * addr, unsigned size)
+static __inline__ long find_first_zero_bit(void * addr, unsigned long size)
 {
+#ifdef __i386__
 	int res;
 	int _count = (size + 31) >> 5;
 
@@ -96,10 +109,33 @@ static __inline__ int find_first_zero_bit(void * addr, unsigned size)
 		: "0" (_count), "1" (addr), "b" (addr)
 		: "ax");
 	return res;
+#else
+#define BITS_PER_LONG 64
+	const unsigned long *p = addr;
+	unsigned long result = 0;
+	unsigned long tmp;
+	
+	while (size & ~(BITS_PER_LONG-1)) {
+		if (~(tmp = *(p++)))
+			goto found;
+		result += BITS_PER_LONG;
+		size -= BITS_PER_LONG;
+	}
+	if (!size)
+		return result;
+	
+	tmp = (*p) | (~0UL << size);
+	if (tmp == ~0UL)	/* Are any bits zero? */
+		return result + size;	/* Nope. */
+found:
+	return result + ffz(tmp);
+
+#endif
 }
 
-static __inline__ int find_next_zero_bit (void * addr, int size, int offset)
+static __inline__ long find_next_zero_bit (const unsigned long * addr, long size, long offset)
 {
+#ifdef __i386__
 	unsigned long * p = ((unsigned long *) addr) + (offset >> 5);
 	int set = 0, bit = offset & 31, res;
 	
@@ -124,18 +160,32 @@ static __inline__ int find_next_zero_bit (void * addr, int size, int offset)
 	 */
 	res = find_first_zero_bit (p, size - 32 * (p - (unsigned long *) addr));
 	return (offset + set + res);
-}
+#else
+	const unsigned long * p = addr + (offset >> 6);
+	unsigned long set = 0;
+	unsigned long res, bit = offset&63;
 
-/*
- * ffz = Find First Zero in word. Undefined if no zero exists,
- * so code should check against ~0UL first..
- */
-static __inline__ unsigned long ffz(unsigned long word)
-{
-	__asm__("bsfl %1,%0"
-		:"=r" (word)
-		:"r" (~word));
-	return word;
+	if (bit) {
+		/*
+		 * Look for zero in first word
+		 */
+		asm("bsfq %1,%0\n\t"
+			"cmoveq %2,%0"
+			: "=r" (set)
+			: "r" (~(*p >> bit)), "r"(64L));
+		if (set < (64 - bit))
+			return set + offset;
+		set = 64 - bit;
+		p++;
+	}
+	/*
+	 * No zero yet, search remaining full words for a zero
+	 */
+	res = find_first_zero_bit (p, size - 64 * (p - addr));
+	
+	return (offset + set + res);
+
+#endif
 }
 
 /* 
