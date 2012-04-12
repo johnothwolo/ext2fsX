@@ -18,6 +18,9 @@
 
 #include <stdarg.h>
 
+#if 1
+#include </usr/include/com_err.h>
+#else
 typedef long errcode_t;
 
 struct error_table {
@@ -54,7 +57,7 @@ extern void initialize_error_table_r(struct et_list **list,
 				     int num_errors,
 				     long base);
 extern void free_error_table(struct et_list *et);
-
+#endif
 #define __COM_ERR_H
 #define __COM_ERR_H__
 #endif /* !defined(__COM_ERR_H) && !defined(__COM_ERR_H__)*/
