@@ -13,10 +13,7 @@
 			buildPhases = (
 			);
 			dependencies = (
-				55F6413C153638D700F6E73D /* PBXTargetDependency */,
-				55F6413E153638D700F6E73D /* PBXTargetDependency */,
-				55F64140153638D700F6E73D /* PBXTargetDependency */,
-				55F64142153638D700F6E73D /* PBXTargetDependency */,
+				55F64532153778DD00F6E73D /* PBXTargetDependency */,
 				55F64144153638D700F6E73D /* PBXTargetDependency */,
 				55F64127153635FC00F6E73D /* PBXTargetDependency */,
 				55F64129153635FC00F6E73D /* PBXTargetDependency */,
@@ -161,9 +158,9 @@
 		55F642651537559900F6E73D /* prompt.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642281537559900F6E73D /* prompt.c */; };
 		55F642671537559900F6E73D /* request_tbl.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F6422A1537559900F6E73D /* request_tbl.c */; };
 		55F642691537559900F6E73D /* requests.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F6422C1537559900F6E73D /* requests.c */; };
-		55F6426B1537559900F6E73D /* ss.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F6422E1537559900F6E73D /* ss.h */; };
+		55F6426B1537559900F6E73D /* ss.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F6422E1537559900F6E73D /* ss.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55F6426C1537559900F6E73D /* ss_err.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642311537559900F6E73D /* ss_err.c */; };
-		55F6426D1537559900F6E73D /* ss_err.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642331537559900F6E73D /* ss_err.h */; };
+		55F6426D1537559900F6E73D /* ss_err.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642331537559900F6E73D /* ss_err.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55F6426F1537559900F6E73D /* ss_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642351537559900F6E73D /* ss_internal.h */; };
 		55F642701537559900F6E73D /* std_rqs.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642361537559900F6E73D /* std_rqs.c */; };
 		55F643A91537562300F6E73D /* alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642741537562200F6E73D /* alloc.c */; };
@@ -200,14 +197,14 @@
 		55F643E61537562300F6E73D /* e2image.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642B91537562200F6E73D /* e2image.h */; };
 		55F643E71537562300F6E73D /* expanddir.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642BA1537562200F6E73D /* expanddir.c */; };
 		55F643E91537562300F6E73D /* ext2_err.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642BC1537562200F6E73D /* ext2_err.c */; };
-		55F643EA1537562300F6E73D /* ext2_err.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642BF1537562200F6E73D /* ext2_err.h */; };
-		55F643EC1537562300F6E73D /* ext2_ext_attr.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642C11537562200F6E73D /* ext2_ext_attr.h */; };
-		55F643ED1537562300F6E73D /* ext2_fs.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642C21537562200F6E73D /* ext2_fs.h */; };
-		55F643EE1537562300F6E73D /* ext2_io.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642C31537562200F6E73D /* ext2_io.h */; };
-		55F643EF1537562300F6E73D /* ext2_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642C41537562200F6E73D /* ext2_types.h */; };
-		55F643F01537562300F6E73D /* ext2fs.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642C61537562200F6E73D /* ext2fs.h */; };
+		55F643EA1537562300F6E73D /* ext2_err.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642BF1537562200F6E73D /* ext2_err.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55F643EC1537562300F6E73D /* ext2_ext_attr.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642C11537562200F6E73D /* ext2_ext_attr.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55F643ED1537562300F6E73D /* ext2_fs.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642C21537562200F6E73D /* ext2_fs.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55F643EE1537562300F6E73D /* ext2_io.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642C31537562200F6E73D /* ext2_io.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55F643EF1537562300F6E73D /* ext2_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642C41537562200F6E73D /* ext2_types.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55F643F01537562300F6E73D /* ext2fs.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642C61537562200F6E73D /* ext2fs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55F643F11537562300F6E73D /* ext2fsP.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642C91537562200F6E73D /* ext2fsP.h */; };
-		55F643F21537562300F6E73D /* ext3_extents.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642CA1537562200F6E73D /* ext3_extents.h */; };
+		55F643F21537562300F6E73D /* ext3_extents.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642CA1537562200F6E73D /* ext3_extents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55F643F31537562300F6E73D /* ext_attr.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642CB1537562200F6E73D /* ext_attr.c */; };
 		55F643F51537562300F6E73D /* extent.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642CD1537562200F6E73D /* extent.c */; };
 		55F643F71537562300F6E73D /* fiemap.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642D01537562200F6E73D /* fiemap.h */; };
@@ -227,9 +224,9 @@
 		55F644191537562300F6E73D /* inode_io.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642F41537562300F6E73D /* inode_io.c */; };
 		55F6441B1537562300F6E73D /* io_manager.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642F61537562300F6E73D /* io_manager.c */; };
 		55F6441D1537562300F6E73D /* irel.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642F81537562300F6E73D /* irel.h */; };
-		55F644211537562300F6E73D /* jfs_compat.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642FC1537562300F6E73D /* jfs_compat.h */; };
-		55F644221537562300F6E73D /* jfs_dat.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642FD1537562300F6E73D /* jfs_dat.h */; };
-		55F644231537562300F6E73D /* jfs_user.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642FE1537562300F6E73D /* jfs_user.h */; };
+		55F644211537562300F6E73D /* jfs_compat.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642FC1537562300F6E73D /* jfs_compat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55F644221537562300F6E73D /* jfs_dat.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642FD1537562300F6E73D /* jfs_dat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55F644231537562300F6E73D /* jfs_user.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642FE1537562300F6E73D /* jfs_user.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55F644241537562300F6E73D /* kernel-jbd.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F642FF1537562300F6E73D /* kernel-jbd.h */; };
 		55F644251537562300F6E73D /* kernel-list.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F643001537562300F6E73D /* kernel-list.h */; };
 		55F644281537562300F6E73D /* link.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F643031537562300F6E73D /* link.c */; };
@@ -286,6 +283,19 @@
 		55F6451415376A9C00F6E73D /* libss.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577058E13C3CD5600457317 /* libss.1.0.dylib */; };
 		55F6451A15376B3F00F6E73D /* prof_err.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F6451815376B3E00F6E73D /* prof_err.c */; };
 		55F6451B15376C3100F6E73D /* dict.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EC913C15EBE006C2DAD /* dict.c */; };
+		55F645261537781D00F6E73D /* lsattr.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55F645251537781D00F6E73D /* lsattr.1 */; };
+		55F6452A1537784200F6E73D /* lsattr.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB80E813C15EBF006C2DAD /* lsattr.c */; };
+		55F6452B1537789600F6E73D /* libcom_err.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577045713C3CCB400457317 /* libcom_err.dylib */; };
+		55F6452C153778C400F6E73D /* libe2p.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E5A59B13C1A55600BF3DD3 /* libe2p.2.1.dylib */; };
+		55F6453315377AD400F6E73D /* libext2fs.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E5A54C13C1A17400BF3DD3 /* libext2fs.2.1.dylib */; };
+		55F6453615377F2900F6E73D /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F644D51537608E00F6E73D /* common.h */; };
+		55F6453715377F2900F6E73D /* dqblk_v2.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F644D71537608E00F6E73D /* dqblk_v2.h */; };
+		55F6453815377F2900F6E73D /* mkquota.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F644DC1537608E00F6E73D /* mkquota.h */; };
+		55F6453915377F2900F6E73D /* quota.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F644DE1537608E00F6E73D /* quota.h */; };
+		55F6453A15377F2900F6E73D /* quotaio.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F644E21537608E00F6E73D /* quotaio.h */; };
+		55F6453B15377F2900F6E73D /* quotaio_tree.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F644E51537608E00F6E73D /* quotaio_tree.h */; };
+		55F6453C15377F2900F6E73D /* quotaio_v2.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F644E81537608E00F6E73D /* quotaio_v2.h */; };
+		55F6453D15377F6400F6E73D /* blkidP.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB7F7413C15EBF006C2DAD /* blkidP.h */; };
 		D32B1F8E09946A3B001A78A0 /* ext2_apple.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B4645704099F8700A80164 /* ext2_apple.h */; };
 		D32B203D099470A7001A78A0 /* kext_load.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485770405AC0900A80164 /* kext_load.c */; };
 		D32B2040099470A7001A78A0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32E761D05FD2919002928A8 /* SystemConfiguration.framework */; };
@@ -511,34 +521,6 @@
 			remoteGlobalIDString = 55F6410D1536301D00F6E73D;
 			remoteInfo = mke2fs;
 		};
-		55F6413B153638D700F6E73D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 55E5A54B13C1A17400BF3DD3;
-			remoteInfo = ext2fs;
-		};
-		55F6413D153638D700F6E73D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 55E5A59A13C1A55600BF3DD3;
-			remoteInfo = e2p;
-		};
-		55F6413F153638D700F6E73D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5577058D13C3CD5600457317;
-			remoteInfo = ss;
-		};
-		55F64141153638D700F6E73D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 55F640D91536169400F6E73D;
-			remoteInfo = blkid;
-		};
 		55F64143153638D700F6E73D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
@@ -580,6 +562,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 5577058D13C3CD5600457317;
 			remoteInfo = ss;
+		};
+		55F6452D153778CB00F6E73D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55E5A59A13C1A55600BF3DD3;
+			remoteInfo = e2p;
+		};
+		55F64531153778DD00F6E73D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55F6451F1537781800F6E73D;
+			remoteInfo = lsattr;
+		};
+		55F6453415377ADA00F6E73D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55E5A54B13C1A17400BF3DD3;
+			remoteInfo = ext2fs;
 		};
 		55FB838E13C162CC006C2DAD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -673,7 +676,7 @@
 		55F6410C1536301D00F6E73D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			dstPath = /usr/share/man/man8/;
 			dstSubfolderSpec = 0;
 			files = (
 				55F641141536302000F6E73D /* mke2fs.8 in CopyFiles */,
@@ -683,10 +686,20 @@
 		55F6412E153637CF00F6E73D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			dstPath = /usr/share/man/man8/;
 			dstSubfolderSpec = 0;
 			files = (
 				55F64136153637D500F6E73D /* e2label.8 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		55F6451E1537781800F6E73D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				55F645261537781D00F6E73D /* lsattr.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -732,7 +745,7 @@
 		55F641131536302000F6E73D /* mke2fs.8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = mke2fs.8; sourceTree = "<group>"; };
 		55F64130153637CF00F6E73D /* e2label */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = e2label; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F64135153637D500F6E73D /* e2label.8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2label.8; sourceTree = "<group>"; };
-		55F641E71536996D00F6E73D /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
+		55F641E71536996D00F6E73D /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
 		55F641F21537559800F6E73D /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
 		55F641F31537559800F6E73D /* ct_c.awk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ct_c.awk; sourceTree = "<group>"; };
 		55F641F41537559800F6E73D /* ct_c.sed */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ct_c.sed; sourceTree = "<group>"; };
@@ -767,10 +780,6 @@
 		55F642351537559900F6E73D /* ss_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ss_internal.h; sourceTree = "<group>"; };
 		55F642361537559900F6E73D /* std_rqs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = std_rqs.c; sourceTree = "<group>"; };
 		55F642371537559900F6E73D /* std_rqs.ct */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = std_rqs.ct; sourceTree = "<group>"; };
-		55F642391537559900F6E73D /* subdirs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = subdirs; sourceTree = "<group>"; };
-		55F6423A1537559900F6E73D /* test_cmd.ct */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test_cmd.ct; sourceTree = "<group>"; };
-		55F6423B1537559900F6E73D /* test_script */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test_script; sourceTree = "<group>"; };
-		55F6423C1537559900F6E73D /* test_script_expected */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test_script_expected; sourceTree = "<group>"; };
 		55F6423D1537559900F6E73D /* test_ss.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_ss.c; sourceTree = "<group>"; };
 		55F642741537562200F6E73D /* alloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc.c; sourceTree = "<group>"; };
 		55F642761537562200F6E73D /* alloc_sb.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_sb.c; sourceTree = "<group>"; };
@@ -899,9 +908,6 @@
 		55F6438D1537562300F6E73D /* test_io.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_io.c; sourceTree = "<group>"; };
 		55F6438F1537562300F6E73D /* tst_badblocks.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tst_badblocks.c; sourceTree = "<group>"; };
 		55F643901537562300F6E73D /* tst_bitmaps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tst_bitmaps.c; sourceTree = "<group>"; };
-		55F643911537562300F6E73D /* tst_bitmaps_cmd.ct */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tst_bitmaps_cmd.ct; sourceTree = "<group>"; };
-		55F643921537562300F6E73D /* tst_bitmaps_cmds */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tst_bitmaps_cmds; sourceTree = "<group>"; };
-		55F643931537562300F6E73D /* tst_bitmaps_exp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tst_bitmaps_exp; sourceTree = "<group>"; };
 		55F643941537562300F6E73D /* tst_bitops.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tst_bitops.c; sourceTree = "<group>"; };
 		55F643951537562300F6E73D /* tst_byteswap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tst_byteswap.c; sourceTree = "<group>"; };
 		55F643961537562300F6E73D /* tst_fs_struct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tst_fs_struct.c; sourceTree = "<group>"; };
@@ -940,6 +946,8 @@
 		55F6450F15376A2E00F6E73D /* logfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = logfile.c; sourceTree = "<group>"; };
 		55F6451815376B3E00F6E73D /* prof_err.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = prof_err.c; sourceTree = "<group>"; };
 		55F6451915376B3E00F6E73D /* prof_err.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prof_err.h; sourceTree = "<group>"; };
+		55F645201537781800F6E73D /* lsattr */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lsattr; sourceTree = BUILT_PRODUCTS_DIR; };
+		55F645251537781D00F6E73D /* lsattr.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = lsattr.1; sourceTree = "<group>"; };
 		55FB784C13C15EBB006C2DAD /* dkcksum.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkcksum.c; sourceTree = "<group>"; };
 		55FB784D13C15EBB006C2DAD /* dkdisklabel.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkdisklabel.c; sourceTree = "<group>"; };
 		55FB784E13C15EBB006C2DAD /* dkopen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkopen.c; sourceTree = "<group>"; };
@@ -2046,6 +2054,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F6453315377AD400F6E73D /* libext2fs.2.1.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2104,6 +2113,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55F6451D1537781800F6E73D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55F6452C153778C400F6E73D /* libe2p.2.1.dylib in Frameworks */,
+				55F6452B1537789600F6E73D /* libcom_err.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2198,6 +2216,7 @@
 				55F640F51536284700F6E73D /* resize2fs */,
 				55F641101536301D00F6E73D /* mke2fs */,
 				55F64132153637D000F6E73D /* e2label */,
+				55F645221537781900F6E73D /* lsattr */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
 				5577049413C3CCF200457317 /* Frameworks and Libraries */,
 				D32B1FAC09946A3B001A78A0 /* ExtFSDiskManager-Info.plist */,
@@ -2230,6 +2249,7 @@
 				55F6410E1536301D00F6E73D /* mke2fs */,
 				55F64130153637CF00F6E73D /* e2label */,
 				55F644EF153760A100F6E73D /* libquota.a */,
+				55F645201537781800F6E73D /* lsattr */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2320,10 +2340,6 @@
 				55F642351537559900F6E73D /* ss_internal.h */,
 				55F642361537559900F6E73D /* std_rqs.c */,
 				55F642371537559900F6E73D /* std_rqs.ct */,
-				55F642391537559900F6E73D /* subdirs */,
-				55F6423A1537559900F6E73D /* test_cmd.ct */,
-				55F6423B1537559900F6E73D /* test_script */,
-				55F6423C1537559900F6E73D /* test_script_expected */,
 				55F6423D1537559900F6E73D /* test_ss.c */,
 			);
 			path = ss;
@@ -2460,9 +2476,6 @@
 				55F6438D1537562300F6E73D /* test_io.c */,
 				55F6438F1537562300F6E73D /* tst_badblocks.c */,
 				55F643901537562300F6E73D /* tst_bitmaps.c */,
-				55F643911537562300F6E73D /* tst_bitmaps_cmd.ct */,
-				55F643921537562300F6E73D /* tst_bitmaps_cmds */,
-				55F643931537562300F6E73D /* tst_bitmaps_exp */,
 				55F643941537562300F6E73D /* tst_bitops.c */,
 				55F643951537562300F6E73D /* tst_byteswap.c */,
 				55F643961537562300F6E73D /* tst_fs_struct.c */,
@@ -2536,6 +2549,14 @@
 				55F644E81537608E00F6E73D /* quotaio_v2.h */,
 			);
 			path = quota;
+			sourceTree = "<group>";
+		};
+		55F645221537781900F6E73D /* lsattr */ = {
+			isa = PBXGroup;
+			children = (
+				55F645251537781D00F6E73D /* lsattr.1 */,
+			);
+			path = lsattr;
 			sourceTree = "<group>";
 		};
 		55FB784713C15EBB006C2DAD /* src */ = {
@@ -4838,9 +4859,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55F642511537559900F6E73D /* mit-sipb-copyright.h in Headers */,
 				55F6426B1537559900F6E73D /* ss.h in Headers */,
 				55F6426D1537559900F6E73D /* ss_err.h in Headers */,
+				55F642511537559900F6E73D /* mit-sipb-copyright.h in Headers */,
 				55F6426F1537559900F6E73D /* ss_internal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4849,6 +4870,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F643EA1537562300F6E73D /* ext2_err.h in Headers */,
+				55F643EC1537562300F6E73D /* ext2_ext_attr.h in Headers */,
+				55F643ED1537562300F6E73D /* ext2_fs.h in Headers */,
+				55F643EE1537562300F6E73D /* ext2_io.h in Headers */,
+				55F643EF1537562300F6E73D /* ext2_types.h in Headers */,
+				55F643F01537562300F6E73D /* ext2fs.h in Headers */,
+				55F643F21537562300F6E73D /* ext3_extents.h in Headers */,
+				55F644211537562300F6E73D /* jfs_compat.h in Headers */,
+				55F644221537562300F6E73D /* jfs_dat.h in Headers */,
+				55F644231537562300F6E73D /* jfs_user.h in Headers */,
 				55F643BA1537562300F6E73D /* bitops.h in Headers */,
 				55F643C61537562300F6E73D /* bmap64.h in Headers */,
 				55F643C81537562300F6E73D /* brel.h in Headers */,
@@ -4857,19 +4888,9 @@
 				55F643D51537562300F6E73D /* crc32c_table.h in Headers */,
 				55F643E31537562300F6E73D /* dosio.h in Headers */,
 				55F643E61537562300F6E73D /* e2image.h in Headers */,
-				55F643EA1537562300F6E73D /* ext2_err.h in Headers */,
-				55F643EC1537562300F6E73D /* ext2_ext_attr.h in Headers */,
-				55F643ED1537562300F6E73D /* ext2_fs.h in Headers */,
-				55F643EE1537562300F6E73D /* ext2_io.h in Headers */,
-				55F643EF1537562300F6E73D /* ext2_types.h in Headers */,
-				55F643F01537562300F6E73D /* ext2fs.h in Headers */,
 				55F643F11537562300F6E73D /* ext2fsP.h in Headers */,
-				55F643F21537562300F6E73D /* ext3_extents.h in Headers */,
 				55F643F71537562300F6E73D /* fiemap.h in Headers */,
 				55F6441D1537562300F6E73D /* irel.h in Headers */,
-				55F644211537562300F6E73D /* jfs_compat.h in Headers */,
-				55F644221537562300F6E73D /* jfs_dat.h in Headers */,
-				55F644231537562300F6E73D /* jfs_user.h in Headers */,
 				55F644241537562300F6E73D /* kernel-jbd.h in Headers */,
 				55F644251537562300F6E73D /* kernel-list.h in Headers */,
 				55F644901537562400F6E73D /* qcow2.h in Headers */,
@@ -4892,6 +4913,7 @@
 			files = (
 				55F641451536397300F6E73D /* blkid.h in Headers */,
 				55F641461536397D00F6E73D /* blkid_types.h in Headers */,
+				55F6453D15377F6400F6E73D /* blkidP.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4899,6 +4921,13 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F6453615377F2900F6E73D /* common.h in Headers */,
+				55F6453715377F2900F6E73D /* dqblk_v2.h in Headers */,
+				55F6453815377F2900F6E73D /* mkquota.h in Headers */,
+				55F6453915377F2900F6E73D /* quota.h in Headers */,
+				55F6453A15377F2900F6E73D /* quotaio.h in Headers */,
+				55F6453B15377F2900F6E73D /* quotaio_tree.h in Headers */,
+				55F6453C15377F2900F6E73D /* quotaio_v2.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4985,6 +5014,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				55F6453515377ADA00F6E73D /* PBXTargetDependency */,
 			);
 			name = e2p;
 			productName = e2p;
@@ -5105,6 +5135,24 @@
 			productName = quota;
 			productReference = 55F644EF153760A100F6E73D /* libquota.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		55F6451F1537781800F6E73D /* lsattr */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55F645271537781D00F6E73D /* Build configuration list for PBXNativeTarget "lsattr" */;
+			buildPhases = (
+				55F6451C1537781800F6E73D /* Sources */,
+				55F6451D1537781800F6E73D /* Frameworks */,
+				55F6451E1537781800F6E73D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				55F6452E153778CB00F6E73D /* PBXTargetDependency */,
+			);
+			name = lsattr;
+			productName = lsattr;
+			productReference = 55F645201537781800F6E73D /* lsattr */;
+			productType = "com.apple.product-type.tool";
 		};
 		D32B1F8B09946A3B001A78A0 /* ext2_kext */ = {
 			isa = PBXNativeTarget;
@@ -5326,6 +5374,7 @@
 				55F6410D1536301D00F6E73D /* mke2fs */,
 				55F6412F153637CF00F6E73D /* e2label */,
 				55F644EE153760A100F6E73D /* quota */,
+				55F6451F1537781800F6E73D /* lsattr */,
 			);
 		};
 /* End PBXProject section */
@@ -5635,6 +5684,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		55F6451C1537781800F6E73D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55F6452A1537784200F6E73D /* lsattr.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D32B1F9109946A3B001A78A0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5790,26 +5847,6 @@
 			target = 55F6410D1536301D00F6E73D /* mke2fs */;
 			targetProxy = 55F6412A153635FC00F6E73D /* PBXContainerItemProxy */;
 		};
-		55F6413C153638D700F6E73D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 55E5A54B13C1A17400BF3DD3 /* ext2fs */;
-			targetProxy = 55F6413B153638D700F6E73D /* PBXContainerItemProxy */;
-		};
-		55F6413E153638D700F6E73D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 55E5A59A13C1A55600BF3DD3 /* e2p */;
-			targetProxy = 55F6413D153638D700F6E73D /* PBXContainerItemProxy */;
-		};
-		55F64140153638D700F6E73D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5577058D13C3CD5600457317 /* ss */;
-			targetProxy = 55F6413F153638D700F6E73D /* PBXContainerItemProxy */;
-		};
-		55F64142153638D700F6E73D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 55F640D91536169400F6E73D /* blkid */;
-			targetProxy = 55F64141153638D700F6E73D /* PBXContainerItemProxy */;
-		};
 		55F64144153638D700F6E73D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 55F6412F153637CF00F6E73D /* e2label */;
@@ -5839,6 +5876,21 @@
 			isa = PBXTargetDependency;
 			target = 5577058D13C3CD5600457317 /* ss */;
 			targetProxy = 55F6451515376AA000F6E73D /* PBXContainerItemProxy */;
+		};
+		55F6452E153778CB00F6E73D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55E5A59A13C1A55600BF3DD3 /* e2p */;
+			targetProxy = 55F6452D153778CB00F6E73D /* PBXContainerItemProxy */;
+		};
+		55F64532153778DD00F6E73D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55F6451F1537781800F6E73D /* lsattr */;
+			targetProxy = 55F64531153778DD00F6E73D /* PBXContainerItemProxy */;
+		};
+		55F6453515377ADA00F6E73D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55E5A54B13C1A17400BF3DD3 /* ext2fs */;
+			targetProxy = 55F6453415377ADA00F6E73D /* PBXContainerItemProxy */;
 		};
 		55FB838F13C162CC006C2DAD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5983,7 +6035,9 @@
 				);
 				HEADER_SEARCH_PATHS = "\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib";
 				INSTALL_PATH = /usr/lib;
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/ss;
 				PRODUCT_NAME = "ss.${DYLIB_CURRENT_VERSION}";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/ss;
 			};
 			name = Debug;
 		};
@@ -6002,7 +6056,9 @@
 				);
 				HEADER_SEARCH_PATHS = "\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib";
 				INSTALL_PATH = /usr/lib;
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/ss;
 				PRODUCT_NAME = "ss.${DYLIB_CURRENT_VERSION}";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/ss;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -6031,7 +6087,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/src/e2fsprogs/lib";
 				INSTALL_PATH = /usr/lib;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DOSX",
@@ -6048,8 +6103,14 @@
 					"-DHAVE_SYS_IOCTL_H",
 					"-DHAVE_SYS_MOUNT_H",
 					"-DHAVE_POSIX_MEMALIGN",
+					"-DHAVE_SYS_DISK_H",
+					"-DHAVE_SYS_QUEUE_H",
+					"-DNO_INLINE_FUNCS",
+					"-DHAVE_SYS_TIME_H",
 				);
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/ext2fs;
 				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/ext2fs;
 			};
 			name = Debug;
 		};
@@ -6075,7 +6136,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/src/e2fsprogs/lib";
 				INSTALL_PATH = /usr/lib;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"-DOSX",
 					"-DEXT_KNOTE",
@@ -6086,8 +6146,14 @@
 					"-DHAVE_SYS_IOCTL_H",
 					"-DHAVE_SYS_MOUNT_H",
 					"-DHAVE_POSIX_MEMALIGN",
+					"-DHAVE_SYS_DISK_H",
+					"-DHAVE_SYS_QUEUE_H",
+					"-DNO_INLINE_FUNCS",
+					"-DHAVE_SYS_TIME_H",
 				);
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/ext2fs;
 				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/ext2fs;
 			};
 			name = Release;
 		};
@@ -6125,9 +6191,9 @@
 					"-DHAVE_EXT2_IOCTLS=1",
 					"-DSYS_fsctl=242",
 				);
-				PRIVATE_HEADERS_FOLDER_PATH = /usr/include;
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/e2p;
 				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
-				PUBLIC_HEADERS_FOLDER_PATH = /usr/include;
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/e2p;
 			};
 			name = Debug;
 		};
@@ -6157,9 +6223,9 @@
 					"-DHAVE_EXT2_IOCTLS=1",
 					"-DSYS_fsctl=242",
 				);
-				PRIVATE_HEADERS_FOLDER_PATH = /usr/include;
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/e2p;
 				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
-				PUBLIC_HEADERS_FOLDER_PATH = /usr/include;
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/e2p;
 			};
 			name = Release;
 		};
@@ -6199,6 +6265,7 @@
 					"-DHAVE_SYS_STAT_H",
 					"-DHAVE_TERMIOS_H",
 					"-DROOT_SYSCONFDIR=\\\"/usr/local/share\\\"",
+					"-DNO_INLINE_FUNCS",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -6230,6 +6297,7 @@
 					"-DHAVE_SYS_STAT_H",
 					"-DHAVE_TERMIOS_H",
 					"-DROOT_SYSCONFDIR=\\\"/usr/local/share\\\"",
+					"-DNO_INLINE_FUNCS",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -6252,7 +6320,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib";
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/blkid;
 				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/blkid;
 			};
 			name = Debug;
 		};
@@ -6268,7 +6338,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib";
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/blkid;
 				PRODUCT_NAME = "$(TARGET_NAME).${DYLIB_CURRENT_VERSION}";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/blkid;
 			};
 			name = Release;
 		};
@@ -6420,6 +6492,47 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/src/e2fsprogs/lib";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		55F645281537781D00F6E73D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/**",
+					"\"$(SOURCE_ROOT)\"/src/gnu",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		55F645291537781D00F6E73D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/**",
+					"\"$(SOURCE_ROOT)\"/src/gnu",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -6940,7 +7053,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_FAST_OBJC_DISPATCH = YES;
@@ -6973,6 +7086,11 @@
 					"-DEXT2FS_REQUIRE_486",
 					"-DHAVE_TERMIOS_H",
 					"-DROOT_SYSCONFDIR=\\\"/usr/local/share\\\"",
+					"-DHAVE_SYS_DISK_H",
+					"-DHAVE_SYS_QUEUE_H",
+					"-DNO_INLINE_FUNCS",
+					"-DHAVE_SYS_TIME_H",
+					"-DHAVE_SYSCONF",
 				);
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
@@ -6988,7 +7106,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_FAST_OBJC_DISPATCH = YES;
@@ -7014,6 +7132,11 @@
 					"-DEXT2FS_REQUIRE_486",
 					"-DHAVE_TERMIOS_H",
 					"-DROOT_SYSCONFDIR=\\\"/usr/local/share\\\"",
+					"-DHAVE_SYS_DISK_H",
+					"-DHAVE_SYS_QUEUE_H",
+					"-DNO_INLINE_FUNCS",
+					"-DHAVE_SYS_TIME_H",
+					"-DHAVE_SYSCONF",
 				);
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
@@ -7112,6 +7235,14 @@
 			buildConfigurations = (
 				55F644F1153760A200F6E73D /* Debug */,
 				55F644F2153760A200F6E73D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		55F645271537781D00F6E73D /* Build configuration list for PBXNativeTarget "lsattr" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55F645281537781D00F6E73D /* Debug */,
+				55F645291537781D00F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

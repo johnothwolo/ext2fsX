@@ -14,6 +14,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/file.h>
+#include <time.h>
 
 #include "common.h"
 #include "quotaio.h"

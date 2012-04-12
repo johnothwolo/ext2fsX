@@ -48,6 +48,7 @@ extern int optind;
 #ifdef HAVE_DIRENT_H
 #include <dirent.h>
 #endif
+#include <sys/time.h>
 
 #include "e2p/e2p.h"
 #include "et/com_err.h"

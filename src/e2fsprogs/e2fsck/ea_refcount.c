@@ -62,7 +62,7 @@ errcode_t ea_refcount_create(int size, ext2_refcount_t *ret)
 	refcount->size = size;
 	bytes = (size_t) (size * sizeof(struct ea_refcount_el));
 #ifdef DEBUG
-	printf("Refcount allocated %d entries, %d bytes.\n",
+	printf("Refcount allocated %d entries, %zu bytes.\n",
 	       refcount->size, bytes);
 #endif
 	retval = ext2fs_get_mem(bytes, &refcount->list);
