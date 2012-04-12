@@ -23,102 +23,42 @@ typedef signed char __s8;
 #ifdef __U16_TYPEDEF
 typedef __U16_TYPEDEF __u16;
 #else
-#if (4 == 2)
-typedef	unsigned int	__u16;
-#else
-#if (2 == 2)
 typedef	unsigned short	__u16;
-#else
-  ?==error: undefined 16 bit type
-#endif /* SIZEOF_SHORT == 2 */
-#endif /* SIZEOF_INT == 2 */
 #endif /* __U16_TYPEDEF */
 
 #ifdef __S16_TYPEDEF
 typedef __S16_TYPEDEF __s16;
 #else
-#if (4 == 2)
-typedef	int		__s16;
-#else
-#if (2 == 2)
 typedef	short		__s16;
-#else
-  ?==error: undefined 16 bit type
-#endif /* SIZEOF_SHORT == 2 */
-#endif /* SIZEOF_INT == 2 */
 #endif /* __S16_TYPEDEF */
 
 
 #ifdef __U32_TYPEDEF
 typedef __U32_TYPEDEF __u32;
 #else
-#if (4 == 4)
 typedef	unsigned int	__u32;
-#else
-#if (4 == 4)
-typedef	unsigned long	__u32;
-#else
-#if (2 == 4)
-typedef	unsigned short	__u32;
-#else
- ?== error: undefined 32 bit type
-#endif /* SIZEOF_SHORT == 4 */
-#endif /* SIZEOF_LONG == 4 */
-#endif /* SIZEOF_INT == 4 */
 #endif /* __U32_TYPEDEF */
 
 #ifdef __S32_TYPEDEF
 typedef __S32_TYPEDEF __s32;
 #else
-#if (4 == 4)
 typedef	int		__s32;
-#else
-#if (4 == 4)
-typedef	long		__s32;
-#else
-#if (2 == 4)
-typedef	short		__s32;
-#else
- ?== error: undefined 32 bit type
-#endif /* SIZEOF_SHORT == 4 */
-#endif /* SIZEOF_LONG == 4 */
-#endif /* SIZEOF_INT == 4 */
 #endif /* __S32_TYPEDEF */
 
 #ifdef __U64_TYPEDEF
 typedef __U64_TYPEDEF __u64;
 #else
-#if (4 == 8)
-typedef unsigned int	__u64;
-#else
-#if (4 == 8)
-typedef unsigned long	__u64;
-#else
-#if (8 == 8)
 typedef unsigned long long	__u64;
-#endif /* SIZEOF_LONG_LONG == 8 */
-#endif /* SIZEOF_LONG == 8 */
-#endif /* SIZEOF_INT == 8 */
 #endif /* __U64_TYPEDEF */
 
 #ifdef __S64_TYPEDEF
 typedef __S64_TYPEDEF __s64;
 #else
-#if (4 == 8)
-typedef int		__s64;
-#else
-#if (4 == 8)
-typedef long		__s64;
-#else
-#if (8 == 8)
 #if defined(__GNUC__)
 typedef __signed__ long long 	__s64;
 #else
 typedef signed long long 	__s64;
 #endif /* __GNUC__ */
-#endif /* SIZEOF_LONG_LONG == 8 */
-#endif /* SIZEOF_LONG == 8 */
-#endif /* SIZEOF_INT == 8 */
 #endif /* __S64_TYPEDEF */
 
 #undef __S8_TYPEDEF
