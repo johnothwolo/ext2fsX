@@ -229,6 +229,10 @@
 		55F641B71536530600F6E73D /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB836B13C15EC1006C2DAD /* hash.c */; };
 		55F641B81536530A00F6E73D /* super.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB836D13C15EC1006C2DAD /* super.c */; };
 		55F641B91536530F00F6E73D /* rbtree.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB837213C15EC1006C2DAD /* rbtree.c */; };
+		55F641E21536982D00F6E73D /* ext2_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB837513C15EC1006C2DAD /* ext2_apple.c */; };
+		55F641E3153698C600F6E73D /* ext2_io_apple.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB837713C15EC1006C2DAD /* ext2_io_apple.c */; };
+		55F641E81536996D00F6E73D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55F641E61536996D00F6E73D /* InfoPlist.strings */; };
+		55F641E915374AB200F6E73D /* COPYRIGHT.INFO in Resources */ = {isa = PBXBuildFile; fileRef = 55FB835213C15EC1006C2DAD /* COPYRIGHT.INFO */; };
 		D32B1F8E09946A3B001A78A0 /* ext2_apple.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B4645704099F8700A80164 /* ext2_apple.h */; };
 		D32B203D099470A7001A78A0 /* kext_load.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485770405AC0900A80164 /* kext_load.c */; };
 		D32B2040099470A7001A78A0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32E761D05FD2919002928A8 /* SystemConfiguration.framework */; };
@@ -250,7 +254,7 @@
 /* Begin PBXBuildRule section */
 		D32B1FAD09946A3B001A78A0 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_0;
+			compilerSpec = com.apple.compilers.llvmgcc42;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -645,6 +649,7 @@
 		55F641131536302000F6E73D /* mke2fs.8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = mke2fs.8; sourceTree = "<group>"; };
 		55F64130153637CF00F6E73D /* e2label */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = e2label; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F64135153637D500F6E73D /* e2label.8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2label.8; sourceTree = "<group>"; };
+		55F641E71536996D00F6E73D /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
 		55FB784C13C15EBB006C2DAD /* dkcksum.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkcksum.c; sourceTree = "<group>"; };
 		55FB784D13C15EBB006C2DAD /* dkdisklabel.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkdisklabel.c; sourceTree = "<group>"; };
 		55FB784E13C15EBB006C2DAD /* dkopen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkopen.c; sourceTree = "<group>"; };
@@ -2105,9 +2110,18 @@
 			path = e2label;
 			sourceTree = "<group>";
 		};
+		55F641E41536995900F6E73D /* Kernel resources */ = {
+			isa = PBXGroup;
+			children = (
+				55F641E61536996D00F6E73D /* InfoPlist.strings */,
+			);
+			name = "Kernel resources";
+			sourceTree = "<group>";
+		};
 		55FB784713C15EBB006C2DAD /* src */ = {
 			isa = PBXGroup;
 			children = (
+				55F641E41536995900F6E73D /* Kernel resources */,
 				55FB784A13C15EBB006C2DAD /* depend */,
 				55FB788F13C15EBB006C2DAD /* e2fsprogs */,
 				55FB82FD13C15EC1006C2DAD /* e2undel */,
@@ -5016,6 +5030,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F641E81536996D00F6E73D /* InfoPlist.strings in Resources */,
+				55F641E915374AB200F6E73D /* COPYRIGHT.INFO in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5291,6 +5307,8 @@
 				55F641B71536530600F6E73D /* hash.c in Sources */,
 				55F641B81536530A00F6E73D /* super.c in Sources */,
 				55F641B91536530F00F6E73D /* rbtree.c in Sources */,
+				55F641E21536982D00F6E73D /* ext2_apple.c in Sources */,
+				55F641E3153698C600F6E73D /* ext2_io_apple.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5493,6 +5511,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		55F641E61536996D00F6E73D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				55F641E71536996D00F6E73D /* English */,
+			);
+			name = InfoPlist.strings;
+			path = ../English.lproj;
+			sourceTree = "<group>";
+		};
 		55FB832B13C15EC1006C2DAD /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
