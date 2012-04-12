@@ -998,7 +998,6 @@
 		55FB7FC913C15EBF006C2DAD /* setflags.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = setflags.c; sourceTree = "<group>"; };
 		55FB7FCA13C15EBF006C2DAD /* setversion.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = setversion.c; sourceTree = "<group>"; };
 		55FB7FCB13C15EBF006C2DAD /* uuid.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = uuid.c; sourceTree = "<group>"; };
-		55FB7FCD13C15EBF006C2DAD /* .cvsignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .cvsignore; sourceTree = "<group>"; };
 		55FB7FCE13C15EBF006C2DAD /* ChangeLog */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
 		55FB7FCF13C15EBF006C2DAD /* com_err.3 */ = {isa = PBXFileReference; lastKnownFileType = text; path = com_err.3; sourceTree = "<group>"; };
 		55FB7FD013C15EBF006C2DAD /* com_err.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = com_err.c; sourceTree = "<group>"; };
@@ -1167,7 +1166,6 @@
 		55FB807913C15EBF006C2DAD /* Makefile.library */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.library; sourceTree = "<group>"; };
 		55FB807A13C15EBF006C2DAD /* Makefile.profile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.profile; sourceTree = "<group>"; };
 		55FB807B13C15EBF006C2DAD /* Makefile.solaris-lib */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Makefile.solaris-lib"; sourceTree = "<group>"; };
-		55FB807D13C15EBF006C2DAD /* .cvsignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .cvsignore; sourceTree = "<group>"; };
 		55FB807E13C15EBF006C2DAD /* ChangeLog */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
 		55FB807F13C15EBF006C2DAD /* ct_c.awk */ = {isa = PBXFileReference; lastKnownFileType = text; path = ct_c.awk; sourceTree = "<group>"; };
 		55FB808013C15EBF006C2DAD /* ct_c.sed */ = {isa = PBXFileReference; lastKnownFileType = text; path = ct_c.sed; sourceTree = "<group>"; };
@@ -2762,7 +2760,6 @@
 		55FB7FCC13C15EBF006C2DAD /* et */ = {
 			isa = PBXGroup;
 			children = (
-				55FB7FCD13C15EBF006C2DAD /* .cvsignore */,
 				55FB7FCE13C15EBF006C2DAD /* ChangeLog */,
 				55FB7FCF13C15EBF006C2DAD /* com_err.3 */,
 				55FB7FD013C15EBF006C2DAD /* com_err.c */,
@@ -2970,7 +2967,6 @@
 		55FB807C13C15EBF006C2DAD /* ss */ = {
 			isa = PBXGroup;
 			children = (
-				55FB807D13C15EBF006C2DAD /* .cvsignore */,
 				55FB807E13C15EBF006C2DAD /* ChangeLog */,
 				55FB807F13C15EBF006C2DAD /* ct_c.awk */,
 				55FB808013C15EBF006C2DAD /* ct_c.sed */,
@@ -5898,9 +5894,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib",
 					"\"$(SOURCE_ROOT)\"/**",
-					"\"$(SOURCE_ROOT)\"/src/gnu",
 				);
 				INSTALL_PATH = /usr/local/sbin;
 				OTHER_CFLAGS = (
@@ -5933,9 +5928,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib",
 					"\"$(SOURCE_ROOT)\"/**",
-					"\"$(SOURCE_ROOT)\"/src/gnu",
 				);
 				INSTALL_PATH = /usr/local/sbin;
 				OTHER_CFLAGS = (
@@ -6005,9 +5999,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib",
 					"\"$(SOURCE_ROOT)\"/**",
-					"\"$(SOURCE_ROOT)\"/src/gnu",
 				);
 				INSTALL_PATH = /usr/local/sbin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6023,9 +6016,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib",
 					"\"$(SOURCE_ROOT)\"/**",
-					"\"$(SOURCE_ROOT)\"/src/gnu",
 				);
 				INSTALL_PATH = /usr/local/sbin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6046,9 +6038,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib",
 					"\"$(SOURCE_ROOT)\"/**",
-					"\"$(SOURCE_ROOT)\"/src/gnu",
 				);
 				INSTALL_PATH = /usr/local/sbin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6064,9 +6055,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs",
+					"\"$(SOURCE_ROOT)\"/src/e2fsprogs/lib",
 					"\"$(SOURCE_ROOT)\"/**",
-					"\"$(SOURCE_ROOT)\"/src/gnu",
 				);
 				INSTALL_PATH = /usr/local/sbin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6661,7 +6651,6 @@
 					"-DHAVE_UNISTD_H",
 					"-DHAVE_STRCASECMP",
 					"-DEXT2FS_REQUIRE_486",
-					"-DDKIOCGETBLOCKCOUNT",
 				);
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
@@ -6701,7 +6690,6 @@
 					"-DHAVE_UNISTD_H",
 					"-DHAVE_STRCASECMP",
 					"-DEXT2FS_REQUIRE_486",
-					"-DDKIOCGETBLOCKCOUNT",
 				);
 				SDKROOT = macosx;
 				WARNING_CFLAGS = (
@@ -6757,6 +6745,7 @@
 				55F6409C153600FA00F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55F640DB1536169400F6E73D /* Build configuration list for PBXNativeTarget "blkid" */ = {
 			isa = XCConfigurationList;
@@ -6765,6 +6754,7 @@
 				55F640DD1536169400F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55F640FA1536284B00F6E73D /* Build configuration list for PBXNativeTarget "resize2fs" */ = {
 			isa = XCConfigurationList;
@@ -6773,6 +6763,7 @@
 				55F640FC1536284B00F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55F641151536302000F6E73D /* Build configuration list for PBXNativeTarget "mke2fs" */ = {
 			isa = XCConfigurationList;
@@ -6781,6 +6772,7 @@
 				55F641171536302000F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55F64137153637D500F6E73D /* Build configuration list for PBXNativeTarget "e2label" */ = {
 			isa = XCConfigurationList;
@@ -6789,6 +6781,7 @@
 				55F64139153637D500F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D32B1FA609946A3B001A78A0 /* Build configuration list for PBXNativeTarget "ext2_kext" */ = {
 			isa = XCConfigurationList;
