@@ -12,6 +12,7 @@
 #define _LARGEFILE_SOURCE
 #define _LARGEFILE64_SOURCE
 
+#include "config.h"
 #if HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif
@@ -45,11 +46,11 @@ extern long long llseek(int fd, long long offset, int origin);
 
 #else	/* ! HAVE_LLSEEK */
 
-#if defined(__alpha__) || defined(__ia64__)
+#if SIZEOF_LONG == SIZEOF_LONG_LONG
 
 #define llseek lseek
 
-#else /* !__alpha__ && !__ia64__*/
+#else /* SIZEOF_LONG != SIZEOF_LONG_LONG */
 
 #include <linux/unistd.h>
 

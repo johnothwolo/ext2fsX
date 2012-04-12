@@ -20,6 +20,7 @@
 
 #define _LARGEFILE64_SOURCE
 
+#include "config.h"
 #include <sys/types.h>
 #include <dirent.h>
 #include <fcntl.h>
@@ -65,6 +66,7 @@ static unsigned long version;
 
 static int recursive;
 static int verbose;
+static int silent;
 
 static unsigned long af;
 static unsigned long rf;
@@ -78,14 +80,13 @@ static unsigned long sf;
 #define STRUCT_STAT	struct stat
 #endif
 
-static void fatal_error(const char * fmt_string, int errcode)
+static void usage(void)
 {
-	fprintf (stderr, fmt_string, program_name);
-	exit (errcode);
+	fprintf(stderr,
+		_("Usage: %s [-RVf] [-+=AacDdeijsSu] [-v version] files...\n"),
+		program_name);
+	exit(1);
 }
-
-#define usage() fatal_error(_("Usage: %s [-RV] [-+=AacDdijsSu] [-v version] files...\n"), \
-			     1)
 
 struct flags_char {
 	unsigned long	flag;
@@ -99,6 +100,7 @@ static const struct flags_char flags_array[] = {
 	{ EXT2_APPEND_FL, 'a' },
 	{ EXT2_COMPR_FL, 'c' },
 	{ EXT2_NODUMP_FL, 'd' },
+	{ EXT4_EXTENTS_FL, 'e'},
 	{ EXT2_IMMUTABLE_FL, 'i' },
 	{ EXT3_JOURNAL_DATA_FL, 'j' },
 	{ EXT2_SECRM_FL, 's' },
@@ -111,7 +113,7 @@ static const struct flags_char flags_array[] = {
 static unsigned long get_flag(char c)
 {
 	const struct flags_char *fp;
-	
+
 	for (fp = flags_array; fp->flag != 0; fp++) {
 		if (fp->optchar == c)
 			return fp->flag;
@@ -138,6 +140,10 @@ static int decode_arg (int * i, int argc, char ** argv)
 				verbose = 1;
 				continue;
 			}
+			if (*p == 'f') {
+				silent = 1;
+				continue;
+			}
 			if (*p == 'v') {
 				(*i)++;
 				if (*i >= argc)
@@ -145,7 +151,7 @@ static int decode_arg (int * i, int argc, char ** argv)
 				version = strtol (argv[*i], &tmp, 0);
 				if (*tmp) {
 					com_err (program_name, 0,
-						 _("bad version - %s\n"), 
+						 _("bad version - %s\n"),
 						 argv[*i]);
 					usage ();
 				}
@@ -181,30 +187,37 @@ static int decode_arg (int * i, int argc, char ** argv)
 	return 1;
 }
 
-static int chattr_dir_proc (const char *, struct dirent *, void *);
+static int chattr_dir_proc(const char *, struct dirent *, void *);
 
-static void change_attributes (const char * name)
+static int change_attributes(const char * name)
 {
 	unsigned long flags;
 	STRUCT_STAT	st;
+	int extent_file = 0;
 
 	if (LSTAT (name, &st) == -1) {
-		com_err (program_name, errno, _("while trying to stat %s"), 
-			 name);
-		return;
+		if (!silent)
+			com_err (program_name, errno,
+				 _("while trying to stat %s"), name);
+		return -1;
 	}
-	if (S_ISLNK(st.st_mode) && recursive)
-		return;
 
-	/* Don't try to open device files, fifos etc.  We probably
-           ought to display an error if the file was explicitly given
-           on the command line (whether or not recursive was
-           requested).  */
-	if (!S_ISREG(st.st_mode) && !S_ISLNK(st.st_mode) &&
-	    !S_ISDIR(st.st_mode))
-		return;
-
+	if (fgetflags(name, &flags) == -1) {
+		if (!silent)
+			com_err(program_name, errno,
+					_("while reading flags on %s"), name);
+		return -1;
+	}
+	if (flags & EXT4_EXTENTS_FL)
+		extent_file = 1;
 	if (set) {
+		if (extent_file && !(sf & EXT4_EXTENTS_FL)) {
+			if (!silent)
+				com_err(program_name, 0,
+				_("Clearing extent flag not supported on %s"),
+					name);
+			return -1;
+		}
 		if (verbose) {
 			printf (_("Flags of %s set as "), name);
 			print_flags (stdout, sf, 0);
@@ -213,64 +226,82 @@ static void change_attributes (const char * name)
 		if (fsetflags (name, sf) == -1)
 			perror (name);
 	} else {
-		if (fgetflags (name, &flags) == -1)
-			com_err (program_name, errno,
-			         _("while reading flags on %s"), name);
-		else {
-			if (rem)
-				flags &= ~rf;
-			if (add)
-				flags |= af;
-			if (verbose) {
-				printf (_("Flags of %s set as "), name);
-				print_flags (stdout, flags, 0);
-				printf ("\n");
+		if (rem)
+			flags &= ~rf;
+		if (add)
+			flags |= af;
+		if (extent_file && !(flags & EXT4_EXTENTS_FL)) {
+			if (!silent)
+				com_err(program_name, 0,
+				_("Clearing extent flag not supported on %s"),
+					name);
+			return -1;
+		}
+		if (verbose) {
+			printf(_("Flags of %s set as "), name);
+			print_flags(stdout, flags, 0);
+			printf("\n");
+		}
+		if (!S_ISDIR(st.st_mode))
+			flags &= ~EXT2_DIRSYNC_FL;
+		if (fsetflags(name, flags) == -1) {
+			if (!silent) {
+				com_err(program_name, errno,
+						_("while setting flags on %s"),
+						name);
 			}
-			if (!S_ISDIR(st.st_mode))
-				flags &= ~EXT2_DIRSYNC_FL;
-			if (fsetflags (name, flags) == -1)
-				com_err (program_name, errno,
-				         _("while setting flags on %s"), name);
+			return -1;
 		}
 	}
 	if (set_version) {
 		if (verbose)
 			printf (_("Version of %s set as %lu\n"), name, version);
-		if (fsetversion (name, version) == -1)
-			com_err (program_name, errno,
-			         _("while setting version on %s"), name);
+		if (fsetversion (name, version) == -1) {
+			if (!silent)
+				com_err (program_name, errno,
+					 _("while setting version on %s"),
+					 name);
+			return -1;
+		}
 	}
 	if (S_ISDIR(st.st_mode) && recursive)
-		iterate_on_dir (name, chattr_dir_proc, NULL);
+		return iterate_on_dir (name, chattr_dir_proc, NULL);
+	return 0;
 }
 
 static int chattr_dir_proc (const char * dir_name, struct dirent * de,
 			    void * private EXT2FS_ATTR((unused)))
 {
+	int ret = 0;
+
 	if (strcmp (de->d_name, ".") && strcmp (de->d_name, "..")) {
 	        char *path;
 
 		path = malloc(strlen (dir_name) + 1 + strlen (de->d_name) + 1);
-		if (!path)
-			fatal_error(_("Couldn't allocate path variable "
-				    "in chattr_dir_proc"), 1);
-		sprintf (path, "%s/%s", dir_name, de->d_name);
-		change_attributes (path);
+		if (!path) {
+			fprintf(stderr, _("Couldn't allocate path variable "
+					  "in chattr_dir_proc"));
+			return -1;
+		}
+		sprintf(path, "%s/%s", dir_name, de->d_name);
+		ret = change_attributes(path);
 		free(path);
 	}
-	return 0;
+	return ret;
 }
 
 int main (int argc, char ** argv)
 {
 	int i, j;
 	int end_arg = 0;
+	int err, retval = 0;
 
 #ifdef ENABLE_NLS
 	setlocale(LC_MESSAGES, "");
 	setlocale(LC_CTYPE, "");
 	bindtextdomain(NLS_CAT_NAME, LOCALEDIR);
 	textdomain(NLS_CAT_NAME);
+	set_com_err_gettext(gettext);
 #endif
 	if (argc && *argv)
 		program_name = *argv;
@@ -302,7 +333,10 @@ int main (int argc, char ** argv)
 	if (verbose)
 		fprintf (stderr, "chattr %s (%s)\n",
 			 E2FSPROGS_VERSION, E2FSPROGS_DATE);
-	for (j = i; j < argc; j++)
-		change_attributes (argv[j]);
-	exit(0);
+	for (j = i; j < argc; j++) {
+		err = change_attributes (argv[j]);
+		if (err)
+			retval = 1;
+	}
+	exit(retval);
 }

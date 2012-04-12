@@ -11,6 +11,7 @@
  * express or implied warranty.
  */
 
+#include "config.h"
 #ifdef HAS_STDLIB_H
 #include <stdlib.h>
 #endif
@@ -25,7 +26,7 @@ static void ss_release_readline(ss_data *info)
 #ifdef HAVE_DLOPEN
 	if (!info->readline_handle)
 		return;
-	
+
 	info->readline = 0;
 	info->add_history = 0;
 	info->redisplay = 0;
@@ -36,7 +37,7 @@ static void ss_release_readline(ss_data *info)
 }
 
 /* Libraries we will try to use for readline/editline functionality */
-#define DEFAULT_LIBPATH "libreadline.so.4:libreadline.so:libedit.so.2:libedit.so:libeditline.so.0:libeditline.so"
+#define DEFAULT_LIBPATH "libreadline.so.6:libreadline.so.5:libreadline.so.4:libreadline.so:libedit.so.2:libedit.so:libeditline.so.0:libeditline.so"
 
 void ss_get_readline(int sci_idx)
 {
@@ -46,7 +47,7 @@ void ss_get_readline(int sci_idx)
 	const char **t, *libpath = 0;
 	char	*tmp, *cp, *next;
 	char **(**completion_func)(const char *, int, int);
-	
+
 	if (info->readline_handle)
 		return;
 
@@ -55,7 +56,7 @@ void ss_get_readline(int sci_idx)
 		libpath = DEFAULT_LIBPATH;
 	if (*libpath == 0 || !strcmp(libpath, "none"))
 		return;
-	
+
 	tmp = malloc(strlen(libpath)+1);
 	if (!tmp)
 		return;
@@ -94,4 +95,4 @@ void ss_get_readline(int sci_idx)
 #endif
 }
 
-	
+

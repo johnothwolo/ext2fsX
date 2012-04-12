@@ -5,11 +5,12 @@
  * Copyright (C) 2002 Andreas Dilger
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -64,27 +65,35 @@ errcode_t ext2fs_create_resize_inode(ext2_filsys fs)
 	struct ext2_super_block	*sb;
 	struct ext2_inode	inode;
 	__u32			*dindir_buf, *gdt_buf;
-	int			rsv_add;
 	unsigned long long	apb, inode_size;
+	/* FIXME-64 - can't deal with extents */
 	blk_t			dindir_blk, rsv_off, gdt_off, gdt_blk;
-	int			dindir_dirty = 0, inode_dirty = 0;
+	int			dindir_dirty = 0, inode_dirty = 0, sb_blk = 0;
 
 	EXT2_CHECK_MAGIC(fs, EXT2_ET_MAGIC_EXT2FS_FILSYS);
 
 	sb = fs->super;
 
-	retval = ext2fs_get_mem(2 * fs->blocksize, &dindir_buf);
+	retval = ext2fs_get_array(2, fs->blocksize, &dindir_buf);
 	if (retval)
-		goto out_free;
+		return retval;
 	gdt_buf = (__u32 *)((char *)dindir_buf + fs->blocksize);
 
 	retval = ext2fs_read_inode(fs, EXT2_RESIZE_INO, &inode);
 	if (retval)
 		goto out_free;
 
+	/*
+	 * File systems with a blocksize of 1024 and bigalloc have
+	 * sb->s_first_data_block of 0; yet the superblock is still at
+	 * block #1.  We compensate for it here.
+	 */
+	sb_blk = sb->s_first_data_block;
+	if (fs->blocksize == 1024 && sb_blk == 0)
+		sb_blk = 1;
+
 	/* Maximum possible file size (we donly use the dindirect blocks) */
 	apb = EXT2_ADDR_PER_BLOCK(sb);
-	rsv_add = fs->blocksize / 512;
 	if ((dindir_blk = inode.i_block[EXT2_DIND_BLOCK])) {
 #ifdef RES_GDT_DEBUG
 		printf("reading GDT dindir %u\n", dindir_blk);
@@ -93,8 +102,9 @@ errcode_t ext2fs_create_resize_inode(ext2_filsys fs)
 		if (retval)
 			goto out_inode;
 	} else {
-		blk_t goal = 3 + sb->s_reserved_gdt_blocks +
-			fs->desc_blocks + fs->inode_blocks_per_group;
+		blk_t goal = sb_blk + fs->desc_blocks +
+			sb->s_reserved_gdt_blocks + 2 +
+			fs->inode_blocks_per_group;
 
 		retval = ext2fs_alloc_block(fs, goal, 0, &dindir_blk);
 		if (retval)
@@ -102,7 +112,7 @@ errcode_t ext2fs_create_resize_inode(ext2_filsys fs)
 		inode.i_mode = LINUX_S_IFREG | 0600;
 		inode.i_links_count = 1;
 		inode.i_block[EXT2_DIND_BLOCK] = dindir_blk;
-		inode.i_blocks = rsv_add;
+		ext2fs_iblk_set(fs, &inode, 1);
 		memset(dindir_buf, 0, fs->blocksize);
 #ifdef RES_GDT_DEBUG
 		printf("allocated GDT dindir %u\n", dindir_blk);
@@ -120,7 +130,7 @@ errcode_t ext2fs_create_resize_inode(ext2_filsys fs)
 	}
 
 	for (rsv_off = 0, gdt_off = fs->desc_blocks,
-	     gdt_blk = sb->s_first_data_block + 1 + fs->desc_blocks;
+	     gdt_blk = sb_blk + 1 + fs->desc_blocks;
 	     rsv_off < sb->s_reserved_gdt_blocks;
 	     rsv_off++, gdt_off++, gdt_blk++) {
 		unsigned int three = 1, five = 5, seven = 7;
@@ -143,7 +153,7 @@ errcode_t ext2fs_create_resize_inode(ext2_filsys fs)
 			gdt_dirty = dindir_dirty = inode_dirty = 1;
 			memset(gdt_buf, 0, fs->blocksize);
 			dindir_buf[gdt_off] = gdt_blk;
-			inode.i_blocks += rsv_add;
+			ext2fs_iblk_add_blocks(fs, &inode, 1);
 #ifdef RES_GDT_DEBUG
 			printf("added primary GDT block %u at %u[%u]\n",
 			       gdt_blk, dindir_blk, gdt_off);
@@ -174,7 +184,7 @@ errcode_t ext2fs_create_resize_inode(ext2_filsys fs)
 				       expect, grp, gdt_blk, last);
 #endif
 				gdt_buf[last] = expect;
-				inode.i_blocks += rsv_add;
+				ext2fs_iblk_add_blocks(fs, &inode, 1);
 				gdt_dirty = inode_dirty = 1;
 			} else if (gdt_buf[last] != expect) {
 #ifdef RES_GDT_DEBUG
@@ -209,7 +219,7 @@ out_inode:
 #endif
 	if (inode_dirty) {
 		inode.i_atime = inode.i_mtime = fs->now ? fs->now : time(0);
-		retval2 = ext2fs_write_inode(fs, EXT2_RESIZE_INO, &inode);
+		retval2 = ext2fs_write_new_inode(fs, EXT2_RESIZE_INO, &inode);
 		if (!retval)
 			retval = retval2;
 	}

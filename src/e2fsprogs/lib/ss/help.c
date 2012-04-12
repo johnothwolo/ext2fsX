@@ -11,6 +11,7 @@
  * express or implied warranty.
  */
 
+#include "config.h"
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -138,7 +139,7 @@ void ss_add_info_dir(sci_idx, info_dir, code_ptr)
     register char **dirs;
 
     info = ss_info(sci_idx);
-    if (info_dir == NULL && *info_dir) {
+    if (info_dir == NULL || *info_dir == '\0') {
 	*code_ptr = SS_ET_NO_INFO_DIR;
 	return;
     }

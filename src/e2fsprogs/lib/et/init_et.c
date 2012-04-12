@@ -1,7 +1,7 @@
 /*
- * $Header: /cvsroot/ext2fsx/src/e2fsprogs/lib/et/init_et.c,v 1.1.1.6 2006/06/23 16:46:50 bbergstrand Exp $
- * $Source: /cvsroot/ext2fsx/src/e2fsprogs/lib/et/init_et.c,v $
- * $Locker:  $
+ * $Header$
+ * $Source$
+ * $Locker$
  *
  * Copyright 1986, 1987, 1988 by MIT Information Systems and
  *	the MIT Student Information Processing Board.
@@ -16,6 +16,7 @@
  * express or implied warranty.
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <errno.h>
 #ifdef HAVE_STDLIB_H

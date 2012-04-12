@@ -1,11 +1,11 @@
 /*
  * brel.h
- * 
+ *
  * Copyright (C) 1996, 1997 Theodore Ts'o.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
@@ -47,7 +47,7 @@ struct ext2_block_relocation_table {
 	 * Initialize for iterating over the block relocation entries.
 	 */
 	errcode_t (*start_iter)(ext2_brel brel);
-	
+
 	/*
 	 * The iterator function for the inode relocation entries.
 	 * Returns an inode number of 0 when out of entries.

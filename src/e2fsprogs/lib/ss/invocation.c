@@ -11,6 +11,7 @@
  * express or implied warranty.
  */
 
+#include "config.h"
 #ifdef HAS_STDLIB_H
 #include <stdlib.h>
 #endif
@@ -71,6 +72,7 @@ int ss_create_invocation(subsystem_name, version_string, info_ptr,
 	*(new_table->rqt_tables+1) = (ss_request_table *) NULL;
 
 	new_table->readline_handle = 0;
+	new_table->readline_shutdown = 0;
 	new_table->readline = 0;
 	new_table->add_history = 0;
 	new_table->redisplay = 0;

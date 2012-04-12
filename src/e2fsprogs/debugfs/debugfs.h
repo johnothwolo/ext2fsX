@@ -34,22 +34,27 @@ extern char *time_to_string(__u32);
 extern time_t string_to_time(const char *);
 extern unsigned long parse_ulong(const char *str, const char *cmd,
 				 const char *descr, int *err);
-extern int strtoblk(const char *cmd, const char *str, blk_t *ret);
+extern unsigned long long parse_ulonglong(const char *str, const char *cmd,
+					  const char *descr, int *err);
+extern int strtoblk(const char *cmd, const char *str, blk64_t *ret);
 extern int common_args_process(int argc, char *argv[], int min_argc,
 			       int max_argc, const char *cmd,
 			       const char *usage, int flags);
 extern int common_inode_args_process(int argc, char *argv[],
 				     ext2_ino_t *inode, int flags);
 extern int common_block_args_process(int argc, char *argv[],
-				     blk_t *block, int *count);
+				     blk64_t *block, blk64_t *count);
 extern int debugfs_read_inode(ext2_ino_t ino, struct ext2_inode * inode,
 			      const char *cmd);
 extern int debugfs_read_inode_full(ext2_ino_t ino, struct ext2_inode * inode,
 				   const char *cmd, int bufsize);
 extern int debugfs_write_inode(ext2_ino_t ino, struct ext2_inode * inode,
 			       const char *cmd);
+extern int debugfs_write_inode_full(ext2_ino_t ino, struct ext2_inode * inode,
+				    const char *cmd, int bufsize);
 extern int debugfs_write_new_inode(ext2_ino_t ino, struct ext2_inode * inode,
 				   const char *cmd);
+extern int ext2_file_type(unsigned int mode);
 
 /* ss command functions */
 
@@ -78,12 +83,13 @@ extern void do_ncheck(int argc, char **argv);
 /* set_fields.c */
 extern void do_set_super(int argc, char **);
 extern void do_set_inode(int argc, char **);
+extern void do_set_block_group_descriptor(int argc, char **);
 
 /* unused.c */
 extern void do_dump_unused(int argc, char **argv);
 
 /* debugfs.c */
-extern void internal_dump_inode(FILE *, const char *, ext2_ino_t, 
+extern void internal_dump_inode(FILE *, const char *, ext2_ino_t,
 				struct ext2_inode *, int);
 
 extern void do_dirty_filesys(int argc, char **argv);
@@ -100,6 +106,8 @@ extern void do_unlink(int argc, char **argv);
 extern void do_find_free_block(int argc, char **argv);
 extern void do_find_free_inode(int argc, char **argv);
 extern void do_stat(int argc, char **argv);
+extern void do_dump_extents(int argc, char **argv);
+extern void do_blocks(int argc, char *argv[]);
 
 extern void do_chroot(int argc, char **argv);
 extern void do_clri(int argc, char **argv);
@@ -123,4 +131,11 @@ extern void do_features(int argc, char **argv);
 extern void do_bmap(int argc, char **argv);
 extern void do_imap(int argc, char **argv);
 extern void do_set_current_time(int argc, char **argv);
+extern void do_supported_features(int argc, char **argv);
+extern void do_punch(int argc, char **argv);
 
+extern void do_dump_mmp(int argc, char **argv);
+extern void do_set_mmp_value(int argc, char **argv);
+
+extern void do_freefrag(int argc, char **argv);
+extern void do_filefrag(int argc, char *argv[]);

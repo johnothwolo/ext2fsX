@@ -6,6 +6,8 @@
   (C) 2000 Andreas Gruenbacher, <a.gruenbacher@computer.org>
 */
 
+#ifndef _EXT2_EXT_ATTR_H
+#define _EXT2_EXT_ATTR_H
 /* Magic value in attribute blocks */
 #define EXT2_EXT_ATTR_MAGIC_v1		0xEA010000
 #define EXT2_EXT_ATTR_MAGIC		0xEA020000
@@ -34,7 +36,7 @@ struct ext2_ext_attr_entry {
 };
 
 #define EXT2_EXT_ATTR_PAD_BITS		2
-#define EXT2_EXT_ATTR_PAD		(1<<EXT2_EXT_ATTR_PAD_BITS)
+#define EXT2_EXT_ATTR_PAD		((unsigned) 1<<EXT2_EXT_ATTR_PAD_BITS)
 #define EXT2_EXT_ATTR_ROUND		(EXT2_EXT_ATTR_PAD-1)
 #define EXT2_EXT_ATTR_LEN(name_len) \
 	(((name_len) + EXT2_EXT_ATTR_ROUND + \
@@ -66,4 +68,4 @@ extern void ext2_ext_attr_done(void);
 #  define ext2_set_ext_attr NULL
 # endif
 #endif  /* __KERNEL__ */
-
+#endif  /* _EXT2_EXT_ATTR_H */

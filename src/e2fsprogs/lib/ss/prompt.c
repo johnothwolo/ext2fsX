@@ -1,8 +1,8 @@
 /*
  * prompt.c: Routines for retrieving and setting a prompt.
  *
- * $Header: /cvsroot/ext2fsx/src/e2fsprogs/lib/ss/prompt.c,v 1.1.1.3 2006/06/23 16:47:32 bbergstrand Exp $
- * $Locker:  $
+ * $Header$
+ * $Locker$
  *
  * Copyright 1987, 1988 by MIT Student Information Processing Board
  *
@@ -16,6 +16,7 @@
  * express or implied warranty.
  */
 
+#include "config.h"
 #include <stdio.h>
 #include "ss_internal.h"
 

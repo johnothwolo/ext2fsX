@@ -1,8 +1,8 @@
 \input texinfo @c -*-texinfo-*-
 
-@c $Header: /cvsroot/ext2fsx/src/e2fsprogs/lib/et/com_err.texinfo,v 1.1.1.4 2006/06/23 16:46:49 bbergstrand Exp $
-@c $Source: /cvsroot/ext2fsx/src/e2fsprogs/lib/et/com_err.texinfo,v $
-@c $Locker:  $
+@c $Header$
+@c $Source$
+@c $Locker$
 
 @c Note that although this source file is in texinfo format (more
 @c or less), it is not yet suitable for turning into an ``info''
@@ -19,11 +19,9 @@
 
 @ifinfo
 @dircategory Development
-@format
-START-INFO-DIR-ENTRY
-* com_err: (com_err.info).   A Common Error Description Library for UNIX.
-END-INFO-DIR-ENTRY
-@end format
+@direntry
+* Com_err: (com_err).   A Common Error Description Library for UNIX.
+@end direntry
 @end ifinfo
 
 @iftex
@@ -539,4 +537,5 @@ for getting us started with ``discuss,'' for which this package was
 originally written; and everyone I've talked into --- I mean, asked to read
 this document and the ``man'' pages.
 
+@contents
 @bye

@@ -91,11 +91,13 @@ sub do_expand {
     $msg =~ s/\@n/invalid/g;
     $msg =~ s/\@o/orphaned/g;
     $msg =~ s/\@p/problem in/g;
+    $msg =~ s/\@q/quota/g;
     $msg =~ s/\@r/root inode/g;
     $msg =~ s/\@s/should be/g;
     $msg =~ s/\@S/superblock/g;
     $msg =~ s/\@u/unattached/g;
     $msg =~ s/\@v/device/g;
+    $msg =~ s/\@x/extent/g;
     $msg =~ s/\@z/zero-length/g;
     $msg =~ s/\@\@/@/g;
 }

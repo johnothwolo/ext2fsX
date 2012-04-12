@@ -2,13 +2,14 @@
  * This testing program makes sure the badblocks implementation works.
  *
  * Copyright (C) 1996 by Theodore Ts'o.
- * 
+ *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #if HAVE_UNISTD_H
@@ -42,7 +43,7 @@ blk_t test4a[] = {
 	11, 0,
 	12, 1,
 	13, 1,
-	14, 0, 
+	14, 0,
 	80, 0,
 	45, 0,
 	66, 1,
@@ -60,7 +61,7 @@ blk_t test5a[] = {
 	1, DEL_BLK,
 	0
 	};
-		
+
 
 static int test_fail = 0;
 static int test_expected_fail = 0;
@@ -70,7 +71,7 @@ static errcode_t create_test_list(blk_t *vec, badblocks_list *ret)
 	errcode_t	retval;
 	badblocks_list	bb;
 	int		i;
-	
+
 	retval = ext2fs_badblocks_list_create(&bb, 5);
 	if (retval) {
 		com_err("create_test_list", retval, "while creating list");
@@ -95,7 +96,7 @@ static void print_list(badblocks_list bb, int verify)
 	badblocks_iterate	iter;
 	blk_t			blk;
 	int			i, ok;
-	
+
 	retval = ext2fs_badblocks_list_iterate_begin(bb, &iter);
 	if (retval) {
 		com_err("print_list", retval, "while setting up iterator");
@@ -103,7 +104,7 @@ static void print_list(badblocks_list bb, int verify)
 	}
 	ok = i = 1;
 	while (ext2fs_badblocks_list_iterate(iter, &blk)) {
-		printf("%d ", blk);
+		printf("%u ", blk);
 		if (i++ != blk)
 			ok = 0;
 	}
@@ -130,7 +131,7 @@ static void validate_test_seq(badblocks_list bb, blk_t *vec)
 			ok = 0;
 			test_fail++;
 		}
-		printf("\tblock %d is %s --- %s\n", vec[i],
+		printf("\tblock %u is %s --- %s\n", vec[i],
 		       match ? "present" : "absent",
 		       ok ? "OK" : "NOT OK");
 	}
@@ -145,7 +146,7 @@ static void do_test_seq(badblocks_list bb, blk_t *vec)
 		case ADD_BLK:
 			ext2fs_badblocks_list_add(bb, vec[i]);
 			match = ext2fs_badblocks_list_test(bb, vec[i]);
-			printf("Adding block %d --- now %s\n", vec[i], 
+			printf("Adding block %u --- now %s\n", vec[i],
 			       match ? "present" : "absent");
 			if (!match) {
 				printf("FAILURE!\n");
@@ -155,8 +156,8 @@ static void do_test_seq(badblocks_list bb, blk_t *vec)
 		case DEL_BLK:
 			ext2fs_badblocks_list_del(bb, vec[i]);
 			match = ext2fs_badblocks_list_test(bb, vec[i]);
-			printf("Removing block %d --- now %s\n", vec[i], 
-			       ext2fs_badblocks_list_test(bb, vec[i]) ? 
+			printf("Removing block %u --- now %s\n", vec[i],
+			       ext2fs_badblocks_list_test(bb, vec[i]) ?
 			       "present" : "absent");
 			if (match) {
 				printf("FAILURE!\n");
@@ -209,7 +210,7 @@ static void invalid_proc(ext2_filsys fs, blk_t blk)
 		printf("Expected invalid block\n");
 		test_expected_fail++;
 	} else {
-		printf("Invalid block #: %d\n", blk);
+		printf("Invalid block #: %u\n", blk);
 		test_fail++;
 	}
 }
@@ -227,7 +228,7 @@ int file_test_invalid(badblocks_list bb)
 	fs->super = malloc(SUPERBLOCK_SIZE);
 	memset(fs->super, 0, SUPERBLOCK_SIZE);
 	fs->super->s_first_data_block = 1;
-	fs->super->s_blocks_count = 100;
+	ext2fs_blocks_count_set(fs->super, 100);
 
 	f = tmpfile();
 	if (!f) {
@@ -254,7 +255,7 @@ int file_test_invalid(badblocks_list bb)
 		printf("Expected test failure didn't happen!\n");
 		test_fail++;
 	}
-		
+
 
 	if (ext2fs_badblocks_equal(bb, new_bb)) {
 		printf("Block bitmap matched after reading and writing.\n");
@@ -271,6 +272,8 @@ int main(int argc, char **argv)
 	int	equal;
 	errcode_t	retval;
 
+	add_error_table(&et_ext2_error_table);
+
 	bb1 = bb2 = bb3 = bb4 = bb5 = 0;
 
 	printf("test1: ");
@@ -278,7 +281,7 @@ int main(int argc, char **argv)
 	if (retval == 0)
 		print_list(bb1, 1);
 	printf("\n");
-	
+
 	printf("test2: ");
 	retval = create_test_list(test2, &bb2);
 	if (retval == 0)
@@ -290,7 +293,7 @@ int main(int argc, char **argv)
 	if (retval == 0)
 		print_list(bb3, 1);
 	printf("\n");
-	
+
 	printf("test4: ");
 	retval = create_test_list(test4, &bb4);
 	if (retval == 0) {
@@ -315,31 +318,31 @@ int main(int argc, char **argv)
 	if (bb1 && bb2 && bb3 && bb4 && bb5) {
 		printf("Comparison tests:\n");
 		equal = ext2fs_badblocks_equal(bb1, bb2);
-		printf("bb1 and bb2 are %sequal.\n", equal ? "" : "NOT "); 
+		printf("bb1 and bb2 are %sequal.\n", equal ? "" : "NOT ");
 		if (equal)
 			test_fail++;
 
 		equal = ext2fs_badblocks_equal(bb1, bb3);
-		printf("bb1 and bb3 are %sequal.\n", equal ? "" : "NOT "); 
+		printf("bb1 and bb3 are %sequal.\n", equal ? "" : "NOT ");
 		if (!equal)
 			test_fail++;
-		
+
 		equal = ext2fs_badblocks_equal(bb1, bb4);
-		printf("bb1 and bb4 are %sequal.\n", equal ? "" : "NOT "); 
+		printf("bb1 and bb4 are %sequal.\n", equal ? "" : "NOT ");
 		if (equal)
 			test_fail++;
 
 		equal = ext2fs_badblocks_equal(bb4, bb5);
-		printf("bb4 and bb5 are %sequal.\n", equal ? "" : "NOT "); 
+		printf("bb4 and bb5 are %sequal.\n", equal ? "" : "NOT ");
 		if (!equal)
 			test_fail++;
 		printf("\n");
 	}
-	
+
 	file_test(bb4);
 
 	file_test_invalid(bb4);
-	
+
 	if (test_fail == 0)
 		printf("ext2fs library badblocks tests checks out OK!\n");
 

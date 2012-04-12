@@ -1,11 +1,14 @@
 /*
  * util.c --- utilities for the debugfs program
- * 
+ *
  * Copyright (C) 1993, 1994 Theodore Ts'o.  This file may be
  * redistributed under the terms of the GNU Public License.
  *
  */
 
+#define _XOPEN_SOURCE 600 /* needed for strptime */
+
+#include "config.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -15,7 +18,7 @@
 #include <signal.h>
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>
-#else 
+#else
 extern int optind;
 extern char *optarg;
 #endif
@@ -23,6 +26,7 @@ extern char *optarg;
 extern int optreset;		/* defined by BSD, but not others */
 #endif
 
+#include "ss/ss.h"
 #include "debugfs.h"
 
 /*
@@ -38,7 +42,7 @@ extern int optreset;		/* defined by BSD, but not others */
  * affairs is that BSD-derived versions of getopt() misbehave if
  * optind is set to 0 in order to reset getopt(), and glibc's getopt()
  * will core dump if optind is set 1 in order to reset getopt().
- * 
+ *
  * More modern versions of BSD require that optreset be set to 1 in
  * order to reset getopt().   Sigh.  Standards, anyone?
  *
@@ -76,15 +80,17 @@ static const char *find_pager(char *buf)
 FILE *open_pager(void)
 {
 	FILE *outfile = 0;
-	const char *pager = getenv("DEBUGFS_PAGER");
+	const char *pager = ss_safe_getenv("DEBUGFS_PAGER");
 	char buf[80];
 
 	signal(SIGPIPE, SIG_IGN);
+	if (!isatty(1))
+		return stdout;
 	if (!pager)
-		pager = getenv("PAGER");
+		pager = ss_safe_getenv("PAGER");
 	if (!pager)
 		pager = find_pager(buf);
-	if (!pager || 
+	if (!pager ||
 	    (strcmp(pager, "__none__") == 0) ||
 	    ((outfile = popen(pager, "w")) == 0))
 		return stdout;
@@ -119,7 +125,7 @@ ext2_ino_t string_to_inode(char *str)
 
 	retval = ext2fs_namei(current_fs, root, cwd, str, &ino);
 	if (retval) {
-		com_err(str, retval, "");
+		com_err(str, retval, 0);
 		return 0;
 	}
 	return ino;
@@ -188,11 +194,11 @@ char *time_to_string(__u32 cl)
 {
 	static int	do_gmt = -1;
 	time_t		t = (time_t) cl;
-	char *		tz;
+	const char	*tz;
 
 	if (do_gmt == -1) {
 		/* The diet libc doesn't respect the TZ environemnt variable */
-		tz = getenv("TZ");
+		tz = ss_safe_getenv("TZ");
 		if (!tz)
 			tz = "";
 		do_gmt = !strcmp(tz, "GMT");
@@ -208,7 +214,7 @@ char *time_to_string(__u32 cl)
 extern time_t string_to_time(const char *arg)
 {
 	struct	tm	ts;
-	unsigned long	ret;
+	time_t		ret;
 	char *tmp;
 
 	if (strcmp(arg, "now") == 0) {
@@ -227,14 +233,15 @@ extern time_t string_to_time(const char *arg)
 	    ts.tm_min > 59 || ts.tm_sec > 61)
 		ts.tm_mday = 0;
 #endif
-	if (ts.tm_mday == 0) {
+	ts.tm_isdst = -1;
+	ret = mktime(&ts);
+	if (ts.tm_mday == 0 || ret == ((time_t) -1)) {
 		/* Try it as an integer... */
-
 		ret = strtoul(arg, &tmp, 0);
 		if (*tmp)
 			return ((time_t) -1);
 	}
-	return mktime(&ts);
+	return ret;
 }
 
 /*
@@ -246,8 +253,32 @@ unsigned long parse_ulong(const char *str, const char *cmd,
 {
 	char		*tmp;
 	unsigned long	ret;
-	
+
 	ret = strtoul(str, &tmp, 0);
+	if (*tmp == 0) {
+		if (err)
+			*err = 0;
+		return ret;
+	}
+	com_err(cmd, 0, "Bad %s - %s", descr, str);
+	if (err)
+		*err = 1;
+	else
+		exit(1);
+	return 0;
+}
+
+/*
+ * This function will convert a string to an unsigned long long, printing
+ * an error message if it fails, and returning success or failure in err.
+ */
+unsigned long long parse_ulonglong(const char *str, const char *cmd,
+				   const char *descr, int *err)
+{
+	char			*tmp;
+	unsigned long long	ret;
+
+	ret = strtoull(str, &tmp, 0);
 	if (*tmp == 0) {
 		if (err)
 			*err = 0;
@@ -265,17 +296,15 @@ unsigned long parse_ulong(const char *str, const char *cmd,
  * This function will convert a string to a block number.  It returns
  * 0 on success, 1 on failure.
  */
-int strtoblk(const char *cmd, const char *str, blk_t *ret)
+int strtoblk(const char *cmd, const char *str, blk64_t *ret)
 {
 	blk_t	blk;
 	int	err;
 
-	blk = parse_ulong(str, cmd, "block number", &err);
+	blk = parse_ulonglong(str, cmd, "block number", &err);
 	*ret = blk;
-	if (err == 0 && blk == 0) {
-		com_err(cmd, 0, "Invalid block number 0");
-		err = 1;
-	}
+	if (err)
+		com_err(cmd, 0, "Invalid block number: %s", str);
 	return err;
 }
 
@@ -314,9 +343,9 @@ int common_inode_args_process(int argc, char *argv[],
 {
 	if (common_args_process(argc, argv, 2, 2, argv[0], "<file>", flags))
 		return 1;
-	
+
 	*inode = string_to_inode(argv[1]);
-	if (!*inode) 
+	if (!*inode)
 		return 1;
 	return 0;
 }
@@ -325,7 +354,7 @@ int common_inode_args_process(int argc, char *argv[],
  * This is a helper function used by do_freeb, do_setb, and do_testb
  */
 int common_block_args_process(int argc, char *argv[],
-			      blk_t *block, int *count)
+			      blk64_t *block, blk64_t *count)
 {
 	int	err;
 
@@ -335,6 +364,11 @@ int common_block_args_process(int argc, char *argv[],
 
 	if (strtoblk(argv[0], argv[1], block))
 		return 1;
+	if (*block == 0) {
+		com_err(argv[0], 0, "Invalid block number 0");
+		err = 1;
+	}
+
 	if (argc > 2) {
 		*count = parse_ulong(argv[2], argv[0], "count", &err);
 		if (err)
@@ -369,6 +403,22 @@ int debugfs_read_inode(ext2_ino_t ino, struct ext2_inode * inode,
 	return 0;
 }
 
+int debugfs_write_inode_full(ext2_ino_t ino,
+			     struct ext2_inode *inode,
+			     const char *cmd,
+			     int bufsize)
+{
+	int retval;
+
+	retval = ext2fs_write_inode_full(current_fs, ino,
+					 inode, bufsize);
+	if (retval) {
+		com_err(cmd, retval, "while writing inode %u", ino);
+		return 1;
+	}
+	return 0;
+}
+
 int debugfs_write_inode(ext2_ino_t ino, struct ext2_inode * inode,
 			const char *cmd)
 {
@@ -392,5 +442,34 @@ int debugfs_write_new_inode(ext2_ino_t ino, struct ext2_inode * inode,
 		com_err(cmd, retval, "while creating inode %u", ino);
 		return 1;
 	}
+	return 0;
+}
+
+/*
+ * Given a mode, return the ext2 file type
+ */
+int ext2_file_type(unsigned int mode)
+{
+	if (LINUX_S_ISREG(mode))
+		return EXT2_FT_REG_FILE;
+
+	if (LINUX_S_ISDIR(mode))
+		return EXT2_FT_DIR;
+
+	if (LINUX_S_ISCHR(mode))
+		return EXT2_FT_CHRDEV;
+
+	if (LINUX_S_ISBLK(mode))
+		return EXT2_FT_BLKDEV;
+
+	if (LINUX_S_ISLNK(mode))
+		return EXT2_FT_SYMLINK;
+
+	if (LINUX_S_ISFIFO(mode))
+		return EXT2_FT_FIFO;
+
+	if (LINUX_S_ISSOCK(mode))
+		return EXT2_FT_SOCK;
+
 	return 0;
 }

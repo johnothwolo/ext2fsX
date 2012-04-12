@@ -16,9 +16,10 @@ struct problem_context {
 	ext2_ino_t ino, ino2, dir;
 	struct ext2_inode *inode;
 	struct ext2_dir_entry *dirent;
-	blk_t	blk, blk2;
+	blk64_t	blk, blk2;
 	e2_blkcnt_t	blkcount;
 	int		group;
+	__u32		csum1, csum2;
 	__u64	num;
 	const char *str;
 };
@@ -38,6 +39,7 @@ struct problem_context {
 #define PR_LATCH_LOW_DTIME 0x0070 /* Latch for pass1 orphaned list refugees */
 #define PR_LATCH_TOOBIG	0x0080	/* Latch for file to big errors */
 #define PR_LATCH_OPTIMIZE_DIR 0x0090 /* Latch for optimize directories */
+#define PR_LATCH_BG_CHECKSUM 0x00A0  /* Latch for block group checksums */
 
 #define PR_LATCH(x)	((((x) & PR_LATCH_MASK) >> 4) - 1)
 
@@ -82,12 +84,12 @@ struct problem_context {
 /* Adding UUID to filesystem */
 #define PR_0_ADD_UUID		0x000009
 
-/* Relocate hint */	
+/* Relocate hint */
 #define PR_0_RELOCATE_HINT	0x00000A
 
 /* Miscellaneous superblock corruption */
 #define PR_0_MISC_CORRUPT_SUPER	0x00000B
-	
+
 /* Error determing physical device size of filesystem */
 #define PR_0_GETSIZE_ERROR	0x00000C
 
@@ -135,18 +137,18 @@ struct problem_context {
 
 /* Clearing orphan inode */
 #define PR_0_ORPHAN_CLEAR_INODE			0x000020
-	
+
 /* Illegal block found in orphaned inode */
 #define PR_0_ORPHAN_ILLEGAL_BLOCK_NUM		0x000021
 
 /* Already cleared block found in orphaned inode */
 #define PR_0_ORPHAN_ALREADY_CLEARED_BLOCK	0x000022
-	
+
 /* Illegal orphan inode in superblock */
 #define PR_0_ORPHAN_ILLEGAL_HEAD_INODE		0x000023
 
 /* Illegal inode in orphaned inode list */
-#define PR_0_ORPHAN_ILLEGAL_INODE 		0x000024
+#define PR_0_ORPHAN_ILLEGAL_INODE		0x000024
 
 /* Journal has unsupported read-only feature - abort */
 #define PR_0_JOURNAL_UNSUPP_ROCOMPAT		0x000025
@@ -192,6 +194,60 @@ struct problem_context {
 
 /* Superblock hint for external journal incorrect */
 #define PR_0_EXTERNAL_JOURNAL_HINT		0x000033
+
+/* Superblock hint for external journal incorrect */
+#define PR_0_DIRHASH_HINT			0x000034
+
+/* Group descriptor N checksum is invalid */
+#define PR_0_GDT_CSUM				0x000035
+
+/* Group descriptor N marked uninitialized without feature set. */
+#define PR_0_GDT_UNINIT				0x000036
+
+/* Block bitmap is not initialised and Inode bitmap is -- NO LONGER USED */
+/* #define PR_0_BB_UNINIT_IB_INIT			0x000037 */
+
+/* Group descriptor N has invalid unused inodes count. */
+#define PR_0_GDT_ITABLE_UNUSED			0x000038
+
+/* Last group block bitmap is uninitialized. */
+#define PR_0_BB_UNINIT_LAST			0x000039
+
+/* Journal transaction found corrupt */
+#define PR_0_JNL_TXN_CORRUPT			0x00003A
+
+/* The test_fs filesystem flag is set and ext4 is available */
+#define PR_0_CLEAR_TESTFS_FLAG			0x00003B
+
+/* Last mount time is in the future (fudged) */
+#define PR_0_FUTURE_SB_LAST_MOUNT_FUDGED	0x00003C
+
+/* Last write time is in the future (fudged) */
+#define PR_0_FUTURE_SB_LAST_WRITE_FUDGED	0x00003D
+
+/* Block group checksum (latch question) */
+#define PR_0_GDT_CSUM_LATCH			0x00003E
+
+/* Free inodes count wrong */
+#define PR_0_FREE_INODE_COUNT			0x00003F
+
+/* Free blocks count wrong */
+#define PR_0_FREE_BLOCK_COUNT			0x000040
+
+/* Make quota file hidden */
+#define	PR_0_HIDE_QUOTA				0x000041
+
+/* Superblock has invalid MMP block. */
+#define PR_0_MMP_INVALID_BLK			0x000042
+
+/* Superblock has invalid MMP magic. */
+#define PR_0_MMP_INVALID_MAGIC			0x000043
+
+/* Opening file system failed */
+#define PR_0_OPEN_FAILED			0x000044
+
+/* Checking group descriptor failed */
+#define PR_0_CHECK_DESC_FAILED			0x000045
 
 /*
  * Pass 1 errors
@@ -249,26 +305,26 @@ struct problem_context {
 #define PR_1_INODE_BLOCK_LATCH		0x010010
 
 /* Too many bad blocks in inode */
-#define	PR_1_TOO_MANY_BAD_BLOCKS 	0x010011
-	
+#define	PR_1_TOO_MANY_BAD_BLOCKS	0x010011
+
 /* Illegal block number in bad block inode */
-#define PR_1_BB_ILLEGAL_BLOCK_NUM 	0x010012
+#define PR_1_BB_ILLEGAL_BLOCK_NUM	0x010012
 
 /* Bad block inode has illegal blocks (latch question) */
 #define PR_1_INODE_BBLOCK_LATCH		0x010013
 
 /* Duplicate or bad blocks in use! */
 #define PR_1_DUP_BLOCKS_PREENSTOP	0x010014
-	
-/* Bad block used as bad block indirect block */	  
+
+/* Bad block used as bad block indirect block */
 #define PR_1_BBINODE_BAD_METABLOCK	0x010015
 
 /* Inconsistency can't be fixed prompt */
 #define PR_1_BBINODE_BAD_METABLOCK_PROMPT 0x010016
-	
+
 /* Bad primary block */
 #define PR_1_BAD_PRIMARY_BLOCK		0x010017
-		  
+
 /* Bad primary block prompt */
 #define PR_1_BAD_PRIMARY_BLOCK_PROMPT	0x010018
 
@@ -284,24 +340,24 @@ struct problem_context {
 /* Bad block group descriptors in group */
 #define PR_1_BAD_GROUP_DESCRIPTORS	0x01001C
 
-/* Block claimed for no reason */	  
+/* Block claimed for no reason */
 #define PR_1_PROGERR_CLAIMED_BLOCK	0x01001D
 
 /* Error allocating blocks for relocating metadata */
 #define PR_1_RELOC_BLOCK_ALLOCATE	0x01001E
-		
+
 /* Error allocating block buffer during relocation process */
 #define PR_1_RELOC_MEMORY_ALLOCATE	0x01001F
-		
-/* Relocating metadata group information from X to Y */	
+
+/* Relocating metadata group information from X to Y */
 #define PR_1_RELOC_FROM_TO		0x010020
-		
+
 /* Relocating metatdata group information to X */
 #define PR_1_RELOC_TO			0x010021
-		
+
 /* Block read error during relocation process */
 #define PR_1_RELOC_READ_ERR		0x010022
-		
+
 /* Block write error during relocation process */
 #define PR_1_RELOC_WRITE_ERR		0x010023
 
@@ -313,7 +369,7 @@ struct problem_context {
 
 /* Error allocating icount structure */
 #define PR_1_ALLOCATE_ICOUNT		0x010026
-	
+
 /* Error allocating dbcount */
 #define PR_1_ALLOCATE_DBCOUNT		0x010027
 
@@ -323,10 +379,10 @@ struct problem_context {
 /* Error while iterating over blocks */
 #define PR_1_BLOCK_ITERATE		0x010029
 
-/* Error while storing inode count information */	  
+/* Error while storing inode count information */
 #define PR_1_ICOUNT_STORE		0x01002A
 
-/* Error while storing directory block information */	  
+/* Error while storing directory block information */
 #define PR_1_ADD_DBLOCK			0x01002B
 
 /* Error while reading inode (for clearing) */
@@ -364,7 +420,7 @@ struct problem_context {
 
 /* Error allocating refcount structure */
 #define PR_1_ALLOCATE_REFCOUNT		0x010038
-	
+
 /* Error reading Extended Attribute block */
 #define PR_1_READ_EA_BLOCK		0x010039
 
@@ -377,14 +433,14 @@ struct problem_context {
 /* Extended attribute reference count incorrect */
 #define PR_1_EXTATTR_REFCOUNT		0x01003C
 
-/* Error writing Extended Attribute block while fixing refcount */ 
-#define PR_1_EXTATTR_WRITE		0x01003D
+/* Error writing Extended Attribute block while fixing refcount */
+#define PR_1_EXTATTR_WRITE_ABORT	0x01003D
 
 /* Multiple EA blocks not supported */
 #define PR_1_EA_MULTI_BLOCK		0x01003E
 
 /* Error allocating EA region allocation structure */
-#define PR_1_EA_ALLOC_REGION		0x01003F
+#define PR_1_EA_ALLOC_REGION_ABORT	0x01003F
 
 /* Error EA allocation collision */
 #define PR_1_EA_ALLOC_COLLISION		0x010040
@@ -410,19 +466,19 @@ struct problem_context {
 /* INDEX_FL flag set on a non-HTREE filesystem */
 #define PR_1_HTREE_SET			0x010047
 
-/* INDEX_FL flag set on a non-directory */	
+/* INDEX_FL flag set on a non-directory */
 #define PR_1_HTREE_NODIR		0x010048
 
-/* Invalid root node in HTREE directory */	
+/* Invalid root node in HTREE directory */
 #define PR_1_HTREE_BADROOT		0x010049
 
-/* Unsupported hash version in HTREE directory */	
+/* Unsupported hash version in HTREE directory */
 #define PR_1_HTREE_HASHV		0x01004A
 
-/* Incompatible flag in HTREE root node */	
+/* Incompatible flag in HTREE root node */
 #define PR_1_HTREE_INCOMPAT		0x01004B
 
-/* HTREE too deep */	
+/* HTREE too deep */
 #define PR_1_HTREE_DEPTH		0x01004C
 
 /* Bad block has indirect block that conflicts with filesystem block */
@@ -431,7 +487,7 @@ struct problem_context {
 /* Resize inode failed */
 #define PR_1_RESIZE_INODE_CREATE	0x01004E
 
-/* inode->i_size is too long */	
+/* inode->i_size is too long */
 #define PR_1_EXTRA_ISIZE		0x01004F
 
 /* attribute name is too long */
@@ -449,6 +505,59 @@ struct problem_context {
 /* wrong EA hash value */
 #define PR_1_ATTR_HASH			0x010054
 
+/* inode appears to be a directory */
+#define PR_1_TREAT_AS_DIRECTORY		0x010055
+
+/* Error while reading extent tree */
+#define PR_1_READ_EXTENT		0x010056
+
+/* Failure to iterate extents */
+#define PR_1_EXTENT_ITERATE_FAILURE	0x010057
+
+/* Bad starting block in extent */
+#define PR_1_EXTENT_BAD_START_BLK	0x010058
+
+/* Extent ends beyond filesystem */
+#define PR_1_EXTENT_ENDS_BEYOND		0x010059
+
+/* EXTENTS_FL flag set on a non-extents capable filesystem */
+#define PR_1_EXTENTS_SET		0x01005A
+
+/* inode has extents, superblock missing INCOMPAT_EXTENTS feature */
+#define PR_1_EXTENT_FEATURE		0x01005B
+
+/* inode missing EXTENTS_FL, but is an extent inode */
+#define PR_1_UNSET_EXTENT_FL		0x01005C
+
+/* Fast symlink has EXTENTS_FL set */
+#define PR_1_FAST_SYMLINK_EXTENT_FL	0x01005D
+
+/* Extents are out of order */
+#define PR_1_OUT_OF_ORDER_EXTENTS	0x01005E
+
+/* Extent node header invalid */
+#define PR_1_EXTENT_HEADER_INVALID	0x01005F
+
+/* PR_1_EOFBLOCKS_FL_SET 0x010060 was here */
+
+/* Failed to convert subcluster bitmap */
+#define PR_1_CONVERT_SUBCLUSTER		0x010061
+
+/* Quota inode has wrong mode */
+#define PR_1_QUOTA_BAD_MODE		0x010062
+
+/* Quota inode is not in use, but contains data */
+#define PR_1_QUOTA_INODE_NOT_CLEAR	0x010063
+
+/* Quota inode is user visible */
+#define PR_1_QUOTA_INODE_NOT_HIDDEN	0x010064
+
+/* Invalid bad inode */
+#define PR_1_INVALID_BAD_INODE		0x010065
+
+/* Extent has zero length */
+#define PR_1_EXTENT_LENGTH_ZERO		0x010066
+
 /*
  * Pass 1b errors
  */
@@ -464,7 +573,7 @@ struct problem_context {
 
 /* Duplicate/bad block(s) end */
 #define PR_1B_DUP_BLOCK_END	0x011003
-	
+
 /* Error while scanning inodes */
 #define PR_1B_ISCAN_ERROR	0x011004
 
@@ -472,10 +581,10 @@ struct problem_context {
 #define PR_1B_ALLOCATE_IBITMAP_ERROR 0x011005
 
 /* Error while iterating over blocks */
-#define PR_1B_BLOCK_ITERATE	0x0110006
+#define PR_1B_BLOCK_ITERATE	0x011006
 
 /* Error adjusting EA refcount */
-#define PR_1B_ADJ_EA_REFCOUNT	0x0110007
+#define PR_1B_ADJ_EA_REFCOUNT	0x011007
 
 
 /* Pass 1C: Scan directories for inodes with dup blocks. */
@@ -488,13 +597,13 @@ struct problem_context {
 /* File has duplicate blocks */
 #define PR_1D_DUP_FILE		0x013001
 
-/* List of files sharing duplicate blocks */	
+/* List of files sharing duplicate blocks */
 #define PR_1D_DUP_FILE_LIST	0x013002
 
-/* File sharing blocks with filesystem metadata  */	
+/* File sharing blocks with filesystem metadata  */
 #define PR_1D_SHARE_METADATA	0x013003
 
-/* Report of how many duplicate/bad inodes */	
+/* Report of how many duplicate/bad inodes */
 #define PR_1D_NUM_DUP_INODES	0x013004
 
 /* Duplicated blocks already reassigned or cloned. */
@@ -508,7 +617,7 @@ struct problem_context {
 
 /* Couldn't clone file (error) */
 #define PR_1D_CLONE_ERROR	0x013008
-		
+
 /*
  * Pass 2 errors
  */
@@ -540,10 +649,10 @@ struct problem_context {
 /* Directory entry has illegal characters in its name */
 #define PR_2_BAD_NAME		0x020008
 
-/* Missing '.' in directory inode */	  
+/* Missing '.' in directory inode */
 #define PR_2_MISSING_DOT	0x020009
 
-/* Missing '..' in directory inode */	  
+/* Missing '..' in directory inode */
 #define PR_2_MISSING_DOT_DOT	0x02000A
 
 /* First entry in directory inode doesn't contain '.' */
@@ -566,16 +675,16 @@ struct problem_context {
 
 /* i_fsize should be zero */
 #define PR_2_FSIZE_ZERO		0x020011
-		  
+
 /* inode has bad mode */
 #define PR_2_BAD_MODE		0x020012
 
 /* directory corrupted */
 #define PR_2_DIR_CORRUPTED	0x020013
-		  
+
 /* filename too long */
 #define PR_2_FILENAME_LONG	0x020014
-		  
+
 /* Directory inode has a missing block (hole) */
 #define PR_2_DIRECTORY_HOLE	0x020015
 
@@ -596,7 +705,7 @@ struct problem_context {
 
 /* Duplicate '..' entry */
 #define PR_2_DUP_DOT_DOT	0x02001B
-	
+
 /* Internal error: couldn't find dir_info */
 #define PR_2_NO_DIRINFO		0x02001C
 
@@ -699,6 +808,21 @@ struct problem_context {
 /* Duplicate directory entry found */
 #define PR_2_REPORT_DUP_DIRENT	0x020043
 
+/* i_blocks_hi should be zero */
+#define PR_2_BLOCKS_HI_ZERO	0x020044
+
+/* Unexpected HTREE block */
+#define PR_2_UNEXPECTED_HTREE_BLOCK	0x020045
+
+/* Inode found in group where _INODE_UNINIT is set */
+#define PR_2_INOREF_BG_INO_UNINIT	0x020046
+
+/* Inode found in group unused inodes area */
+#define PR_2_INOREF_IN_UNUSED		0x020047
+
+/* i_file_acl_hi should be zero */
+#define PR_2_I_FILE_ACL_HI_ZERO		0x020048
+
 /*
  * Pass 3 errors
  */
@@ -739,9 +863,9 @@ struct problem_context {
 /* Error in ext2fs_new_inode while creating /lost+found */
 #define PR_3_ERR_LPF_NEW_INODE		0x03000B
 
-/* Error in ext2fs_new_dir_block while creating /lost+found */	  
+/* Error in ext2fs_new_dir_block while creating /lost+found */
 #define PR_3_ERR_LPF_NEW_DIR_BLOCK	0x03000C
-		  
+
 /* Error while writing directory block for /lost+found */
 #define PR_3_ERR_LPF_WRITE_BLOCK	0x03000D
 
@@ -751,12 +875,12 @@ struct problem_context {
 /* Couldn't fix parent directory -- error */
 #define PR_3_FIX_PARENT_ERR		0x03000F
 
-/* Couldn't fix parent directory -- couldn't find it */	  
+/* Couldn't fix parent directory -- couldn't find it */
 #define PR_3_FIX_PARENT_NOFIND		0x030010
-	
+
 /* Error allocating inode bitmap */
 #define PR_3_ALLOCATE_IBITMAP_ERROR	0x030011
-		  
+
 /* Error creating root directory */
 #define PR_3_CREATE_ROOT_ERROR		0x030012
 
@@ -785,15 +909,15 @@ struct problem_context {
 #define PR_3A_OPTIMIZE_ITER		0x031001
 
 /* Error rehash directory */
-#define PR_3A_OPTIMIZE_DIR_ERR		0x031002		
+#define PR_3A_OPTIMIZE_DIR_ERR		0x031002
 
 /* Rehashing dir header */
-#define PR_3A_OPTIMIZE_DIR_HEADER		0x031003
+#define PR_3A_OPTIMIZE_DIR_HEADER	0x031003
 
 /* Rehashing directory %d */
 #define PR_3A_OPTIMIZE_DIR		0x031004
-		  
-/* Rehashing dir end */	  
+
+/* Rehashing dir end */
 #define PR_3A_OPTIMIZE_DIR_END		0x031005
 
 /*
@@ -801,19 +925,19 @@ struct problem_context {
  */
 
 /* Pass 4: Checking reference counts */
-#define PR_4_PASS_HEADER	0x040000
+#define PR_4_PASS_HEADER		0x040000
 
 /* Unattached zero-length inode */
-#define PR_4_ZERO_LEN_INODE	0x040001
+#define PR_4_ZERO_LEN_INODE		0x040001
 
 /* Unattached inode */
-#define PR_4_UNATTACHED_INODE	0x040002
+#define PR_4_UNATTACHED_INODE		0x040002
 
 /* Inode ref count wrong */
-#define PR_4_BAD_REF_COUNT	0x040003
+#define PR_4_BAD_REF_COUNT		0x040003
 
 /* Inconsistent inode count information cached */
-#define PR_4_INCONSISTENT_COUNT	0x040004
+#define PR_4_INCONSISTENT_COUNT		0x040004
 
 /*
  * Pass 5 errors
@@ -821,7 +945,7 @@ struct problem_context {
 
 /* Pass 5: Checking group summary information */
 #define PR_5_PASS_HEADER		0x050000
-	
+
 /* Padding at end of inode bitmap is not set. */
 #define PR_5_INODE_BMAP_PADDING		0x050001
 
@@ -829,15 +953,15 @@ struct problem_context {
 #define PR_5_BLOCK_BMAP_PADDING		0x050002
 
 /* Block bitmap differences header */
-#define PR_5_BLOCK_BITMAP_HEADER 	0x050003
+#define PR_5_BLOCK_BITMAP_HEADER	0x050003
 
 /* Block not used, but marked in bitmap */
 #define PR_5_BLOCK_UNUSED		0x050004
-	  
+
 /* Block used, but not marked used in bitmap */
 #define PR_5_BLOCK_USED			0x050005
 
-/* Block bitmap differences end */	  
+/* Block bitmap differences end */
 #define PR_5_BLOCK_BITMAP_END		0x050006
 
 /* Inode bitmap differences header */
@@ -845,11 +969,11 @@ struct problem_context {
 
 /* Inode not used, but marked in bitmap */
 #define PR_5_INODE_UNUSED		0x050008
-	  
+
 /* Inode used, but not marked used in bitmap */
 #define PR_5_INODE_USED			0x050009
 
-/* Inode bitmap differences end */	  
+/* Inode bitmap differences end */
 #define PR_5_INODE_BITMAP_END		0x05000A
 
 /* Free inodes count for group wrong */
@@ -859,7 +983,7 @@ struct problem_context {
 #define PR_5_FREE_DIR_COUNT_GROUP	0x05000C
 
 /* Free inodes count wrong */
-#define PR_5_FREE_INODE_COUNT	0x05000D
+#define PR_5_FREE_INODE_COUNT		0x05000D
 
 /* Free blocks count for group wrong */
 #define PR_5_FREE_BLOCK_COUNT_GROUP	0x05000E
@@ -881,15 +1005,28 @@ struct problem_context {
 
 /* Block range not used, but marked in bitmap */
 #define PR_5_BLOCK_RANGE_UNUSED		0x050014
-	  
+
 /* Block range used, but not marked used in bitmap */
 #define PR_5_BLOCK_RANGE_USED		0x050015
 
 /* Inode range not used, but marked in bitmap */
 #define PR_5_INODE_RANGE_UNUSED		0x050016
-	  
+
 /* Inode rangeused, but not marked used in bitmap */
 #define PR_5_INODE_RANGE_USED		0x050017
+
+/* Block in use but group is marked BLOCK_UNINIT */
+#define PR_5_BLOCK_UNINIT		0x050018
+
+/* Inode in use but group is marked INODE_UNINIT */
+#define PR_5_INODE_UNINIT		0x050019
+
+/*
+ * Post-Pass 5 errors
+ */
+
+/* Recreate the journal if E2F_FLAG_JOURNAL_INODE flag is set */
+#define PR_6_RECREATE_JOURNAL		0x060001
 
 /*
  * Function declarations
@@ -898,9 +1035,10 @@ int fix_problem(e2fsck_t ctx, problem_t code, struct problem_context *pctx);
 int end_problem_latch(e2fsck_t ctx, int mask);
 int set_latch_flags(int mask, int setflags, int clearflags);
 int get_latch_flags(int mask, int *value);
-void clear_problem_context(struct problem_context *ctx);
+void clear_problem_context(struct problem_context *pctx);
 
 /* message.c */
-void print_e2fsck_message(e2fsck_t ctx, const char *msg,
-			  struct problem_context *pctx, int first);
+void print_e2fsck_message(FILE *f, e2fsck_t ctx, const char *msg,
+			  struct problem_context *pctx, int first,
+			  int recurse);
 

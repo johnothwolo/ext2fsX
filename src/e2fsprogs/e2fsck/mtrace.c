@@ -21,6 +21,8 @@ Cambridge, MA 02139, USA.
    The author may be reached (Email) at the address mike@ai.mit.edu,
    or (US mail) as Mike Haertel c/o Free Software Foundation.  */
 
+#include "config.h"
+
 #ifndef	_MALLOC_INTERNAL
 #define	_MALLOC_INTERNAL
 #include "./mtrace.h"
@@ -47,7 +49,7 @@ static __ptr_t (*tr_old_malloc_hook) __P ((size_t size));
 static __ptr_t (*tr_old_realloc_hook) __P ((__ptr_t ptr, size_t size));
 
 /*
- * Added by TYT, 10/10/93 --- so that we can print 
+ * Added by TYT, 10/10/93 --- so that we can print
  */
 FILE *malloc_get_mallstream()
 {

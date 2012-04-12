@@ -30,7 +30,7 @@ struct blkid_probe {
 	size_t			buf_max;
 };
 
-typedef int (*blkid_probe_t)(struct blkid_probe *probe, 
+typedef int (*blkid_probe_t)(struct blkid_probe *probe,
 			     struct blkid_magic *id, unsigned char *buf);
 
 struct blkid_magic {
@@ -82,11 +82,62 @@ struct ext2_super_block {
 	__u32	s_first_meta_bg;
 	__u32	s_mkfs_time;
 	__u32	s_jnl_blocks[17];
-	__u32	s_reserved[172];
+	__u32	s_blocks_count_hi;
+	__u32	s_r_blocks_count_hi;
+	__u32	s_free_blocks_hi;
+	__u16	s_min_extra_isize;
+	__u16	s_want_extra_isize;
+	__u32	s_flags;
+	__u16   s_raid_stride;
+	__u16   s_mmp_interval;
+	__u64   s_mmp_block;
+	__u32   s_raid_stripe_width;
+	__u32   s_reserved[163];
 };
-#define EXT3_FEATURE_COMPAT_HAS_JOURNAL		0x00000004
-#define EXT3_FEATURE_INCOMPAT_RECOVER		0x00000004
-#define EXT3_FEATURE_INCOMPAT_JOURNAL_DEV	0x00000008
+
+/* for s_flags */
+#define EXT2_FLAGS_TEST_FILESYS		0x0004
+
+/* for s_feature_compat */
+#define EXT3_FEATURE_COMPAT_HAS_JOURNAL		0x0004
+
+/* for s_feature_ro_compat */
+#define EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER	0x0001
+#define EXT2_FEATURE_RO_COMPAT_LARGE_FILE	0x0002
+#define EXT2_FEATURE_RO_COMPAT_BTREE_DIR	0x0004
+#define EXT4_FEATURE_RO_COMPAT_HUGE_FILE	0x0008
+#define EXT4_FEATURE_RO_COMPAT_GDT_CSUM		0x0010
+#define EXT4_FEATURE_RO_COMPAT_DIR_NLINK	0x0020
+#define EXT4_FEATURE_RO_COMPAT_EXTRA_ISIZE	0x0040
+#define EXT4_FEATURE_RO_COMPAT_QUOTA		0x0100
+
+/* for s_feature_incompat */
+#define EXT2_FEATURE_INCOMPAT_FILETYPE		0x0002
+#define EXT3_FEATURE_INCOMPAT_RECOVER		0x0004
+#define EXT3_FEATURE_INCOMPAT_JOURNAL_DEV	0x0008
+#define EXT2_FEATURE_INCOMPAT_META_BG		0x0010
+#define EXT4_FEATURE_INCOMPAT_EXTENTS		0x0040 /* extents support */
+#define EXT4_FEATURE_INCOMPAT_64BIT		0x0080
+#define EXT4_FEATURE_INCOMPAT_MMP		0x0100
+#define EXT4_FEATURE_INCOMPAT_FLEX_BG		0x0200
+
+#define EXT2_FEATURE_RO_COMPAT_SUPP	(EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER| \
+					 EXT2_FEATURE_RO_COMPAT_LARGE_FILE| \
+					 EXT2_FEATURE_RO_COMPAT_BTREE_DIR)
+#define EXT2_FEATURE_INCOMPAT_SUPP	(EXT2_FEATURE_INCOMPAT_FILETYPE| \
+					 EXT2_FEATURE_INCOMPAT_META_BG)
+#define EXT2_FEATURE_INCOMPAT_UNSUPPORTED	~EXT2_FEATURE_INCOMPAT_SUPP
+#define EXT2_FEATURE_RO_COMPAT_UNSUPPORTED	~EXT2_FEATURE_RO_COMPAT_SUPP
+
+#define EXT3_FEATURE_RO_COMPAT_SUPP	(EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER| \
+					 EXT2_FEATURE_RO_COMPAT_LARGE_FILE| \
+					 EXT2_FEATURE_RO_COMPAT_BTREE_DIR)
+#define EXT3_FEATURE_INCOMPAT_SUPP	(EXT2_FEATURE_INCOMPAT_FILETYPE| \
+					 EXT3_FEATURE_INCOMPAT_RECOVER| \
+					 EXT2_FEATURE_INCOMPAT_META_BG)
+#define EXT3_FEATURE_INCOMPAT_UNSUPPORTED	~EXT3_FEATURE_INCOMPAT_SUPP
+#define EXT3_FEATURE_RO_COMPAT_UNSUPPORTED	~EXT3_FEATURE_RO_COMPAT_SUPP
+
 
 struct xfs_super_block {
 	unsigned char	xs_magic[4];
@@ -131,10 +182,13 @@ struct jfs_super_block {
 	unsigned char	js_magic[4];
 	__u32		js_version;
 	__u64		js_size;
-	__u32		js_bsize;
-	__u32		js_dummy1;
-	__u32		js_pbsize;
-	__u32		js_dummy2[27];
+	__u32		js_bsize;	/* 4: aggregate block size in bytes */
+	__u16		js_l2bsize;	/* 2: log2 of s_bsize */
+	__u16		js_l2bfactor;	/* 2: log2(s_bsize/hardware block size) */
+	__u32		js_pbsize;	/* 4: hardware/LVM block size in bytes */
+	__u16		js_l2pbsize;	/* 2: log2 of s_pbsize */
+	__u16 		js_pad;		/* 2: padding necessary for alignment */
+	__u32		js_dummy2[26];
 	unsigned char	js_uuid[16];
 	unsigned char	js_label[16];
 	unsigned char	js_loguuid[16];
@@ -294,7 +348,7 @@ struct ocfs_volume_header {
 
 struct ocfs_volume_label {
 	unsigned char	disk_lock[48];
-	char		label[64];	
+	char		label[64];
 	unsigned char	label_len[2];
 	unsigned char  vol_id[16];
 	unsigned char  vol_id_len[2];
@@ -344,6 +398,333 @@ struct iso_volume_descriptor {
 	unsigned char	space_size[8];
 	unsigned char	escape_sequences[8];
 };
+
+/* Common gfs/gfs2 constants: */
+#define GFS_MAGIC               0x01161970
+#define GFS_DEFAULT_BSIZE       4096
+#define GFS_SUPERBLOCK_OFFSET	(0x10 * GFS_DEFAULT_BSIZE)
+#define GFS_METATYPE_SB         1
+#define GFS_FORMAT_SB           100
+#define GFS_LOCKNAME_LEN        64
+
+/* gfs1 constants: */
+#define GFS_FORMAT_FS           1309
+#define GFS_FORMAT_MULTI        1401
+/* gfs2 constants: */
+#define GFS2_FORMAT_FS          1801
+#define GFS2_FORMAT_MULTI       1900
+
+struct gfs2_meta_header {
+	__u32 mh_magic;
+	__u32 mh_type;
+	__u64 __pad0;          /* Was generation number in gfs1 */
+	__u32 mh_format;
+	__u32 __pad1;          /* Was incarnation number in gfs1 */
+};
+
+struct gfs2_inum {
+	__u64 no_formal_ino;
+	__u64 no_addr;
+};
+
+struct gfs2_sb {
+	struct gfs2_meta_header sb_header;
+
+	__u32 sb_fs_format;
+	__u32 sb_multihost_format;
+	__u32  __pad0;  /* Was superblock flags in gfs1 */
+
+	__u32 sb_bsize;
+	__u32 sb_bsize_shift;
+	__u32 __pad1;   /* Was journal segment size in gfs1 */
+
+	struct gfs2_inum sb_master_dir; /* Was jindex dinode in gfs1 */
+	struct gfs2_inum __pad2; /* Was rindex dinode in gfs1 */
+	struct gfs2_inum sb_root_dir;
+
+	char sb_lockproto[GFS_LOCKNAME_LEN];
+	char sb_locktable[GFS_LOCKNAME_LEN];
+	/* In gfs1, quota and license dinodes followed */
+};
+
+struct ntfs_super_block {
+	__u8	jump[3];
+	__u8	oem_id[8];
+	__u8	bios_parameter_block[25];
+	__u16	unused[2];
+	__u64	number_of_sectors;
+	__u64	mft_cluster_location;
+	__u64	mft_mirror_cluster_location;
+	__s8	cluster_per_mft_record;
+	__u8	reserved1[3];
+	__s8	cluster_per_index_record;
+	__u8	reserved2[3];
+	__u64	volume_serial;
+	__u16	checksum;
+};
+
+struct master_file_table_record {
+	__u32	magic;
+	__u16	usa_ofs;
+	__u16	usa_count;
+	__u64	lsn;
+	__u16	sequence_number;
+	__u16	link_count;
+	__u16	attrs_offset;
+	__u16	flags;
+	__u32	bytes_in_use;
+	__u32	bytes_allocated;
+} __attribute__((__packed__));
+
+struct file_attribute {
+	__u32	type;
+	__u32	len;
+	__u8	non_resident;
+	__u8	name_len;
+	__u16	name_offset;
+	__u16	flags;
+	__u16	instance;
+	__u32	value_len;
+	__u16	value_offset;
+} __attribute__((__packed__));
+
+#define MFT_RECORD_VOLUME			3
+#define MFT_RECORD_ATTR_VOLUME_NAME		0x60
+#define MFT_RECORD_ATTR_VOLUME_INFO		0x70
+#define MFT_RECORD_ATTR_OBJECT_ID		0x40
+#define MFT_RECORD_ATTR_END			0xffffffffu
+
+/* HFS / HFS+ */
+struct hfs_finder_info {
+        __u32        boot_folder;
+        __u32        start_app;
+        __u32        open_folder;
+        __u32        os9_folder;
+        __u32        reserved;
+        __u32        osx_folder;
+        __u8         id[8];
+} __attribute__((packed));
+
+struct hfs_mdb {
+        __u8         signature[2];
+        __u32        cr_date;
+        __u32        ls_Mod;
+        __u16        atrb;
+        __u16        nm_fls;
+        __u16        vbm_st;
+        __u16        alloc_ptr;
+        __u16        nm_al_blks;
+        __u32        al_blk_size;
+        __u32        clp_size;
+        __u16        al_bl_st;
+        __u32        nxt_cnid;
+        __u16        free_bks;
+        __u8         label_len;
+        __u8         label[27];
+        __u32        vol_bkup;
+        __u16        vol_seq_num;
+        __u32        wr_cnt;
+        __u32        xt_clump_size;
+        __u32        ct_clump_size;
+        __u16        num_root_dirs;
+        __u32        file_count;
+        __u32        dir_count;
+        struct hfs_finder_info finder_info;
+        __u8         embed_sig[2];
+        __u16        embed_startblock;
+        __u16        embed_blockcount;
+} __attribute__((packed));
+
+
+#define HFS_NODE_LEAF			0xff
+#define HFSPLUS_POR_CNID		1
+
+struct hfsplus_bnode_descriptor {
+	__u32		next;
+	__u32		prev;
+	__u8		type;
+	__u8		height;
+	__u16		num_recs;
+	__u16		reserved;
+} __attribute__((packed));
+
+struct hfsplus_bheader_record {
+	__u16		depth;
+	__u32		root;
+	__u32		leaf_count;
+	__u32		leaf_head;
+	__u32		leaf_tail;
+	__u16		node_size;
+} __attribute__((packed));
+
+struct hfsplus_catalog_key {
+	__u16	key_len;
+	__u32	parent_id;
+	__u16	unicode_len;
+	__u8		unicode[255 * 2];
+} __attribute__((packed));
+
+struct hfsplus_extent {
+	__u32		start_block;
+	__u32		block_count;
+} __attribute__((packed));
+
+#define HFSPLUS_EXTENT_COUNT		8
+struct hfsplus_fork {
+	__u64		total_size;
+	__u32		clump_size;
+	__u32		total_blocks;
+	struct hfsplus_extent extents[HFSPLUS_EXTENT_COUNT];
+} __attribute__((packed));
+
+struct hfsplus_vol_header {
+	__u8		signature[2];
+	__u16		version;
+	__u32		attributes;
+	__u32		last_mount_vers;
+	__u32		reserved;
+	__u32		create_date;
+	__u32		modify_date;
+	__u32		backup_date;
+	__u32		checked_date;
+	__u32		file_count;
+	__u32		folder_count;
+	__u32		blocksize;
+	__u32		total_blocks;
+	__u32		free_blocks;
+	__u32		next_alloc;
+	__u32		rsrc_clump_sz;
+	__u32		data_clump_sz;
+	__u32		next_cnid;
+	__u32		write_count;
+	__u64		encodings_bmp;
+	struct hfs_finder_info finder_info;
+	struct hfsplus_fork alloc_file;
+	struct hfsplus_fork ext_file;
+	struct hfsplus_fork cat_file;
+	struct hfsplus_fork attr_file;
+	struct hfsplus_fork start_file;
+}  __attribute__((packed));
+
+
+/* this is lvm's label_header & pv_header combined. */
+
+#define LVM2_ID_LEN 32
+
+struct lvm2_pv_label_header {
+	/* label_header */
+	__u8	id[8];		/* LABELONE */
+	__u64	sector_xl;	/* Sector number of this label */
+	__u32	crc_xl;		/* From next field to end of sector */
+	__u32	offset_xl;	/* Offset from start of struct to contents */
+	__u8	type[8];	/* LVM2 001 */
+	/* pv_header */
+	__u8	pv_uuid[LVM2_ID_LEN];
+} __attribute__ ((packed));
+
+
+/*
+ * this is a very generous portion of the super block, giving us
+ * room to translate 14 chunks with 3 stripes each.
+ */
+#define BTRFS_SYSTEM_CHUNK_ARRAY_SIZE 2048
+#define BTRFS_LABEL_SIZE 256
+#define BTRFS_UUID_SIZE 16
+#define BTRFS_FSID_SIZE 16
+#define BTRFS_CSUM_SIZE 32
+
+struct btrfs_dev_item {
+	/* the internal btrfs device id */
+	__u64 devid;
+
+	/* size of the device */
+	__u64 total_bytes;
+
+	/* bytes used */
+	__u64 bytes_used;
+
+	/* optimal io alignment for this device */
+	__u32 io_align;
+
+	/* optimal io width for this device */
+	__u32 io_width;
+
+	/* minimal io size for this device */
+	__u32 sector_size;
+
+	/* type and info about this device */
+	__u64 type;
+
+	/* expected generation for this device */
+	__u64 generation;
+
+	/*
+	 * starting byte of this partition on the device,
+	 * to allowr for stripe alignment in the future
+	 */
+	__u64 start_offset;
+
+	/* grouping information for allocation decisions */
+	__u32 dev_group;
+
+	/* seek speed 0-100 where 100 is fastest */
+	__u8 seek_speed;
+
+	/* bandwidth 0-100 where 100 is fastest */
+	__u8 bandwidth;
+
+	/* btrfs generated uuid for this device */
+	__u8 uuid[BTRFS_UUID_SIZE];
+
+	/* uuid of FS who owns this device */
+	__u8 fsid[BTRFS_UUID_SIZE];
+} __attribute__ ((__packed__));
+
+/*
+ * the super block basically lists the main trees of the FS
+ * it currently lacks any block count etc etc
+ */
+struct btrfs_super_block {
+	__u8 csum[BTRFS_CSUM_SIZE];
+	/* the first 3 fields must match struct btrfs_header */
+	__u8 fsid[BTRFS_FSID_SIZE];    /* FS specific uuid */
+	__u64 bytenr; /* this block number */
+	__u64 flags;
+
+	/* allowed to be different from the btrfs_header from here own down */
+	__u64 magic;
+	__u64 generation;
+	__u64 root;
+	__u64 chunk_root;
+	__u64 log_root;
+
+	/* this will help find the new super based on the log root */
+	__u64 log_root_transid;
+	__u64 total_bytes;
+	__u64 bytes_used;
+	__u64 root_dir_objectid;
+	__u64 num_devices;
+	__u32 sectorsize;
+	__u32 nodesize;
+	__u32 leafsize;
+	__u32 stripesize;
+	__u32 sys_chunk_array_size;
+	__u64 chunk_root_generation;
+	__u64 compat_flags;
+	__u64 compat_ro_flags;
+	__u64 incompat_flags;
+	__u16 csum_type;
+	__u8 root_level;
+	__u8 chunk_root_level;
+	__u8 log_root_level;
+	struct btrfs_dev_item dev_item;
+
+	char label[BTRFS_LABEL_SIZE];
+
+	/* future expansion */
+	__u64 reserved[32];
+	__u8 sys_chunk_array[BTRFS_SYSTEM_CHUNK_ARRAY_SIZE];
+} __attribute__ ((__packed__));
 
 /*
  * Byte swap functions
@@ -410,11 +791,11 @@ _INLINE_ __u64 blkid_swab64(__u64 val)
 	return (blkid_swab32(val >> 32) |
 		(((__u64) blkid_swab32(val & 0xFFFFFFFFUL)) << 32));
 }
-#endif 
+#endif
 
 
 
-#if  __BYTE_ORDER == __BIG_ENDIAN
+#ifdef WORDS_BIGENDIAN
 #define blkid_le16(x) blkid_swab16(x)
 #define blkid_le32(x) blkid_swab32(x)
 #define blkid_le64(x) blkid_swab64(x)

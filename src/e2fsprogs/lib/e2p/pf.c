@@ -5,8 +5,10 @@
  *                           Laboratoire MASI, Institut Blaise Pascal
  *                           Universite Pierre et Marie Curie (Paris VI)
  *
- * This file can be redistributed under the terms of the GNU Library General
- * Public License
+ * %Begin-Header%
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
+ * %End-Header%
  */
 
 /*
@@ -14,6 +16,7 @@
  * 93/10/30	- Creation
  */
 
+#include "config.h"
 #include <stdio.h>
 
 #include "e2p.h"
@@ -41,9 +44,11 @@ static struct flags_name flags_array[] = {
 	{ EXT2_ECOMPR_FL, "E", "Compression_Error" },
 #endif
 	{ EXT3_JOURNAL_DATA_FL, "j", "Journaled_Data" },
-	{ EXT2_INDEX_FL, "I", "Indexed_direcctory" }, 
+	{ EXT2_INDEX_FL, "I", "Indexed_directory" },
 	{ EXT2_NOTAIL_FL, "t", "No_Tailmerging" },
 	{ EXT2_TOPDIR_FL, "T", "Top_of_Directory_Hierarchies" },
+	{ EXT4_EXTENTS_FL, "e", "Extents" },
+	{ EXT4_HUGE_FILE_FL, "h", "Huge_file" },
 	{ 0, NULL, NULL }
 };
 

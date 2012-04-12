@@ -10,6 +10,7 @@
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #if HAVE_UNISTD_H
@@ -32,11 +33,6 @@
 #endif
 
 #include "blkidP.h"
-
-struct dir_list {
-	char	*name;
-	struct dir_list *next;
-};
 
 char *blkid_strndup(const char *s, int length)
 {
@@ -95,8 +91,8 @@ static void free_dirlist(struct dir_list **list)
 	*list = NULL;
 }
 
-static void scan_dir(char *dirname, dev_t devno, struct dir_list **list,
-			    char **devname)
+void blkid__scan_dir(char *dirname, dev_t devno, struct dir_list **list,
+		     char **devname)
 {
 	DIR	*dir;
 	struct dirent *dp;
@@ -120,22 +116,23 @@ static void scan_dir(char *dirname, dev_t devno, struct dir_list **list,
 		if (stat(path, &st) < 0)
 			continue;
 
-		if (S_ISDIR(st.st_mode))
-			add_to_dirlist(path, list);
-		else if (S_ISBLK(st.st_mode) && st.st_rdev == devno) {
+		if (S_ISBLK(st.st_mode) && st.st_rdev == devno) {
 			*devname = blkid_strdup(path);
 			DBG(DEBUG_DEVNO,
-			    printf("found 0x%llx at %s (%p)\n", devno,
+			    printf("found 0x%llx at %s (%p)\n", (long long)devno,
 				   path, *devname));
 			break;
 		}
+		if (list && S_ISDIR(st.st_mode) && !lstat(path, &st) &&
+		    S_ISDIR(st.st_mode))
+			add_to_dirlist(path, list);
 	}
 	closedir(dir);
 	return;
 }
 
 /* Directories where we will try to search for device numbers */
-const char *blkid_devdirs[] = { "/devices", "/devfs", "/dev", NULL };
+static const char *devdirs[] = { "/devices", "/devfs", "/dev", NULL };
 
 /*
  * This function finds the pathname to a block device with a given
@@ -152,7 +149,7 @@ char *blkid_devno_to_devname(dev_t devno)
 	 * Add the starting directories to search in reverse order of
 	 * importance, since we are using a stack...
 	 */
-	for (dir = blkid_devdirs; *dir; dir++)
+	for (dir = devdirs; *dir; dir++)
 		add_to_dirlist(*dir, &list);
 
 	while (list) {
@@ -160,7 +157,7 @@ char *blkid_devno_to_devname(dev_t devno)
 
 		list = list->next;
 		DBG(DEBUG_DEVNO, printf("directory %s\n", current->name));
-		scan_dir(current->name, devno, &new_list, &devname);
+		blkid__scan_dir(current->name, devno, &new_list, &devname);
 		free(current->name);
 		free(current);
 		if (devname)
@@ -179,13 +176,13 @@ char *blkid_devno_to_devname(dev_t devno)
 
 	if (!devname) {
 		DBG(DEBUG_DEVNO,
-		    printf("blkid: couldn't find devno 0x%04lx\n", 
+		    printf("blkid: couldn't find devno 0x%04lx\n",
 			   (unsigned long) devno));
 	} else {
 		DBG(DEBUG_DEVNO,
-		    printf("found devno 0x%04llx as %s\n", devno, devname));
+		    printf("found devno 0x%04llx as %s\n", (long long)devno, devname));
 	}
-	
+
 
 	return devname;
 }
@@ -224,10 +221,9 @@ int main(int argc, char** argv)
 		}
 		devno = makedev(major, minor);
 	}
-	printf("Looking for device 0x%04Lx\n", devno);
+	printf("Looking for device 0x%04llx\n", (long long)devno);
 	devname = blkid_devno_to_devname(devno);
-	if (devname)
-		free(devname);
+	free(devname);
 	return 0;
 }
 #endif

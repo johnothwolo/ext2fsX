@@ -1,14 +1,15 @@
 /*
  * namei.c --- ext2fs directory lookup operations
- * 
+ *
  * Copyright (C) 1993, 1994, 1994, 1995 Theodore Ts'o.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #if HAVE_UNISTD_H
@@ -19,6 +20,7 @@
 
 #include "ext2_fs.h"
 #include "ext2fs.h"
+#include "ext2fsP.h"
 
 static errcode_t open_namei(ext2_filsys fs, ext2_ino_t root, ext2_ino_t base,
 			    const char *pathname, size_t pathlen, int follow,
@@ -36,7 +38,7 @@ static errcode_t follow_link(ext2_filsys fs, ext2_ino_t root, ext2_ino_t dir,
 #ifdef NAMEI_DEBUG
 	printf("follow_link: root=%lu, dir=%lu, inode=%lu, lc=%d\n",
 	       root, dir, inode, link_count);
-	
+
 #endif
 	retval = ext2fs_read_inode (fs, inode, &ei);
 	if (retval) return retval;
@@ -44,9 +46,10 @@ static errcode_t follow_link(ext2_filsys fs, ext2_ino_t root, ext2_ino_t dir,
 		*res_inode = inode;
 		return 0;
 	}
-	if (link_count++ > 5) {
+	if (link_count++ >= EXT2FS_MAX_NESTED_LINKS)
 		return EXT2_ET_SYMLINK_LOOP;
-	}
+
+	/* FIXME-64: Actually, this is FIXME EXTENTS */
 	if (ext2fs_inode_data_blocks(fs,&ei)) {
 		retval = ext2fs_get_mem(fs->blocksize, &buffer);
 		if (retval)
@@ -114,7 +117,7 @@ static errcode_t open_namei(ext2_filsys fs, ext2_ino_t root, ext2_ino_t base,
 			    const char *pathname, size_t pathlen, int follow,
 			    int link_count, char *buf, ext2_ino_t *res_inode)
 {
-	const char *basename;
+	const char *base_name;
 	int namelen;
 	ext2_ino_t dir, inode;
 	errcode_t retval;
@@ -124,13 +127,13 @@ static errcode_t open_namei(ext2_filsys fs, ext2_ino_t root, ext2_ino_t base,
 	       root, base, pathlen, pathname, link_count);
 #endif
 	retval = dir_namei(fs, root, base, pathname, pathlen,
-			   link_count, buf, &basename, &namelen, &dir);
+			   link_count, buf, &base_name, &namelen, &dir);
 	if (retval) return retval;
 	if (!namelen) {                     /* special case: '/usr/' etc */
 		*res_inode=dir;
 		return 0;
 	}
-	retval = ext2fs_lookup (fs, dir, basename, namelen, buf, &inode);
+	retval = ext2fs_lookup (fs, dir, base_name, namelen, buf, &inode);
 	if (retval)
 		return retval;
 	if (follow) {
@@ -152,13 +155,13 @@ errcode_t ext2fs_namei(ext2_filsys fs, ext2_ino_t root, ext2_ino_t cwd,
 {
 	char *buf;
 	errcode_t retval;
-	
+
 	EXT2_CHECK_MAGIC(fs, EXT2_ET_MAGIC_EXT2FS_FILSYS);
 
 	retval = ext2fs_get_mem(fs->blocksize, &buf);
 	if (retval)
 		return retval;
-	
+
 	retval = open_namei(fs, root, cwd, name, strlen(name), 0, 0,
 			    buf, inode);
 
@@ -171,13 +174,13 @@ errcode_t ext2fs_namei_follow(ext2_filsys fs, ext2_ino_t root, ext2_ino_t cwd,
 {
 	char *buf;
 	errcode_t retval;
-	
+
 	EXT2_CHECK_MAGIC(fs, EXT2_ET_MAGIC_EXT2FS_FILSYS);
 
 	retval = ext2fs_get_mem(fs->blocksize, &buf);
 	if (retval)
 		return retval;
-	
+
 	retval = open_namei(fs, root, cwd, name, strlen(name), 1, 0,
 			    buf, inode);
 
@@ -190,7 +193,7 @@ errcode_t ext2fs_follow_link(ext2_filsys fs, ext2_ino_t root, ext2_ino_t cwd,
 {
 	char *buf;
 	errcode_t retval;
-	
+
 	EXT2_CHECK_MAGIC(fs, EXT2_ET_MAGIC_EXT2FS_FILSYS);
 
 	retval = ext2fs_get_mem(fs->blocksize, &buf);

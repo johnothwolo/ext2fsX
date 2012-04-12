@@ -1,3 +1,1446 @@
+e2fsprogs (1.42.2-1) unstable; urgency=low
+
+  * New upstream version
+  * Fixed various man pages (Closes: #665427)
+  * Speed up resize2fs for large file systems (Closes: #663237)
+  * Be less strict about the EXT4_EOFBLOCKS_FL flag (which will
+    eventually be going away in the ext4 file system format)
+  * Teach mke2fs to use direct I/O if the -D option is given
+  * Print errors returned by ext2fs_open2() and ext2fs_check_desc() so
+    we can more easily diagnose memory allocation failures caused by
+    insufficient memory and abort on memory allocation failures
+  * E2fsck can now write log files containing the details of the
+    problems that were found and fixed directly.
+  * E2fsck can now limit the number of messages issued and printed on
+    the console
+  * The dumpe2fs, debugfs, and tune2fs now use rbtree bitmaps, which
+    cause them to use much less memory for large file systems.
+  * E2fsck will now check for zero-length extents, since older kernels will
+    OOPS if they comes across one
+  * Fix e2fsck's discard behaviour so it does not discard too many
+    blocks, and it will not use discard if the device advertises
+    that discard does not persistently zero data.  Also, if e2fsck is
+    run in read-only mode, do not try to discard data.
+  * Fix mke2fs -S so it does not corrupt the first block group's
+    information.
+  * Add pointer for e2fsprogs-udeb to libcomerr2.shlibs (Closes: #665885)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Tue, 27 Mar 2012 15:55:57 -0700
+
+e2fsprogs (1.42.1-2) unstable; urgency=low
+
+  * Fix the fact that dpkg-buildflags was being ignored due to a
+    bash'ism in debian/rules.
+  * Check the new /sys/class/power_supply/AC/online since
+    /proc/acpi/ac_adapter/... is deprecated and may not be present on
+    newer kernels.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Mon, 20 Feb 2012 19:12:20 -0500
+
+e2fsprogs (1.42.1-1) unstable; urgency=low
+
+  * New upstream release
+  * dpkg-buildflags is now used if it is present.  This allows Debian
+    Wheezy to build with security hardened build flags.  (Closes: #654457)
+  * mke2fs and e2fsck now use much less memory for large file systems
+  * Fixed mke2fs -S so it can be usefully used as a last ditch recovery
+    command when for ext4 filesystems that have the uninit_bg feature enabled.
+  * The mke4fs argv[0] is now recognized by mke2fs.
+  * Fixed usage and help messages for mke2fs.
+  * Eliminated spurious bad block group checksum warnings when e2fsck
+    falls back to using the backup group descriptors.
+  * Debugfs's ncheck command is now much more useful when used to
+    diagnose badly corrupted file system.  Added a new -c option.
+  * Fixed bug in e2image which could cause it to fail to set i_size
+    correctly if the last hole in the file is an exact multiple of a
+    megabyte.
+  * Fixed a bug with resize2fs where for 1k and 2k file systems, the
+    minimum file size used for resize2fs -M could be a block too small.
+  * Fixed the badblocks program to honor the -s flag when in read-only -t
+    mode.  (Closes: #646629)
+  * Update Czech, Dutch, French, Polish, and Swedish translations
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Fri, 17 Feb 2012 15:07:13 -0500
+
+e2fsprogs (1.42-1) unstable; urgency=low
+
+  * New upstream release
+  * Fixed hurd FTBFS (Closes: #649689)
+  * Optimized e2fsck speed on large file systems when using [scratch_files]
+  * Fixed e2fsck handling of blocks claimed by multiple inodes in
+    bigalloc file systems
+  * Fixed e2fsck's calculation of max file size for non-extent based
+    files when huge_file is enabled
+  * Update Czech and Swedish translations
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Tue, 29 Nov 2011 15:50:07 -0500
+
+e2fsprogs (1.42~WIP-2011-11-20-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix error checking so resize2fs works when using a 32-bit userspace
+    and a 64-bit kernel (Closes: #644989)
+  * e2fsck now returns additional status bits in its exit code if it
+    aborts early in the e2fsck run
+  * Fix potential stack overflow in debugfs
+  * Avoid an infinite loop in ext2fs_find_block_device() if there are
+    symlink loops in /dev caused by a buggy udev
+  * Fix test failures on big-endian systems
+  * Fix gcc -Wall complaints
+  * Add freefrag and e2freefrag commands to debugfs
+  * Add a read-only, metadata-only debugfs command called rdebugfs
+  * Improve first-class quota support
+  * Fix bigalloc support in e2freefrag
+  * Clean up mmp handling
+  * Fix a regression which caused mke2fs to not work correctly on files
+    > 2GB.  (Closes: #647245)
+  * Fix a namespace leak in libext2fs (tdb_null)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 20 Nov 2011 21:32:49 -0500
+
+e2fsprogs (1.42~WIP-2011-10-16-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix online resizing with resize2fs (Closes: #644989)
+  * Fix bug which caused shrinking an empty file system file system to
+    its minimal size to sometimes fail.
+  * Don't look at the high 16 bits of i_file_acl if the 64-bit feature
+    is not enabled; this fixes a Hurd compatibility field since this is
+    used for the high 16 bits of i_mode on Hurd.
+  * Update Sweedish, Polish, French, German, and Czech translations
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 16 Oct 2011 22:07:03 -0400
+
+e2fsprogs (1.42~WIP-2011-10-09-1) unstable; urgency=low
+
+  * New upstream release
+  * Fixed infinite loop in filefrag (Closes: #644792)
+  * Fixed various spelling and translation problems
+  * Fixed various man pages
+  * Fixed 64-bit block numbers in e2fsck's journal replay
+  * Fixed mipsel FTBFS that was fixed for mips
+  * Update Sweedish, French, and Czech translations
+  * Convert to debian source 3.0 (quilt) format
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 09 Oct 2011 22:24:31 -0400
+
+e2fsprogs (1.42~WIP-2011-10-05-2) unstable; urgency=low
+
+  * Fix portability issues with non-Linux platforms and for the mips
+    platform, which does some really strange things vis-a-vis
+    32/64-bit support without actually having a 64-bit version of
+    the architecture (Closes: #644502)
+  * Fix dependency problem which causes the newer version of libcom_err2
+    to get pulled in when upgrading to e2fsprogs, which needs the new
+    interface exported by libcom_err2.  (Closes: #644425, #644584)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Fri, 07 Oct 2011 18:27:06 -0400
+
+e2fsprogs (1.42~WIP-2011-10-05-1) unstable; urgency=low
+
+  * Update translations: German (Closes: #520985)
+  * Fixed usage and error text for mke2fs -C option
+  * Updated e2fsprogs.pot file for translators
+  * Added support for internationalized error strings for libcom_err
+  * Fixed various portability nits that were causing FTBFS problems on
+    Hurd and FreeBSD
+  * Added "big" and "huge" types to mke2fs.conf, since they are needed
+    for very large file systems
+  * Fixed on-line resizing which had been broken in the 1.42 series
+    (Closes: #451388)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Wed, 05 Oct 2011 02:10:53 -0400
+
+e2fsprogs (1.42~WIP-2011-10-01-2) unstable; urgency=low
+
+  * Update translations: French, German (Closes: #620659)
+  * Fix compilation problems in hermetic environments
+  * Fix on-line resizing in resize2fs (Closes: #451388)
+  * Add definitions for "big" and "huge" filesystems to /etc/mke2fs.conf
+  * Fix mke2fs when there are more than 2**32 block groups
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Tue, 04 Oct 2011 00:04:25 -0400
+
+e2fsprogs (1.42~WIP-2011-10-01-1) unstable; urgency=low
+
+  * New upstream release
+  * Avoid unnecessary reboots when checking the root fs in some special cases
+  * Fix an off-by-one error in filefrag -v's output
+  * Make filefrag display the number of contiguous (not physical)
+      extents (Closes: #631498)
+  * Clarify the mke2fs.conf.5 man page (Closes: #634883)
+  * Add a hurd-specific mke2fs.conf file (Closes: #629355)
+  * mke2fs will set s_max_mnt_count to -1 instead of 0 by default to
+      work around a bug in pre-3.0 kernels which caused a spurious
+      message to be printed when the file system was mounted (Closes: #632637)
+  * Fixed portability problems which was causing build failures on
+      non-Linux/non-x86 systems.
+  * Verify that the bad block inode looks sane before trusting it, to
+      avoid it causing more harm than good.
+  * Fixed the debian/rules file so that it build successfully if
+      DEB_BUILD_OPTIONS contains "nostrip" (Closes: #627535)
+  * Fixed some big-endian bugs in the MMP code
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Fri, 30 Sep 2011 22:33:41 -0400
+
+e2fsprogs (1.42~WIP-2011-09-25-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix FTBFS on big-endian architectures (Closes: #641838)
+  * Add support for multiarch (Closes: #632169)
+  * Clarify and update debian/copyright file (Closes: #614662)
+  * Add support for Multi-Mount Protection (MMP)
+  * Allow tune2fs to remove the external journal if the device is not found
+  * Updated/clarified man pages (Closes: #642193)
+  * Fix a potential FTBFS caused by overly long compile lines (Closes: #629883)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 25 Sep 2011 01:28:34 -0400
+
+e2fsprogs (1.42~WIP-2011-09-16-1) unstable; urgency=low
+
+  * New upstream release
+  * Added support for the integrated quota feature
+  * Improved 64-bit and bigalloc support
+  * Mke2fs and tune2fs now allows setting the stride and stripe width to zero
+  * Fixed tune2fs's mount options parsing  (Closes: #641667)
+  * Fixed an ABI compatibility problem which broke the dump program
+      (Closes: #636418)
+  * Resize2fs has forward compatibility for a new on-line resize ioctl
+      for > 16TB file systems.
+  * Fixed a (very hard to hit) bug that could cause e2fsck to crash in
+       pass 1 or pass 2
+  * Debugfs has a new 'blocks' command
+  * Mke2fs now gives a warning if the auto-detected block size exceeds
+      the page size
+  * Mke2fs and e2fsck now tries to use the punch hole command as a
+      "discard" when operating on normal files
+  * Mke2fs will not try to do any discard operations if -n is specified
+      on the command line
+  * Updated/clarified man pages (Closes: #639411)
+  * Fixed parsing of MNTOPT_ options for tune2fs and debugfs (Closes: #641667)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Fri, 16 Sep 2011 10:33:59 -0400
+
+e2fsprogs (1.42~WIP-2011-07-02-1) unstable; urgency=low
+
+  * New upstream release
+  * Add support for 64-bit file systems
+  * Add support for bigalloc file systems
+  * Fixed an e2fsck bug which caused "*** FILE SYSTEM WAS MODIFIED ***"
+      without an explanation of what was fixed.
+  * E2fsck will no longer attempt to clone an extended attribute block
+      in pass1b handling if the file system does not support extended
+      attributes.
+  * E2fsck will be more careful accidentally asking the user to continue
+      if the file system is mounted, so that an escape sequence won't
+      cause a false positive.  (Closes: #619859)
+  * E2fsck now uses less cpu time in pass 5
+  * E2fsck will no longer segault when a corrupted file system has a bad
+    extent, and removing it leads to a block needing to be deallocated.
+  * E2fsck now supports an extended "discard" option which will cause
+      e2fsck to attempt discard all unused blocks after a full check
+  * The e2image program now supports the qcow2 format, a more efficient
+      way of capturing file system metadata snapshots.
+  * Mke2fs now supports the [devices] stanza in mke2fs.conf.
+  * Mke2fs now supports the reserved_ratio relation in mke2fs.conf.
+  * Mke2fs now creates extent-mapped directories for the root and
+      lost+found directories.
+  * Mke2fs will skip zero'ing the journal if the extended option
+      "lazy_journal_init" is specified.
+  * Mke2fs will now create file systems that enable user namespace
+      extended attributes and with time- and mount count-based file
+      system checks disabled.
+   * Mke2fs will not set a stride or strip size of one block based on
+       block bevice attributes obtained from sysfs.
+   * Mke2fs now displays a progress report during the discard process.
+   * Mke2fs now handles extreme file system parameters correctly which
+       previously caused the inodes per group to drop below 8, leading
+       to a segfault.
+   * Debugfs's icheck will now correctly find inodes which use the
+       searched-for block as an extended attribute block.
+   * Debugfs now has a new "punch" command which remove blocks from the
+       middle of an inode.
+   * The badblocks program now correctly recovers from I/O errors when
+       direct I/O is being used.  The badblocks command now also
+       supports a -B option which forces the use of buffered I/O, and
+       the -v option will provide a more detailed breakdown of read,
+       write, and failed comparison errors.
+   * Added e4defrag tool which uses the EXT4_IOC_MOVE_EXT ioctl.
+   * Added support for journals larger than 2GB.
+   * Support using both hard links and symlinks when installing e2fsprogs.
+   * Add overflow checking to tune2fs -i's fsck interval, which must fit
+       in a 32-bit field.
+   * Filefrag will report 0 extents correctly in verbose mode.
+   * Logsave's usage message has been fixed.  (Closes: #619788)
+   * Update translations: French, Chinese, Germany, Indonesian, Swedish,
+        Vietnamese, Polish, Dutch, Czech.
+   * Updated/clarified man pages.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sat, 02 Jul 2011 22:38:57 -0400
+
+e2fsprogs (1.41.14-1) experimental; urgency=low
+
+  * New upstream release
+  * Fixed a FTBFS on big-endian architectures
+  * Fixed spurious warning in mke2fs
+  * resize2fs now works correctly on devices exactly 16TB
+  * resize2fs will no longer clear the resize_inode feature when the
+    number of reserved GDT blocks reaches 0.  This allows a file
+    system with the flex_bg feature to be subsequently shrunk.
+  * e2fsck will no longer use the extended rec_len encoding for file
+    systems whose blocksize is less than 64k, to catch fs inconsistencies
+    which the kernel will complain about.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Wed, 22 Dec 2010 18:39:19 -0500
+
+e2fsprogs (1.41.13-1) unstable; urgency=low
+
+  * New upstream release
+  * E2fsck can now do journal-only replays via "e2fsck -E journal_only"
+  * E2fsck now understands UUID= and LABEL= specifiers for the -j option
+    (Closes: #559315)
+  * E2fsck.conf now supports a new config option, which forces the
+    problem not to be fixed: problems/<problem code/force_no
+  * Dumpe2fs now prints friendlier offsets for flex_bg file systems
+  * Mke2fs will now fail if the user uses an file system type not
+    defined in mke2fs.conf (Closes: #594609)
+  * Resize now prints a clarified error message explaining that on-line
+    shrinking is not supported at all.  (Closes: #599786)
+  * Fixed a build error caused by bad static and profiled dependencies
+    for the blkid library (Closes: #604629)
+  * Fixed an e2fsck PROGRAMMING BUG error (Closes: #555456)
+  * Fixed outdated mention of fsck in the e2fsprogs package (Closes: #588726)
+  * Removed obsolete initrd script (Closes: #585041)
+  * Fixed bad dependency on libblkid1 due to shlibs.local (Closes: #583551)
+  * E2fsck now opens the external journal in exclusive mode to prevent
+    clearing the journal of a mounted, snapshotted volume if the user
+    accidentally tries to run e2fsck on the snapshot volume (Closes: #587531)
+  * Fix a big in e2fsck so it correct test for whether the EOFBLOCKS_FL
+    flag should be set or not.
+  * Tune2fs can now set uninit_bg without requiring an fsck afterwards
+  * Add support for the new ext4 default mount options added in 2.6.35
+  * Add support for the ext4 error tracking superblock fields added in 2.6.36
+  * Debugfs now uses a more concise format for listing extents in its
+    stat command
+  * Debugfs can now use direct I/O to access the file system with the -D option
+  * Mke2fs will skip initializing the inode table if a device supports
+    discard and the discard operation results in zero'ed blocks
+  * Mke2fs's handling of logical and physical sector sizes has been
+    significantly improved.
+  * Debugfs will correctly show the progress bar even when UTF-8
+    characters are used in its translation files (Closes: #583782, #587834)
+  * E2freefrag will now display the total number of free extents.
+  * Resize2fs -P now longer requires a freshly checked file system
+  * Fixed a floating point precision error that can cause segfaults in
+    e2fsck and resize2fs in extremely rare cases
+  * Fixed a bug in e2fsck which caused it to fail if both the original
+    and backup superblocks were invalid in some way
+  * Fixed a bug in e2freefrag which caused getopt parsing to fail on
+    architectures with unsigned chars
+  * Clarified mke2fs and e2fsck error messages when given incorrect
+    options/values by the user
+  * Updated/clarified man pages (Closes: #580236, #594004, #589345, #591083)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Mon, 22 Nov 2010 16:00:50 -0400
+
+e2fsprogs (1.41.12-2) unstable; urgency=high
+
+  * Allow tune2fs to set uninit_bg without requiring an fsck
+  * Fix test in e2fsck to correctly check for EOFBLOCKS files
+  * Fix dependencies for libuuid and libblkid (Closes: #583551)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Thu, 03 Jun 2010 09:30:36 -0400
+
+e2fsprogs (1.41.12-1) unstable; urgency=low
+
+  * New upstream release
+  * mke2fs now gives the correct error message if the external journal
+    is device is not found
+  * The resize2fs program will refuse to print the minimum size needed
+    for a file system if it is not clean.
+  * E2fsck now tests for extents that begin at physical block 0 and
+    rejects them as invalid.
+  * Fixed a bug in e2fsck which could cause it to crash when trying to
+    remove an invalid extent and the block bitmaps hadn't yet been loaded.
+  * E2fsck will now completely skip time-based checks if the system
+    clock looks insane or if the broken_system_clock option is set
+    in /etc/e2fsck.conf.  (Closes: #549861, #540152)
+  * Fixed a bug in e2fsck which caused e2fsck to complain about i_blocks
+    with a 4T file created using posix_fallocate()
+  * E2fsck will now correctly mark a sparse journal as invalid and will
+    delete and recreate the journal to address the problem.
+  * Fixed e2fsck not to ask permission from the user to abort if it's
+    going to abort regardless of what the user is going to say...
+  * E2fsck can now continue even if it fails to recreate the resize inode
+  * E2fsck will now avoid removing directory entries for inods found in
+    the unused region of the inode table until after it restarts the fs
+    check to avoid removing valid data.
+  * E2fsck will now longer try to set the block group checksums if it
+    is interrupted.
+  * Mke2fs will check both the physical and logical blocksizes of a
+    device to better support 4k sector drives.
+  * Mke2fs will accept the valid (but rarely useful) flex_bg size of 1
+  * E2fsck will check for cases where the EOFBLOCKS_FL is set whe nit is
+    not needed, and offer to clear it.
+  * The com_err library will now only output a CR character if the
+    stderr is connected to a tty in raw mode.
+  * Update Czech, Chinese, Dutch, French, Germany, Indonesian, Polish,
+    and Vietnamese translations (from the Translation Project)
+  * Add an fsck.ext4 symlink in the e2fsprogs-udeb package (Closes: #571247)
+  * Fix makefile dependency so dpkg-buildpackage -j2 works (Closes: #563487)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Mon, 17 May 2010 19:43:52 -0400
+
+e2fsprogs (1.41.11-1) unstable; urgency=medium
+
+  * New upstream release
+  * Add Heimdal function com_right_r() to libcom_err (Closes: #558910)
+  * Allow e2fsck to run even if the physical device has more than 2**32 blocks
+  * Debugfs's "logdump -b <blk>" now properly shows the allocation status
+    of the block <blk>.  (Closes: #564084)
+  * Make e2fsck's "the filesystem is mounted" message is now more scary
+    to hopefully dissuade users from thinking, "surely that message
+    doesn't apply to *me*"  :-(
+  * e2fsck -n will now always open the file system read-only.   We now
+    disallow certain combination of options which previously were manual
+    exceptions; this is bad because it causes users to think they are
+    smarter than they really are.   So "-n -c", "-n -l", "-n -L", and
+    "-n -D" are no longer supported.
+  * If the partition is badly aligned, have mke2fs just print a warning
+    message and continue.  Previously mke2fs would ask to confirm, and
+    this broke distro installation scripts.
+  * Fix a bug in libext2fs caused the creation of very large journals
+    for ext4 to be _very_ slow.
+  * E2fsck now understands the EOFBLOCKS_FL flag which will be used in
+    2.6.34 kernels to make e2fsck not complain about blocks deliberately
+    fallocated() beyond an inode's i_size.
+  * Fix a bug in e2fsck which could cause e2fsck -D to corrupt
+    non-indexed directories.  (Closes: #572453)
+  * debian/rules: can be compiled statically with stack protector now.
+    (Closes: #573923)
+  * Update debian policy compliance to 3.8.4
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Mon, 15 Mar 2010 00:16:35 -0400
+
+e2fsprogs (1.41.10-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix resize2fs bug which causes it to access invalid memory
+  * Add libss support for libreadline.so.6
+  * Fix e2fsck's check for extent-mapped directory with an incorrect file type
+  * Add new e2fsck.conf configuration option:
+    default/broken_system_clock for system with broken CMOS hardware
+    clocks.  (Closes: #559776)
+  * Fix flex_bg inode table placement algorithm used by mke2fs for
+    certain specific file system sizes
+  * Add source lintian overrids for weak-library-dev-dependency
+  * Fix FTBFS problem caused by texi2html changing (again) its output
+    location.  (Closes: #552934)
+  * Make e2fsck to avoid rehashing directories which can fit in a
+    single directory block.
+  * Fix how e2fsck fixes sparse directories which are extent-mapped.
+  * Fix some big-endian bugs in e2fsck and libext2fs
+  * Teach e2fsck to detect and fix sparse extent-mapped directories
+  * Fix filefrag from core dumping on file systems with 8k block sizes
+  * E2fsck was depending on i_size to be correct to detect and fix
+    certain directory problems before actually fixing the
+    directory's i_size.  This caused certain rare corruptions to
+    require two runs of e2fsck to address.
+  * Update Czech, Indonesian, Polish and Vietnamese translations
+    (from the Translation Project)
+  * Fix e2fsck to find and correct duplicate directory entries in
+    non-indexed directories.
+  * Add support for calling BLKDISCARD to mke2fs.
+  * Enhance libext2fs so it works around bug in Linux version 2.6.19
+    and earlier where the /proc/swaps file was missing the header on
+    the first line.
+  * Fix resize2fs so it works correctly on file systems with external journals
+  * Fix libss so that it does not seg fault when using a readline
+    library which does not supply a readline_shutdown() function.
+  * Add a pre-depends for util-linux-ng (Closes: #551795)
+  * Update and clarify various man pages.
+  * Corrected dumpe2fs's usage message
+  * Teach libext2fs to ignore the high 32 bits of the i_blocks field
+    when huge_file file system feature is set, but the inode does not
+    have the HUGE_FILE_FL flag set.
+  * Change e2fsck to accept superblock times to be fudged by up to 24
+    hours by default.  Most distributions have fixed their init scripts,
+    but apparently now they have buggy virtualization scripts.  :-(  I
+    give up, too many buggy user space set ups out there.  (Closes: #557636)
+  * Fix e2fsck to correctly print > 32-bit i_blocks numbers in problem reports
+  * Improve e2fsck so it prints "Illegal indirect block" instead of
+    "Illegal block #-1"
+  * Teach mke2fs to get device topology information from blkid and use
+    it to populate the superblock stride and stripe sizes and warn if
+    the block device is misaligned
+  * Fix a file descriptor leak in debugfs when sourcing a command file
+  * Fix a file descriptor leak in fsck
+  * Round up the bitmap size to prevent spurious segmentation faults on
+    BSD platforms.
+  * Fix resize2fs to correctly calculate the minimum size needed, when
+    flex_bg is enabled, to prevent resize2fs -M from failing.
+  * Dumpe2fs now displays more information about the contents of the journal
+  * Make sure the libblkid1 and libblkid1-dbg packags have changelogs
+  * On low memory systems, e2fsck can print some very scary looking
+    error messages.  Clean up them up to avoid user panic.  (Closes: #509529)
+  * Enhance blkid to support .ko.gz files in the modules.dep parser
+  * Fix tune2fs -j for mounted exted-enabled file systems
+  * Use the feature name "extent" instead of "extents" in mke2fs.conf.
+    Both work, but the latter is what is documented in the man page.
+    (Closes: #540111)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 07 Feb 2010 20:56:47 -0500
+
+e2fsprogs (1.41.9-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix tune2fs -I to work correctly in the face of bad blocks and
+    filesystems formatted for RAID arrays, and ENOSPC errors
+  * Require the user to only answer one question instead of multiple
+    ones for multiple bad block group checksums, or when an inode
+    table needs to be moved.
+  * Fix e2fsck to handle moving inode tables in FLEX_BG filesystems more
+    gracefully by looking in the entire flex_bg for space, instead of
+    just in the block group; if that doesn't work, try looking for
+    space in the entire filesystem.
+  * Fix the filefrag code to avoid printing the extent header if it
+    needs to fallback to using the FIBMAP ioctl.
+  * Fix filefrag to print the correct number of extents for zero-length
+    files when using FIBMAP.  (Closes: #540376)
+  * Add a filefrag -B option to make it easier to debug the FIBMAP
+    support.
+  * Allow e2fsprogs programs to allocate from uninitalized block groups.
+  * Add a new program, e2freefrag, which displays information about the
+    free space fragmentation in an ext2/3/4 filesystem.
+  * E2fsck will now print much fuller information when the last mount
+    time or last written time is in the future, since most people can't
+    seem to believe their distribution has buggy init scripts, or they
+    have a failed CMOS/RTS clock battery.
+  * Update French, Polish, Czech, and Sweedish translation from the
+    Translation Project.
+  * Enhance debugfs's 'stat' command to print basic extent information
+    for extent-mapped inodes, and add a new command, 'dump_extents'
+    which prints detailed information about an inode's extent tree.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 23 Aug 2009 10:08:52 -0400
+
+e2fsprogs (1.41.8-2) unstable; urgency=low
+
+  * Fix regression in ext2fs_extent_set_bmap() which caused e2fsck -fD
+    to fail on ext4 filesystems if the directory needs to shrink by more
+    than a block (Closes: #537510)
+  * Fixed filefrag for non-extent based files
+  * Fix use of apostrohe's in package descriptions
+  * Don't use dietlibc when building for mips and mipsel architectures
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Mon, 20 Jul 2009 09:38:21 -0400
+
+e2fsprogs (1.41.8-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix resize2fs bugs when shrinking ext4 filesystems
+  * Update debian policy compliance to 3.8.2
+  * Update package descriptions to mention ext3 and ext4 filesytems
+      (Closes: #535530)
+  * Update French, Polish, Czech, Indonesian, and Sweedish translation
+      from the Translation Project.
+  * If the resize2fs operation fails, the user will be told to fix up
+    the filesystem using e2fsck -fy.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sat, 11 Jul 2009 17:26:16 -0400
+
+e2fsprogs (1.41.7-2) unstable; urgency=low
+
+  * Fix online resizing using resize2fs (Closes: #535452)
+  * Fix the filefrag program for files with more than 144 extents
+  * Update and clarify various man pages.
+  * Fix potential filesystem corruptions caused by using resize2fs to
+    shrink filesystems with extents enabled.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Tue, 07 Jul 2009 23:21:46 -0400
+
+e2fsprogs (1.41.7-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix memory leaks in e2fsprogs, including a very large memory leak
+    which can cause e2fsck to run out of memory when checking very large
+    filesystems using extents.
+  * Fix a bug in libext2fs which can cause e2fsck and resize2fs to write
+    uninitalized data into the portion of the inode beyond the first 128
+    bytes when operating on extents; potentially corrupting filesystems.
+  * The logsave program will now filter out the ^A and ^B characters when
+    writing to the console.
+  * Update/clarify man pages (Closes: #531385, #523063)
+  * Fix filefrag progam so it correctly checks for errors from the
+    fiemap ioctl.
+  * Change badblocks to allow block sizes larger than 4k.
+  * Fix libext2fs to properly initialize i_extra_size when creating the
+    journal and resize inodes.
+  * Resize2fs will now update the journal backup fileds in the
+    superblock if the journal is moved; this avoids an unnecessary full
+    fsck after resizing the filesystem.
+  * Use the same encoding as the kernel for rec_len == 64k in 64k block
+    filesystems.
+  * Fix lsattr to exit with a non-zero status when it encounters errors.
+  * Enhance badblocks to print the currently tested block number when
+    interrupted with ^C.
+  * Fix debugfs from core dumping if the logdump command fails to open the
+    output file.
+  * Harden ext2fs_validate_entry() so that lsdel will not read beyond the
+    end of the block even if the directory block is corrupted.
+  * Update Chinese and Czech translation from the Translation Project.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Mon, 29 Jun 2009 15:12:14 -0400
+
+e2fsprogs (1.41.6-1) unstable; urgency=low
+
+  * New upstream release
+  * Update and clarify man pages
+  * Fix a number of Lintian warnings, including to updating to debian
+    policy 3.8.1
+  * Update config.guess and config.sub to the latest (2009-04-17)
+    version so that e2fsprogs will build on the avr32 platform
+    (Closes: #528330)
+  * Add an explicit error message if the /etc/mtab file is missing
+    when running e2fsck or resize2fs (Closes: #527859)
+  * Enhance e2fsck to handle the case where the primary block group
+    descriptors need fixing, and the backup superblock is corrupt.
+    (Closes: #516820)
+  * Add an "-a" option to debugfs's close_filesys command
+  * e2fsck will no longer abort a preen operation if an inode's
+    i_file_acl_hi field is non-zero.  (Closes: #526524)
+  * The chattr program can now migrate inodes from using direct/indirect
+    blocks to extent trees.
+  * Speed up e2fsck if there are multiple block groups with inodes in
+    use in the unused portion of the block group's inode table.
+  * Update Chinese translation from the translation project
+  * Fix resize2fs so it won't corrupt ext4 filesystem when asked to
+    shrink a filesystem smaller than the minimum suggested size.
+  * Fix e2fsck regression which can corrupt ext4 filesystems when
+    replaying the journal.
+  * Add support to e2fsck for handling I/O errors while replaying the
+    journal
+  * Fix a bug in e2fsck which could cause it to crash if an inode has a
+    corrupt extent header, and the user declines to clear the inode.
+  * Fix blkid to prefer the /dev/mapper/<name> device names over the
+    private /dev/dm-N device names.
+  * Add support for the FIEMAP ioctl to the filefrag program
+  * Further speed up e2fsck by skipping journal checks if the filesystem
+    is mounted read-only and is marked as not needing journal replay.
+  * Add a build depends in the control file indicating that dietlibc
+    must be newer than version 0.30 (Closes: #506064)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Fri, 30 May 2009 13:26:23 -0400
+
+e2fsprogs (1.41.5-1) unstable; urgency=low
+
+  * New upstream release
+  * E2fsck will now detect and fix inodes that have a non-zero
+    i_file_acl_high field on 32-bit filesystems.
+  * Update build-depends to indicate that dietlibc 0.30 doesn't work.
+    (Closes: #506064)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Fri, 24 Apr 2009 08:52:47 -0400
+
+e2fsprogs (1.41.4-3) unstable; urgency=low
+
+  * Update/clarify man pages (Closes: #365619)
+  * Fix a problem where the 'device names' for pseudo-filesystems in
+    /proc/mounts could confuse the e2fsprogs into thinking that a
+    filesystem image stored in a regular file was mounted when it was not
+  * Remove whole-disk entries from the blkid cache when partitions are found
+  * Reduce the number of disk reads needed when the filesystem is clean
+  * Add Chinese (simplified) translation from the Translation Project
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Thu, 23 Apr 2009 01:35:22 -0400
+
+e2fsprogs (1.41.4-2) unstable; urgency=low
+
+  * Update the debian copyright files to point at the version-specific
+    GPL and LGPL files.
+  * Update the debhelper compat level to 7
+  * Fix a number of filesystem corruption bugs in resize2fs when growing
+    or shrinking ext4 filesystems off-line (i.e., when the ext4
+    filesystem is not mounted).
+  * Clarify tune2fs man page  (Closes: #515693)
+  * Add homepage field to the debian control file (Closes: #506279)
+  * Fix Hurd compilation problem (Closes: #521602)
+  * Debugfs can now set i_file_acl_high via the set_inodes_field command
+  * Debugfs will now display a 64-bit file acl block
+  * Fix various gcc compilation warnings and other programming cleanups
+  * Make sure libuuid closes all file descriptors before starting the
+    uuidd daemon.
+  * Avoid running e2fsck unnecessarily after doing an online resize
+  * Mke2fs -S will now avoid trying to create the journal
+  * Update the Czech translation from the translation project.
+  * Fix support for external journals (which was broken in e2fsprogs 1.41.4)
+  * Fix a compatibility issue with libext2fs info page and makeinfo 4.12
+  * Fix a segfault in debugfs when running stat without an open filesystem
+  * Teach the blkid library that starting in 2.6.29, ext4 can support
+    filesystems without journals.
+  * Add error check preventing the reserved_ratio argument to mke2fs and
+    tune2fs from being negative.  (Closes: #517015)
+  * Add support for tracking the number kilobytes written to the
+    filesystem via the superblock field s_kbytes_written
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 19 Apr 2009 23:05:53 -0400
+
+e2fsprogs (1.41.4-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix bug which could sometimes cause blkid to return an exit value of
+    zero for a non-existent device (Closes: #502541)
+  * Fix spelling mistake in Debian changelog (Closes: #502323)
+  * Fix blkid to deal with an ext3 filesystem with the test_fs flag
+  * Fix debugfs's ncheck output to suppress extra characters at the end
+    of the file name
+  * Tune2fs now updates the block group checksums after changing the
+    filesystem's UUID
+  * Speed up tune2fs's inode resizing code so it is no longer vastly
+    inefficient for moderate to large filesystems
+  * Fix dumpe2fs so it doesn't attempt to print the inline journal
+    information on filesystems with an external journal
+  * Update the Catalan translation
+  * Filter out linux-vdso.so lines when determining the library
+    dependencies while building the initial ramdisk (Closes: #503057)
+  * Fix e2fsck so an errant INODE_UNINIT flag set in a block group
+    doesn't cause e2fsck to abort.
+  * E2fsck now distinguishes between fragmented directories and
+    fragmented files in verbose mode statistics and in the fragcheck
+    report.
+  * Avoid double-counting non-contiguous extent-based inodes in the
+    verbose mode statistics.
+  * E2fsck now leaves slack space when repacking directories so that a
+    few new directory entries won't cause leaf nodes to become split
+    right away.
+  * E2fsck was previously not handling the case of a corrupted interior
+    node in the extent tree, and would crash in that case.  It now will
+    handle this and related failures robustly.
+  * E2fsck problem descriptions involving the journal are no longer
+    referred to as "ext3" problems, since ext4 filesystems also have
+    journals.
+  * Fix a long-standing bug in e2fsck which would cause it to crash when
+    replying journals for filesystems with block sizes greater than 8k.
+  * Fix a regression in debugfs's logdump command so it works for
+    filesystems with 32-bit block numbers.  This was accidentally broken
+    when the header files were changed to support the 64-bit block numbers.
+  * Fix resize2fs for ext4 filesystems.  Some blocks that that need moving
+    when shrinking filesystems with uninit_bg feature would not be
+    moved.  In addition, blocks and inode table blocks were not being
+    correctly freed when shrinking filesystems with the flex_bg feable,
+    which caused resize2fs -M to fail.  Finally, when blocks are moved,
+    make sure the uninitialized flag in extents is preserved.
+  * Add mkfs.ext4 symlink to the e2fsprogs-udeb package (Closes: #511207)
+  * Resize2fs now reserves some extra block when calculating the minimum
+    size to shrink the filesystem in case some extent allocation trees
+  * Add a "set -e" to uuid-runtime's prerm script to make Lintian happy
+  * The blkid library will now recognize btrfs filesystems and swap
+    devices currently used by user-level software suspend.
+  * tune2fs will not allow changing the inode size for filesystems that
+    have the flex_bg feature enabled, since the code currently assumes
+    the each block group's portion inode table is located in its own
+    block group.
+  * Fix tune2fs -I so it won't corrupt ext3/ext4 filesystem configured
+    for RAID storage devices.
+  * Mke2fs now understands a -U option which allows the UUID to be
+    specified for the new filesystem.
+  * Mke2fs will now treat devices with exactly 16TB as if they have 16TB
+    minus one block, since many users expect ext4 to support 16TB
+    devices, and the true maximum size is 16TB-1.
+  * E2fsck will now flag filesystems that have an insane s_first_ino
+    field in their superblock.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Tue, 27 Jan 2009 11:50:49 -0500
+
+e2fsprogs (1.41.3-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix e2fsck so it prints the correct inode number for uinit_bg
+    related problems.
+  * E2fsck will offer to clear the test_fs flag if the ext4 filesystem
+    is available.
+  * Fix a file descriptor leak in libblkid
+  * Avoid a potential infinite loop in e2fsck when there are disk I/O
+    errors while trying to close a filesystem.
+  * Fix a potential infinite loop in resize2fs when a bogus new size of
+    0 blocks is specified on the command line.
+  * Add an early check to see if a device is read-only to avoid lots of
+    confusing error messages.
+  * Fix debugfs's ncheck command so it prints all of the names of
+    hardlinks in the same directories.
+  * Fix a bug in libblkid so it correctly detects whether the ext4 and
+    ext4dev filesystems are available, so that the ext4dev->ext4
+    fallback code works correctly.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 12 Oct 2008 22:45:34 -0400
+
+e2fsprogs (1.41.2-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix e2fsck's automatic blocksize detection.  This fixes a regression
+      added in e2fsprogs 1.40.7 where e2fsck's -b option would not
+      work if a blocksize wasn't also specified via the -B option.
+  * Fix a potential file descriptor leak in libcom_err if the
+      application exec's another program.
+  * Fixed badblocks output for "badblocks -sw"
+  * debugfs: Fix ncheck to print all pathnames for all of the specified inodes
+  * Use dietlibc when possible for building e2fsck.static, to reduce the
+      size of the static binary.
+  * debugfs: Add the ability to specify the hash seed and to specify the
+      hash algorithm by name to the "hash" command.
+  * Add documentation for the file I/O functions to libext2fs.texinfo.
+      (Closes: #484877)
+  * Fix a bug in e2fsck where if a translation file is being used and
+      e2fsck needs to print problem report with a custom question (such as
+      "Run journal anyway?"), the PO file's header would get spewed onto
+      the terminal.
+  * Update Swedish, Vietnamese, Dutch, Indonesian, German, Czech translations
+  * Fixed spelling mistakes in man pages  (Closes: #498100, #498101,
+      #498102, #498103)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Thu, 02 Oct 2008 08:54:16 -0400
+
+e2fsprogs (1.41.1-3) unstable; urgency=low
+
+  * badblocks -v will now display the time and percentage complete
+      (Closes: #429739)
+  * Reordered debian/rules when building udebs to avoid a Lintian warning
+  * Fixed dependencies fields in the udeb packages (Closes: #497619)
+  * Avoid linking various programs with unneeded libraries
+  * Fixed a typo'ed bold font specifier in mke2fs's man page
+  * Fixed the pkg-config files so the include directory needed by the
+      various libraries is included, and to use Requires.private to
+      avoid unnecessary linking of dynamic libraries.
+  * Add more historical information to the debian/*.symbol files
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Fri, 05 Sep 2008 11:11:03 -0400
+
+e2fsprogs (1.41.1-2) unstable; urgency=low
+
+  * Make sure ext4_swab64() is defined on all platforms (Closes: #497515)
+  * Badlocks: Use O_LARGEFILE so it will run on files greater than 2GB
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Tue, 02 Sep 2008 09:53:46 -0400
+
+e2fsprogs (1.41.1-1) unstable; urgency=low
+
+  * New upstream release
+  * mke2fs and tune2fs now use half-md4 as the default hash algorithm
+       In addition the default hash algorithm can be via mke2fs.conf for
+       mke2fs, and via a command-line option for tune2fs.
+  * Add support for on-line resizing of ext4 filesystems with the
+       flex_bg filesystem feature.
+  * e2fsck now creates the journal in the middle of the filesystem,
+       which can speed up fsync-heavy workloads.
+  * Make the blkid library more efficient for devicemapper devices,
+       mostly by no longer using the libdevmapper library.
+  * Fix various namespace leakages by the libblkid, libe2p and libext2fs
+       libraries.
+  * Fix support for empty directories in 64k blocksize filesystems.
+  * Add supported_features command to debugfs
+  * Improve libblkid detection of JFS and HPFS filesystems
+  * The test I/O manager is now compiled in by default, but to avoid its
+    overhead, it is only enabled when the TEST_IO_FLAGS or TEST_IO_BLOCK
+    environment variables are set.
+  * Fix filefrag's ideal extent calculation (Closes: #458306)
+  * Fix postinstall scripts when the user/group is in LDAP (Closes: #497010)
+  * Add Indonesian and update French, Polish, Dutch, German, Sweedish,
+       Czech, and Vietnamese Translations.  (Closes: #313697, #401092)
+  * Update/clarified man pages
+  * Add dpkg-gensymbols support to track ABI changes to the libraries
+  * Add lintian overrides for uuid-runtime and libuuid1
+  * Remove (no longer needed) lintian overrides for e2fsck-static
+  * Add debian/watch file
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Mon, 01 Sep 2008 11:30:21 -0400
+
+e2fsprogs (1.41.0-4) unstable; urgency=low
+
+  * mke2fs will issue a warning if mke2fs.conf hasn't been updated and
+    the user tries to create an ext3, ext4, or ext4dev filesystem,
+    since it depends on the mke2fs.conf file in order to create the
+    filesystem properly with the appropriate features.
+  * Fix the maximum journal size message in mke2fs and tune2fs to be
+    consistent/correct.  (Closes: #491620)
+  * Add detection for hfsx filesystem and add label and uuid detection
+    for hfs, hfsplus, and hfsx filesystems in libblkid.
+  * Fix cosmetic issue in resize2fs when a progress bar doesn't finish
+    with a newline for pass 4 (when the inode references are updated).
+  * Teach resize2fs to move blocks when extents are present (when
+    shrinking a filesystem and/or if resize_inode is not present).
+  * Teach resize2fs to work correctly with the uninit_bg when blocks
+    need to be moved or allocated.
+  * Fix and optimize extent manipulation in libext2fs for resize2fs.
+  * Fix "dumpe2fs -i" and "debugfs -i".  (Closes: #495830)
+  * Fix resize2fs incorrectly managing directory in-use counts when
+    shrinking filesystems and directory inodes need to be moved.
+  * Fix spurious e2fsck complaints with i_size with extents and large
+    files and preallocated blocks.
+  * Make sure the creation timestamp is set by mke2fs and by new inodes
+    created by the libext2fs in general.
+  * Fix ind/dind/tind statistics when extents are present, and add
+    extent tree depth statistics.
+  * Add a fragmentation report extended option to e2fsck.
+  * Fix blkid cache validation and some possible blkid crashes
+    (Closes: #493216)
+  * Teach debugfs's htree command to work with extent-based directories.
+  * Improve the error message for "tune2fs -I".
+  * Fix miscellaneous strings and usage messages pointed out by the
+    translators.  (Thanks, translators!)
+  * Enforce that mke2fs won't allow features for revision 0 filesystems.
+  * Optimize inode table allocation in mke2fs for flex_bg filesystems.
+  * Update/clarified man pages
+  * Fix minor typo in uuid-runtime's debian package description
+  * Wrap debian/copyright files to avoid "line too long" lintian warnings
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sat, 23 Aug 2008 08:56:47 -0400
+
+e2fsprogs (1.41.0-3) unstable; urgency=medium
+
+  * Fix mips-specific FTBFS problem in debian/rules file
+  * Synchronize section and priority levels in control file with the
+    FTP masters' override file.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Tue, 15 Jul 2008 11:38:59 -0400
+
+e2fsprogs (1.41.0-2) unstable; urgency=medium
+
+  * Don't try to check the group descriptor checksum if the GDT_CSUM
+    feature is not present.  (Closes: #490637)
+  * Add a new blkid -L option which pretty-prints the currently
+    available block devices.  (Closes: #490527)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 13 Jul 2008 19:18:08 -0400
+
+e2fsprogs (1.41.0-1) unstable; urgency=medium
+
+  * New upstream version
+  * Make e2fsck detect corrupted block group descriptors that would
+    cause it to relocate inode tables, causing more damage to the
+    filesystem, and make it try the backup superblock/block group
+    descriptors first.
+  * Fix resize2fs to clean up the resize_inode if all of the reserved
+    gdt blocks are consumed during an off-line resize.
+  * Enable huge_file, dir_nlink, extra_isize feautres for mke2fs and tune2fs.
+  * Enable huge_file, dir_nlink, extra_isize, and uninit_bg by default
+    in mke2fs.conf.
+  * Fix badblocks terminology in man page and program output.
+    (Closes: #440983, #440981)
+  * Clarify stripe-width and stride-size in mke2fs man page.  (Closes: #487849)
+  * mke2fs: Dumb down filesystems for GNU Hurd (Closes: #471977)
+  * Add bash-static to the list of shells recommended for e2fsck-static
+    (Closes: #490003)
+  * mke2fs: Fix flex_bg metadata default layout to avoid a hole between
+    the bitmaps and inode tables.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Thu, 10 Jul 2008 17:25:32 -0400
+
+e2fsprogs (1.41~WIP-2008-07-07-1) experimental; urgency=low
+
+  * New upstream version (pre-release for e2sprogs 1.41)
+  * Update to indicate compliance with debian policy version 3.8.0.0.
+  * Fix e2fsck to not truncate valid extent files that are larger than
+    what is supported by indirect files.
+  * Add -dbg packages which contain the debugging information.
+  * mke2fs: Print a better error message when a device is too big.
+    (Closes: #488663)
+  * Create external journal devices with a default blocksize of 4k
+  * Fix bug in badblocks which caused crash when lots of -t patterns are
+    given.  (Closes: #487298)
+  * Fix blkid handling of stale entries.  (Closes: #487758, #487783)
+  * Update Vietnamese, Polish, French, Spanish, German, Catalan,
+    Dutch, Czech translations from the translation project.
+  * Fix FTBFS problem on MIPS (Closes: #487675)
+  * Fix bug in libuuid1.postinst which would cause it to blow up if
+    there were spaces around the equals sign in /etc/adduser.conf.
+    (Closes: #487443)
+  * Update/clarified man pages.  (Closes: #393313)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Mon, 07 Jul 2008 16:30:43 -0400
+
+e2fsprogs (1.41~WIP-2008-06-17-1) experimental; urgency=low
+
+  * New upstream version (pre-release for e2fsprogs 1.41)
+  * New options to badblocks allow it to limit how quickly it reads
+    from disk (for background scrubbing) and abort after a finding
+    giving a number of errors.
+  * Add support for ext4 filesystem features.  (Closes: #388452, #425477)
+  * Tune2fs can migrate a filesystem from using 128 byte inodes to
+    larger inode sizes so the user can take full advantage of ext4)
+  * E2fsck and mke2fs can optionally record an undo log which can be
+    replayed by the e2undo program.
+  * E2fsck will display a less cryptic message when the last check field
+    in the superblock is in the future.  (Closes: #446005)
+  * Improve blkid probes for LVM volumes and swap partitions
+  * Mke2fs has a much more sophisticated system for controlling the
+    parameters of newly created filesystems.  The -t option now is used
+    to specify the filesystem type.  See the mke2fs and mke2fs.conf man
+    pages for more details.
+  * Resize2fs will now print the minimum needed filesystem size if given
+    the -P option, and will resize the filesystem to the smallest possible
+    size if given the -M option.
+  * E2fsck now performs more extensive and careful checks of extended
+    attributes stored in the inode.
+  * Mke2fs will always make sure that lost+found always has at least 2
+    blocks, even for filesystems with very large blocksizes (i.e., 64kb).
+  * The debugfs "ls" command now supports the -p option, which causes
+    filenames to be printed surrounded by double quotes.
+  * Fix a potential off-by-one buffer overflow in e2image
+  * The chattr program will now return a non-zero exit code in case of
+    failures.
+  * This version of e2fsprogs removes support for legacy big-endian
+    filesystems and for MASIX filesystems.
+  * Add I/O statistics reporting to e2fsck.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Tue, 17 Jun 2008 23:57:08 -0400
+
+e2fsprogs (1.40.11-1) unstable; urgency=low
+
+  * Change mke2fs, tune2fs and resize2fs to use floating point precision
+    when calculating the number of reserved blocks.  (Closes: #452639)
+  * Update Spanish and Catalan translations.
+  * Fix ext2fs_swap{16,32,64} for external applications.  (Closes: #484879)
+  * Improve uuid-runtime package description.  (Closes: #483962)
+  * Improve e2fsprogs package description.  (Closes: #483023)
+  * Add support for detecting ZFS volumes to libblkid.
+  * Clarify debugfs man page.  (Closes: #486463)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Tue, 17 Jun 2008 21:59:21 -0400
+
+e2fsprogs (1.40.10-1) unstable; urgency=low
+
+  * Fix a very rare potential data corruption bug in e2fsck's journal
+    replay.
+  * Updated German, Dutch, Sweedish, and Vietnamese translations.
+  * Force blkid to revalidate a device if its mtime is newer than the
+    last validation time in the cache.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Wed, 21 May 2008 13:35:12 -0400
+
+e2fsprogs (1.40.9-1) unstable; urgency=low
+
+  * Fix fsck so that if multiple filesystems are being checked in
+      parallel, the progress bar for subsequent filesystems will be
+      correctly displayed.  (Closes: #432865)
+  * Fix fsck -Cn for n!=0 for better Ubuntu boot-time support
+  * debugfs: Don't bother using a pager of stdout is not a tty
+  * Fix tune2fs and debugfs to correctly parse time strings during
+      daylight savings time.  (Closes: #471882)
+  * Teach fsck to treat ext4 and ext4 filesystems as ext* filesystems
+  * Logsave will now propagate SIGINT and SIGTERM signals to its child
+      process.
+  * Mke2fs will not allow the illogical combination of the resize_inode
+      and meta_bg filesystem features.
+  * Use UID/GID ranges from adduser.conf if present, even though we
+      don't use adduser to add users/groups.  (Closes: #473179)
+  * Updated German, Czech, Dutch, French, Polish, Sweedish, and
+      Vietnamese translations.
+  * Update/clarified the mke2fs man page
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 27 Apr 2008 00:35:20 -0400
+
+e2fsprogs (1.40.8-2) unstable; urgency=low
+
+  * One more big-endian swap fix needed for resize2fs to work correctly
+      with in-inode extended attributes.
+  * Fix minor security issues identified in uuidd.
+  * Remove e2fsprogs preinstall script which contained stuff not needed
+      in well over two stable releases.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Fri, 14 Mar 2008 14:25:54 -0400
+
+e2fsprogs (1.40.8-1) unstable; urgency=low
+
+  * Fix e2image -I so it works on image files which are larger than 2GB.
+  * Fix e2fsck's handling of directory inodes with a corrupt size field.
+  * Fully fix a resize2fs bug where extended attributes in large inodes
+      could get dropped on big-endian systems.
+  * Update Czech, Dutch, Polish, Sweedish, and Vietnamese translations.
+  * Significantly updated German translation!  Thanks to Philipp Thomas
+    from Novell for stepping up to be our new German translation
+    maintainer!  (Closes: #302512, #370247, #401092, #412882)
+  * Fixed mke2fs man page to document new default inode size.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Thu, 13 Mar 2008 20:00:09 -0400
+
+e2fsprogs (1.40.7-1) unstable; urgency=low
+
+  * New upstream release
+  * tune2fs no longer will remove the sparse_super feature, as it is dangerous
+  * Update/clarified various man pages
+  * Fix bug where large nodes were not getting fully copied when
+      shrinking a fileystem using resize2fs.
+  * Allow mke2fs and tune2fs to manipulate the large_file feature flag
+  * Suppress fsck's warning message about an old-style fstab if the
+      fstab file is empty.  (Closes: #468176)
+  * E2fsck will no longer clear the large_files feature flag
+      automatically when there are no more large files in the system.
+  * Fix blkid code to avoid segfaulting when a device mapper volume
+      disappears out from under it.
+  * Enhance e2fsck's reporting of unsupported filesystem features
+  * Fix dumpe2fs command syntax for explicit superblock/blocksize parameters
+  * Teach tune2fs to clear the resize_inode feature flag
+  * Fix libuuid1 postinstall script to explicitly pass 100 to UID_MIN
+      and GID_MIN, to make it clear we are not trying to allocate an
+      uid/gid in the globally reserved range.  (Closes: #466929)
+  * Fix memory leak in ext2fs_alloc_block()
+  * Teach blkid to recognize LVM2 physical volumes
+  * Add support to dumpe2fs, mke2fs, and tune2fs for specifying and
+      printing the RAID stride and stripe width.
+  * Add support for new superblock fields to debugfs's set_super_value command
+  * Teach debugfs to print "mostly-printable" xattr strings, such as is
+      used by SELinux.
+  * Add support in fsck to ignore mounted filesystems when given the -M option
+  * Fix uuidd so it creates the pid file with the correct pid number
+  * Update Czech, Dutch, Polish, Sweedish, and Vietnamese translations
+      from the Translation Project.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Thu, 28 Feb 2008 22:27:39 -0500
+
+e2fsprogs (1.40.6-1) unstable; urgency=low
+
+  * New upstream release
+  * Add support for returning labels for UDF filesystems in the blkid
+      library.
+  * Fix bug in the blkid library where cached filesystems was not being
+      flushed when opening USB devices returned the error ENOMEDIUM.
+      (Closes: #463787)
+  * Add logic to the blkid library to automatically choose whether a
+      filesystem should be mounted as ext4 or ext4dev, as appropriate.
+  * Allow tune2fs to set and clear the test_fs flag on ext4 filesystems.
+  * Document the BLKID_FILE environment variable in the libblkid man page
+  * Update Vietnamese and Czech translations from the translation project
+  * Fix dependency problem caused by dpkg 1.14.16 (Closes: #436058)
+  * Use thread local storage to fix a theoretical race condition if two
+      threads try to format an unknown error code at the same time in
+      the com_err library.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 10 Feb 2008 00:06:02 -0500
+
+e2fsprogs (1.40.5-2) unstable; urgency=low
+
+  * Fix debian/control and debian/rules so that they work correctly
+    after a change in dpkg-gencontrol's behavior after version 1.14.16
+    of dpkg.  This fixes bad version dependencies for comerr-dev,
+    uuid-dev and ss-dev. Thanks to Don Armstrong for the explanation and
+    Margarity Manterola for a proposed patch. (Closes: #463058)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Wed, 30 Jan 2008 07:17:27 -0500
+
+e2fsprogs (1.40.5-1) unstable; urgency=low
+
+  * New upstream release.
+  * Mke2fs will now create new filesystems with 256 byte inodes and the
+      ext_attr feature flag by default.  This allows for much better
+      future compatibity with ext4 and speeds up extended attributes
+      even on ext3 filesystems.
+  * Teach mke2fs and tune2fs to set a "test_fs" flag, which indicates
+      that it is ok to use the filesystem on in-development kernel
+      code (i.e., ext4dev)
+  * E2fsck now optimizes non-htree directories by sorting them by inode
+      number.
+  * Add support for detecting HFS+ and ext4/ext4dev filesystems in blkid
+  * Fix blkid's ntfs UUID handling so it is compatible with vol_id
+  * Avoid a floating point exception when blkid tries to probe a corrpt
+      reiserfs filesystem.
+  * Fix potential overflow problem in e2image if the device name is
+      too long.
+  * Cause e2image to exit immediately with an error message on a disk
+      full situation.
+  * Fix a minor typos in the resize2fs and uuidd manpages.
+  * E2fsck will no longer backup superblocks when the kernel makes
+      certain "safe" feature set changes behind the user's back.
+  * Fix debugfs's lsdel command so it works on large files
+  * Allow a user to undelete an inode with linking to a destination
+      directory.
+  * Update Swedish translation file from the Translation Project
+  * The libuuid1 and uuid-runtime packages requires passwd package, so
+      declare it as a dependency.  (Closes: #459403)
+  * Fix a FTBFS problem on x86_64 caused by the fact that dietlibc
+      doesn't provide llseek on the x86_64.  (Closes: #459614)
+  * Don't use dietlibc on platforms that don't support it (Closes: #459475)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 27 Jan 2008 16:57:34 -0500
+
+e2fsprogs (1.40.4-1) unstable; urgency=low
+
+  * Make sure that programs like tune2fs, when modifying a mounted
+      filesystem do not write the backup superblocks with the
+      NEEDS_RECOVERY flag, to avoid e2fsck from needlessly forcing a
+      full fsck because it thinks the feature flags need to be backed up
+      from the master to the backup superblocks.  (Closes: #454926)
+  * Improve time-based UUID generation to guarantee uniqueness even when
+      UUID's are being generated at very high rates on SMP systems.  To
+      do this we use an optional setuid helper daemon (uuidd) which is
+      started by libuuid when it is needed.  The uuidd daemon is
+      packaged in the (new) uuid-runtime package, which now also includes
+      the uuidgen program (which had been previously been included as
+      part of the e2fsprogs package).
+  * Fix fsck to only treat '#' characters at the beginning of /etc/fstab
+      lines as starting a comment.  This avoids spurious warnings printed
+      for filesystems such as fuse that often use '#' as part of the
+      filesystem specifier (i.e., wdfs#https://dav.hoster.com/foo).
+  * Enhance the blkid program to pretty-print control and meta
+      characters to avoid garbage filesystem labels from screwing up the
+      user's terminal
+  * Fix potential integer overflows passed to malloc() in resize2fs
+  * Update Dutch, Polish, and Vietnamese translations from the
+      Translation Project.  Remove the Rwandan translation upon advice
+      of the Translation Project.
+  * Fix cross-compilation support for non-Linux architectures
+        (Closes: #451172, #437720)
+  * Clarified and improved man pages (Closes: #444883, #441872)
+  * Fix potential divide by zero error when libblkid tried probing an
+      invalid FAT filesystem.
+  * Make error_message() in libcom_err DTRT when when a 64-bit sign-extended
+      error code is passed to it.
+  * Build the e2fsck-static package so that e2fsck.static will not use
+      TLS and hence will run correctly on back-level Debian systems
+      using a 2.4 Linux kernel.  (Closes: #458017)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Mon, 31 Dec 2007 22:40:42 -0500
+
+e2fsprogs (1.40.3-1) unstable; urgency=medium
+
+  * New upstream release
+  * libext2fs: Add checks to prevent integer overflows passed to
+      malloc().  Fixes security issue related to Xen's pygrub: CVE-2007-5497
+  * libss: Fix parallel build failure
+  * e2fsprogs: fix blkid whole-disk scanning heuristics
+  * libext2fs: Fix a corner case bug in ext2fs_unlink
+  * fix check_mntent_file() to pass mode for open(O_CREAT)
+  * Fix errors in test_ss.c so it can be an example application and test case
+  * e2image in raw-mode appends an extra byte to image-file
+  * Fix typo in the summary section of the blkid man page
+  * mke2fs: Change usage message to use -E instead -R, which is deprecated
+  * libblkid: recognize squashfs filesystems on BE systems.
+  * libblkid: detect squashfs
+  * e2fsck: backup superblocks if key constants have changed
+  * e2fsck: update the backup superblocks if the feature bitmasks are changed
+  * ext2fs_dblist_dir_iterate: Fix ABORT propagation logic
+  * libblkid: Add more magic numbers that might mean there is a FAT filesystem
+  * e2fsck: Don't mark the filesystem invalid because of time errors
+  * Work around lame Ubuntu init scripts / installer bugs
+  * fsck: Ignore /etc/fstab entries for bind mounts
+  * e2fsck: If the superblock is corrupt, automatically retry with the backup sb
+  * Don't crash if s_inode_size is zero
+  * Use sscanf instead of atoi when parsing e2fsck options
+  * Add Catalan translation and update Spanish, French, and Dutch
+      translations from the Translation Project.  (Closes: #411562)
+  * Fix typo and clarify the uuidgen man page
+  * Make sure $prefix/etc is created before installing mke2fs.conf
+  * e2fsck: Allow i_size to be rounded up to the size of a VM page
+  * Fix a bug in ext2fs_initialize() which causes mke2fs to fail while
+       allocating inode tables for some relatively rare odd disk sizes.
+  * Fix big-endian byte-swapping bug in ext2fs_swap_inode_full()
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Wed, 05 Dec 2007 20:04:28 -0500
+
+e2fsprogs (1.40.2-1) unstable; urgency=low
+
+  * New upstream release
+  * e2fsck: Fix salvage_directory when the last entry's rec_len is too big
+  * Update Turkish, Polish, Dutch, and Vietnamese PO files from the
+      Translation Project
+  * Fix a bug which would cause e2fsck segfault on very badly damaged
+      filesystems
+  * Update tune2fs man page to include more discussion of reserved
+      blocks (Addresses Ubuntu Launchpad bug #47817)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Thu, 12 Jul 2007 22:18:51 -0400
+
+e2fsprogs (1.40.1-1) unstable; urgency=low
+
+  * New upstream release
+  * Clarify mk_cmds' error reporting
+  * e2fsck: Detect recursive loops in @-expansions
+  * Compile the default mke2fs.conf into mke2fs program
+  * Fix bogus strip permission errors when building under Debian
+  * Update Vietnamese, French, and Dutch PO files from the Translation Project
+  * Fix bug which could cause libblkid to loop forever (Closes: #432052)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun,  8 Jul 2007 20:25:08 -0400
+
+e2fsprogs (1.40-1) unstable; urgency=low
+
+  * New upstream release
+  * Remove RFC-4122 logic from Debian build rules (Closes: #407107)
+  * Fix com_err.texinfo so that the install-info command will remove
+      the com_err info file from the /usr/share/info/dir file when the
+      comerr-dev package is removed and purged (Closes: #401711)
+  * Fix divide-by-zero error in blkid's NTFS proving logic
+  * Add new blkid -g option which causes the blkid cache to be garbage
+      collected
+  * libblkid: Fix bug which could cuase bid_type to be corrupted
+  * mke2fs: Add santy check to make sure inode_size * num_inodes isn't too big
+  * Fix additional Coverity bugs in mke2fs and e2fsck
+  * Improve sanity check in e2fsck's algorithm for finding a backup superblock
+  * Fix e2fsck get_size logic so that it will work with the Linux floppy
+      driver (Closes: #410569)
+  * Fix error checking of badblock's last-block and start-block arguments
+      (Closes: #416477)
+  * e2fsck: avoid writing overwriting the backup superblocks until the
+      master superblock is confirmed to be sane
+  * Make the blkid library more paranoid about concluding a partition
+      contains a NTFS filesystem.  (Addresses Launchpad Bug: #110138)
+  * Enhance e2fsck so it will recreate the ext3 journal if the original
+      journal inode was cleared to due being corrupt
+  * Fix e2fsck so that if the backup journal information is used, that
+      this is written out to the journal inode
+  * Make e2fsck check all of the blocks in the journal inode for validity
+  * blkid: Add support for detecting LUKS encrypted partitions
+  * e2fsck: added sanity check for xattr validation
+  * Fix byte-swapping bug for filesystems with large inodes
+  * Clarify the copyright licenses used by the various libraries in COPYING
+  * Remove RFC-4122 from upstream (Closes: #407107)
+  * Fix info-dir line which prevented install-info from removing
+      com_err entry from from /usr/share/info/dir when the comerr-dev
+      package is purged (Closes: #401711)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 29 Jun 2007 22:40:27 -0400
+
+e2fsprogs (1.39+1.40-WIP-2007.04.07+dfsg-2) unstable; urgency=low
+
+  * Allow the journal to up to 10,240,000 blocks
+  * Fix blkid library to recognize MD 0.90 superblock on little endian
+      systems
+  * Fix blkid library to report the correct UUID from MD superblocks
+  * Fix signed vs. unsigned problem in debugfs' setb/testb/freeb commands
+  * Enhance debugfs's date parser so it acccepts integer values
+  * Fix e2fsck's pass1c accounting so it doesn't terminate too early
+      if a file with multiply claimed blocks is hard linked. or not at
+      all if the root directory contains shared blocks
+  * Enhance debugfs so it can modify the block group descriptors using
+      the command set_block_group_descriptor
+  * Improve e2fsck's reporting of I/O errors so it's clearer what it
+      was trying to do when an error happens
+  * Fix a bug in how e2fsprogs byte swaps inodes containing fast
+      symlinks that have extended attributes.
+  * Fix potential file descriptor leak in ext2fs_get_device_size()
+  * Fix minor typo in e2fsck.conf.5 man page
+  * Cleanup udeb dependency (Closes: #419605)
+  * Rebuilding with libdevmapper 1.02.1 (Closes: #421022 and #421668)
+  * Add dependency on comerr-dev to ss-dev (Closes: #408352)
+  * Make mke2fs use sane defaults when /etc/mke2fs.conf doesn't exist
+  * Fix mke2fs and debugfs to support large (> 16 bit) uid's and gid's
+  * Fix spelling typo in debian package description for libblkid1
+    (Closes: #399155)
+  * Remove -WIP language from the debian copyright file.  (Closes: #415560)
+  * Remove check in e2fsck which required EA's in inodes to be sorted
+    (We should get this back-ported to the stable branch since
+    filesystems with large inodes will have EA's erroneously
+    removed, which will for example toast an SELinux system.)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun,  6 May 2007 19:44:35 -0400
+
+e2fsprogs (1.39+1.40-WIP-2007.04.07+dfsg-1) unstable; urgency=low
+
+  * Add libreadline.so.5 support to libss.
+  * Impove badblocks -n/-w exclusive usage message.
+  * Add debugging code (via the COMERR_DEBUG env. variable) to the
+      com_err library
+  * Fix dump_unused segfault in debugfs when a filesystem is not open
+  * Add versioned dependency in Debian's shlibs for libblkid.
+      (Closes: #413208)
+  * Fix memory leak in blkid library.  (Closes: #413661)
+  * Let the debugfs lcd command work even if a filesystem is not open
+  * Fix large number of miscellaneous Coveriy bugs.  (None were
+      security-security).
+  * Fix e2fsck to clear i_size for special devices with a bogus i_blocks
+      field on the first pass.
+  * Fix e2fsck to set the file type of the '..' entry when connecting
+      a directory to lost+found.
+  * Enhance e2fsck to recover directories whose modes field were
+      corrupted to look like special files.
+  * Allow debugfs to dump > 2GB files.  (Closes: #412614)
+  * Misc. man page cleanups.  (Closes: #379695)
+  * Fix resize2fs parsing of size parameter (Closes: #408298)
+  * Fix infinite loop in e2fsck on really big filesystems (Closes: #411838)
+  * Fix memory leak in ext2fs_write_new_inode()
+  * Add support for using a scratch files directory to reduce e2fsck's
+      memory utilization on really big filesystems.
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sat,  7 Apr 2007 10:38:40 -0400
+
+e2fsprogs (1.39+1.40-WIP-2006.11.14+dfsg-1) unstable; urgency=low
+
+  * Fix spurious error from e2fsck -c and mke2fs -c caused by the fix
+    to #386475.
+  * Add dirhash signed/unsigned hint to superblock.  (Closes: #389772)
+  * Allow unix_io offsets greater than 2 gigabytes
+  * Make sure mk_cmds and compile_et work even in strange locales
+  * Fix type-punning bug which caused dumpe2fs to crash on the Arm platform
+    (Closes: #397044)
+  * Add explanatory message to badblocks that -n and -w are mutually
+    exclusive.  (Closes: #371869)
+  * New +dfsg source tarball that has useful documentation REALLY
+    removed to satisfy the DFSG License Nazi's.  (Closes: #390664)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Tue, 14 Nov 2006 23:45:34 -0500
+
+e2fsprogs (1.39+1.40-WIP-2006.10.02+dfsg-2) unstable; urgency=low
+
+  * Add failsafes against duplicate UUID generation caused by threads
+  * Fix potential e2fsck -n crash caused by corrupt htrees
+  * Reorder the library line for static linking, to fix undefined
+    references to pthreads on amd64.  (Closes: #393680)
+  * Fix mke2fs's error checking when creating revision 0 filesystems.
+    (Closes: #392107)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 22 Oct 2006 00:19:44 -0400
+
+e2fsprogs (1.39+1.40-WIP-2006.10.02+dfsg-1) unstable; urgency=low
+
+  * New +dfsg source tarball that has useful documentation removed to
+    satisfy the DFSG License Nazi's.  (Closes: #390664)
+  * Remove dependency on e2fsprogs from the e2fsck-static package
+    (Closes: #383521)
+  * Fix badblocks interpretation of its first optional argument (last-block)
+    (Closes: #386475)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Tue,  3 Oct 2006 23:36:05 -0400
+
+e2fsprogs (1.39+1.40-WIP-2006.10.02-2) unstable; urgency=low
+
+  * Build using the sid version of libc, not experimental!
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Mon,  2 Oct 2006 21:43:44 -0400
+
+e2fsprogs (1.39+1.40-WIP-2006.10.02-1) unstable; urgency=low
+
+  * Previous NMU acknowledged (Closes: #388718)
+  * Fix debugfs to print unsigned values for EA's
+  * Minor man page fixes (Closes: #373004, #369761)
+  * Allow the default inode size to be specified in mke2fs.conf
+  * Require mke2fs -F -F for really dangerous operations
+  * Add Vietnamese translation
+  * Update French and Dutch translations
+  * Fix debugfs coredump when lsdel is run without an open filesystem
+    (Closes: #378335)
+  * Fix spelling error in e2fsck output
+  * Fix overflow problems when the number of inodes and blocks is
+    close to 2**32-1
+  * Add GFS/GFS2 support to the blkid library.
+  * Fix blkid support of empty FAT filesystem labels
+  * Avoid recursing forever due to symlinks in /dev by the blkid library
+  * Fix bogus error messages from resize2fs caused by the filesystem
+    not containing a resize inode.  (Closes: #380548)
+  * Fixed device-mapper probing (it was failing due to an extra '/dev' being
+    added to the device pathname)
+  * Make sure the default minimum size journal is big enough to support
+    on-line resizing.
+  * Add a versioned build-dep on texi2html (Closes: #389554)
+  * Remove useful UUID specification thanks to License Nazi's (Closes: #390664)
+
+ -- Theodore Y. Ts'o <tytso@mit.edu>  Mon,  2 Oct 2006 13:04:27 -0400
+
+e2fsprogs (1.39-1.1) unstable; urgency=low
+
+  * Non-maintainer upload
+  * Added -pthreads to devmapper libraries (Closes: #388718)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sat, 30 Sep 2006 12:49:47 +0100
+
 e2fsprogs (1.39-1) unstable; urgency=low
 
   * New upstream version
@@ -15,7 +1458,7 @@ e2fsprogs (1.39-1) unstable; urgency=low
 e2fsprogs (1.38+1.39-WIP-2006.04.09-2) unstable; urgency=low
 
   * Resize2fs automatically detects the previously used RAID stride
-    parameter so that resized filesystems can be more optimally laid 
+    parameter so that resized filesystems can be more optimally laid
     out for RAID filesystems.
   * Fix mke2fs -cc and e2fsck -cc (Closes: #366017)
   * Fix initrd script to fix failure with 2.4 kernels (Closes: #364516)
@@ -41,7 +1484,7 @@ e2fsprogs (1.38+1.39-WIP-2006.04.09-1) unstable; urgency=low
       (Closes: #360661, #360317)
   * Fix bug which caused mke2fs -j to fail with an EBUSY error.  (Closes
       #360652)
-  
+
  -- Theodore Y. Ts'o <tytso@mit.edu>  Sun,  9 Apr 2006 23:04:15 -0400
 
 e2fsprogs (1.38+1.39-WIP-2006.03.29-2) unstable; urgency=low
@@ -79,7 +1522,7 @@ e2fsprogs (1.38+1.39-WIP-2006.03.29-1) unstable; urgency=low
     filesystem checks are done when the system is running on battery power.
   * Print an explanation when skipping a check due being on battery
     (Closes: #350306)
-  * Update French translation (Closes: #341911, #300871, #316604, #316782, 
+  * Update French translation (Closes: #341911, #300871, #316604, #316782,
      #330789)
 
  -- Theodore Y. Ts'o <tytso@mit.edu>  Wed, 29 Mar 2006 20:37:27 -0500
@@ -147,7 +1590,7 @@ e2fsprogs (1.38+1.39-WIP-2005.12.10-1) unstable; urgency=low
   * Updated Dutch translation
   * E2fsck will stop and print a warning if the user tries running a
     read/write badblocks test on a read-only mounted root filesystem.
-  * Add resize2fs and badblocks to the e2fsprogs udeb 
+  * Add resize2fs and badblocks to the e2fsprogs udeb
     (Closes: #290429, #310950)
   * Avoid trying to mount the root device if it is an NFS device.
     (Closes: #310428)
@@ -180,7 +1623,7 @@ e2fsprogs (1.38-1.1) unstable; urgency=low
   * Fix for changes to texi2html, patch by Matt Kraai
     (Closes: #317862, #320389)
   * version build-depend on texi2html, won't work with older one anymore
-	
+
  -- Blars Blarson <blarson@blars.org>  Fri,  5 Aug 2005 04:46:54 +0000
 
 e2fsprogs (1.38-1) unstable; urgency=low
@@ -190,8 +1633,8 @@ e2fsprogs (1.38-1) unstable; urgency=low
     type aliasing rules on newer gcc compilers.  (Addresses Red Hat
     Bugzilla ##161183.)
   * Fix minor typo's in tune2fs man page.
-  * Mke2fs will refuse to create filesystems greater than 2**31-1 blocks, 
-    unless forced, to avoid kernel bugs that still need to be fixed as 
+  * Mke2fs will refuse to create filesystems greater than 2**31-1 blocks,
+    unless forced, to avoid kernel bugs that still need to be fixed as
     of this release.
   * Update French, Dutch, Polish, Swedish, and Turkish translations.
 
@@ -235,7 +1678,7 @@ e2fsprogs (1.37+1.38-WIP-0509-1) unstable; urgency=low
     /etc/ld.so.preload.  (Closes: #304003)
   * Update Swedish translation, and added translation for Rwanda.
   * Minor man page spelling/typo fixes.  (Closes: #304591, #304592,
-  	#304594, #304597, #304593)
+    #304594, #304597, #304593)
 
  -- Theodore Y. Ts'o <tytso@mit.edu>  Mon,  9 May 2005 09:10:20 -0400
 
@@ -390,7 +1833,7 @@ e2fsprogs (1.36rc1-1) unstable; urgency=low
         the x86 doesn't exist, but it is useful on other architectures.
   * Fix bug in debugfs where kill_file would lead to errors when deleting
         devices and symlinks.  (Sourceforge Bugs #954741 and #957244)
-  * Fix bug in the blkid library when detecting the ocfs1 filesystem 
+  * Fix bug in the blkid library when detecting the ocfs1 filesystem
   * Updated Italian translation file
   * E2fsck will now recover from a journal containing illegal blocks.
 
@@ -408,7 +1851,7 @@ e2fsprogs (1.35-8) unstable; urgency=low
        when there is a trailing '/' in the directory name.  (Closes: #272943)
   * Make sure the configure files are newer than configure.in the
        debian/rules file so that a dpkg-source created patch won't
-       trigger an attempt rebuild of the configure script.  
+       trigger an attempt rebuild of the configure script.
        (Closes: #272558, #273242)
   * Make sure /usr/lib/e2initrd_helper is in the e2fsprogs package.
        (Closes: #272698, #272728, #273161, #273163)
@@ -462,12 +1905,12 @@ e2fsprogs (1.35-6) unstable; urgency=low
   * Update the UUID library man pages
   * Fix a Y8.8888K potential problem with the uuid library
   * Minor updates to the german translation
-  * Clarified/corrected the copyright statements of the UUID and blkid 
+  * Clarified/corrected the copyright statements of the UUID and blkid
     libraries in the Debian copyright files.
-  * Added sanity check to the blkid library so that if current time is 
+  * Added sanity check to the blkid library so that if current time is
     less than last time a device is verified, force a reverification since
     it means the system time is not trustworthy.
-	
+
  -- Theodore Y. Ts'o <tytso@mit.edu>  Tue,  4 May 2004 16:23:06 -0400
 
 e2fsprogs (1.35-5) unstable; urgency=low
@@ -499,12 +1942,12 @@ e2fsprogs (1.35-4) unstable; urgency=low
   * Make the debugfs command's link command set the filetype information
     correctly.
   * Update the Polish, Swedish, and Turkish translations
-  * Add an -o option to the blkid program which allows the user to 
+  * Add an -o option to the blkid program which allows the user to
     control the output format of blkid.
   * Fixed and cleaned up the tune2fs and blkid man pages (Closes: #238741)
   * Improve UUID generation algorithm (use all 14 bits in the clock sequence)
   * Change the license on the UUID library to be 3-clause BSD.
-  * Remove the only-partially-implemented -p option to blkid.	
+  * Remove the only-partially-implemented -p option to blkid.
 
  -- Theodore Y. Ts'o <tytso@mit.edu>  Sun, 21 Mar 2004 20:17:03 -0500
 
@@ -529,7 +1972,7 @@ e2fsprogs (1.35-1) unstable; urgency=low
   * New upstream version.
   * Fix "badblocks -t random". (Closes: #234828)
   * Fix "e2fsck -k".  (Closes: #234993)
-  * Change badblock's default number of blocks tested at once from 
+  * Change badblock's default number of blocks tested at once from
     16 to 64.  (Closes: #232240)
   * ss-dev and comerr-dev now use a versioned dependency for libss2 and
     libcomerr2, respectively.  (Closes: #235280)
@@ -538,7 +1981,7 @@ e2fsprogs (1.35-1) unstable; urgency=low
 
 e2fsprogs (1.34+1.35-WIP-2004.01.31-2) unstable; urgency=low
 
-  * Add a new -k option to e2fsck which keeps the existing badblocks 
+  * Add a new -k option to e2fsck which keeps the existing badblocks
     list when using the -c option.  (Closes: #229103)
   * Update debugfs to support new large major/minor device numbers
     supported by Linux 2.6.  (Closes: #865289)
@@ -546,7 +1989,7 @@ e2fsprogs (1.34+1.35-WIP-2004.01.31-2) unstable; urgency=low
   * Add -mieee when compiling with GCC on an Alpha.
   * Fix e2fsck preen mode messages using pass 1B/C/D.
   * Fix the debugfs man page.  (Closes: #232406)
-  * Fix the ext2fs.h header file to work correctly with C++. 
+  * Fix the ext2fs.h header file to work correctly with C++.
   * e2fsck and debugfs now correctly deals with symlinks that have
     extended attribute information, such as those created by SE Linux.
     (Closes: #232328)
@@ -556,7 +1999,7 @@ e2fsprogs (1.34+1.35-WIP-2004.01.31-2) unstable; urgency=low
 
 e2fsprogs (1.34+1.35-WIP-2004.01.31-1) unstable; urgency=medium
 
-  * Fix byte swap bugs in e2fsck that caused the journal backup location 
+  * Fix byte swap bugs in e2fsck that caused the journal backup location
     in the superblock and symlinks created by SE Linux to be cleared
     by e2fsck on big-endian machines.  (Closes: #228723)
   * Chattr now stops processing options when it sees '--'.  (Closes: #225188)
@@ -573,7 +2016,7 @@ e2fsprogs (1.34+1.35-WIP-2004.01.31-1) unstable; urgency=medium
   * Fix bug in uuid library when there is no network card and the
     library is generating a time-based uuid.  The random MAC address
     was not correctly generated to be a multicast address.
-  * Install the filefrag program.  
+  * Install the filefrag program.
   * Don't try to compile filefrag on non-Linux platforms. (Closes: #226456)
   * Minor manual page clarifications (Closes: #222606, #214920)
 
@@ -586,7 +2029,7 @@ e2fsprogs (1.34+1.35-WIP-2003.12.07-2) unstable; urgency=low
   * Debugfs now searches for the appropriate pager to use, beginning
     with /usr/bin/pager, and then falling back to 'less' and 'more'.
     (Closes: #221977)
-  * Fixed mangled encoding in Czech locale file.  (Closes #214633)
+  * Fixed mangled encoding in Czech locale file.  (Closes: #214633)
   * Fix bug where using debugfs to copy a file from /dev/null caused
     in correct mode bits.  (Closes: #217456)
   * Fixed a bug where e2fsck would bomb out if a journal needed to be
@@ -605,7 +2048,7 @@ e2fsprogs (1.34+1.35-WIP-2003.12.07-1) unstable; urgency=medium
 
   * Added regression tests for mke2fs and dumpe2fs.
   * Support 2.6 kernel header files.  (Closes: #221778)
-  * Fix bug which could a core dump if a non-existent LABEL or UUID 
+  * Fix bug which could a core dump if a non-existent LABEL or UUID
     specifier is passed to e2fsck or tune2fs.
   * Fix handling of corrupted indirect blocks in the bad block inode.
   * If the number of mounts until the next forced filesystem check is less
@@ -657,7 +2100,7 @@ e2fsprogs (1.34+1.35-WIP-2003.08.21-1) unstable; urgency=low
     the file when it is uninstalled.  (Closes: #204019)
   * Remove unneeded files in debian directory: blkid-dev.substvars and
     e2fsprogs-bf.lintian-overrides.  (Closes: #203914)
-  * Support "noopt" in DEB_BUILD_OPTIONS instead of "debug".  
+  * Support "noopt" in DEB_BUILD_OPTIONS instead of "debug".
     (Closes: #203914)
 
  -- Theodore Y. Ts'o <tytso@mit.edu>  Thu, 21 Aug 2003 01:47:58 -0400
@@ -720,14 +2163,14 @@ e2fsprogs (1.33+1.34-WIP-2003.05.21-2) unstable; urgency=low
   * Fix spelling error in e2fsck
   * Add workaround for intl library on Darwin
   * Fix gcc -Wall nitpicks
-  * Round down the default size of the filesystem for mke2fs and 
+  * Round down the default size of the filesystem for mke2fs and
     resize2fs to be a multiple of the pagesize to work around a potential
     Linux kernel bug
   * Fix bug in mke2fs where it could die with a floating exception if
     the device does not support the BLKSSZGET ioctl (Closes: #196734)
   * Add conflicts against older versions of sysvinit that don't correctly
     handle an exit code that has the bit #2 set.  (Closes: #183675)
-  * Badblocks will attempt to use O_DIRECT if it is safe to do so.  
+  * Badblocks will attempt to use O_DIRECT if it is safe to do so.
     (Closes: #198006)
   * Use symbolic links for fsck.ext{2,3} and mkfs.ext{2,3} in the udeb
     package since busybox tar can't deal with hard links.  (Closes: #196508)
@@ -736,7 +2179,7 @@ e2fsprogs (1.33+1.34-WIP-2003.05.21-2) unstable; urgency=low
 
 e2fsprogs (1.33+1.34-WIP-2003.05.21-1) unstable; urgency=low
 
-  * Fix problems with compiling e2fsprogs with NLS support on woody 
+  * Fix problems with compiling e2fsprogs with NLS support on woody
     (Closes: #193372)
   * Remove the extraneous de-utf.po file.
   * Add get-text to build-depends.
@@ -745,8 +2188,8 @@ e2fsprogs (1.33+1.34-WIP-2003.05.21-1) unstable; urgency=low
   * Fix bug which caused us to accidentally include the EVMS plugin in
     the e2fsprogs package (which doesn't work, but causes confusing messages
     to show up when the evms client is started).
-  * If the hardware sector size of a device is larger than the default 
-    blocksize, use the hardware sector size as the blocksize when creating 
+  * If the hardware sector size of a device is larger than the default
+    blocksize, use the hardware sector size as the blocksize when creating
     a filesystem, to solve problems with s/390 DASD's.
   * Add a shared library dependency to libuuid to libblkid (Closes: #194094)
   * Add initial implementation of a dump_unused command (Closes: #79164)
@@ -755,11 +2198,11 @@ e2fsprogs (1.33+1.34-WIP-2003.05.21-1) unstable; urgency=low
 
 e2fsprogs (1.33-5) unstable; urgency=low
 
-  * Clarify blocksize units when displaying messages in resize2fs, and 
-    support using suffixes (sectors, kilobytes, megabites, gigabytes) 
+  * Clarify blocksize units when displaying messages in resize2fs, and
+    support using suffixes (sectors, kilobytes, megabites, gigabytes)
     to the size parameter to indicate units.  (Closes: #189814)
   * Fix debugfs core-dumping problem caused by getopt.  (Works around: #192834)
-  * Add package dependency to shlibs for comerr to indicate support 
+  * Add package dependency to shlibs for comerr to indicate support
     for kth compatibility.  (Closes: #193096)
 
  -- Theodore Y. Ts'o <tytso@mit.edu>  Tue, 13 May 2003 23:45:08 -0400
@@ -788,15 +2231,15 @@ e2fsprogs (1.33-2) unstable; urgency=low
 
   * Fix up NLS support
      - Fix message abbreviations support (i.e., @g --> group)
-     - Update to gettext 0.11.5 
+     - Update to gettext 0.11.5
      - Add Czech translation
      - Install message catalogs
      - Other miscellaneous NLS bug fixes
-  * Add new debugfs command, imap, which prints the location of a 
+  * Add new debugfs command, imap, which prints the location of a
     specified inode in the inode table.
-  * Put /usr/include/com_err.h in comerr-dev instead of e2fslibs-dev.  
-    (Closes #191899)
-  * Add support for OV-style continuations in compile_et.  (Closes #191900)
+  * Put /usr/include/com_err.h in comerr-dev instead of e2fslibs-dev.
+    (Closes: #191899)
+  * Add support for OV-style continuations in compile_et.  (Closes: #191900)
 
  -- Theodore Y. Ts'o <tytso@mit.edu>  Mon,  5 May 2003 18:13:12 -0400
 
@@ -815,7 +2258,7 @@ e2fsprogs (1.32+1.33-WIP-2003.04.14-1) unstable; urgency=low
   * Change e2fsck to bracket its progress bar output with ctrl-A and ctrl-B
     characters, so that logsave -s can omit writing the progress bar output
     to the log file.
-  * Avoid printing the version banner for mke2fs if the -q option is 
+  * Avoid printing the version banner for mke2fs if the -q option is
     specified.  (Closes: #172716)
 
  -- Theodore Y. Ts'o <tytso@mit.edu>  Wed, 16 Apr 2003 15:27:20 -0400
@@ -845,11 +2288,11 @@ e2fsprogs (1.32+1.33-WIP-2003.03.30-2) unstable; urgency=low
   * Make the random number generator more paranoid about potentially buggy
     /dev/random devices.
   * The badblocks program now flushes its output as it discovers bad blocks.
-  * Imported bug fixes to EVMS driver from the EVMS 2.0 tree.  Fixed a 
+  * Imported bug fixes to EVMS driver from the EVMS 2.0 tree.  Fixed a
     few potential hangs, and eliminated a file descriptor leak.
   * E2fsck now updates the global free block and inode counters from
     the block group specific counters quietly.  This is needed for an
-    experimental kernel patch which improves SMP scalability by not 
+    experimental kernel patch which improves SMP scalability by not
     locking the entire filesystem during block or inode allocation; if
     the filesystem is not unmoutned cleanly, the global counts may not
     be accurate.
@@ -862,7 +2305,7 @@ e2fsprogs (1.32+1.33-WIP-2003.03.30-2) unstable; urgency=low
 e2fsprogs (1.32+1.33-WIP-2003.03.30-1) unstable; urgency=low
 
   * Change compile_et to generate header files that use <et/com_err.h>
-    instead of <com_err.h>, so the current version of the header file 
+    instead of <com_err.h>, so the current version of the header file
     is used.  Remove legacy K&R, varargs, and pre-POSIX signal support.
   * Fix (one more time!) Apple Darwin port in blkid/getsize.c
 
@@ -942,7 +2385,7 @@ e2fsprogs (1.28-3) unstable; urgency=low
   * Don't use special cflags at configure time when building the special
     mips non-pic lib, in yet another attempt to fix my adaptation of the
     patch from the mips team.  Also added --disable-nls which was present
-    in the original patch.  
+    in the original patch.
   * Remove debian/BUILD-MIPS on clean.
   * Install mkinitrd script as scripts/e2fsprogs, not as
     scripts/e2fsprogs.mkinitrd.
@@ -989,10 +2432,10 @@ e2fsprogs (1.27+1.28-WIP-0626-1) experimental; urgency=low
     Florian Lohoff, adapted for style consistency (Closes: #145432).
   * Removed presumably-useless and presumably-broken CFLAGS propagation.
     If someone misses that, I'll add ${CFLAGS} to --ccopts.
-  
+
   * Switched to debhelper v4.
   * Added ${misc:Depends} to all packages' Depends field.
-  
+
   * Fixed typos in fsck.8, added an example for clarity (Closes:
     #145044).
   * Fixed typo in chattr manpage (Closes: #141938).
@@ -1041,7 +2484,7 @@ e2fsprogs (1.26-1) unstable; urgency=low
   * This uploads fixes 10 bugs, including data-corruption problems, and
     adds much to the ease of maintainance and problem tracking.  Good
     choice for woody.
-  
+
   * New upstream release (Closes: #106622, #116975, #118443, #119624,
     #120171, #120077, #129828, #132764).
   ** Fixes for data-corruption bugs not reported to the BTS: e2fsck
@@ -1089,7 +2532,7 @@ e2fsprogs (1.24a-1) unstable; urgency=high
     they add virtually no risk.  Support for raw image files will be of
     great help to debug users' problems.  Urgency set to "high" to make
     sure this version gets released with woody.
-  
+
   ** Fsck prints a warning message if now valid filesystems are passed to
     it. (Closes: #107458).
   ** Fsck -A will not try to interpret device names for filesystems which
@@ -1121,7 +2564,7 @@ e2fsprogs (1.22-1) unstable; urgency=low
 
 e2fsprogs (1.21+1.22-WIP-0620-1) unstable; urgency=low
 
-  * New upstream pre-release, critical for big-endian platforms 
+  * New upstream pre-release, critical for big-endian platforms
     (Closes: #101752).
   * Re-applied hurd fix again.
   * Build e2fsprogs-bf with -Os to gain more space.
@@ -1245,7 +2688,7 @@ e2fsprogs (1.19+1.20-WIP-0514-1) unstable; urgency=low
     for a fix.  Well finally 3.0.23 is buggy, leave this for later.
   * Avoid to call ldconfig at "make install" time, too costly.
   * Get rid in control files of references to never-released standalone
-    lib files (split attempted in 1997/98).  
+    lib files (split attempted in 1997/98).
   * Bumped Standards-Version to 3.5.4.
 
  -- Yann Dirson <dirson@debian.org>  Tue, 15 May 2001 14:28:39 +0200
@@ -1410,7 +2853,7 @@ e2fsprogs (1.14-2) unstable; urgency=low
   * Undid the <linux/types.h> changes.
   * Changed "rmdir -p" invocations in debian/rules into "-rmdir -p" to
     turn around changed behaviour in fileutils_4.0.
-  
+
  -- Yann Dirson <dirson@debian.org>  Fri, 12 Mar 1999 23:50:47 +0100
 
 e2fsprogs (1.14-1) unstable; urgency=low
@@ -1461,9 +2904,9 @@ e2fsprogs (1.12-2.1) unstable; urgency=low
   * Non-maintainer upload
     config.guess and config.sub files modified, to recognize a Arm
     architecture.
-      
+
  -- Turbo Fredriksson <turbo@debian.org>  Thu, 13 Aug 1998 19:15:56 -0400
-       
+
 e2fsprogs (1.12-2) unstable; urgency=low
 
   * Really install e2label.8 manpage.
@@ -1627,9 +3070,9 @@ e2fsprogs (1.10-7) unstable; urgency=HIGH
 
   * Turned "#if (__GLIBC__ == 2)" into "#if 1" to turn around missing llseek()
     prototype in libc_5.4.33-5 as well as libc6.
-    
+
  -- Yann Dirson <dirson@univ-mlv.fr>  Tue, 21 Oct 1997 12:53:27 +0200
- 
+
 e2fsprogs (1.10-6) unstable; urgency=low
 
   * Official libc6 patches from Ted.
@@ -1642,13 +3085,13 @@ e2fsprogs (1.10-6) unstable; urgency=low
     next release.
 
  -- Yann Dirson <dirson@univ-mlv.fr>  Wed, 24 Sep 1997 10:46:00 +0200
- 
+
 e2fsprogs (1.10-5.1) experimental; urgency=low
 
   * Applied patch from Ted for libc6 compatibility, for test purpose.
 
  -- Yann Dirson <dirson@univ-mlv.fr>  Thu, 11 Sep 1997 09:09:42 +0200
- 
+
 e2fsprogs (1.10-5) unstable; urgency=medium
 
   * Switched back to libc5 because of possible bug in libc6-2.0.4-provided
@@ -1733,7 +3176,7 @@ e2fsprogs (1.01-1) unstable; urgency=low
   * upgraded to latest upstream version, to 1.05 from 1.04
   * gzip manpages
   * minor changes to debian.rules
-    
+
  -- Michael Meskes <meskes@debian.org>  Fri, 18 Oct 1996 00:00:00 +0000
 
 e2fsprogs (1.04-1) unstable; urgency=low
@@ -1746,7 +3189,7 @@ e2fsprogs (1.04-1) unstable; urgency=low
  -- Michael Nonweiler <mrn20@cam.ac.uk>  Sun, 23 Jun 1996 00:00:00 +0000
 
 e2fsprogs (1.02-1) unstable; urgency=low
-  
+
   * upgraded to latest upstream version, to 1.02 from 1.01
   * copied "configure" usr_prefix change (see below), into configure.in
   * updated debian.control file, added Pre-Depends field
@@ -1760,9 +3203,9 @@ e2fsprogs (1.02-1) unstable; urgency=low
  -- Michael Nonweiler <mrn20@cam.ac.uk>  Tue, 5 Mar 1996 00:00:00 +0000
 
 e2fsprogs (1.01-1) unstable; urgency=low
-  
-  * removed debugging symbols from libs and enabled more optimization 
-    as suggested by Rolf Rossius 
+
+  * removed debugging symbols from libs and enabled more optimization
+    as suggested by Rolf Rossius
   * also removed the /var/catman pages
   * changed to elf compilation
 

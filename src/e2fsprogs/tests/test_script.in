@@ -3,10 +3,18 @@
 # Test script for e2fsck
 #
 
+LC_ALL=C
+export LC_ALL
+
 case "$1" in 
     --valgrind)
-    	export USE_VALGRIND="valgrind -q --weird-hacks=lax-ioctls"
+    	export USE_VALGRIND="valgrind -q --sim-hints=lax-ioctls"
 	shift;
+	;;
+    --valgrind-leakcheck)
+    	export USE_VALGRIND="valgrind --sim-hints=lax-ioctls --leak-check=full --show-reachable=yes --log-file=/tmp/valgrind-%p.log"
+	shift;
+	;;
 esac
 
 if test "$1"x = x ; then
@@ -31,6 +39,8 @@ fi
 
 . $TEST_CONFIG
 
+TMPFILE=$(mktemp)
+
 for test_dir in $TESTS
 do
 	test_name=`echo $test_dir | sed -e 's;.*/;;'`
@@ -40,6 +50,9 @@ do
 	if [ ! -d $test_dir ] ; then
 		echo "The test '$test_name' does not exist."
 		continue;
+	fi
+	if [ -z "`ls $test_dir`" ]; then
+		continue
 	fi
 	if [ -f $test_dir/name ]; then
 		test_description=`cat $test_dir/name`
@@ -65,4 +78,12 @@ num_failed=`ls *.failed 2>/dev/null | wc -l`
 
 echo "$num_ok tests succeeded	$num_failed tests failed"
 
-test "$num_failed" -eq 0 || exit 1
+test "$num_failed" -eq 0 && exit 0
+
+echo -n "Tests failed: "
+for fname in $(ls *.failed); do
+	echo -n "${fname%%.failed} "
+done
+echo ""
+
+exit 1

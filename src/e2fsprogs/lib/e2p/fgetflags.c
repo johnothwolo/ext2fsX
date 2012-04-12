@@ -5,8 +5,10 @@
  *                           Laboratoire MASI, Institut Blaise Pascal
  *                           Universite Pierre et Marie Curie (Paris VI)
  *
- * This file can be redistributed under the terms of the GNU Library General
- * Public License
+ * %Begin-Header%
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
+ * %End-Header%
  */
 
 /*
@@ -17,6 +19,7 @@
 #define _LARGEFILE_SOURCE
 #define _LARGEFILE64_SOURCE
 
+#include "config.h"
 #if HAVE_ERRNO_H
 #include <errno.h>
 #endif
@@ -61,11 +64,11 @@ int fgetflags (const char * name, unsigned long * flags)
 #endif
 
 	return 0;
-#else
+#else /* !HAVE_STAT_FLAGS || (APPLE_DARWIN && HAVE_EXT2_IOCTLS) */
 #if HAVE_EXT2_IOCTLS
 	int fd, r, f, save_errno = 0;
 
-	if (!stat(name, &buf) &&
+	if (!lstat(name, &buf) &&
 	    !S_ISREG(buf.st_mode) && !S_ISDIR(buf.st_mode)) {
 		goto notsupp;
 	}
@@ -81,15 +84,15 @@ int fgetflags (const char * name, unsigned long * flags)
 	if (save_errno)
 		errno = save_errno;
 	return r;
-#else
+#else /* APPLE_DARWIN */
    f = -1;
    save_errno = syscall(SYS_fsctl, name, EXT2_IOC_GETFLAGS, &f, 0);
    *flags = f;
    return (save_errno);
-#endif
+#endif /* !APPLE_DARWIN */
+notsupp:
 #endif /* HAVE_EXT2_IOCTLS */
 #endif
-notsupp:
 	errno = EOPNOTSUPP;
 	return -1;
 }

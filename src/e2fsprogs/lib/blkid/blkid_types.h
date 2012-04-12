@@ -8,8 +8,6 @@
 #define _BLKID_TYPES_H
 
 
-
-
 #ifdef __U8_TYPEDEF
 typedef __U8_TYPEDEF __u8;
 #else

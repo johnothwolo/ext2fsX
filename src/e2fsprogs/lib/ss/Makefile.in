@@ -31,22 +31,15 @@ TAGS=etags
 COMPILE_ET=../et/compile_et --build-tree
 MK_CMDS=_SS_DIR_OVERRIDE=. ./mk_cmds
 
-# -I.. is so that ss/ss_err.h works
-# -I$(srcdir)/.. is so that ss/ss.h works
-# -I$(srcdir)/../et is so com_err.h works
-XTRA_CFLAGS= -I$(srcdir)/../et
-
 .c.o:
-	@echo "	CC $<"
-	@$(CC) $(ALL_CFLAGS) -c $<
-@PROFILE_CMT@	@$(CC) $(ALL_CFLAGS) -g -pg -o profiled/$*.o -c $<
-@CHECKER_CMT@	@$(CC) $(ALL_CFLAGS) -checker -g -o checker/$*.o -c $<
-@ELF_CMT@	@$(CC) $(ALL_CFLAGS) -DSHARED_ELF_LIB -fPIC -o elfshared/$*.o -c $<
-@BSDLIB_CMT@	@$(CC) $(ALL_CFLAGS) $(BSDLIB_PIC_FLAG) -o pic/$*.o -c $<
+	$(E) "	CC $<"
+	$(Q) $(CC) $(ALL_CFLAGS) -c $<
+@PROFILE_CMT@	$(Q) $(CC) $(ALL_CFLAGS) -g -pg -o profiled/$*.o -c $<
+@CHECKER_CMT@	$(Q) $(CC) $(ALL_CFLAGS) -checker -g -o checker/$*.o -c $<
+@ELF_CMT@	$(Q) $(CC) $(ALL_CFLAGS) -DSHARED_ELF_LIB -fPIC -o elfshared/$*.o -c $<
+@BSDLIB_CMT@	$(Q) $(CC) $(ALL_CFLAGS) $(BSDLIB_PIC_FLAG) -o pic/$*.o -c $<
 
 # for the library
-
-LIB=	libss.a
 
 # with ss_err.o first, ss_err.h should get rebuilt first too.  should not
 # be relying on this, though.
@@ -98,12 +91,18 @@ FILES=	$(SRCS) $(MKCMDSFILES) $(HFILES) \
 all::	libss.a ss.pc # libss_p.a lint
 
 std_rqs.c: std_rqs.ct mk_cmds
-	@echo "	MK_CMDS $@"
-	@DIR=$(srcdir) $(MK_CMDS) $(srcdir)/std_rqs.ct
+	$(E) "	MK_CMDS $@"
+	$(Q) DIR=$(srcdir) $(MK_CMDS) $(srcdir)/std_rqs.ct
+
+std_rqs.o: ss_err.h
+
+test_cmd.c: test_cmd.ct mk_cmds
+	$(E) "	MK_CMDS $@"
+	$(Q) DIR=$(srcdir) $(MK_CMDS) $(srcdir)/test_cmd.ct
 
 ss_err.c ss_err.h: ss_err.et
-	@echo "	COMPILE_ET ss_err.et"
-	@$(COMPILE_ET) $(srcdir)/ss_err.et
+	$(E) "	COMPILE_ET ss_err.et"
+	$(Q) $(COMPILE_ET) $(srcdir)/ss_err.et
 
 ct.tab.c ct.tab.h: ct.y
 	$(RM) -f ct.tab.* y.*
@@ -116,42 +115,42 @@ ct.tab.c ct.tab.h: ct.y
 #	$(CHMOD) -x $@
 
 mk_cmds: $(DEP_SUBSTITUTE) $(srcdir)/mk_cmds.sh.in
-	@echo "	SUBST $@"
-	@$(SUBSTITUTE) $(srcdir)/mk_cmds.sh.in mk_cmds
-	@$(CHMOD) +x mk_cmds
+	$(E) "	SUBST $@"
+	$(Q) $(SUBSTITUTE) $(srcdir)/mk_cmds.sh.in mk_cmds
+	$(Q) $(CHMOD) +x mk_cmds
 
 ss.pc: $(srcdir)/ss.pc.in $(top_builddir)/config.status
-	@echo "	CONFIG.STATUS $@"
-	@cd $(top_builddir); CONFIG_FILES=lib/ss/ss.pc ./config.status
+	$(E) "	CONFIG.STATUS $@"
+	$(Q) cd $(top_builddir); CONFIG_FILES=lib/ss/ss.pc ./config.status
 
 installdirs::
-	@echo "	MKINSTALLDIRS $(libdir) $(includedir)/ss $(datadir)/ss $(bindir)"
-	@$(MKINSTALLDIRS) $(DESTDIR)$(libdir) \
+	$(E) "	MKINSTALLDIRS $(libdir) $(includedir)/ss $(datadir)/ss $(bindir)"
+	$(Q) $(MKINSTALLDIRS) $(DESTDIR)$(libdir) \
 		$(DESTDIR)$(includedir)/ss $(DESTDIR)$(datadir)/ss \
 		$(DESTDIR)$(bindir) $(DESTDIR)$(libdir)/pkgconfig
 
 install:: libss.a $(INSTALL_HFILES) installdirs ss_err.h mk_cmds ss.pc
-	@echo "	INSTALL_DATA $(DESTDIR)$(libdir)/libss.a"
-	@$(INSTALL_DATA) libss.a $(DESTDIR)$(libdir)/libss.a
-	@-$(RANLIB) $(DESTDIR)$(libdir)/libss.a
-	@$(CHMOD) $(LIBMODE) $(DESTDIR)$(libdir)/libss.a
-	@$(RM) -f $(DESTDIR)$(includedir)/ss/*
-	@for i in $(INSTALL_HFILES); do \
+	$(E) "	INSTALL_DATA $(DESTDIR)$(libdir)/libss.a"
+	$(Q) $(INSTALL_DATA) libss.a $(DESTDIR)$(libdir)/libss.a
+	-$(Q) $(RANLIB) $(DESTDIR)$(libdir)/libss.a
+	$(Q) $(CHMOD) $(LIBMODE) $(DESTDIR)$(libdir)/libss.a
+	$(Q) $(RM) -f $(DESTDIR)$(includedir)/ss/*
+	$(Q) for i in $(INSTALL_HFILES); do \
 		echo "	INSTALL_DATA $(DESTDIR)$(includedir)/ss/$$i"; \
 		$(INSTALL_DATA) $(srcdir)/$$i $(DESTDIR)$(includedir)/ss/$$i; \
 	done
-	@echo "	INSTALL_DATA $(includedir)/ss/ss_err.h"
-	@$(INSTALL_DATA) ss_err.h $(DESTDIR)$(includedir)/ss/ss_err.h
-	@for i in $(SHARE_FILES); do \
+	$(E) "	INSTALL_DATA $(includedir)/ss/ss_err.h"
+	$(Q) $(INSTALL_DATA) ss_err.h $(DESTDIR)$(includedir)/ss/ss_err.h
+	$(Q) for i in $(SHARE_FILES); do \
 		echo "	INSTALL_DATA $(DESTDIR)$(datadir)/ss/$$i"; \
 		$(INSTALL_DATA) $(srcdir)/$$i $(DESTDIR)$(datadir)/ss/$$i; \
 	done
-	@echo "	INSTALL $(bindir)/mk_cmds"
-	@$(INSTALL) mk_cmds $(DESTDIR)$(bindir)/mk_cmds
-	@echo "	INSTALL_DATA $(man1dir)/mk_cmds.1"
-	@$(INSTALL_DATA) $(srcdir)/mk_cmds.1 $(DESTDIR)$(man1dir)/mk_cmds.1
-	@echo "	INSTALL_DATA $(libdir)/pkgconfig/ss.pc"
-	@$(INSTALL_DATA) ss.pc $(DESTDIR)$(libdir)/pkgconfig/ss.pc
+	$(E) "	INSTALL $(bindir)/mk_cmds"
+	$(Q) $(INSTALL) mk_cmds $(DESTDIR)$(bindir)/mk_cmds
+	$(E) "	INSTALL_DATA $(man1dir)/mk_cmds.1"
+	$(Q) $(INSTALL_DATA) $(srcdir)/mk_cmds.1 $(DESTDIR)$(man1dir)/mk_cmds.1
+	$(E) "	INSTALL_DATA $(libdir)/pkgconfig/ss.pc"
+	$(Q) $(INSTALL_DATA) ss.pc $(DESTDIR)$(libdir)/pkgconfig/ss.pc
 
 uninstall::
 	$(RM) -f $(DESTDIR)$(libdir)/libss.a $(DESTDIR)$(bindir)/mk_cmds \
@@ -159,9 +158,21 @@ uninstall::
 		$(DESTDIR)$(man1dir)/mk_cmds.1 
 	$(RM) -rf $(DESTDIR)$(includedir)/ss $(DESTDIR)$(datadir)/ss
 
+test_ss: test_ss.o test_cmd.o $(DEPLIBSS) $(DEPLIBCOM_ERR)
+	$(E) "	LD $@"
+	$(Q) $(CC) -o $@ test_ss.o test_cmd.o $(ALL_CFLAGS) \
+		$(LIBSS) $(LIBCOM_ERR)
+
+check:: all test_ss
+	$(E) "	RUN TEST test_ss"
+	-@(LD_LIBRARY_PATH=$(LIB) DYLD_LIBRARY_PATH=$(LIB) ./test_ss -f $(srcdir)/test_script > test_out 2>&1; exit 0)
+	$(Q) if diff test_out $(srcdir)/test_script_expected > test.diff; then \
+		true ; else echo "Regression test for ss library failed!"; exit 1 ; fi
+
 clean::
 	$(RM) -f ../libss.a libss.a mk_cmds ss_err.h ss_err.c std_rqs.c \
-		*.o *~ \#* *.bak core 
+		tst_cmds.c test_ss test_out test.diff *.o *~ \#* *.bak core \
+		test_cmd.c
 
 mostlyclean:: clean
 distclean:: clean
@@ -180,31 +191,42 @@ $(OBJS): subdirs
 # Makefile dependencies follow.  This must be the last section in
 # the Makefile.in file
 #
-invocation.o: $(srcdir)/invocation.c $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+invocation.o: $(srcdir)/invocation.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
  $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h
-help.o: $(srcdir)/help.c $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+help.o: $(srcdir)/help.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
  $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h
-execute_cmd.o: $(srcdir)/execute_cmd.c $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+execute_cmd.o: $(srcdir)/execute_cmd.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
  $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h
-listen.o: $(srcdir)/listen.c $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+listen.o: $(srcdir)/listen.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
  $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h
-parse.o: $(srcdir)/parse.c $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+parse.o: $(srcdir)/parse.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
  $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h
-error.o: $(srcdir)/error.c $(top_srcdir)/lib/et/com_err.h \
- $(srcdir)/ss_internal.h $(srcdir)/ss.h $(top_builddir)/lib/ss/ss_err.h \
- $(top_srcdir)/lib/et/com_err.h
-prompt.o: $(srcdir)/prompt.c $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+error.o: $(srcdir)/error.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(top_srcdir)/lib/et/com_err.h \
+ $(srcdir)/ss_internal.h $(srcdir)/ss.h $(top_builddir)/lib/ss/ss_err.h
+prompt.o: $(srcdir)/prompt.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
  $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h
-request_tbl.o: $(srcdir)/request_tbl.c $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+request_tbl.o: $(srcdir)/request_tbl.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
  $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h
-list_rqs.o: $(srcdir)/list_rqs.c $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+list_rqs.o: $(srcdir)/list_rqs.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
  $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h
-pager.o: $(srcdir)/pager.c $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+pager.o: $(srcdir)/pager.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
  $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h
-requests.o: $(srcdir)/requests.c $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+requests.o: $(srcdir)/requests.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
  $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h
-data.o: $(srcdir)/data.c $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+data.o: $(srcdir)/data.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
  $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h
-get_readline.o: $(srcdir)/get_readline.c $(srcdir)/ss_internal.h \
- $(srcdir)/ss.h $(top_builddir)/lib/ss/ss_err.h \
- $(top_srcdir)/lib/et/com_err.h
+get_readline.o: $(srcdir)/get_readline.c $(top_builddir)/lib/config.h \
+ $(top_builddir)/lib/dirpaths.h $(srcdir)/ss_internal.h $(srcdir)/ss.h \
+ $(top_builddir)/lib/ss/ss_err.h $(top_srcdir)/lib/et/com_err.h

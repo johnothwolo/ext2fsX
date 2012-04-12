@@ -5,11 +5,12 @@
  * Copyright (C) 1993, 1994, 1995, 1996 Theodore Ts'o.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #if HAVE_UNISTD_H
@@ -26,95 +27,34 @@
 
 #include "ext2_fs.h"
 #include "ext2fs.h"
+#include "ext2fsP.h"
+#include "bmap64.h"
 
-static errcode_t make_bitmap(__u32 start, __u32 end, __u32 real_end,
-			     const char *descr, char *init_map,
-			     ext2fs_generic_bitmap *ret)
+void ext2fs_free_inode_bitmap(ext2fs_inode_bitmap bitmap)
 {
-	ext2fs_generic_bitmap	bitmap;
-	errcode_t		retval;
-	size_t			size;
-
-	retval = ext2fs_get_mem(sizeof(struct ext2fs_struct_generic_bitmap), 
-				&bitmap);
-	if (retval)
-		return retval;
-
-	bitmap->magic = EXT2_ET_MAGIC_GENERIC_BITMAP;
-	bitmap->fs = NULL;
-	bitmap->start = start;
-	bitmap->end = end;
-	bitmap->real_end = real_end;
-	bitmap->base_error_code = EXT2_ET_BAD_GENERIC_MARK;
-	if (descr) {
-		retval = ext2fs_get_mem(strlen(descr)+1, &bitmap->description);
-		if (retval) {
-			ext2fs_free_mem(&bitmap);
-			return retval;
-		}
-		strcpy(bitmap->description, descr);
-	} else
-		bitmap->description = 0;
-
-	size = (size_t) (((bitmap->real_end - bitmap->start) / 8) + 1);
-	retval = ext2fs_get_mem(size, &bitmap->bitmap);
-	if (retval) {
-		ext2fs_free_mem(&bitmap->description);
-		ext2fs_free_mem(&bitmap);
-		return retval;
-	}
-
-	if (init_map)
-		memcpy(bitmap->bitmap, init_map, size);
-	else
-		memset(bitmap->bitmap, 0, size);
-	*ret = bitmap;
-	return 0;
+	ext2fs_free_generic_bmap(bitmap);
 }
 
-errcode_t ext2fs_allocate_generic_bitmap(__u32 start,
-					 __u32 end,
-					 __u32 real_end,
-					 const char *descr,
-					 ext2fs_generic_bitmap *ret)
+void ext2fs_free_block_bitmap(ext2fs_block_bitmap bitmap)
 {
-	return make_bitmap(start, end, real_end, descr, 0, ret);
+	ext2fs_free_generic_bmap(bitmap);
 }
 
 errcode_t ext2fs_copy_bitmap(ext2fs_generic_bitmap src,
 			     ext2fs_generic_bitmap *dest)
 {
-	errcode_t		retval;
-	ext2fs_generic_bitmap	new_map;
-
-	retval = make_bitmap(src->start, src->end, src->real_end,
-			     src->description, src->bitmap, &new_map);
-	if (retval)
-		return retval;
-	new_map->magic = src->magic;
-	new_map->fs = src->fs;
-	new_map->base_error_code = src->base_error_code;
-	*dest = new_map;
-	return 0;
+	return (ext2fs_copy_generic_bmap(src, dest));
 }
-
 void ext2fs_set_bitmap_padding(ext2fs_generic_bitmap map)
 {
-	__u32	i, j;
-
-	for (i=map->end+1, j = i - map->start; i <= map->real_end; i++, j++)
-		ext2fs_set_bit(j, map->bitmap);
-
-	return;
-}	
+	ext2fs_set_generic_bmap_padding(map);
+}
 
 errcode_t ext2fs_allocate_inode_bitmap(ext2_filsys fs,
 				       const char *descr,
 				       ext2fs_inode_bitmap *ret)
 {
-	ext2fs_inode_bitmap bitmap;
-	errcode_t	retval;
-	__u32		start, end, real_end;
+	__u64		start, end, real_end;
 
 	EXT2_CHECK_MAGIC(fs, EXT2_ET_MAGIC_EXT2FS_FILSYS);
 
@@ -124,89 +64,245 @@ errcode_t ext2fs_allocate_inode_bitmap(ext2_filsys fs,
 	end = fs->super->s_inodes_count;
 	real_end = (EXT2_INODES_PER_GROUP(fs->super) * fs->group_desc_count);
 
-	retval = ext2fs_allocate_generic_bitmap(start, end, real_end,
-						descr, &bitmap);
-	if (retval)
-		return retval;
-	
-	bitmap->magic = EXT2_ET_MAGIC_INODE_BITMAP;
-	bitmap->fs = fs;
-	bitmap->base_error_code = EXT2_ET_BAD_INODE_MARK;
-	
-	*ret = bitmap;
-	return 0;
+	/* Are we permitted to use new-style bitmaps? */
+	if (fs->flags & EXT2_FLAG_64BITS)
+		return (ext2fs_alloc_generic_bmap(fs,
+				EXT2_ET_MAGIC_INODE_BITMAP64,
+				fs->default_bitmap_type,
+				start, end, real_end, descr, ret));
+
+	/* Otherwise, check to see if the file system is small enough
+	 * to use old-style 32-bit bitmaps */
+	if ((end > ~0U) || (real_end > ~0U))
+		return EXT2_ET_CANT_USE_LEGACY_BITMAPS;
+
+	return (ext2fs_make_generic_bitmap(EXT2_ET_MAGIC_INODE_BITMAP, fs,
+					 start, end, real_end,
+					 descr, 0,
+					 (ext2fs_generic_bitmap *) ret));
 }
 
 errcode_t ext2fs_allocate_block_bitmap(ext2_filsys fs,
 				       const char *descr,
 				       ext2fs_block_bitmap *ret)
 {
-	ext2fs_block_bitmap bitmap;
-	errcode_t	retval;
-	__u32		start, end, real_end;
+	__u64		start, end, real_end;
 
 	EXT2_CHECK_MAGIC(fs, EXT2_ET_MAGIC_EXT2FS_FILSYS);
 
 	fs->write_bitmaps = ext2fs_write_bitmaps;
 
+	start = EXT2FS_B2C(fs, fs->super->s_first_data_block);
+	end = EXT2FS_B2C(fs, ext2fs_blocks_count(fs->super)-1);
+	real_end = ((__u64) EXT2_CLUSTERS_PER_GROUP(fs->super)
+		    * (__u64) fs->group_desc_count)-1 + start;
+
+	if (fs->flags & EXT2_FLAG_64BITS)
+		return (ext2fs_alloc_generic_bmap(fs,
+				EXT2_ET_MAGIC_BLOCK_BITMAP64,
+				fs->default_bitmap_type,
+				start, end, real_end, descr, ret));
+
+	if ((end > ~0U) || (real_end > ~0U))
+		return EXT2_ET_CANT_USE_LEGACY_BITMAPS;
+
+	return (ext2fs_make_generic_bitmap(EXT2_ET_MAGIC_BLOCK_BITMAP, fs,
+					   start, end, real_end,
+					   descr, 0,
+					   (ext2fs_generic_bitmap *) ret));
+}
+
+/*
+ * ext2fs_allocate_block_bitmap() really allocates a per-cluster
+ * bitmap for backwards compatibility.  This function allocates a
+ * block bitmap which is truly per-block, even if clusters/bigalloc
+ * are enabled.  mke2fs and e2fsck need this for tracking the
+ * allocation of the file system metadata blocks.
+ */
+errcode_t ext2fs_allocate_subcluster_bitmap(ext2_filsys fs,
+					    const char *descr,
+					    ext2fs_block_bitmap *ret)
+{
+	__u64			start, end, real_end;
+	ext2fs_generic_bitmap	bmap;
+	errcode_t		retval;
+
+	EXT2_CHECK_MAGIC(fs, EXT2_ET_MAGIC_EXT2FS_FILSYS);
+
+	fs->write_bitmaps = ext2fs_write_bitmaps;
+
+	if (!fs->cluster_ratio_bits)
+		return ext2fs_allocate_block_bitmap(fs, descr, ret);
+
+	if ((fs->flags & EXT2_FLAG_64BITS) == 0)
+		return EXT2_ET_CANT_USE_LEGACY_BITMAPS;
+
 	start = fs->super->s_first_data_block;
-	end = fs->super->s_blocks_count-1;
-	real_end = (EXT2_BLOCKS_PER_GROUP(fs->super)  
-		    * fs->group_desc_count)-1 + start;
-	
-	retval = ext2fs_allocate_generic_bitmap(start, end, real_end,
-						descr, &bitmap);
+	end = ext2fs_blocks_count(fs->super)-1;
+	real_end = ((__u64) EXT2_BLOCKS_PER_GROUP(fs->super)
+		    * (__u64) fs->group_desc_count)-1 + start;
+
+	retval = ext2fs_alloc_generic_bmap(fs, EXT2_ET_MAGIC_BLOCK_BITMAP64,
+					   fs->default_bitmap_type, start,
+					   end, real_end, descr, &bmap);
 	if (retval)
 		return retval;
-
-	bitmap->magic = EXT2_ET_MAGIC_BLOCK_BITMAP;
-	bitmap->fs = fs;
-	bitmap->base_error_code = EXT2_ET_BAD_BLOCK_MARK;
-	
-	*ret = bitmap;
+	bmap->cluster_bits = 0;
+	*ret = bmap;
 	return 0;
+}
+
+int ext2fs_get_bitmap_granularity(ext2fs_block_bitmap bitmap)
+{
+	ext2fs_generic_bitmap bmap = bitmap;
+
+	if (!EXT2FS_IS_64_BITMAP(bmap))
+		return 0;
+
+	return bmap->cluster_bits;
 }
 
 errcode_t ext2fs_fudge_inode_bitmap_end(ext2fs_inode_bitmap bitmap,
 					ext2_ino_t end, ext2_ino_t *oend)
 {
-	EXT2_CHECK_MAGIC(bitmap, EXT2_ET_MAGIC_INODE_BITMAP);
-	
-	if (end > bitmap->real_end)
-		return EXT2_ET_FUDGE_INODE_BITMAP_END;
+	__u64 tmp_oend;
+	int retval;
+
+	retval = ext2fs_fudge_generic_bmap_end((ext2fs_generic_bitmap) bitmap,
+					       EXT2_ET_FUDGE_INODE_BITMAP_END,
+					       end, &tmp_oend);
 	if (oend)
-		*oend = bitmap->end;
-	bitmap->end = end;
-	return 0;
+		*oend = tmp_oend;
+	return retval;
 }
 
 errcode_t ext2fs_fudge_block_bitmap_end(ext2fs_block_bitmap bitmap,
 					blk_t end, blk_t *oend)
 {
-	EXT2_CHECK_MAGIC(bitmap, EXT2_ET_MAGIC_BLOCK_BITMAP);
-	
-	if (end > bitmap->real_end)
-		return EXT2_ET_FUDGE_BLOCK_BITMAP_END;
-	if (oend)
-		*oend = bitmap->end;
-	bitmap->end = end;
-	return 0;
+	return (ext2fs_fudge_generic_bitmap_end(bitmap,
+						EXT2_ET_MAGIC_BLOCK_BITMAP,
+						EXT2_ET_FUDGE_BLOCK_BITMAP_END,
+						end, oend));
+}
+
+errcode_t ext2fs_fudge_block_bitmap_end2(ext2fs_block_bitmap bitmap,
+					 blk64_t end, blk64_t *oend)
+{
+	return (ext2fs_fudge_generic_bmap_end(bitmap,
+					      EXT2_ET_FUDGE_BLOCK_BITMAP_END,
+					      end, oend));
 }
 
 void ext2fs_clear_inode_bitmap(ext2fs_inode_bitmap bitmap)
 {
-	if (!bitmap || (bitmap->magic != EXT2_ET_MAGIC_INODE_BITMAP))
-		return;
-
-	memset(bitmap->bitmap, 0,
-	       (size_t) (((bitmap->real_end - bitmap->start) / 8) + 1));
+	ext2fs_clear_generic_bmap(bitmap);
 }
 
 void ext2fs_clear_block_bitmap(ext2fs_block_bitmap bitmap)
 {
-	if (!bitmap || (bitmap->magic != EXT2_ET_MAGIC_BLOCK_BITMAP))
-		return;
+	ext2fs_clear_generic_bmap(bitmap);
+}
 
-	memset(bitmap->bitmap, 0,
-	       (size_t) (((bitmap->real_end - bitmap->start) / 8) + 1));
+errcode_t ext2fs_resize_inode_bitmap(__u32 new_end, __u32 new_real_end,
+				     ext2fs_inode_bitmap bmap)
+{
+	return (ext2fs_resize_generic_bitmap(EXT2_ET_MAGIC_INODE_BITMAP,
+					     new_end, new_real_end, bmap));
+}
+
+errcode_t ext2fs_resize_inode_bitmap2(__u64 new_end, __u64 new_real_end,
+				      ext2fs_inode_bitmap bmap)
+{
+	return (ext2fs_resize_generic_bmap(bmap, new_end, new_real_end));
+}
+
+errcode_t ext2fs_resize_block_bitmap(__u32 new_end, __u32 new_real_end,
+				     ext2fs_block_bitmap bmap)
+{
+	return (ext2fs_resize_generic_bitmap(EXT2_ET_MAGIC_BLOCK_BITMAP,
+					     new_end, new_real_end, bmap));
+}
+
+errcode_t ext2fs_resize_block_bitmap2(__u64 new_end, __u64 new_real_end,
+				      ext2fs_block_bitmap bmap)
+{
+	return (ext2fs_resize_generic_bmap(bmap, new_end, new_real_end));
+}
+
+errcode_t ext2fs_compare_block_bitmap(ext2fs_block_bitmap bm1,
+				      ext2fs_block_bitmap bm2)
+{
+	return (ext2fs_compare_generic_bmap(EXT2_ET_NEQ_BLOCK_BITMAP,
+					    bm1, bm2));
+}
+
+errcode_t ext2fs_compare_inode_bitmap(ext2fs_inode_bitmap bm1,
+				      ext2fs_inode_bitmap bm2)
+{
+	return (ext2fs_compare_generic_bmap(EXT2_ET_NEQ_INODE_BITMAP,
+					    bm1, bm2));
+}
+
+errcode_t ext2fs_set_inode_bitmap_range(ext2fs_inode_bitmap bmap,
+					ext2_ino_t start, unsigned int num,
+					void *in)
+{
+	return (ext2fs_set_generic_bitmap_range(bmap,
+						EXT2_ET_MAGIC_INODE_BITMAP,
+						start, num, in));
+}
+
+errcode_t ext2fs_set_inode_bitmap_range2(ext2fs_inode_bitmap bmap,
+					 __u64 start, size_t num,
+					 void *in)
+{
+	return (ext2fs_set_generic_bmap_range(bmap, start, num, in));
+}
+
+errcode_t ext2fs_get_inode_bitmap_range(ext2fs_inode_bitmap bmap,
+					ext2_ino_t start, unsigned int num,
+					void *out)
+{
+	return (ext2fs_get_generic_bitmap_range(bmap,
+						EXT2_ET_MAGIC_INODE_BITMAP,
+						start, num, out));
+}
+
+errcode_t ext2fs_get_inode_bitmap_range2(ext2fs_inode_bitmap bmap,
+					 __u64 start, size_t num,
+					 void *out)
+{
+	return (ext2fs_get_generic_bmap_range(bmap, start, num, out));
+}
+
+errcode_t ext2fs_set_block_bitmap_range(ext2fs_block_bitmap bmap,
+					blk_t start, unsigned int num,
+					void *in)
+{
+	return (ext2fs_set_generic_bitmap_range(bmap,
+						EXT2_ET_MAGIC_BLOCK_BITMAP,
+						start, num, in));
+}
+
+errcode_t ext2fs_set_block_bitmap_range2(ext2fs_block_bitmap bmap,
+					 blk64_t start, size_t num,
+					 void *in)
+{
+	return (ext2fs_set_generic_bmap_range(bmap, start, num, in));
+}
+
+errcode_t ext2fs_get_block_bitmap_range(ext2fs_block_bitmap bmap,
+					blk_t start, unsigned int num,
+					void *out)
+{
+	return (ext2fs_get_generic_bitmap_range(bmap,
+						EXT2_ET_MAGIC_BLOCK_BITMAP,
+						start, num, out));
+}
+
+errcode_t ext2fs_get_block_bitmap_range2(ext2fs_block_bitmap bmap,
+					 blk64_t start, size_t num,
+					 void *out)
+{
+	return (ext2fs_get_generic_bmap_range(bmap, start, num, out));
 }

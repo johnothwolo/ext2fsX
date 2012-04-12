@@ -7,7 +7,7 @@
  * parallel execution.
  *
  * Written by Theodore Ts'o, <tytso@mit.edu>
- * 
+ *
  * Miquel van Smoorenburg (miquels@drinkel.ow.org) 20-Oct-1994:
  *   o Changed -t fstype to behave like with mount when -A (all file
  *     systems) or -M (like mount) is specified.
@@ -16,7 +16,7 @@
  *     can be added without changing this front-end.
  *   o -R flag skip root file system.
  *
- * Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 
+ * Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000,
  * 	2001, 2002, 2003, 2004, 2005 by  Theodore Ts'o.
  *
  * %Begin-Header%
@@ -25,6 +25,9 @@
  * %End-Header%
  */
 
+#define _XOPEN_SOURCE 600 /* for inclusion of sa_handler in Solaris */
+
+#include "config.h"
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/signal.h>
@@ -81,6 +84,8 @@ static const char *really_wanted[] = {
 	"minix",
 	"ext2",
 	"ext3",
+	"ext4",
+	"ext4dev",
 	"jfs",
 	"reiserfs",
 	"xiafs",
@@ -102,7 +107,7 @@ int doall = 0;
 int noexecute = 0;
 int serialize = 0;
 int skip_root = 0;
-int like_mount = 0;
+int ignore_mounted = 0;
 int notitle = 0;
 int parallel_root = 0;
 int progress = 0;
@@ -229,18 +234,15 @@ static void parse_escape(char *word)
 
 static void free_instance(struct fsck_instance *i)
 {
-	if (i->prog)
-		free(i->prog);
-	if (i->device)
-		free(i->device);
-	if (i->base_device)
-		free(i->base_device);
+	free(i->prog);
+	free(i->device);
+	free(i->base_device);
 	free(i);
 	return;
 }
 
 static struct fs_info *create_fs_device(const char *device, const char *mntpnt,
-					const char *type, const char *opts, 
+					const char *type, const char *opts,
 					int freq, int passno)
 {
 	struct fs_info *fs;
@@ -275,20 +277,17 @@ static int parse_fstab_line(char *line, struct fs_info **ret_fs)
 
 	*ret_fs = 0;
 	strip_line(line);
-	if ((cp = strchr(line, '#')))
-		*cp = 0;	/* Ignore everything after the comment char */
 	cp = line;
 
 	device = parse_word(&cp);
+	if (!device || *device == '#')
+		return 0;	/* Ignore blank lines and comments */
 	mntpnt = parse_word(&cp);
 	type = parse_word(&cp);
 	opts = parse_word(&cp);
 	freq = parse_word(&cp);
 	passno = parse_word(&cp);
 
-	if (!device)
-		return 0;	/* Allow blank lines */
-	
 	if (!mntpnt || !type)
 		return -1;
 
@@ -309,9 +308,8 @@ static int parse_fstab_line(char *line, struct fs_info **ret_fs)
 	fs = create_fs_device(device, mntpnt, type ? type : "auto", opts,
 			      freq ? atoi(freq) : -1,
 			      passno ? atoi(passno) : -1);
-	if (dev)
-		free(dev);
-	   
+	free(dev);
+
 	if (!fs)
 		return -1;
 	*ret_fs = fs;
@@ -321,7 +319,7 @@ static int parse_fstab_line(char *line, struct fs_info **ret_fs)
 static void interpret_type(struct fs_info *fs)
 {
 	char	*t;
-	
+
 	if (strcmp(fs->type, "auto") != 0)
 		return;
 	t = blkid_get_tag_value(cache, "TYPE", fs->device);
@@ -364,21 +362,22 @@ static void load_fs_info(const char *filename)
 		else
 			old_fstab = 0;
 	}
-	
+
 	fclose(f);
-	
-	if (old_fstab) {
-		fputs(_("\007\007\007"
+
+	if (old_fstab && filesys_info) {
+		fputs("\007\007\007", stderr);
+		fputs(_(
 		"WARNING: Your /etc/fstab does not contain the fsck passno\n"
 		"	field.  I will kludge around things for you, but you\n"
 		"	should fix your /etc/fstab file as soon as you can.\n\n"), stderr);
-		
+
 		for (fs = filesys_info; fs; fs = fs->next) {
 			fs->passno = 1;
 		}
 	}
 }
-	
+
 /* Lookup filesys in /etc/fstab and return the corresponding entry. */
 static struct fs_info *lookup(char *filesys)
 {
@@ -450,17 +449,25 @@ static int execute(const char *type, const char *device, const char *mntpt,
 	sprintf(prog, "fsck.%s", type);
 	argv[0] = string_copy(prog);
 	argc = 1;
-	
+
 	for (i=0; i <num_args; i++)
 		argv[argc++] = string_copy(args[i]);
 
-	if (progress && !progress_active()) {
+	if (progress) {
 		if ((strcmp(type, "ext2") == 0) ||
-		    (strcmp(type, "ext3") == 0)) {
+		    (strcmp(type, "ext3") == 0) ||
+		    (strcmp(type, "ext4") == 0) ||
+		    (strcmp(type, "ext4dev") == 0)) {
 			char tmp[80];
-			snprintf(tmp, 80, "-C%d", progress_fd);
-			argv[argc++] = string_copy(tmp);
-			inst->flags |= FLAG_PROGRESS;
+
+			tmp[0] = 0;
+			if (!progress_active()) {
+				snprintf(tmp, 80, "-C%d", progress_fd);
+				inst->flags |= FLAG_PROGRESS;
+			} else if (progress_fd)
+				snprintf(tmp, 80, "-C%d", progress_fd * -1);
+			if (tmp[0])
+				argv[argc++] = string_copy(tmp);
 		}
 	}
 
@@ -470,6 +477,7 @@ static int execute(const char *type, const char *device, const char *mntpt,
 	s = find_fsck(prog);
 	if (s == NULL) {
 		fprintf(stderr, _("fsck: %s: not found\n"), prog);
+		free(inst);
 		return ENOENT;
 	}
 
@@ -480,24 +488,26 @@ static int execute(const char *type, const char *device, const char *mntpt,
 			printf("%s ", argv[i]);
 		printf("\n");
 	}
-	
+
 	/* Fork and execute the correct program. */
 	if (noexecute)
 		pid = -1;
 	else if ((pid = fork()) < 0) {
 		perror("fork");
+		free(inst);
 		return errno;
 	} else if (pid == 0) {
 		if (!interactive)
 			close(0);
 		(void) execv(s, argv);
 		perror(argv[0]);
+		free(inst);
 		exit(EXIT_ERROR);
 	}
 
 	for (i=0; i < argc; i++)
 		free(argv[i]);
-	
+
 	inst->pid = pid;
 	inst->prog = string_copy(prog);
 	inst->type = string_copy(type);
@@ -515,7 +525,7 @@ static int execute(const char *type, const char *device, const char *mntpt,
 		p->next = inst;
 	else
 		instance_list = inst;
-	
+
 	return 0;
 }
 
@@ -568,7 +578,7 @@ static struct fsck_instance *wait_one(int flags)
 	 * (inst and prev are thought to be uninitialized variables)
 	 */
 	inst = prev = NULL;
-	
+
 	do {
 		pid = waitpid(-1, &status, flags);
 		if (cancel_requested && !kill_sent) {
@@ -597,7 +607,7 @@ static struct fsck_instance *wait_one(int flags)
 		}
 	} while (!inst);
 
-	if (WIFEXITED(status)) 
+	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status)) {
 		sig = WTERMSIG(status);
@@ -615,13 +625,16 @@ static struct fsck_instance *wait_one(int flags)
 		status = EXIT_ERROR;
 	}
 	inst->exit_status = status;
+	inst->flags |= FLAG_DONE;
 	if (progress && (inst->flags & FLAG_PROGRESS) &&
 	    !progress_active()) {
 		for (inst2 = instance_list; inst2; inst2 = inst2->next) {
 			if (inst2->flags & FLAG_DONE)
 				continue;
 			if (strcmp(inst2->type, "ext2") &&
-			    strcmp(inst2->type, "ext3"))
+			    strcmp(inst2->type, "ext3") &&
+			    strcmp(inst2->type, "ext4") &&
+			    strcmp(inst2->type, "ext4dev"))
 				continue;
 			/*
 			 * If we've just started the fsck, wait a tiny
@@ -679,11 +692,11 @@ static int wait_many(int flags)
 
 /*
  * Run the fsck program on a particular device
- * 
+ *
  * If the type is specified using -t, and it isn't prefixed with "no"
  * (as in "noext2") and only one filesystem type is specified, then
  * use that type regardless of what is specified in /etc/fstab.
- * 
+ *
  * If the type isn't specified by the user, then use either the type
  * specified in /etc/fstab, or DEFAULT_FSTYPE.
  */
@@ -697,7 +710,7 @@ static void fsck_device(struct fs_info *fs, int interactive)
 	if (strcmp(fs->type, "auto") != 0)
 		type = fs->type;
 	else if (fstype && strncmp(fstype, "no", 2) &&
-	    strncmp(fstype, "opts=", 5) && strncmp(fstype, "loop", 4) && 
+	    strncmp(fstype, "opts=", 5) && strncmp(fstype, "loop", 4) &&
 	    !strchr(fstype, ','))
 		type = fstype;
 	else
@@ -746,7 +759,7 @@ static void compile_fs_type(char *fs_type, struct fs_type_compile *cmp)
 	cmp->list = malloc(num * sizeof(char *));
 	cmp->type = malloc(num * sizeof(int));
 	if (!cmp->list || !cmp->type) {
-		fputs(_("Couldn't allocate memory for filesystem types\n"), 
+		fputs(_("Couldn't allocate memory for filesystem types\n"),
 		      stderr);
 		exit(EXIT_ERROR);
 	}
@@ -756,7 +769,7 @@ static void compile_fs_type(char *fs_type, struct fs_type_compile *cmp)
 
 	if (!fs_type)
 		return;
-	
+
 	list = string_copy(fs_type);
 	num = 0;
 	s = strtok(list, ",");
@@ -800,14 +813,14 @@ static void compile_fs_type(char *fs_type, struct fs_type_compile *cmp)
  * This function returns true if a particular option appears in a
  * comma-delimited options list
  */
-static int opt_in_list(char *opt, char *optlist)
+static int opt_in_list(const char *opt, char *optlist)
 {
 	char	*list, *s;
 
 	if (!optlist)
 		return 0;
 	list = string_copy(optlist);
-	
+
 	s = strtok(list, ",");
 	while(s) {
 		if (strcmp(s, opt) == 0) {
@@ -864,6 +877,16 @@ static int ignore(struct fs_info *fs)
 	if (fs->passno == 0)
 		return 1;
 
+	/*
+	 * If this is a bind mount, ignore it.
+	 */
+	if (opt_in_list("bind", fs->opts)) {
+		fprintf(stderr,
+			_("%s: skipping bad line in /etc/fstab: bind mount with nonzero fsck pass number\n"),
+			fs->mountpt);
+		return 1;
+	}
+
 	interpret_type(fs);
 
 	/*
@@ -871,7 +894,7 @@ static int ignore(struct fs_info *fs)
 	 * ignore it.
 	 */
 	if (!fs_match(fs, &fs_type_compiled)) return 1;
-	
+
 	/* Are we ignoring this type? */
 	for(ip = ignored_types; *ip; ip++)
 		if (strcmp(fs->type, *ip) == 0) return 1;
@@ -920,7 +943,7 @@ static int device_already_active(char *device)
 	 * If we don't know the base device, assume that the device is
 	 * already active if there are any fsck instances running.
 	 */
-	if (!base) 
+	if (!base)
 		return (instance_list != 0);
 	for (inst = instance_list; inst; inst = inst->next) {
 		if (!inst->base_device || !strcmp(base, inst->base_device)) {
@@ -953,7 +976,7 @@ static int check_all(NOARGS)
 		if (ignore(fs))
 			fs->flags |= FLAG_DONE;
 	}
-		
+
 	/*
 	 * Find and check the root filesystem.
 	 */
@@ -963,7 +986,8 @@ static int check_all(NOARGS)
 				break;
 		}
 		if (fs) {
-			if (!skip_root && !ignore(fs)) {
+			if (!skip_root && !ignore(fs) &&
+			    !(ignore_mounted && is_mounted(fs->device))) {
 				fsck_device(fs, 1);
 				status |= wait_many(FLAG_WAIT_ALL);
 				if (status > EXIT_NONDESTRUCT)
@@ -999,6 +1023,10 @@ static int check_all(NOARGS)
 				not_done_yet++;
 				continue;
 			}
+			if (ignore_mounted && is_mounted(fs->device)) {
+				fs->flags |= FLAG_DONE;
+				continue;
+			}
 			/*
 			 * If a filesystem on a particular device has
 			 * already been spawned, then we need to defer
@@ -1032,7 +1060,7 @@ static int check_all(NOARGS)
 		status |= wait_many(pass_done ? FLAG_WAIT_ALL :
 				    FLAG_WAIT_ATLEAST_ONE);
 		if (pass_done) {
-			if (verbose > 1) 
+			if (verbose > 1)
 				printf("----------------------------------\n");
 			passno++;
 		} else
@@ -1048,7 +1076,7 @@ static int check_all(NOARGS)
 
 static void usage(NOARGS)
 {
-	fputs(_("Usage: fsck [-ANPRTV] [ -C [ fd ] ] [-t fstype] [fs-options] [filesys ...]\n"), stderr);
+	fputs(_("Usage: fsck [-AMNPRTV] [ -C [ fd ] ] [-t fstype] [fs-options] [filesys ...]\n"), stderr);
 	exit(EXIT_USAGE);
 }
 
@@ -1077,7 +1105,7 @@ static void PRS(int argc, char *argv[])
 	sigaction(SIGINT, &sa, 0);
 	sigaction(SIGTERM, &sa, 0);
 #endif
-	
+
 	num_devices = 0;
 	num_args = 0;
 	instance_list = 0;
@@ -1147,14 +1175,14 @@ static void PRS(int argc, char *argv[])
 						progress_fd = 0;
 					else
 						goto next_arg;
-				} else if ((i+1) < argc && 
+				} else if ((i+1) < argc &&
 					   !strncmp(argv[i+1], "-", 1) == 0) {
 					progress_fd = string_to_int(argv[i]);
 					if (progress_fd < 0)
 						progress_fd = 0;
 					else {
+						++i;
 						goto next_arg;
-						i++;
 					}
 				}
 				break;
@@ -1171,7 +1199,7 @@ static void PRS(int argc, char *argv[])
 				notitle++;
 				break;
 			case 'M':
-				like_mount++;
+				ignore_mounted++;
 				break;
 			case 'P':
 				parallel_root++;
@@ -1265,7 +1293,7 @@ int main(int argc, char *argv[])
 	} else {
 		fsck_path = string_copy(fsck_prefix_path);
 	}
-	
+
 	if ((num_devices == 1) || (serialize))
 		interactive = 1;
 
@@ -1293,6 +1321,8 @@ int main(int argc, char *argv[])
 			if (!fs)
 				continue;
 		}
+		if (ignore_mounted && is_mounted(fs->device))
+			continue;
 		fsck_device(fs, interactive);
 		if (serialize ||
 		    (max_running && (num_running >= max_running))) {
@@ -1303,7 +1333,7 @@ int main(int argc, char *argv[])
 				status |= inst->exit_status;
 				free_instance(inst);
 			}
-			if (verbose > 1) 
+			if (verbose > 1)
 				printf("----------------------------------\n");
 		}
 	}

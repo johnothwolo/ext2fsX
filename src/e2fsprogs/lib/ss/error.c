@@ -12,19 +12,20 @@
  * express or implied warranty.
  */
 
+#include "config.h"
 #include <stdio.h>
 
-#include <com_err.h>
+#include "et/com_err.h"
 #include "ss_internal.h"
 
 #include <stdarg.h>
-  
+
 char * ss_name(sci_idx)
     int sci_idx;
 {
     register char *ret_val;
     register ss_data *infop;
-    
+
     infop = ss_info(sci_idx);
     if (infop->current_request == (char const *)NULL) {
 	ret_val = malloc((unsigned)
@@ -38,7 +39,7 @@ char * ss_name(sci_idx)
     else {
 	register char *cp;
 	register char const *cp1;
-	ret_val = malloc((unsigned)sizeof(char) * 
+	ret_val = malloc((unsigned)sizeof(char) *
 			 (strlen(infop->subsystem_name)+
 			  strlen(infop->current_request)+
 			  4));

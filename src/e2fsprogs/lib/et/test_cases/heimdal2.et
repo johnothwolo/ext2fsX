@@ -1,4 +1,4 @@
-# $Id: heimdal2.et,v 1.1.1.1 2004/02/29 05:46:57 bbergstrand Exp $
+# $Id: kadm_err.et,v 1.5 1998/01/16 23:11:27 joda Exp $
 #
 # Copyright 1988 by the Massachusetts Institute of Technology.
 #
@@ -11,7 +11,7 @@
 
 # KADM_SUCCESS, as all success codes should be, is zero
 
-ec KADM_RCSID,		"$Id: heimdal2.et,v 1.1.1.1 2004/02/29 05:46:57 bbergstrand Exp $"
+ec KADM_RCSID,		"$Id: kadm_err.et,v 1.5 1998/01/16 23:11:27 joda Exp $"
 # /* Building and unbuilding the packet errors */
 ec KADM_NO_REALM,	"Cannot fetch local realm"
 ec KADM_NO_CRED,	"Unable to fetch credentials"

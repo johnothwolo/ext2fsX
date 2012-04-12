@@ -1,16 +1,17 @@
 /*
  * ext_attr.c --- extended attribute blocks
- * 
+ *
  * Copyright (C) 2001 Andreas Gruenbacher, <a.gruenbacher@computer.org>
  *
  * Copyright (C) 2002 Theodore Ts'o.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #if HAVE_UNISTD_H
 #include <unistd.h>
@@ -23,50 +24,94 @@
 
 #include "ext2fs.h"
 
-errcode_t ext2fs_read_ext_attr(ext2_filsys fs, blk_t block, void *buf)
+#define NAME_HASH_SHIFT 5
+#define VALUE_HASH_SHIFT 16
+
+/*
+ * ext2_xattr_hash_entry()
+ *
+ * Compute the hash of an extended attribute.
+ */
+__u32 ext2fs_ext_attr_hash_entry(struct ext2_ext_attr_entry *entry, void *data)
+{
+	__u32 hash = 0;
+	char *name = ((char *) entry) + sizeof(struct ext2_ext_attr_entry);
+	int n;
+
+	for (n = 0; n < entry->e_name_len; n++) {
+		hash = (hash << NAME_HASH_SHIFT) ^
+		       (hash >> (8*sizeof(hash) - NAME_HASH_SHIFT)) ^
+		       *name++;
+	}
+
+	/* The hash needs to be calculated on the data in little-endian. */
+	if (entry->e_value_block == 0 && entry->e_value_size != 0) {
+		__u32 *value = (__u32 *)data;
+		for (n = (entry->e_value_size + EXT2_EXT_ATTR_ROUND) >>
+			 EXT2_EXT_ATTR_PAD_BITS; n; n--) {
+			hash = (hash << VALUE_HASH_SHIFT) ^
+			       (hash >> (8*sizeof(hash) - VALUE_HASH_SHIFT)) ^
+			       ext2fs_le32_to_cpu(*value++);
+		}
+	}
+
+	return hash;
+}
+
+#undef NAME_HASH_SHIFT
+#undef VALUE_HASH_SHIFT
+
+errcode_t ext2fs_read_ext_attr2(ext2_filsys fs, blk64_t block, void *buf)
 {
 	errcode_t	retval;
 
- 	retval = io_channel_read_blk(fs->io, block, 1, buf);
+	retval = io_channel_read_blk64(fs->io, block, 1, buf);
 	if (retval)
 		return retval;
-#ifdef EXT2FS_ENABLE_SWAPFS
-	if ((fs->flags & (EXT2_FLAG_SWAP_BYTES|
-			  EXT2_FLAG_SWAP_BYTES_READ)) != 0)
-		ext2fs_swap_ext_attr(buf, buf, fs->blocksize, 1);
+#ifdef WORDS_BIGENDIAN
+	ext2fs_swap_ext_attr(buf, buf, fs->blocksize, 1);
 #endif
 	return 0;
 }
 
-errcode_t ext2fs_write_ext_attr(ext2_filsys fs, blk_t block, void *inbuf)
+errcode_t ext2fs_read_ext_attr(ext2_filsys fs, blk_t block, void *buf)
+{
+	return ext2fs_read_ext_attr2(fs, block, buf);
+}
+
+errcode_t ext2fs_write_ext_attr2(ext2_filsys fs, blk64_t block, void *inbuf)
 {
 	errcode_t	retval;
 	char		*write_buf;
+#ifdef WORDS_BIGENDIAN
 	char		*buf = NULL;
 
-#ifdef EXT2FS_ENABLE_SWAPFS
-	if ((fs->flags & EXT2_FLAG_SWAP_BYTES) ||
-	    (fs->flags & EXT2_FLAG_SWAP_BYTES_WRITE)) {
-		retval = ext2fs_get_mem(fs->blocksize, &buf);
-		if (retval)
-			return retval;
-		write_buf = buf;
-		ext2fs_swap_ext_attr(buf, inbuf, fs->blocksize, 1);
-	} else
+	retval = ext2fs_get_mem(fs->blocksize, &buf);
+	if (retval)
+		return retval;
+	write_buf = buf;
+	ext2fs_swap_ext_attr(buf, inbuf, fs->blocksize, 1);
+#else
+	write_buf = (char *) inbuf;
 #endif
-		write_buf = (char *) inbuf;
- 	retval = io_channel_write_blk(fs->io, block, 1, write_buf);
-	if (buf)
-		ext2fs_free_mem(&buf);
+	retval = io_channel_write_blk64(fs->io, block, 1, write_buf);
+#ifdef WORDS_BIGENDIAN
+	ext2fs_free_mem(&buf);
+#endif
 	if (!retval)
 		ext2fs_mark_changed(fs);
 	return retval;
 }
 
+errcode_t ext2fs_write_ext_attr(ext2_filsys fs, blk_t block, void *inbuf)
+{
+	return ext2fs_write_ext_attr2(fs, block, inbuf);
+}
+
 /*
  * This function adjusts the reference count of the EA block.
  */
-errcode_t ext2fs_adjust_ea_refcount(ext2_filsys fs, blk_t blk,
+errcode_t ext2fs_adjust_ea_refcount2(ext2_filsys fs, blk64_t blk,
 				    char *block_buf, int adjust,
 				    __u32 *newcount)
 {
@@ -74,7 +119,7 @@ errcode_t ext2fs_adjust_ea_refcount(ext2_filsys fs, blk_t blk,
 	struct ext2_ext_attr_header *header;
 	char	*buf = 0;
 
-	if ((blk >= fs->super->s_blocks_count) ||
+	if ((blk >= ext2fs_blocks_count(fs->super)) ||
 	    (blk < fs->super->s_first_data_block))
 		return EXT2_ET_BAD_EA_BLOCK_NUM;
 
@@ -85,7 +130,7 @@ errcode_t ext2fs_adjust_ea_refcount(ext2_filsys fs, blk_t blk,
 		block_buf = buf;
 	}
 
-	retval = ext2fs_read_ext_attr(fs, blk, block_buf);
+	retval = ext2fs_read_ext_attr2(fs, blk, block_buf);
 	if (retval)
 		goto errout;
 
@@ -94,7 +139,7 @@ errcode_t ext2fs_adjust_ea_refcount(ext2_filsys fs, blk_t blk,
 	if (newcount)
 		*newcount = header->h_refcount;
 
-	retval = ext2fs_write_ext_attr(fs, blk, block_buf);
+	retval = ext2fs_write_ext_attr2(fs, blk, block_buf);
 	if (retval)
 		goto errout;
 
@@ -102,4 +147,11 @@ errout:
 	if (buf)
 		ext2fs_free_mem(&buf);
 	return retval;
+}
+
+errcode_t ext2fs_adjust_ea_refcount(ext2_filsys fs, blk_t blk,
+					char *block_buf, int adjust,
+					__u32 *newcount)
+{
+	return ext2fs_adjust_ea_refcount(fs, blk, block_buf, adjust, newcount);
 }

@@ -5,11 +5,12 @@
  * Copyright (C) 2002 Theodore Ts'o.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #if HAVE_UNISTD_H
@@ -56,6 +57,10 @@ static errcode_t inode_write_blk(io_channel channel, unsigned long block,
 static errcode_t inode_flush(io_channel channel);
 static errcode_t inode_write_byte(io_channel channel, unsigned long offset,
 				int size, const void *data);
+static errcode_t inode_read_blk64(io_channel channel,
+				unsigned long long block, int count, void *data);
+static errcode_t inode_write_blk64(io_channel channel,
+				unsigned long long block, int count, const void *data);
 
 static struct struct_io_manager struct_inode_manager = {
 	EXT2_ET_MAGIC_IO_MANAGER,
@@ -66,7 +71,11 @@ static struct struct_io_manager struct_inode_manager = {
 	inode_read_blk,
 	inode_write_blk,
 	inode_flush,
-	inode_write_byte
+	inode_write_byte,
+	NULL,
+	NULL,
+	inode_read_blk64,
+	inode_write_blk64
 };
 
 io_manager inode_io_manager = &struct_inode_manager;
@@ -150,14 +159,15 @@ static errcode_t inode_open(const char *name, int flags, io_channel *channel)
 				   &data->file);
 	if (retval)
 		goto cleanup;
-		
+
 	*channel = io;
 	return 0;
 
 cleanup:
-	if (data) {
+	if (io && io->name)
+		ext2fs_free_mem(&io->name);
+	if (data)
 		ext2fs_free_mem(&data);
-	}
 	if (io)
 		ext2fs_free_mem(&io);
 	return retval;
@@ -176,7 +186,7 @@ static errcode_t inode_close(io_channel channel)
 		return 0;
 
 	retval = ext2fs_file_close(data->file);
-	
+
 	ext2fs_free_mem(&channel->private_data);
 	if (channel->name)
 		ext2fs_free_mem(&channel->name);
@@ -197,8 +207,8 @@ static errcode_t inode_set_blksize(io_channel channel, int blksize)
 }
 
 
-static errcode_t inode_read_blk(io_channel channel, unsigned long block,
-			       int count, void *buf)
+static errcode_t inode_read_blk64(io_channel channel,
+				unsigned long long block, int count, void *buf)
 {
 	struct inode_private_data *data;
 	errcode_t	retval;
@@ -217,8 +227,14 @@ static errcode_t inode_read_blk(io_channel channel, unsigned long block,
 	return ext2fs_file_read(data->file, buf, count, 0);
 }
 
-static errcode_t inode_write_blk(io_channel channel, unsigned long block,
-				int count, const void *buf)
+static errcode_t inode_read_blk(io_channel channel, unsigned long block,
+			       int count, void *buf)
+{
+	return inode_read_blk64(channel, block, count, buf);
+}
+
+static errcode_t inode_write_blk64(io_channel channel,
+				unsigned long long block, int count, const void *buf)
 {
 	struct inode_private_data *data;
 	errcode_t	retval;
@@ -235,6 +251,12 @@ static errcode_t inode_write_blk(io_channel channel, unsigned long block,
 	count = (count < 0) ? -count : (count * channel->block_size);
 
 	return ext2fs_file_write(data->file, buf, count, 0);
+}
+
+static errcode_t inode_write_blk(io_channel channel, unsigned long block,
+				int count, const void *buf)
+{
+	return inode_write_blk64(channel, block, count, buf);
 }
 
 static errcode_t inode_write_byte(io_channel channel, unsigned long offset,
@@ -255,12 +277,12 @@ static errcode_t inode_write_byte(io_channel channel, unsigned long offset,
 }
 
 /*
- * Flush data buffers to disk.  
+ * Flush data buffers to disk.
  */
 static errcode_t inode_flush(io_channel channel)
 {
 	struct inode_private_data *data;
-	
+
 	EXT2_CHECK_MAGIC(channel, EXT2_ET_MAGIC_IO_CHANNEL);
 	data = (struct inode_private_data *) channel->private_data;
 	EXT2_CHECK_MAGIC(data, EXT2_ET_MAGIC_INODE_IO_CHANNEL);

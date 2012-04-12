@@ -1,10 +1,11 @@
 /*
  * badblocks.c --- replace/append bad blocks to the bad block inode
- * 
+ *
  * Copyright (C) 1993, 1994 Theodore Ts'o.  This file may be
  * redistributed under the terms of the GNU Public License.
  */
 
+#include "config.h"
 #include <time.h>
 #ifdef HAVE_ERRNO_H
 #include <errno.h>
@@ -45,7 +46,7 @@ void read_bad_blocks_file(e2fsck_t ctx, const char *bad_blocks_file,
 			_("while sanity checking the bad blocks inode"));
 		goto fatal;
 	}
-	
+
 	/*
 	 * If we're appending to the bad blocks inode, read in the
 	 * current bad blocks.
@@ -58,7 +59,7 @@ void read_bad_blocks_file(e2fsck_t ctx, const char *bad_blocks_file,
 			goto fatal;
 		}
 	}
-	
+
 	/*
 	 * Now read in the bad blocks from the file; if
 	 * bad_blocks_file is null, then try to run the badblocks
@@ -72,10 +73,10 @@ void read_bad_blocks_file(e2fsck_t ctx, const char *bad_blocks_file,
 			goto fatal;
 		}
 	} else {
-		sprintf(buf, "badblocks -b %d -X %s%s%s %d", fs->blocksize,
+		sprintf(buf, "badblocks -b %d -X %s%s%s %llu", fs->blocksize,
 			(ctx->options & E2F_OPT_PREEN) ? "" : "-s ",
 			(ctx->options & E2F_OPT_WRITECHECK) ? "-n " : "",
-			fs->device_name, fs->super->s_blocks_count);
+			fs->device_name, ext2fs_blocks_count(fs->super)-1);
 		f = popen(buf, "r");
 		if (!f) {
 			com_err("read_bad_blocks_file", errno,
@@ -84,7 +85,7 @@ void read_bad_blocks_file(e2fsck_t ctx, const char *bad_blocks_file,
 		}
 	}
 	retval = ext2fs_read_bb_FILE(fs, f, &bb_list, invalid_block);
-	if (bad_blocks_file) 
+	if (bad_blocks_file)
 		fclose(f);
 	else
 		pclose(f);
@@ -93,10 +94,11 @@ void read_bad_blocks_file(e2fsck_t ctx, const char *bad_blocks_file,
 			_("while reading in list of bad blocks from file"));
 		goto fatal;
 	}
-	
+
 	/*
 	 * Finally, update the bad blocks from the bad_block_map
 	 */
+	printf("%s: Updating bad block inode.\n", ctx->device_name);
 	retval = ext2fs_update_bb_inode(fs, bb_list);
 	if (retval) {
 		com_err("ext2fs_update_bb_inode", retval,
@@ -106,15 +108,15 @@ void read_bad_blocks_file(e2fsck_t ctx, const char *bad_blocks_file,
 
 	ext2fs_badblocks_list_free(bb_list);
 	return;
-	
+
 fatal:
 	ctx->flags |= E2F_FLAG_ABORT;
 	return;
-	
+
 }
 
-static int check_bb_inode_blocks(ext2_filsys fs, 
-				 blk_t *block_nr, 
+static int check_bb_inode_blocks(ext2_filsys fs,
+				 blk_t *block_nr,
 				 int blockcnt EXT2FS_ATTR((unused)),
 				 void *priv_data EXT2FS_ATTR((unused)))
 {
@@ -124,7 +126,7 @@ static int check_bb_inode_blocks(ext2_filsys fs,
 	/*
 	 * If the block number is outrageous, clear it and ignore it.
 	 */
-	if (*block_nr >= fs->super->s_blocks_count ||
+	if (*block_nr >= ext2fs_blocks_count(fs->super) ||
 	    *block_nr < fs->super->s_first_data_block) {
 		printf(_("Warning: illegal block %u found in bad block inode.  "
 			 "Cleared.\n"), *block_nr);

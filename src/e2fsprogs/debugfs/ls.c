@@ -1,10 +1,11 @@
 /*
  * ls.c --- list directories
- * 
+ *
  * Copyright (C) 1997 Theodore Ts'o.  This file may be redistributed
  * under the terms of the GNU Public License.
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -17,7 +18,7 @@
 #include <sys/types.h>
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>
-#else 
+#else
 extern int optind;
 extern char *optarg;
 #endif
@@ -30,6 +31,7 @@ extern char *optarg;
 
 #define LONG_OPT	0x0001
 #define DELETED_OPT	0x0002
+#define PARSE_OPT	0x0004
 
 struct list_dir_struct {
 	FILE	*f;
@@ -39,7 +41,7 @@ struct list_dir_struct {
 
 static const char *monstr[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 				"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-					
+
 static int list_dir_proc(ext2_ino_t dir EXT2FS_ATTR((unused)),
 			 int	entry,
 			 struct ext2_dir_entry *dirent,
@@ -52,15 +54,14 @@ static int list_dir_proc(ext2_ino_t dir EXT2FS_ATTR((unused)),
 	ext2_ino_t		ino;
 	struct tm		*tm_p;
 	time_t			modtime;
-	char			name[EXT2_NAME_LEN];
+	char			name[EXT2_NAME_LEN + 1];
 	char			tmp[EXT2_NAME_LEN + 16];
 	char			datestr[80];
 	char			lbr, rbr;
 	int			thislen;
 	struct list_dir_struct *ls = (struct list_dir_struct *) private;
 
-	thislen = ((dirent->name_len & 0xFF) < EXT2_NAME_LEN) ?
-		(dirent->name_len & 0xFF) : EXT2_NAME_LEN;
+	thislen = dirent->name_len & 0xFF;
 	strncpy(name, dirent->name, thislen);
 	name[thislen] = '\0';
 	ino = dirent->inode;
@@ -72,7 +73,19 @@ static int list_dir_proc(ext2_ino_t dir EXT2FS_ATTR((unused)),
 	} else {
 		lbr = rbr = ' ';
 	}
-	if (ls->options & LONG_OPT) {
+	if (ls->options & PARSE_OPT) {
+		if (ino) {
+			if (debugfs_read_inode(ino, &inode, name))
+				return 0;
+		} else
+			memset(&inode, 0, sizeof(struct ext2_inode));
+		fprintf(ls->f,"/%u/%06o/%d/%d/%s/",ino,inode.i_mode,inode.i_uid, inode.i_gid,name);
+		if (LINUX_S_ISDIR(inode.i_mode))
+			fprintf(ls->f, "/");
+		else
+			fprintf(ls->f, "%lld/", EXT2_I_SIZE(&inode));
+		fprintf(ls->f, "\n");
+	} else if (ls->options & LONG_OPT) {
 		if (ino) {
 			if (debugfs_read_inode(ino, &inode, name))
 				return 0;
@@ -88,12 +101,11 @@ static int list_dir_proc(ext2_ino_t dir EXT2FS_ATTR((unused)),
 		}
 		fprintf(ls->f, "%c%6u%c %6o (%d)  %5d  %5d   ", lbr, ino, rbr,
 			inode.i_mode, dirent->name_len >> 8,
-			inode.i_uid, inode.i_gid);
+			inode_uid(inode), inode_gid(inode));
 		if (LINUX_S_ISDIR(inode.i_mode))
 			fprintf(ls->f, "%5d", inode.i_size);
 		else
-			fprintf(ls->f, "%5lld", inode.i_size |
-				((__u64)inode.i_size_high << 32));
+			fprintf(ls->f, "%5llu", EXT2_I_SIZE(&inode));
 		fprintf (ls->f, " %s %s\n", datestr, name);
 	} else {
 		sprintf(tmp, "%c%u%c (%d) %s   ", lbr, dirent->inode, rbr,
@@ -117,19 +129,22 @@ void do_list_dir(int argc, char *argv[])
 	int		c;
 	int		flags;
 	struct list_dir_struct ls;
-	
+
 	ls.options = 0;
 	if (check_fs_open(argv[0]))
 		return;
 
 	reset_getopt();
-	while ((c = getopt (argc, argv, "dl")) != EOF) {
+	while ((c = getopt (argc, argv, "dlp")) != EOF) {
 		switch (c) {
 		case 'l':
 			ls.options |= LONG_OPT;
 			break;
 		case 'd':
 			ls.options |= DELETED_OPT;
+			break;
+		case 'p':
+			ls.options |= PARSE_OPT;
 			break;
 		default:
 			goto print_usage;
@@ -138,7 +153,7 @@ void do_list_dir(int argc, char *argv[])
 
 	if (argc > optind+1) {
 	print_usage:
-		com_err(0, 0, "Usage: ls [-l] [-d] file");
+		com_err(0, 0, "Usage: ls [-l] [-d] [-p] file");
 		return;
 	}
 

@@ -1,15 +1,16 @@
 /*
  * finddev.c -- this routine attempts to find a particular device in
  * 	/dev
- * 
+ *
  * Copyright (C) 2000 Theodore Ts'o.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #if HAVE_UNISTD_H
@@ -33,6 +34,7 @@
 
 #include "ext2_fs.h"
 #include "ext2fs.h"
+#include "ext2fsP.h"
 
 struct dir_list {
 	char	*name;
@@ -80,7 +82,7 @@ static int scan_dir(char *dirname, dev_t device, struct dir_list **list,
 	DIR	*dir;
 	struct dirent *dp;
 	char	path[1024], *cp;
-	size_t	dirlen;
+	int	dirlen;
 	struct stat st;
 
 	dirlen = strlen(dirname);
@@ -127,6 +129,7 @@ char *ext2fs_find_block_device(dev_t device)
 	struct dir_list *list = 0, *new_list = 0;
 	struct dir_list *current;
 	char	*ret_path = 0;
+	int    level = 0;
 
 	/*
 	 * Add the starting directories to search...
@@ -134,7 +137,7 @@ char *ext2fs_find_block_device(dev_t device)
 	add_to_dirlist("/devices", &list);
 	add_to_dirlist("/devfs", &list);
 	add_to_dirlist("/dev", &list);
-	
+
 	while (list) {
 		current = list;
 		list = list->next;
@@ -153,6 +156,9 @@ char *ext2fs_find_block_device(dev_t device)
 		if (list == 0) {
 			list = new_list;
 			new_list = 0;
+			/* Avoid infinite loop */
+			if (++level >= EXT2FS_MAX_NESTED_LINKS)
+				break;
 		}
 	}
 	free_dirlist(&list);
@@ -160,7 +166,7 @@ char *ext2fs_find_block_device(dev_t device)
 	return ret_path;
 }
 
-	
+
 #ifdef DEBUG
 int main(int argc, char** argv)
 {
@@ -204,5 +210,5 @@ int main(int argc, char** argv)
 	}
 	return 0;
 }
-	
+
 #endif

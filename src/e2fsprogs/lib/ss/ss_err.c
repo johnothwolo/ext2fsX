@@ -5,19 +5,21 @@
 
 #include <stdlib.h>
 
+#define N_(a) a
+
 static const char * const text[] = {
-		"Subsystem aborted",
-		"Version mismatch",
-		"No current invocation",
-		"No info directory",
-		"Command not found",
-		"Command line aborted",
-		"End-of-file reached",
-		"Permission denied",
-		"Request table not found",
-		"No info available",
-		"Shell escapes are disabled",
-		"Sorry, this request is not yet implemented",
+	N_(	"Subsystem aborted"),
+	N_(	"Version mismatch"),
+	N_(	"No current invocation"),
+	N_(	"No info directory"),
+	N_(	"Command not found"),
+	N_(	"Command line aborted"),
+	N_(	"End-of-file reached"),
+	N_(	"Permission denied"),
+	N_(	"Request table not found"),
+	N_(	"No info available"),
+	N_(	"Shell escapes are disabled"),
+	N_(	"Sorry, this request is not yet implemented"),
     0
 };
 
@@ -30,7 +32,7 @@ struct et_list {
     struct et_list *next;
     const struct error_table * table;
 };
-struct et_list *_et_list;
+extern struct et_list *_et_list;
 
 const struct error_table et_ss_error_table = { text, 748800L, 12 };
 

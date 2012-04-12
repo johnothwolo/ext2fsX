@@ -1,14 +1,15 @@
 /*
  * unlink.c --- delete links in a ext2fs directory
- * 
+ *
  * Copyright (C) 1993, 1994, 1997 Theodore Ts'o.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #if HAVE_UNISTD_H
@@ -25,13 +26,13 @@ struct link_struct  {
 	int		flags;
 	struct ext2_dir_entry *prev;
 	int		done;
-};	
+};
 
 #ifdef __TURBOC__
  #pragma argsused
 #endif
 static int unlink_proc(struct ext2_dir_entry *dirent,
-		     int	offset EXT2FS_ATTR((unused)),
+		     int	offset,
 		     int	blocksize EXT2FS_ATTR((unused)),
 		     char	*buf EXT2FS_ATTR((unused)),
 		     void	*priv_data)
@@ -56,7 +57,7 @@ static int unlink_proc(struct ext2_dir_entry *dirent,
 			return 0;
 	}
 
-	if (prev) 
+	if (offset)
 		prev->rec_len += dirent->rec_len;
 	else
 		dirent->inode = 0;
@@ -89,7 +90,7 @@ errcode_t ext2fs_unlink(ext2_filsys fs, ext2_ino_t dir,
 	ls.done = 0;
 	ls.prev = 0;
 
-	retval = ext2fs_dir_iterate(fs, dir, DIRENT_FLAG_INCLUDE_EMPTY, 
+	retval = ext2fs_dir_iterate(fs, dir, DIRENT_FLAG_INCLUDE_EMPTY,
 				    0, unlink_proc, &ls);
 	if (retval)
 		return retval;

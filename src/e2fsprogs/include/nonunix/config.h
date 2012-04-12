@@ -8,10 +8,10 @@
 #define HAVE_SETJMP_H  1
 
 #define HAVE_STRCASECMP 1
-#define strcasecmp     _stricmp
-#define strncasecmp     _strnicmp
+//#define strcasecmp     _stricmp
+//#define strncasecmp     _strnicmp
 
-#define HAVE_CONIO_H   1
+//#define HAVE_CONIO_H   1
 
 #define HAVE_EXT2_INODE_VERSION 1
 

@@ -50,6 +50,7 @@ typedef struct blkid_struct_dev_iterate *blkid_dev_iterate;
 /* cache.c */
 extern void blkid_put_cache(blkid_cache cache);
 extern int blkid_get_cache(blkid_cache *cache, const char *filename);
+extern void blkid_gc_cache(blkid_cache cache);
 
 /* dev.c */
 extern const char *blkid_dev_devname(blkid_dev dev);
@@ -89,7 +90,7 @@ extern blkid_tag_iterate blkid_tag_iterate_begin(blkid_dev dev);
 extern int blkid_tag_next(blkid_tag_iterate iterate,
 			      const char **type, const char **value);
 extern void blkid_tag_iterate_end(blkid_tag_iterate iterate);
-extern int blkid_dev_has_tag(blkid_dev dev, const char *type, 
+extern int blkid_dev_has_tag(blkid_dev dev, const char *type,
 			     const char *value);
 extern blkid_dev blkid_find_dev_with_tag(blkid_cache cache,
 					 const char *type,

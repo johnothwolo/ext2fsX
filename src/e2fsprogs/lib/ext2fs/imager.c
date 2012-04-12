@@ -5,14 +5,15 @@
  * Copyright (C) 2000 Theodore Ts'o.
  *
  * Note: this uses the POSIX IO interfaces, unlike most of the other
- * functions in this library.  So sue me.  
+ * functions in this library.  So sue me.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #if HAVE_UNISTD_H
@@ -62,24 +63,26 @@ errcode_t ext2fs_image_inode_write(ext2_filsys fs, int fd, int flags)
 {
 	unsigned int	group, left, c, d;
 	char		*buf, *cp;
-	blk_t		blk;
+	blk64_t		blk;
 	ssize_t		actual;
 	errcode_t	retval;
 
 	buf = malloc(fs->blocksize * BUF_BLOCKS);
 	if (!buf)
 		return ENOMEM;
-	
+
 	for (group = 0; group < fs->group_desc_count; group++) {
-		blk = fs->group_desc[(unsigned)group].bg_inode_table;
-		if (!blk)
-			return EXT2_ET_MISSING_INODE_TABLE;
+		blk = ext2fs_inode_table_loc(fs, (unsigned)group);
+		if (!blk) {
+			retval = EXT2_ET_MISSING_INODE_TABLE;
+			goto errout;
+		}
 		left = fs->inode_blocks_per_group;
 		while (left) {
 			c = BUF_BLOCKS;
 			if (c > left)
 				c = left;
-			retval = io_channel_read_blk(fs->io, blk, c, buf);
+			retval = io_channel_read_blk64(fs->io, blk, c, buf);
 			if (retval)
 				goto errout;
 			cp = buf;
@@ -129,21 +132,21 @@ errout:
 /*
  * Read in the inode table and stuff it into place
  */
-errcode_t ext2fs_image_inode_read(ext2_filsys fs, int fd, 
+errcode_t ext2fs_image_inode_read(ext2_filsys fs, int fd,
 				  int flags EXT2FS_ATTR((unused)))
 {
 	unsigned int	group, c, left;
 	char		*buf;
-	blk_t		blk;
+	blk64_t		blk;
 	ssize_t		actual;
 	errcode_t	retval;
 
 	buf = malloc(fs->blocksize * BUF_BLOCKS);
 	if (!buf)
 		return ENOMEM;
-	
+
 	for (group = 0; group < fs->group_desc_count; group++) {
-		blk = fs->group_desc[(unsigned)group].bg_inode_table;
+		blk = ext2fs_inode_table_loc(fs, (unsigned)group);
 		if (!blk) {
 			retval = EXT2_ET_MISSING_INODE_TABLE;
 			goto errout;
@@ -162,10 +165,10 @@ errcode_t ext2fs_image_inode_read(ext2_filsys fs, int fd,
 				retval = EXT2_ET_SHORT_READ;
 				goto errout;
 			}
-			retval = io_channel_write_blk(fs->io, blk, c, buf);
+			retval = io_channel_write_blk64(fs->io, blk, c, buf);
 			if (retval)
 				goto errout;
-			
+
 			blk += c;
 			left -= c;
 		}
@@ -180,7 +183,7 @@ errout:
 /*
  * Write out superblock and group descriptors
  */
-errcode_t ext2fs_image_super_write(ext2_filsys fs, int fd, 
+errcode_t ext2fs_image_super_write(ext2_filsys fs, int fd,
 				   int flags EXT2FS_ATTR((unused)))
 {
 	char		*buf, *cp;
@@ -219,7 +222,7 @@ errcode_t ext2fs_image_super_write(ext2_filsys fs, int fd,
 		retval = EXT2_ET_SHORT_WRITE;
 		goto errout;
 	}
-	
+
 	retval = 0;
 
 errout:
@@ -230,7 +233,7 @@ errout:
 /*
  * Read the superblock and group descriptors and overwrite them.
  */
-errcode_t ext2fs_image_super_read(ext2_filsys fs, int fd, 
+errcode_t ext2fs_image_super_read(ext2_filsys fs, int fd,
 				  int flags EXT2FS_ATTR((unused)))
 {
 	char		*buf;
@@ -275,11 +278,12 @@ errout:
  */
 errcode_t ext2fs_image_bitmap_write(ext2_filsys fs, int fd, int flags)
 {
-	char		*ptr;
-	int		c, size;
-	char		zero_buf[1024];
-	ssize_t		actual;
-	errcode_t	retval;
+	ext2fs_generic_bitmap	bmap;
+	errcode_t		err, retval;
+	ssize_t			actual;
+	__u32			itr, cnt, size;
+	int			c, total_size;
+	char			buf[1024];
 
 	if (flags & IMAGER_FLAG_INODEMAP) {
 		if (!fs->inode_map) {
@@ -287,7 +291,10 @@ errcode_t ext2fs_image_bitmap_write(ext2_filsys fs, int fd, int flags)
 			if (retval)
 				return retval;
 		}
-		ptr = fs->inode_map->bitmap;
+		bmap = fs->inode_map;
+		err = EXT2_ET_MAGIC_INODE_BITMAP;
+		itr = 1;
+		cnt = EXT2_INODES_PER_GROUP(fs->super) * fs->group_desc_count;
 		size = (EXT2_INODES_PER_GROUP(fs->super) / 8);
 	} else {
 		if (!fs->block_map) {
@@ -295,43 +302,51 @@ errcode_t ext2fs_image_bitmap_write(ext2_filsys fs, int fd, int flags)
 			if (retval)
 				return retval;
 		}
-		ptr = fs->block_map->bitmap;
+		bmap = fs->block_map;
+		err = EXT2_ET_MAGIC_BLOCK_BITMAP;
+		itr = fs->super->s_first_data_block;
+		cnt = EXT2_BLOCKS_PER_GROUP(fs->super) * fs->group_desc_count;
 		size = EXT2_BLOCKS_PER_GROUP(fs->super) / 8;
 	}
-	size = size * fs->group_desc_count;
+	total_size = size * fs->group_desc_count;
 
-	actual = write(fd, ptr, size);
-	if (actual == -1) {
-		retval = errno;
-		goto errout;
+	while (cnt > 0) {
+		size = sizeof(buf);
+		if (size > (cnt >> 3))
+			size = (cnt >> 3);
+
+		retval = ext2fs_get_generic_bmap_range(bmap, itr,
+						       size << 3, buf);
+		if (retval)
+			return retval;
+
+		actual = write(fd, buf, size);
+		if (actual == -1)
+			return errno;
+		if (actual != (int) size)
+			return EXT2_ET_SHORT_READ;
+
+		itr += size << 3;
+		cnt -= size << 3;
 	}
-	if (actual != size) {
-		retval = EXT2_ET_SHORT_WRITE;
-		goto errout;
-	}
-	size = size % fs->blocksize;
-	memset(zero_buf, 0, sizeof(zero_buf));
+
+	size = total_size % fs->blocksize;
+	memset(buf, 0, sizeof(buf));
 	if (size) {
 		size = fs->blocksize - size;
 		while (size) {
 			c = size;
-			if (c > (int) sizeof(zero_buf))
-				c = sizeof(zero_buf);
-			actual = write(fd, zero_buf, c);
-			if (actual == -1) {
-				retval = errno;
-				goto errout;
-			}
-			if (actual != c) {
-				retval = EXT2_ET_SHORT_WRITE;
-				goto errout;
-			}
+			if (c > (int) sizeof(buf))
+				c = sizeof(buf);
+			actual = write(fd, buf, c);
+			if (actual == -1)
+				return errno;
+			if (actual != c)
+				return EXT2_ET_SHORT_WRITE;
 			size -= c;
 		}
 	}
-	retval = 0;
-errout:
-	return (retval);
+	return 0;
 }
 
 
@@ -340,10 +355,12 @@ errout:
  */
 errcode_t ext2fs_image_bitmap_read(ext2_filsys fs, int fd, int flags)
 {
-	char		*ptr, *buf = 0;
-	int		size;
-	ssize_t		actual;
-	errcode_t	retval;
+	ext2fs_generic_bitmap	bmap;
+	errcode_t		err, retval;
+	__u32			itr, cnt;
+	char			buf[1024];
+	unsigned int		size;
+	ssize_t			actual;
 
 	if (flags & IMAGER_FLAG_INODEMAP) {
 		if (!fs->inode_map) {
@@ -351,7 +368,10 @@ errcode_t ext2fs_image_bitmap_read(ext2_filsys fs, int fd, int flags)
 			if (retval)
 				return retval;
 		}
-		ptr = fs->inode_map->bitmap;
+		bmap = fs->inode_map;
+		err = EXT2_ET_MAGIC_INODE_BITMAP;
+		itr = 1;
+		cnt = EXT2_INODES_PER_GROUP(fs->super) * fs->group_desc_count;
 		size = (EXT2_INODES_PER_GROUP(fs->super) / 8);
 	} else {
 		if (!fs->block_map) {
@@ -359,29 +379,31 @@ errcode_t ext2fs_image_bitmap_read(ext2_filsys fs, int fd, int flags)
 			if (retval)
 				return retval;
 		}
-		ptr = fs->block_map->bitmap;
+		bmap = fs->block_map;
+		err = EXT2_ET_MAGIC_BLOCK_BITMAP;
+		itr = fs->super->s_first_data_block;
+		cnt = EXT2_BLOCKS_PER_GROUP(fs->super) * fs->group_desc_count;
 		size = EXT2_BLOCKS_PER_GROUP(fs->super) / 8;
 	}
-	size = size * fs->group_desc_count;
 
-	buf = malloc(size);
-	if (!buf)
-		return ENOMEM;
+	while (cnt > 0) {
+		size = sizeof(buf);
+		if (size > (cnt >> 3))
+			size = (cnt >> 3);
 
-	actual = read(fd, buf, size);
-	if (actual == -1) {
-		retval = errno;
-		goto errout;
+		actual = read(fd, buf, size);
+		if (actual == -1)
+			return errno;
+		if (actual != (int) size)
+			return EXT2_ET_SHORT_READ;
+
+		retval = ext2fs_set_generic_bmap_range(bmap, itr,
+						       size << 3, buf);
+		if (retval)
+			return retval;
+
+		itr += size << 3;
+		cnt -= size << 3;
 	}
-	if (actual != size) {
-		retval = EXT2_ET_SHORT_WRITE;
-		goto errout;
-	}
-	memcpy(ptr, buf, size);
-	
-	retval = 0;
-errout:
-	if (buf)
-		free(buf);
-	return (retval);
+	return 0;
 }

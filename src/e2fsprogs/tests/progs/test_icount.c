@@ -1,6 +1,6 @@
 /*
  * test_icount.c
- * 
+ *
  * Copyright (C) 1997 Theodore Ts'o.
  *
  * %Begin-Header%
@@ -9,6 +9,7 @@
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -51,7 +52,7 @@ static int parse_inode(const char *request, const char *desc,
 		       const char *str, ext2_ino_t *ino)
 {
 	char *tmp;
-	
+
 	*ino = strtoul(str, &tmp, 0);
 	if (*tmp) {
 		com_err(request, 0, "Bad %s - %s", desc, str);
@@ -101,11 +102,11 @@ void do_free_icount(int argc, char **argv)
 
 void do_fetch(int argc, char **argv)
 {
-	const char	*usage = "usage: %s inode";
+	const char	*usage = "usage: %s inode\n";
 	errcode_t	retval;
 	ext2_ino_t	ino;
 	__u16		count;
-	
+
 	if (argc < 2) {
 		printf(usage, argv[0]);
 		return;
@@ -124,11 +125,11 @@ void do_fetch(int argc, char **argv)
 
 void do_increment(int argc, char **argv)
 {
-	const char	*usage = "usage: %s inode";
+	const char	*usage = "usage: %s inode\n";
 	errcode_t	retval;
 	ext2_ino_t	ino;
 	__u16		count;
-	
+
 	if (argc < 2) {
 		printf(usage, argv[0]);
 		return;
@@ -148,11 +149,11 @@ void do_increment(int argc, char **argv)
 
 void do_decrement(int argc, char **argv)
 {
-	const char	*usage = "usage: %s inode";
+	const char	*usage = "usage: %s inode\n";
 	errcode_t	retval;
 	ext2_ino_t	ino;
 	__u16		count;
-	
+
 	if (argc < 2) {
 		printf(usage, argv[0]);
 		return;
@@ -164,7 +165,7 @@ void do_decrement(int argc, char **argv)
 	retval = ext2fs_icount_decrement(test_icount, ino, &count);
 	if (retval) {
 		com_err(argv[0], retval,
-			"while calling ext2fs_icount_increment");
+			"while calling ext2fs_icount_decrement");
 		return;
 	}
 	printf("Count is now %u\n", count);
@@ -172,11 +173,11 @@ void do_decrement(int argc, char **argv)
 
 void do_store(int argc, char **argv)
 {
-	const char	*usage = "usage: %s inode count";
+	const char	*usage = "usage: %s inode count\n";
 	errcode_t	retval;
 	ext2_ino_t	ino;
 	ext2_ino_t	count;
-	
+
 	if (argc < 3) {
 		printf(usage, argv[0]);
 		return;
@@ -261,6 +262,8 @@ static int source_file(const char *cmd_file, int sci_idx)
 			exit(1);
 		}
 	}
+	fflush(stdout);
+	fflush(stderr);
 	setbuf(stdout, NULL);
 	setbuf(stderr, NULL);
 	while (!feof(f)) {
@@ -287,6 +290,8 @@ static int source_file(const char *cmd_file, int sci_idx)
 			exit_status++;
 		}
 	}
+	if (f != stdin)
+		fclose(f);
 	return exit_status;
 }
 
@@ -294,20 +299,19 @@ int main(int argc, char **argv)
 {
 	int		retval;
 	int		sci_idx;
-	const char	*usage = "Usage: test_icount [-R request] [-f cmd_file]";
 	int		c;
 	char		*request = 0;
 	int		exit_status = 0;
 	char		*cmd_file = 0;
 	struct ext2_super_block param;
-	
+
 	initialize_ext2_error_table();
 
 	/*
 	 * Create a sample filesystem structure
 	 */
 	memset(&param, 0, sizeof(struct ext2_super_block));
-	param.s_blocks_count = 80000;
+	ext2fs_blocks_count_set(&param, 80000);
 	param.s_inodes_count = 20000;
 	retval = ext2fs_initialize("/dev/null", 0, &param,
 				   unix_io_manager, &test_fs);
@@ -325,7 +329,8 @@ int main(int argc, char **argv)
 			cmd_file = optarg;
 			break;
 		default:
-			com_err(argv[0], 0, usage);
+			com_err(argv[0], 0, "Usage: test_icount "
+				"[-R request] [-f cmd_file]");
 			exit(1);
 		}
 	}

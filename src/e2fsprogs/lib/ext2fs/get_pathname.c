@@ -1,12 +1,15 @@
 /*
  * get_pathname.c --- do directry/inode -> name translation
- * 
+ *
  * Copyright (C) 1993, 1994, 1995 Theodore Ts'o.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
+ */
+
+/*
  *
  * 	ext2fs_get_pathname(fs, dir, ino, name)
  *
@@ -15,9 +18,10 @@
  * 	directory inode, and <ino> is the inode number itself.  If
  * 	<ino> is zero, then ext2fs_get_pathname will return pathname
  * 	of the the directory <dir>.
- * 
+ *
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #if HAVE_UNISTD_H
@@ -65,12 +69,12 @@ static int get_pathname_proc(struct ext2_dir_entry *dirent,
 	return 0;
 }
 
-static errcode_t ext2fs_get_pathname_int(ext2_filsys fs, ext2_ino_t dir, 
-					 ext2_ino_t ino, int maxdepth, 
+static errcode_t ext2fs_get_pathname_int(ext2_filsys fs, ext2_ino_t dir,
+					 ext2_ino_t ino, int maxdepth,
 					 char *buf, char **name)
 {
 	struct get_pathname_struct gp;
-	char	*parent_name, *ret;
+	char	*parent_name = 0, *ret;
 	errcode_t	retval;
 
 	if (dir == ino) {
@@ -93,9 +97,21 @@ static errcode_t ext2fs_get_pathname_int(ext2_filsys fs, ext2_ino_t dir,
 	gp.parent = 0;
 	gp.name = 0;
 	gp.errcode = 0;
-	
+
 	retval = ext2fs_dir_iterate(fs, dir, 0, buf, get_pathname_proc, &gp);
-	if (retval)
+	if (retval == EXT2_ET_NO_DIRECTORY) {
+		char buf[32];
+
+		if (ino)
+			snprintf(buf, sizeof(buf), "<%u>/<%u>", dir, ino);
+		else
+			snprintf(buf, sizeof(buf), "<%u>", dir);
+		retval = ext2fs_get_mem(strlen(buf)+1, name);
+		if (retval)
+			goto cleanup;
+		strcpy(*name, buf);
+		return 0;
+	} else if (retval)
 		goto cleanup;
 	if (gp.errcode) {
 		retval = gp.errcode;
@@ -110,15 +126,15 @@ static errcode_t ext2fs_get_pathname_int(ext2_filsys fs, ext2_ino_t dir,
 		*name = parent_name;
 		return 0;
 	}
-	
-	if (gp.name) 
+
+	if (gp.name)
 		retval = ext2fs_get_mem(strlen(parent_name)+strlen(gp.name)+2,
 					&ret);
 	else
 		retval = ext2fs_get_mem(strlen(parent_name)+5, &ret);
 	if (retval)
 		goto cleanup;
-	
+
 	ret[0] = 0;
 	if (parent_name[1])
 		strcat(ret, parent_name);
@@ -128,12 +144,11 @@ static errcode_t ext2fs_get_pathname_int(ext2_filsys fs, ext2_ino_t dir,
 	else
 		strcat(ret, "???");
 	*name = ret;
-	ext2fs_free_mem(&parent_name);
 	retval = 0;
-	
+
 cleanup:
-	if (gp.name)
-		ext2fs_free_mem(&gp.name);
+	ext2fs_free_mem(&parent_name);
+	ext2fs_free_mem(&gp.name);
 	return retval;
 }
 
@@ -153,5 +168,5 @@ errcode_t ext2fs_get_pathname(ext2_filsys fs, ext2_ino_t dir, ext2_ino_t ino,
 	retval = ext2fs_get_pathname_int(fs, dir, ino, 32, buf, name);
 	ext2fs_free_mem(&buf);
 	return retval;
-	
+
 }

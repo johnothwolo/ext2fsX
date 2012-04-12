@@ -10,6 +10,7 @@
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #if HAVE_UNISTD_H
 #include <unistd.h>
@@ -68,7 +69,7 @@ char *blkid_get_devname(blkid_cache cache, const char *token,
 
 	if (!token)
 		return NULL;
-	
+
 	if (!cache) {
 		if (blkid_get_cache(&c, NULL) < 0)
 			return NULL;
@@ -79,26 +80,26 @@ char *blkid_get_devname(blkid_cache cache, const char *token,
 		   value ? value : "", cache ? "in cache" : "from disk"));
 
 	if (!value) {
-		if (!strchr(token, '='))
-			return blkid_strdup(token);
+		if (!strchr(token, '=')) {
+			ret = blkid_strdup(token);
+			goto out;
+		}
 		blkid_parse_tag_string(token, &t, &v);
 		if (!t || !v)
-			goto errout;
+			goto out;
 		token = t;
 		value = v;
 	}
 
 	dev = blkid_find_dev_with_tag(c, token, value);
 	if (!dev)
-		goto errout;
+		goto out;
 
 	ret = blkid_strdup(blkid_dev_devname(dev));
 
-errout:
-	if (t)
-		free(t);
-	if (v)
-		free(v);
+out:
+	free(t);
+	free(v);
 	if (!cache) {
 		blkid_put_cache(c);
 	}
@@ -124,7 +125,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Couldn't get blkid cache\n");
 		exit(1);
 	}
-	
+
 	if (argv[2]) {
 		value = blkid_get_tag_value(cache, argv[1], argv[2]);
 		printf("%s has tag %s=%s\n", argv[2], argv[1],

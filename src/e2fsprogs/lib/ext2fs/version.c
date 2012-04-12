@@ -4,11 +4,12 @@
  * Copyright (C) 1997 Theodore Ts'o.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #if HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -27,11 +28,15 @@ static const char *lib_date = E2FSPROGS_DATE;
 int ext2fs_parse_version_string(const char *ver_string)
 {
 	const char *cp;
-	int version = 0;
+	int version = 0, dot_count = 0;
 
 	for (cp = ver_string; *cp; cp++) {
-		if (*cp == '.')
-			continue;
+		if (*cp == '.') {
+			if (dot_count++)
+				break;
+			else
+				continue;
+		}
 		if (!isdigit(*cp))
 			break;
 		version = (version * 10) + (*cp - '0');

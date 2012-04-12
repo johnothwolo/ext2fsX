@@ -1,6 +1,6 @@
 /*
  * profile.c -- A simple configuration file parsing "library in a file"
- * 
+ *
  * The profile library was originally written by Theodore Ts'o in 1995
  * for use in the MIT Kerberos v5 library.  It has been
  * modified/enhanced/bug-fixed over time by other members of the MIT
@@ -18,16 +18,16 @@
  * This file may be redistributed under the terms of the GNU Public
  * License.
  * %End-Header%
- * 
+ *
  * Copyright (C) 1985-2005 by the Massachusetts Institute of Technology.
- * 
+ *
  * All rights reserved.
- * 
+ *
  * Export of this software from the United States of America may require
  * a specific license from the United States Government.  It is the
  * responsibility of any person or organization contemplating export to
  * obtain such a license before exporting.
- * 
+ *
  * WITHIN THAT CONSTRAINT, permission to use, copy, modify, and
  * distribute this software and its documentation for any purpose and
  * without fee is hereby granted, provided that the above copyright
@@ -41,13 +41,14 @@
  * M.I.T. makes no representations about the suitability of this software
  * for any purpose.  It is provided "as is" without express or implied
  * warranty.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
- * 
+ *
  */
 
+#include "config.h"
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -67,7 +68,6 @@
 #ifdef HAVE_PWD_H
 #include <pwd.h>
 #endif
-#include <dirent.h>
 
 #include <et/com_err.h>
 #include "profile.h"
@@ -106,6 +106,7 @@ typedef struct _prf_file_t *prf_file_t;
  */
 #define PROFILE_FILE_RW		0x0001
 #define PROFILE_FILE_DIRTY	0x0002
+#define PROFILE_FILE_NO_RELOAD	0x0004
 
 /*
  * This structure defines the high-level, user visible profile_t
@@ -137,8 +138,8 @@ struct profile_node {
 	char *name;
 	char *value;
 	int group_level;
-	int final:1;		/* Indicate don't search next file */
-	int deleted:1;
+	unsigned int final:1;		/* Indicate don't search next file */
+	unsigned int deleted:1;
 	struct profile_node *first_child;
 	struct profile_node *parent;
 	struct profile_node *next, *prev;
@@ -156,6 +157,8 @@ struct parse_state {
 	struct profile_node *root_section;
 	struct profile_node *current_section;
 };
+
+static const char *default_filename = "<default>";
 
 static profile_syntax_err_cb_t	syntax_err_cb;
 
@@ -216,12 +219,12 @@ static errcode_t profile_get_value(profile_t profile, const char *name,
  * 	object.
  */
 
-static int compstr(const void *m1, const void *m2) 
+static int compstr(const void *m1, const void *m2)
 {
-	const char *s1 = *((const char **) m1);
-	const char *s2 = *((const char **) m2);
+	const char *s1 = *((const char * const *) m1);
+	const char *s2 = *((const char * const *) m2);
 
-	return strcmp(s1, s2); 
+	return strcmp(s1, s2);
 }
 
 static void free_list(char **list)
@@ -230,7 +233,7 @@ static void free_list(char **list)
 
     if (list == 0)
 	    return;
-    
+
     for (cp = list; *cp; cp++)
 	free(*cp);
     free(list);
@@ -274,24 +277,29 @@ static errcode_t get_dirlist(const char *dirname, char***ret_array)
 			new_array = realloc(array, sizeof(char *) * (max+1));
 			if (!new_array) {
 				retval = ENOMEM;
+				free(fn);
 				goto errout;
 			}
 			array = new_array;
 		}
 		array[num++] = fn;
 	}
-	qsort(array, num, sizeof(char *), compstr);
-	array[num++] = 0;
+	if (array) {
+		qsort(array, num, sizeof(char *), compstr);
+		array[num++] = 0;
+	}
 	*ret_array = array;
 	closedir(dir);
 	return 0;
 errout:
+	if (array)
+		array[num] = 0;
 	closedir(dir);
 	free_list(array);
 	return retval;
 }
 
-errcode_t 
+errcode_t
 profile_init(const char **files, profile_t *ret_profile)
 {
 	const char **fs;
@@ -312,6 +320,8 @@ profile_init(const char **files, profile_t *ret_profile)
 	    for (fs = files; !PROFILE_LAST_FILESPEC(*fs); fs++) {
 		retval = get_dirlist(*fs, &array);
 		if (retval == 0) {
+			if (!array)
+				continue;
 			for (cpp = array; (cp = *cpp); cpp++) {
 				retval = profile_open_file(cp, &new_file);
 				if (retval == EACCES)
@@ -321,7 +331,8 @@ profile_init(const char **files, profile_t *ret_profile)
 				*last = new_file;
 				last = &new_file->next;
 			}
-		} else if (retval != ENOTDIR)
+		} else if ((retval != ENOTDIR) &&
+			   strcmp(*fs, default_filename))
 			goto errout;
 
 		retval = profile_open_file(*fs, &new_file);
@@ -338,8 +349,8 @@ profile_init(const char **files, profile_t *ret_profile)
 	     * If all the files were not found, return the appropriate error.
 	     */
 	    if (!profile->first_file) {
-		profile_release(profile);
-		return ENOENT;
+		retval = ENOENT;
+		goto errout;
 	    }
 	}
 
@@ -352,7 +363,7 @@ errout:
 	return retval;
 }
 
-void 
+void
 profile_release(profile_t profile)
 {
 	prf_file_t	p, next;
@@ -368,6 +379,78 @@ profile_release(profile_t profile)
 	free(profile);
 }
 
+/*
+ * This function sets the value of the pseudo file "<default>".  If
+ * the file "<default>" had previously been passed to profile_init(),
+ * then def_string parameter will be parsed and used as the profile
+ * information for the "<default>" file.
+ */
+errcode_t profile_set_default(profile_t profile, const char *def_string)
+{
+	struct parse_state	state;
+	prf_file_t		prf;
+	errcode_t		retval;
+	const char		*in;
+	char			*line, *p, *end;
+	int			line_size, len;
+
+	if (!def_string || !profile || profile->magic != PROF_MAGIC_PROFILE)
+		return PROF_MAGIC_PROFILE;
+
+	for (prf = profile->first_file; prf; prf = prf->next) {
+		if (strcmp(prf->filespec, default_filename) == 0)
+			break;
+	}
+	if (!prf)
+		return 0;
+
+	if (prf->root) {
+		profile_free_node(prf->root);
+		prf->root = 0;
+	}
+
+	memset(&state, 0, sizeof(struct parse_state));
+	retval = profile_create_node("(root)", 0, &state.root_section);
+	if (retval)
+		return retval;
+
+	line = 0;
+	line_size = 0;
+	in = def_string;
+	while (*in) {
+		end = strchr(in, '\n');
+		len = end ? (end - in) : (int) strlen(in);
+		if (len >= line_size) {
+			line_size = len+1;
+			p = realloc(line, line_size);
+			if (!p) {
+				retval = ENOMEM;
+				goto errout;
+			}
+			line = p;
+		}
+		memcpy(line, in, len);
+		line[len] = 0;
+		retval = parse_line(line, &state);
+		if (retval) {
+		errout:
+			if (syntax_err_cb)
+				(syntax_err_cb)(prf->filespec, retval,
+						state.line_num);
+			free(line);
+			if (prf->root)
+				profile_free_node(prf->root);
+			return retval;
+		}
+		if (!end)
+			break;
+		in = end+1;
+	}
+	prf->root = state.root_section;
+	free(line);
+
+	return 0;
+}
 
 /*
  * prof_file.c ---- routines that manipulate an individual profile file.
@@ -414,8 +497,10 @@ errcode_t profile_open_file(const char * filespec,
 			len += strlen(home_env);
 	}
 	expanded_filename = malloc(len);
-	if (expanded_filename == 0)
+	if (expanded_filename == 0) {
+	    profile_free_file(prf);
 	    return errno;
+	}
 	if (home_env) {
 	    strcpy(expanded_filename, home_env);
 	    strcat(expanded_filename, filespec+1);
@@ -424,10 +509,12 @@ errcode_t profile_open_file(const char * filespec,
 
 	prf->filespec = expanded_filename;
 
-	retval = profile_update_file(prf);
-	if (retval) {
-		profile_free_file(prf);
-		return retval;
+	if (strcmp(prf->filespec, default_filename) != 0) {
+		retval = profile_update_file(prf);
+		if (retval) {
+			profile_free_file(prf);
+			return retval;
+		}
 	}
 
 	*ret_prof = prf;
@@ -446,6 +533,9 @@ errcode_t profile_update_file(prf_file_t prf)
 	FILE *f;
 	char buf[2048];
 	struct parse_state state;
+
+	if (prf->flags & PROFILE_FILE_NO_RELOAD)
+		return 0;
 
 #ifdef HAVE_STAT
 #ifdef STAT_ONCE_PER_SECOND
@@ -497,7 +587,7 @@ errcode_t profile_update_file(prf_file_t prf)
 		retval = parse_line(buf, &state);
 		if (retval) {
 			if (syntax_err_cb)
-				(syntax_err_cb)(prf->filespec, retval, 
+				(syntax_err_cb)(prf->filespec, retval,
 						state.line_num);
 			fclose(f);
 			return retval;
@@ -517,8 +607,7 @@ void profile_free_file(prf_file_t prf)
 {
     if (prf->root)
 	profile_free_node(prf->root);
-    if (prf->filespec)
-	    free(prf->filespec);
+    free(prf->filespec);
     free(prf);
 }
 
@@ -600,7 +689,7 @@ static errcode_t parse_line(char *line, struct parse_state *state)
 	struct profile_node	*node;
 	int do_subsection = 0;
 	void *iter = 0;
-	
+
 	state->line_num++;
 	if (state->state == STATE_GET_OBRACE) {
 		cp = skip_over_blanks(line);
@@ -640,7 +729,7 @@ static errcode_t parse_line(char *line, struct parse_state *state)
 			if (*cp == 0)
 				return PROF_SECTION_SYNTAX;
 		}
-		retval = profile_find_node(state->root_section, cp, 0, 1, 
+		retval = profile_find_node(state->root_section, cp, 0, 1,
 					   &iter, &state->current_section);
 		if (retval == PROF_NO_SECTION) {
 			retval = profile_add_node(state->root_section,
@@ -660,7 +749,7 @@ static errcode_t parse_line(char *line, struct parse_state *state)
 			cp++;
 		}
 		/*
-		 * Spaces or comments after ']' should not be fatal 
+		 * Spaces or comments after ']' should not be fatal
 		 */
 		cp = skip_over_blanks(cp);
 		if (!end_or_comment(*cp))
@@ -816,7 +905,7 @@ static void dump_profile(struct profile_node *root, int level,
 	struct profile_node *p;
 	void *iter;
 	long retval;
-	
+
 	iter = 0;
 	do {
 		retval = profile_find_node(root, 0, 0, 0, &iter, &p);
@@ -938,16 +1027,16 @@ errcode_t profile_write_tree_to_buffer(struct profile_node *root,
 /*
  * prof_tree.c --- these routines maintain the parse tree of the
  * 	config file.
- * 
+ *
  * All of the details of how the tree is stored is abstracted away in
  * this file; all of the other profile routines build, access, and
  * modify the tree via the accessor functions found in this file.
  *
  * Each node may represent either a relation or a section header.
- * 
+ *
  * A section header must have its value field set to 0, and may a one
  * or more child nodes, pointed to by first_child.
- * 
+ *
  * A relation has as its value a pointer to allocated memory
  * containing a string.  Its first_child pointer must be null.
  *
@@ -962,18 +1051,16 @@ void profile_free_node(struct profile_node *node)
 
 	if (node->magic != PROF_MAGIC_NODE)
 		return;
-	
-	if (node->name)
-		free(node->name);
-	if (node->value)
-		free(node->value);
+
+	free(node->name);
+	free(node->value);
 
 	for (child=node->first_child; child; child = next) {
 		next = child->next;
 		profile_free_node(child);
 	}
 	node->magic = 0;
-	
+
 	free(node);
 }
 
@@ -1070,7 +1157,7 @@ errcode_t profile_add_node(struct profile_node *section, const char *name,
 
 	/*
 	 * Find the place to insert the new node.  We look for the
-	 * place *after* the last match of the node name, since 
+	 * place *after* the last match of the node name, since
 	 * order matters.
 	 */
 	for (p=section->first_child, last = 0; p; last = p, p = p->next) {
@@ -1105,7 +1192,7 @@ errcode_t profile_add_node(struct profile_node *section, const char *name,
  * section which matches the name; don't return relations.  If value
  * is non-NULL, then only return relations which match the requested
  * value.  (The value argument is ignored if section_flag is non-zero.)
- * 
+ *
  * The first time this routine is called, the state pointer must be
  * null.  When this profile_find_node_relation() returns, if the state
  * pointer is non-NULL, then this routine should be called again.
@@ -1124,7 +1211,7 @@ errcode_t profile_find_node(struct profile_node *section, const char *name,
 		CHECK_MAGIC(p);
 	} else
 		p = section->first_child;
-	
+
 	for (; p; p = p->next) {
 		if (name && (strcmp(p->name, name)))
 			continue;
@@ -1174,7 +1261,7 @@ errcode_t profile_find_node(struct profile_node *section, const char *name,
 
 /*
  * This is a general-purpose iterator for returning all nodes that
- * match the specified name array.  
+ * match the specified name array.
  */
 struct profile_iterator {
 	prf_magic_t		magic;
@@ -1189,7 +1276,7 @@ struct profile_iterator {
 	int			num;
 };
 
-errcode_t 
+errcode_t
 profile_iterator_create(profile_t profile, const char *const *names, int flags,
 			void **ret_iter)
 {
@@ -1260,7 +1347,8 @@ errcode_t profile_node_iterator(void **iter_p, struct profile_node **ret_node,
 	 * If the file has changed, then the node pointer is invalid,
 	 * so we'll have search the file again looking for it.
 	 */
-	if (iter->node && (iter->file->upd_serial != iter->file_serial)) {
+	if (iter->node && (iter->file &&
+			   iter->file->upd_serial != iter->file_serial)) {
 		iter->flags &= ~PROFILE_ITER_FINAL_SEEN;
 		skip_num = iter->num;
 		iter->node = 0;
@@ -1344,8 +1432,6 @@ get_new_file:
 	iter->num++;
 	if (!p) {
 		iter->file = iter->file->next;
-		if (iter->file) {
-		}
 		iter->node = 0;
 		skip_num = 0;
 		goto get_new_file;
@@ -1398,13 +1484,13 @@ errcode_t profile_get_value(profile_t profile, const char *name,
 		*ret_value = value;
 	else
 		retval = PROF_NO_RELATION;
-	
+
 cleanup:
 	profile_iterator_free(&state);
 	return retval;
 }
 
-errcode_t 
+errcode_t
 profile_get_string(profile_t profile, const char *name, const char *subname,
 		   const char *subsubname, const char *def_val,
 		   char **ret_string)
@@ -1413,7 +1499,7 @@ profile_get_string(profile_t profile, const char *name, const char *subname,
 	errcode_t	retval;
 
 	if (profile) {
-		retval = profile_get_value(profile, name, subname, 
+		retval = profile_get_value(profile, name, subname,
 					   subsubname, &value);
 		if (retval == PROF_NO_SECTION || retval == PROF_NO_RELATION)
 			value = def_val;
@@ -1421,7 +1507,7 @@ profile_get_string(profile_t profile, const char *name, const char *subname,
 			return retval;
 	} else
 		value = def_val;
-    
+
 	if (value) {
 		*ret_string = malloc(strlen(value)+1);
 		if (*ret_string == 0)
@@ -1432,7 +1518,7 @@ profile_get_string(profile_t profile, const char *name, const char *subname,
 	return 0;
 }
 
-errcode_t 
+errcode_t
 profile_get_integer(profile_t profile, const char *name, const char *subname,
 		    const char *subsubname, int def_val, int *ret_int)
 {
@@ -1467,9 +1553,87 @@ profile_get_integer(profile_t profile, const char *name, const char *subname,
 	/* Garbage in string.  */
 	if (end_value != value + strlen (value))
 	    return PROF_BAD_INTEGER;
-	
-   
+
+
 	*ret_int = ret_long;
+	return 0;
+}
+
+errcode_t
+profile_get_uint(profile_t profile, const char *name, const char *subname,
+		 const char *subsubname, unsigned int def_val,
+		 unsigned int *ret_int)
+{
+	const char	*value;
+	errcode_t	retval;
+	char            *end_value;
+	unsigned long	ret_long;
+
+	*ret_int = def_val;
+	if (profile == 0)
+		return 0;
+
+	retval = profile_get_value(profile, name, subname, subsubname, &value);
+	if (retval == PROF_NO_SECTION || retval == PROF_NO_RELATION) {
+		*ret_int = def_val;
+		return 0;
+	} else if (retval)
+		return retval;
+
+	if (value[0] == 0)
+	    /* Empty string is no good.  */
+	    return PROF_BAD_INTEGER;
+	errno = 0;
+	ret_long = strtoul (value, &end_value, 10);
+
+	/* Overflow or underflow.  */
+	if ((ret_long == ULONG_MAX) && errno != 0)
+	    return PROF_BAD_INTEGER;
+	/* Value outside "int" range.  */
+	if ((unsigned long) (unsigned int) ret_long != ret_long)
+	    return PROF_BAD_INTEGER;
+	/* Garbage in string.  */
+	if (end_value != value + strlen (value))
+	    return PROF_BAD_INTEGER;
+
+	*ret_int = ret_long;
+	return 0;
+}
+
+errcode_t
+profile_get_double(profile_t profile, const char *name, const char *subname,
+		   const char *subsubname, double def_val, double *ret_double)
+{
+	const char	*value;
+	errcode_t	  retval;
+	char        *end_value;
+	double      double_val;
+
+	*ret_double = def_val;
+	if (profile == 0)
+		return 0;
+
+	retval = profile_get_value(profile, name, subname, subsubname, &value);
+	if (retval == PROF_NO_SECTION || retval == PROF_NO_RELATION) {
+		*ret_double = def_val;
+		return 0;
+	} else if (retval)
+		return retval;
+
+	if (value[0] == 0)
+		/* Empty string is no good.  */
+		return PROF_BAD_INTEGER;
+	errno = 0;
+	double_val = strtod(value, &end_value);
+
+	/* Overflow or underflow.  */
+	if (errno != 0)
+		return PROF_BAD_INTEGER;
+	/* Garbage in string.  */
+	if (end_value != value + strlen(value))
+		return PROF_BAD_INTEGER;
+
+	*ret_double = double_val;
 	return 0;
 }
 
@@ -1487,7 +1651,7 @@ static errcode_t
 profile_parse_boolean(const char *s, int *ret_boolean)
 {
     const char *const *p;
-    
+
     if (ret_boolean == NULL)
     	return PROF_EINVAL;
 
@@ -1504,11 +1668,11 @@ profile_parse_boolean(const char *s, int *ret_boolean)
 			return 0;
 		}
     }
-	
+
 	return PROF_BAD_BOOLEAN;
 }
 
-errcode_t 
+errcode_t
 profile_get_boolean(profile_t profile, const char *name, const char *subname,
 		    const char *subsubname, int def_val, int *ret_boolean)
 {
@@ -1526,16 +1690,16 @@ profile_get_boolean(profile_t profile, const char *name, const char *subname,
 		return 0;
 	} else if (retval)
 		return retval;
-   
+
 	return profile_parse_boolean (value, ret_boolean);
 }
 
-errcode_t 
+errcode_t
 profile_iterator(void **iter_p, char **ret_name, char **ret_value)
 {
 	char *name, *value;
 	errcode_t	retval;
-	
+
 	retval = profile_node_iterator(iter_p, 0, &name, &value);
 	if (retval)
 		return retval;
@@ -1608,19 +1772,19 @@ static void do_cmd(profile_t profile, char **argv)
 		if (subname)
 			subsubname = names[2];
 		if (subsubname && names[3]) {
-			fprintf(stderr, 
+			fprintf(stderr,
 				"Only 3 levels are allowed with query1\n");
 			retval = EINVAL;
 		} else
-			retval = profile_get_value(profile, name, subname, 
+			retval = profile_get_value(profile, name, subname,
 						   subsubname, &value);
 		print_status = PRINT_VALUE;
 	} else if (!strcmp(cmd, "list_sections")) {
-		retval = profile_get_subsection_names(profile, names, 
+		retval = profile_get_subsection_names(profile, names,
 						      &values);
 		print_status = PRINT_VALUES;
 	} else if (!strcmp(cmd, "list_relations")) {
-		retval = profile_get_relation_names(profile, names, 
+		retval = profile_get_relation_names(profile, names,
 						    &values);
 		print_status = PRINT_VALUES;
 	} else if (!strcmp(cmd, "dump")) {
@@ -1687,7 +1851,7 @@ static void do_batchmode(profile_t profile)
 	}
 	profile_release(profile);
 	exit(0);
-	
+
 }
 
 void syntax_err_report(const char *filename, long err, int line_num)
@@ -1697,12 +1861,14 @@ void syntax_err_report(const char *filename, long err, int line_num)
 	exit(1);
 }
 
+const char *default_str = "[foo]\n\tbar=quux\n\tsub = {\n\t\twin = true\n}\n";
+
 int main(int argc, char **argv)
 {
     profile_t	profile;
     long	retval;
     char	*cmd;
-    
+
     if (argc < 2) {
 	    fprintf(stderr, "Usage: %s filename [cmd argset]\n", program_name);
 	    exit(1);
@@ -1711,12 +1877,18 @@ int main(int argc, char **argv)
     initialize_prof_error_table();
 
     profile_set_syntax_err_cb(syntax_err_report);
-    
+
     retval = profile_init_path(argv[1], &profile);
     if (retval) {
 	com_err(program_name, retval, "while initializing profile");
 	exit(1);
     }
+    retval = profile_set_default(profile, default_str);
+    if (retval) {
+	com_err(program_name, retval, "while setting default");
+	exit(1);
+    }
+
     cmd = *(argv+2);
     if (!cmd || !strcmp(cmd, "batch"))
 	    do_batchmode(profile);

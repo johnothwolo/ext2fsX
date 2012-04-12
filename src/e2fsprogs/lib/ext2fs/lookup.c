@@ -1,14 +1,15 @@
 /*
  * lookup.c --- ext2fs directory lookup operations
- * 
+ *
  * Copyright (C) 1993, 1994, 1994, 1995 Theodore Ts'o.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #if HAVE_UNISTD_H
@@ -23,7 +24,7 @@ struct lookup_struct  {
 	int		len;
 	ext2_ino_t	*inode;
 	int		found;
-};	
+};
 
 #ifdef __TURBOC__
  #pragma argsused

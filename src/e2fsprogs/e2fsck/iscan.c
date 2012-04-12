@@ -3,6 +3,7 @@
  * anything else)
  */
 
+#include "config.h"
 #include <string.h>
 #include <fcntl.h>
 #include <ctype.h>
@@ -51,7 +52,7 @@ static void usage(void)
 static void PRS(int argc, char *argv[])
 {
 	int		flush = 0;
-	char		c;
+	int		c;
 #ifdef MTRACE
 	extern void	*mallwatch;
 #endif
@@ -60,7 +61,7 @@ static void PRS(int argc, char *argv[])
 	setbuf(stdout, NULL);
 	setbuf(stderr, NULL);
 	initialize_ext2_error_table();
-	
+
 	if (argc && *argv)
 		program_name = *argv;
 	while ((c = getopt (argc, argv, "FI")) != EOF)
@@ -91,17 +92,17 @@ static void PRS(int argc, char *argv[])
 		close(fd);
 	}
 }
-					
+
 int main (int argc, char *argv[])
 {
 	errcode_t	retval = 0;
 	int		exit_value = FSCK_OK;
 	ext2_filsys	fs;
 	ext2_ino_t	ino;
-	int	num_inodes = 0;
+	__u32	num_inodes = 0;
 	struct ext2_inode inode;
 	ext2_inode_scan	scan;
-	
+
 	init_resource_track(&global_rtrack);
 
 	PRS(argc, argv);
@@ -115,7 +116,7 @@ int main (int argc, char *argv[])
 	}
 
 	ehandler_init(fs->io);
-	
+
 	retval = ext2fs_open_inode_scan(fs, inode_buffer_blocks, &scan);
 	if (retval) {
 		com_err(program_name, retval, _("while opening inode scan"));
@@ -133,9 +134,9 @@ int main (int argc, char *argv[])
 			break;
 		num_inodes++;
 	}
-	
+
 	print_resource_track(NULL, &global_rtrack);
-	printf(_("%d inodes scanned.\n"), num_inodes);
-	
+	printf(_("%u inodes scanned.\n"), num_inodes);
+
 	exit(0);
 }

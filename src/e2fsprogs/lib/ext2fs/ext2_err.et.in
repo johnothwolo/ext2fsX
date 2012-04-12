@@ -62,8 +62,8 @@ ec	EXT2_ET_MAGIC_E2IMAGE,
 ec	EXT2_ET_MAGIC_INODE_IO_CHANNEL,
 	"Wrong magic number for inode io_channel structure"
 
-ec	EXT2_ET_MAGIC_RESERVED_9,
-	"Wrong magic number --- RESERVED_9"
+ec	EXT2_ET_MAGIC_EXTENT_HANDLE,
+	"Wrong magic number for ext4 extent handle"
 
 ec	EXT2_ET_BAD_MAGIC,
 	"Bad magic number in super-block"
@@ -120,7 +120,7 @@ ec	EXT2_ET_SHORT_READ,
 	"Attempt to read block from filesystem resulted in short read"
 
 ec	EXT2_ET_SHORT_WRITE,
-	"Attempt to write block from filesystem resulted in short write"
+	"Attempt to write block to filesystem resulted in short write"
 
 ec	EXT2_ET_DIR_NO_SPACE,
 	"No free space in the directory"
@@ -294,7 +294,153 @@ ec	EXT2_ET_RESIZE_INODE_CORRUPT,
 	"Resize inode is corrupt"
 
 ec	EXT2_ET_SET_BMAP_NO_IND,
-	"Missing indirect block not present"
+	"Tried to set block bmap with missing indirect block"
+
+ec	EXT2_ET_TDB_SUCCESS,
+	"TDB: Success"
+
+ec	EXT2_ET_TDB_ERR_CORRUPT,
+	"TDB: Corrupt database"
+
+ec	EXT2_ET_TDB_ERR_IO,
+	"TDB: IO Error"
+
+ec	EXT2_ET_TDB_ERR_LOCK,
+	"TDB: Locking error"
+
+ec	EXT2_ET_TDB_ERR_OOM,
+	"TDB: Out of memory"
+
+ec	EXT2_ET_TDB_ERR_EXISTS,
+	"TDB: Record exists"
+
+ec	EXT2_ET_TDB_ERR_NOLOCK,
+	"TDB: Lock exists on other keys"
+
+ec	EXT2_ET_TDB_ERR_EINVAL,
+	"TDB: Invalid parameter"
+
+ec	EXT2_ET_TDB_ERR_NOEXIST,
+	"TDB: Record does not exist"
+
+ec	EXT2_ET_TDB_ERR_RDONLY,
+	"TDB: Write not permitted"
+
+ec	EXT2_ET_DBLIST_EMPTY,
+	"Ext2fs directory block list is empty"
+
+ec	EXT2_ET_RO_BLOCK_ITERATE,
+	"Attempt to modify a block mapping via a read-only block iterator"
+
+ec	EXT2_ET_MAGIC_EXTENT_PATH,
+	"Wrong magic number for ext4 extent saved path"
+
+ec	EXT2_ET_MAGIC_GENERIC_BITMAP64,
+	"Wrong magic number for 64-bit generic bitmap"
+
+ec	EXT2_ET_MAGIC_BLOCK_BITMAP64,
+	"Wrong magic number for 64-bit block bitmap"
+
+ec	EXT2_ET_MAGIC_INODE_BITMAP64,
+	"Wrong magic number for 64-bit inode bitmap"
+
+ec	EXT2_ET_MAGIC_RESERVED_13,
+	"Wrong magic number --- RESERVED_13"
+
+ec	EXT2_ET_MAGIC_RESERVED_14,
+	"Wrong magic number --- RESERVED_14"
+
+ec	EXT2_ET_MAGIC_RESERVED_15,
+	"Wrong magic number --- RESERVED_15"
+
+ec	EXT2_ET_MAGIC_RESERVED_16,
+	"Wrong magic number --- RESERVED_16"
+
+ec	EXT2_ET_MAGIC_RESERVED_17,
+	"Wrong magic number --- RESERVED_17"
+
+ec	EXT2_ET_MAGIC_RESERVED_18,
+	"Wrong magic number --- RESERVED_18"
+
+ec	EXT2_ET_MAGIC_RESERVED_19,
+	"Wrong magic number --- RESERVED_19"
+
+ec	EXT2_ET_EXTENT_HEADER_BAD,
+	"Corrupt extent header"
+
+ec	EXT2_ET_EXTENT_INDEX_BAD,
+	"Corrupt extent index"
+
+ec	EXT2_ET_EXTENT_LEAF_BAD,
+	"Corrupt extent"
+
+ec	EXT2_ET_EXTENT_NO_SPACE,
+	"No free space in extent map"
+
+ec	EXT2_ET_INODE_NOT_EXTENT,
+	"Inode does not use extents"
+
+ec	EXT2_ET_EXTENT_NO_NEXT,
+	"No 'next' extent"
+
+ec	EXT2_ET_EXTENT_NO_PREV,
+	"No 'previous' extent"
+
+ec	EXT2_ET_EXTENT_NO_UP,
+	"No 'up' extent"
+
+ec	EXT2_ET_EXTENT_NO_DOWN,
+	"No 'down' extent"
+
+ec	EXT2_ET_NO_CURRENT_NODE,
+	"No current node"
+
+ec	EXT2_ET_OP_NOT_SUPPORTED,
+	"Ext2fs operation not supported"
+
+ec	EXT2_ET_CANT_INSERT_EXTENT,
+	"No room to insert extent in node"
+
+ec	EXT2_ET_CANT_SPLIT_EXTENT,
+	"Splitting would result in empty node"
+
+ec	EXT2_ET_EXTENT_NOT_FOUND,
+	"Extent not found"
+
+ec	EXT2_ET_EXTENT_NOT_SUPPORTED,
+	"Operation not supported for inodes containing extents"
+
+ec	EXT2_ET_EXTENT_INVALID_LENGTH,
+	"Extent length is invalid"
+
+ec	EXT2_ET_IO_CHANNEL_NO_SUPPORT_64,
+	"I/O Channel does not support 64-bit block numbers"
+
+ec	EXT2_NO_MTAB_FILE,
+	"Can't check if filesystem is mounted due to missing mtab file"
+
+ec	EXT2_ET_CANT_USE_LEGACY_BITMAPS,
+	"Filesystem too large to use legacy bitmaps"
+
+ec	EXT2_ET_MMP_MAGIC_INVALID,
+	"MMP: invalid magic number"
+
+ec	EXT2_ET_MMP_FAILED,
+	"MMP: device currently active"
+
+ec	EXT2_ET_MMP_FSCK_ON,
+	"MMP: fsck being run"
+
+ec	EXT2_ET_MMP_BAD_BLOCK,
+	"MMP: block number beyond filesystem range"
+
+ec	EXT2_ET_MMP_UNKNOWN_SEQ,
+	"MMP: undergoing an unknown operation"
+
+ec	EXT2_ET_MMP_CHANGE_ABORT,
+	"MMP: filesystem still in use"
+
+ec	EXT2_ET_MMP_OPEN_DIRECT,
+	"MMP: open with O_DIRECT failed"
 
 	end
-

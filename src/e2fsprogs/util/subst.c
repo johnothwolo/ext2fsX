@@ -2,7 +2,7 @@
  * subst.c --- substitution program
  *
  * Subst is used as a quicky program to do @ substitutions
- * 
+ *
  */
 
 #include <stdio.h>
@@ -35,9 +35,7 @@ struct subst_entry *subst_table = 0;
 static int add_subst(char *name, char *value)
 {
 	struct subst_entry	*ent = 0;
-	int	retval;
-	
-	retval = ENOMEM;
+
 	ent = (struct subst_entry *) malloc(sizeof(struct subst_entry));
 	if (!ent)
 		goto fail;
@@ -54,13 +52,10 @@ static int add_subst(char *name, char *value)
 	return 0;
 fail:
 	if (ent) {
-		if (ent->name)
-			free(ent->name);
-		if (ent->value)
-			free(ent->value);
+		free(ent->name);
 		free(ent);
 	}
-	return retval;
+	return ENOMEM;
 }
 
 static struct subst_entry *fetch_subst_entry(char *name)
@@ -91,7 +86,7 @@ static char *get_subst_symbol(const char *begin, size_t len, char prefix)
 		return NULL;
 	memcpy(start, begin, len);
 	start[len] = 0;
-	
+
 	/*
 	 * The substitution variable must all be in the of [0-9A-Za-z_].
 	 * If it isn't, this must be an invalid symbol name.
@@ -154,7 +149,7 @@ static void substitute_line(char *line)
 		}
 		ent = fetch_subst_entry(replace_name);
 		if (!ent) {
-			fprintf(stderr, "Unfound expansion: '%s'\n", 
+			fprintf(stderr, "Unfound expansion: '%s'\n",
 				replace_name);
 			ptr = end_ptr + 1;
 			continue;
@@ -165,6 +160,12 @@ static void substitute_line(char *line)
 #endif
 		ptr = name_ptr-1;
 		replace_string(ptr, end_ptr, ent->value);
+		if ((ent->value[0] == '@') &&
+		    (strlen(replace_name) == strlen(ent->value)-2) &&
+		    !strncmp(replace_name, ent->value+1,
+			     strlen(ent->value)-2))
+			/* avoid an infinite loop */
+			ptr += strlen(ent->value);
 	}
 	/*
 	 * Now do a second pass to expand ${FOO}
@@ -187,7 +188,7 @@ static void substitute_line(char *line)
 		if (!replace_name) {
 			ptr = name_ptr;
 			continue;
-		}			
+		}
 		ent = fetch_subst_entry(replace_name);
 		if (!ent) {
 			ptr = end_ptr + 1;
@@ -273,8 +274,10 @@ static int compare_file(const char *outfn, const char *newfn)
 	if (!old_f)
 		return 0;
 	new_f = fopen(newfn, "r");
-	if (!new_f)
+	if (!new_f) {
+		fclose(old_f);
 		return 0;
+	}
 
 	while (1) {
 		oldcp = fgets(oldbuf, sizeof(oldbuf), old_f);
@@ -305,7 +308,7 @@ int main(int argc, char **argv)
 	int	adjust_timestamp = 0;
 	struct stat stbuf;
 	struct utimbuf ut;
-	
+
 	while ((c = getopt (argc, argv, "f:tv")) != EOF) {
 		switch (c) {
 		case 'f':
@@ -324,7 +327,7 @@ int main(int argc, char **argv)
 			verbose++;
 			break;
 		default:
-			fprintf(stderr, "%s: [-f config-file] [file]\n", 
+			fprintf(stderr, "%s: [-f config-file] [file]\n",
 				argv[0]);
 			break;
 		}
@@ -338,7 +341,7 @@ int main(int argc, char **argv)
 		optind++;
 	} else
 		in = stdin;
-	
+
 	if (optind < argc) {
 		outfn = argv[optind];
 		newfn = (char *) malloc(strlen(outfn)+20);
@@ -357,7 +360,7 @@ int main(int argc, char **argv)
 		out = stdout;
 		outfn = 0;
 	}
-			
+
 	while (!feof(in)) {
 		if (fgets(line, sizeof(line), in) == NULL)
 			break;
@@ -367,6 +370,7 @@ int main(int argc, char **argv)
 	fclose(in);
 	fclose(out);
 	if (outfn) {
+		struct stat st;
 		if (compare_file(outfn, newfn)) {
 			if (verbose)
 				printf("No change, keeping %s.\n", outfn);
@@ -386,6 +390,9 @@ int main(int argc, char **argv)
 				printf("Creating or replacing %s.\n", outfn);
 			rename(newfn, outfn);
 		}
+		/* set read-only to alert user it is a generated file */
+		if (stat(outfn, &st) == 0)
+			chmod(outfn, st.st_mode & ~0222);
 	}
 	return (0);
 }

@@ -2,14 +2,14 @@
  * dblist_dir.c --- iterate by directory entry
  *
  * Copyright 1997 by Theodore Ts'o
- * 
+ *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
- * 
  */
 
+#include "config.h"
 #include <stdio.h>
 #if HAVE_UNISTD_H
 #include <unistd.h>
@@ -20,7 +20,7 @@
 #include "ext2_fs.h"
 #include "ext2fsP.h"
 
-static int db_dir_proc(ext2_filsys fs, struct ext2_db_entry *db_info,
+static int db_dir_proc(ext2_filsys fs, struct ext2_db_entry2 *db_info,
 		       void *priv_data);
 
 errcode_t ext2fs_dblist_dir_iterate(ext2_dblist dblist,
@@ -53,8 +53,8 @@ errcode_t ext2fs_dblist_dir_iterate(ext2_dblist dblist,
 	ctx.priv_data = priv_data;
 	ctx.errcode = 0;
 
-	retval = ext2fs_dblist_iterate(dblist, db_dir_proc, &ctx);
-	
+	retval = ext2fs_dblist_iterate2(dblist, db_dir_proc, &ctx);
+
 	if (!block_buf)
 		ext2fs_free_mem(&ctx.buf);
 	if (retval)
@@ -62,14 +62,19 @@ errcode_t ext2fs_dblist_dir_iterate(ext2_dblist dblist,
 	return ctx.errcode;
 }
 
-static int db_dir_proc(ext2_filsys fs, struct ext2_db_entry *db_info,
+static int db_dir_proc(ext2_filsys fs, struct ext2_db_entry2 *db_info,
 		       void *priv_data)
 {
 	struct dir_context	*ctx;
+	int			ret;
 
 	ctx = (struct dir_context *) priv_data;
 	ctx->dir = db_info->ino;
-	
-	return ext2fs_process_dir_block(fs, &db_info->blk,
-					db_info->blockcnt, 0, 0, priv_data);
+	ctx->errcode = 0;
+
+	ret = ext2fs_process_dir_block(fs, &db_info->blk,
+				       db_info->blockcnt, 0, 0, priv_data);
+	if ((ret & BLOCK_ABORT) && !ctx->errcode)
+		return DBLIST_ABORT;
+	return 0;
 }

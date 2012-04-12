@@ -7,16 +7,16 @@
  * This file may be redistributed under the terms of the GNU Public
  * License.
  * %End-Header%
- * 
+ *
  * Copyright (C) 1985-2005 by the Massachusetts Institute of Technology.
- * 
+ *
  * All rights reserved.
- * 
+ *
  * Export of this software from the United States of America may require
  * a specific license from the United States Government.  It is the
  * responsibility of any person or organization contemplating export to
  * obtain such a license before exporting.
- * 
+ *
  * WITHIN THAT CONSTRAINT, permission to use, copy, modify, and
  * distribute this software and its documentation for any purpose and
  * without fee is hereby granted, provided that the above copyright
@@ -30,7 +30,7 @@
  * M.I.T. makes no representations about the suitability of this software
  * for any purpose.  It is provided "as is" without express or implied
  * warranty.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
@@ -41,7 +41,7 @@
 
 typedef struct _profile_t *profile_t;
 
-typedef void (*profile_syntax_err_cb_t)(const char *file, long err, 
+typedef void (*profile_syntax_err_cb_t)(const char *file, long err,
 					int line_num);
 
 /*
@@ -61,14 +61,27 @@ long profile_init
 void profile_release
 	(profile_t profile);
 
+long profile_set_default
+	(profile_t profile, const char *def_string);
+
 long profile_get_string
-	(profile_t profile, const char *name, const char *subname, 
+	(profile_t profile, const char *name, const char *subname,
 			const char *subsubname, const char *def_val,
 			char **ret_string);
 long profile_get_integer
 	(profile_t profile, const char *name, const char *subname,
 			const char *subsubname, int def_val,
 			int *ret_default);
+
+long profile_get_uint
+	(profile_t profile, const char *name, const char *subname,
+		const char *subsubname, unsigned int def_val,
+		unsigned int *ret_int);
+
+long profile_get_double
+	(profile_t profile, const char *name, const char *subname,
+		const char *subsubname, double def_val,
+		double *ret_float);
 
 long profile_get_boolean
 	(profile_t profile, const char *name, const char *subname,
@@ -81,7 +94,7 @@ long profile_iterator_create
 
 void profile_iterator_free
 	(void **iter_p);
-	
+
 long profile_iterator
 	(void	**iter_p, char **ret_name, char **ret_value);
 

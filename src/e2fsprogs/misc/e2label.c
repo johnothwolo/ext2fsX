@@ -2,7 +2,7 @@
  * e2label.c		- Print or change the volume label on an ext2 fs
  *
  * Written by Andries Brouwer (aeb@cwi.nl), 970714
- * 
+ *
  * Copyright 1997, 1998 by Theodore Ts'o.
  *
  * %Begin-Header%
@@ -11,6 +11,7 @@
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>

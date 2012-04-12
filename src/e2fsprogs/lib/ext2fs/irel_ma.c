@@ -1,14 +1,15 @@
 /*
  * irel_ma.c
- * 
+ *
  * Copyright (C) 1996, 1997 Theodore Ts'o.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+#include "config.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
@@ -77,34 +78,37 @@ errcode_t ext2fs_irel_memarray_create(char *name, ext2_ino_t max_inode,
 	if (retval)
 		goto errout;
 	memset(irel, 0, sizeof(struct ext2_inode_relocation_table));
-	
+
 	retval = ext2fs_get_mem(strlen(name)+1, &irel->name);
 	if (retval)
 		goto errout;
 	strcpy(irel->name, name);
-	
+
 	retval = ext2fs_get_mem(sizeof(struct irel_ma), &ma);
 	if (retval)
 		goto errout;
 	memset(ma, 0, sizeof(struct irel_ma));
 	irel->priv_data = ma;
-	
+
 	size = (size_t) (sizeof(ext2_ino_t) * (max_inode+1));
-	retval = ext2fs_get_mem(size, &ma->orig_map);
+	retval = ext2fs_get_array(max_inode+1, sizeof(ext2_ino_t),
+		&ma->orig_map);
 	if (retval)
 		goto errout;
 	memset(ma->orig_map, 0, size);
 
 	size = (size_t) (sizeof(struct ext2_inode_relocate_entry) *
 			 (max_inode+1));
-	retval = ext2fs_get_mem(size, &ma->entries);
+	retval = ext2fs_get_array((max_inode+1,
+		sizeof(struct ext2_inode_relocate_entry), &ma->entries);
 	if (retval)
 		goto errout;
 	memset(ma->entries, 0, size);
 
 	size = (size_t) (sizeof(struct inode_reference_entry) *
 			 (max_inode+1));
-	retval = ext2fs_get_mem(size, &ma->ref_entries);
+	retval = ext2fs_get_mem(max_inode+1,
+		sizeof(struct inode_reference_entry), &ma->ref_entries);
 	if (retval)
 		goto errout;
 	memset(ma->ref_entries, 0, size);
@@ -124,7 +128,7 @@ errcode_t ext2fs_irel_memarray_create(char *name, ext2_ino_t max_inode,
 	irel->move = ima_move;
 	irel->delete = ima_delete;
 	irel->free = ima_free;
-	
+
 	*new_irel = irel;
 	return 0;
 
@@ -153,7 +157,7 @@ static errcode_t ima_put(ext2_irel irel, ext2_ino_t old,
 		ent->orig = old;
 	else
 		ent->orig = ma->entries[(unsigned) old].orig;
-	
+
 	/*
 	 * If max_refs has changed, reallocate the refs array
 	 */
@@ -242,14 +246,15 @@ static errcode_t ima_add_ref(ext2_irel irel, ext2_ino_t ino,
 
 	ref_ent = ma->ref_entries + (unsigned) ino;
 	ent = ma->entries + (unsigned) ino;
-	
+
 	/*
 	 * If the inode reference array doesn't exist, create it.
 	 */
 	if (ref_ent->refs == 0) {
-		size = (size_t) ((sizeof(struct ext2_inode_reference) * 
+		size = (size_t) ((sizeof(struct ext2_inode_reference) *
 				  ent->max_refs));
-		retval = ext2fs_get_mem(size, &ref_ent->refs);
+		retval = ext2fs_get_array(ent->max_refs,
+			sizeof(struct ext2_inode_reference), &ref_ent->refs);
 		if (retval)
 			return retval;
 		memset(ref_ent->refs, 0, size);
@@ -284,7 +289,7 @@ static errcode_t ima_next_ref(ext2_irel irel,
 	struct inode_reference_entry *ref_ent;
 
 	ma = irel->priv_data;
-	
+
 	ref_ent = ma->ref_entries + ma->ref_current;
 
 	if ((ref_ent->refs == NULL) ||
@@ -307,12 +312,12 @@ static errcode_t ima_move(ext2_irel irel, ext2_ino_t old, ext2_ino_t new)
 		return EXT2_ET_INVALID_ARGUMENT;
 	if (ma->entries[(unsigned) old].new == 0)
 		return ENOENT;
-	
+
 	ma->entries[(unsigned) new] = ma->entries[(unsigned) old];
 	if (ma->ref_entries[(unsigned) new].refs)
 		ext2fs_free_mem(&ma->ref_entries[(unsigned) new].refs);
 	ma->ref_entries[(unsigned) new] = ma->ref_entries[(unsigned) old];
-	
+
 	ma->entries[(unsigned) old].new = 0;
 	ma->ref_entries[(unsigned) old].num = 0;
 	ma->ref_entries[(unsigned) old].refs = 0;
@@ -330,12 +335,12 @@ static errcode_t ima_delete(ext2_irel irel, ext2_ino_t old)
 		return EXT2_ET_INVALID_ARGUMENT;
 	if (ma->entries[(unsigned) old].new == 0)
 		return ENOENT;
-	
+
 	ma->entries[old].new = 0;
 	if (ma->ref_entries[(unsigned) old].refs)
 		ext2fs_free_mem(&ma->ref_entries[(unsigned) old].refs);
 	ma->orig_map[ma->entries[(unsigned) old].orig] = 0;
-	
+
 	ma->ref_entries[(unsigned) old].num = 0;
 	ma->ref_entries[(unsigned) old].refs = 0;
 	return 0;

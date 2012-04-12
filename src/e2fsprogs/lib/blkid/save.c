@@ -10,6 +10,7 @@
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -34,11 +35,12 @@ static int save_dev(blkid_dev dev, FILE *file)
 		return 0;
 
 	DBG(DEBUG_SAVE,
-	    printf("device %s, type %s\n", dev->bid_name, dev->bid_type));
+	    printf("device %s, type %s\n", dev->bid_name, dev->bid_type ?
+		   dev->bid_type : "(null)"));
 
 	fprintf(file,
 		"<device DEVNO=\"0x%04lx\" TIME=\"%ld\"",
-		(unsigned long) dev->bid_devno, dev->bid_time);
+		(unsigned long) dev->bid_devno, (long) dev->bid_time);
 	if (dev->bid_pri)
 		fprintf(file, " PRI=\"%d\"", dev->bid_pri);
 	list_for_each(p, &dev->bid_tags) {
@@ -152,8 +154,7 @@ int blkid_flush_cache(blkid_cache cache)
 	}
 
 errout:
-	if (tmp)
-		free(tmp);
+	free(tmp);
 	return ret;
 }
 
@@ -180,7 +181,7 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 	cache->bic_filename = blkid_strdup(argv[1]);
-	
+
 	if ((ret = blkid_flush_cache(cache)) < 0) {
 		fprintf(stderr, "error (%d) saving cache\n", ret);
 		exit(1);

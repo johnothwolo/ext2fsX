@@ -21,6 +21,7 @@
  * USE OF THIS SOFTWARE.
  */
 
+#include "config.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -46,7 +47,7 @@ FILE *fpopen(const char *cmd, const char *mode)
 		errno = EFAULT;
 		return NULL;
 	}
-	
+
 	switch (*mode) {
 	case 'r':
 		do_stdin = 0;
@@ -91,7 +92,7 @@ FILE *fpopen(const char *cmd, const char *mode)
 	 */
 	if (pipe(fds) < 0)
 		return NULL;
-	
+
 	/* Fork and execute the correct program. */
 	if ((pid = fork()) < 0) {
 		perror("fork");

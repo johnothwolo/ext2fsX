@@ -13,6 +13,7 @@
  * 93/04/22	- Creation
  */
 
+#include "config.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -53,7 +54,7 @@ int main (int argc, char ** argv)
 		perror ("mkdir");
 		exit(1);
 	}
-	
+
 	i = 0;
 	memset (name, 'x', 246);
 	do {

@@ -13,13 +13,16 @@ request do_open_filesys, "Open a filesystem",
 request do_close_filesys, "Close the filesystem",
 	close_filesys, close;
 
+request do_freefrag, "Report free space fragmentation",
+	freefrag, e2freefrag;
+
 request do_features, "Set/print superblock features",
 	feature, features;
 
 request do_dirty_filesys, "Mark the filesystem as dirty",
 	dirty_filesys, dirty;
 
-request do_init_filesys, "Initalize a filesystem (DESTROYS DATA)",
+request do_init_filesys, "Initialize a filesystem (DESTROYS DATA)",
 	init_filesys;
 
 request do_show_super_stats, "Show superblock statistics",
@@ -42,6 +45,15 @@ request do_list_dir, "List directory",
 
 request do_stat, "Show inode information ",
 	show_inode_info, stat;
+
+request do_dump_extents, "Dump extents information ",
+	dump_extents, extents, ex;
+
+request do_blocks, "Dump blocks used by an inode ",
+	blocks;
+
+request do_filefrag, "Report fragmentation information for an inode",
+	filefrag;
 
 request do_link, "Create directory link",
 	link, ln;
@@ -127,6 +139,9 @@ request do_set_super, "Set superblock value",
 request do_set_inode, "Set inode field",
 	set_inode_field, sif;
 
+request do_set_block_group_descriptor, "Set block group descriptor field",
+	set_block_group, set_bg;
+
 request do_logdump, "Dump the contents of the journal",
 	logdump;
 
@@ -142,6 +157,9 @@ request do_dirsearch, "Search a directory for a particular filename",
 request do_bmap, "Calculate the logical->physical block mapping for an inode",
 	bmap;
 
+request do_punch, "Punch (or truncate) blocks from an inode by deallocating them",
+	punch, truncate;
+
 request do_imap, "Calculate the location of an inode",
 	imap;
 
@@ -150,6 +168,15 @@ request	do_dump_unused, "Dump unused blocks",
 
 request do_set_current_time, "Set current time to use when setting filesystme fields",
 	set_current_time;
+
+request do_supported_features, "Print features supported by this version of e2fsprogs",
+	supported_features;
+
+request do_dump_mmp, "Dump MMP information",
+	dump_mmp;
+
+request do_set_mmp_value, "Set MMP value",
+	set_mmp_value, smmp;
 
 end;
 

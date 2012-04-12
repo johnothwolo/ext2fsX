@@ -1,13 +1,15 @@
 /*
  * mountopts.c --- convert between default mount options and strings
- * 
+ *
  * Copyright (C) 2002  Theodore Ts'o <tytso@mit.edu>
- * 
- * This file can be redistributed under the terms of the GNU Library General
- * Public License
- * 
+ *
+ * %Begin-Header%
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
+ * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,6 +32,10 @@ static struct mntopt mntopt_list[] = {
 	{ EXT3_DEFM_JMODE_DATA, "journal_data" },
 	{ EXT3_DEFM_JMODE_ORDERED, "journal_data_ordered" },
 	{ EXT3_DEFM_JMODE_WBACK, "journal_data_writeback" },
+	{ EXT4_DEFM_NOBARRIER,	"nobarrier" },
+	{ EXT4_DEFM_BLOCK_VALIDITY, "block_validity" },
+	{ EXT4_DEFM_DISCARD,	"discard"},
+	{ EXT4_DEFM_NODELALLOC,	"nodelalloc"},
 	{ 0, 0 },
 };
 
@@ -52,7 +58,7 @@ int e2p_string2mntopt(char *string, unsigned int *mask)
 {
 	struct mntopt  *f;
 	char		*eptr;
-	long		num;
+	int		num;
 
 	for (f = mntopt_list; f->string; f++) {
 		if (!strcasecmp(string, f->string)) {
@@ -60,7 +66,7 @@ int e2p_string2mntopt(char *string, unsigned int *mask)
 			return 0;
 		}
 	}
-	if (strncasecmp(string, "MNTOPT_", 8))
+	if (strncasecmp(string, "MNTOPT_", 7))
 		return 1;
 
 	if (string[8] == 0)
@@ -98,6 +104,7 @@ int e2p_edit_mntopts(const char *str, __u32 *mntopts, __u32 ok)
 	char	*cp, *buf, *next;
 	int	neg;
 	unsigned int	mask;
+	int	rc = 0;
 
 	buf = malloc(strlen(str)+1);
 	if (!buf)
@@ -116,14 +123,19 @@ int e2p_edit_mntopts(const char *str, __u32 *mntopts, __u32 ok)
 		case '-':
 		case '^':
 			neg++;
+			/* fallthrough */
 		case '+':
 			cp++;
 			break;
 		}
-		if (e2p_string2mntopt(cp, &mask))
-			return 1;
-		if (ok && !(ok & mask))
-			return 1;
+		if (e2p_string2mntopt(cp, &mask)) {
+			rc = 1;
+			break;
+		}
+		if (ok && !(ok & mask)) {
+			rc = 1;
+			break;
+		}
 		if (mask & EXT3_DEFM_JMODE)
 			*mntopts &= ~EXT3_DEFM_JMODE;
 		if (neg)
@@ -132,5 +144,6 @@ int e2p_edit_mntopts(const char *str, __u32 *mntopts, __u32 ok)
 			*mntopts |= mask;
 		cp = next ? next+1 : 0;
 	}
-	return 0;
+	free(buf);
+	return rc;
 }

@@ -14,8 +14,8 @@
  * into proprietary software; there is no requirement for such software to
  * contain a copyright notice related to this source.
  *
- * $Id: dict.h,v 1.1.1.2 2003/08/10 19:22:28 bbergstrand Exp $
- * $Name:  $
+ * $Id: dict.h,v 1.22.2.6 2000/11/13 01:36:44 kaz Exp $
+ * $Name: kazlib_1_20 $
  */
 
 #ifndef DICT_H

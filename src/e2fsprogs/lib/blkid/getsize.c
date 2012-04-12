@@ -13,6 +13,7 @@
 #define _LARGEFILE64_SOURCE
 
 /* include this before sys/queues.h! */
+#include "config.h"
 #include "blkidP.h"
 
 #include <stdio.h>
@@ -54,7 +55,6 @@
 #define BLKGETSIZE64 _IOR(0x12,114,size_t)	/* return device size in bytes (u64 *arg) */
 #endif
 
-/* Not availble in Darwin 8 (10.4) */
 #if defined(APPLE_DARWIN) && defined(DKIOCGETBLOCKCOUNT32)
 #define BLKGETSIZE DKIOCGETBLOCKCOUNT32
 #endif /* APPLE_DARWIN */
@@ -71,13 +71,13 @@ static int valid_offset(int fd, blkid_loff_t offset)
 }
 
 /*
- * Returns the number of blocks in a partition
+ * Returns the number of bytes in a partition
  */
 blkid_loff_t blkid_get_dev_size(int fd)
 {
 	int valid_blkgetsize64 = 1;
 #ifdef __linux__
-	struct 		utsname ut;
+	struct		utsname ut;
 #endif
 	unsigned long long size64;
 	unsigned long size;
@@ -116,35 +116,44 @@ blkid_loff_t blkid_get_dev_size(int fd)
 			return 0; /* EFBIG */
 		return size64;
 	}
-#endif
+#endif /* BLKGETSIZE64 */
 
 #ifdef BLKGETSIZE
 	if (ioctl(fd, BLKGETSIZE, &size) >= 0)
 		return (blkid_loff_t)size << 9;
 #endif
 
+/* tested on FreeBSD 6.1-RELEASE i386 */
+#ifdef DIOCGMEDIASIZE
+	if (ioctl(fd, DIOCGMEDIASIZE, &size64) >= 0)
+		return (off_t)size64;
+#endif /* DIOCGMEDIASIZE */
+
 #ifdef FDGETPRM
 	if (ioctl(fd, FDGETPRM, &this_floppy) >= 0)
 		return (blkid_loff_t)this_floppy.size << 9;
 #endif
 #ifdef HAVE_SYS_DISKLABEL_H
-#if 0
 	/*
-	 * This should work in theory but I haven't tested it.  Anyone
-	 * on a BSD system want to test this for me?  In the meantime,
-	 * binary search mechanism should work just fine.
+	 * This code works for FreeBSD 4.11 i386, except for the full device
+	 * (such as /dev/ad0). It doesn't work properly for newer FreeBSD
+	 * though. FreeBSD >= 5.0 should be covered by the DIOCGMEDIASIZE
+	 * above however.
+	 *
+	 * Note that FreeBSD >= 4.0 has disk devices as unbuffered (raw,
+	 * character) devices, so we need to check for S_ISCHR, too.
 	 */
-	if ((fstat(fd, &st) >= 0) && S_ISBLK(st.st_mode))
+	if (fstat(fd, &st) >= 0 && (S_ISBLK(st.st_mode) || S_ISCHR(st.st_mode)))
 		part = st.st_rdev & 7;
+
 	if (part >= 0 && (ioctl(fd, DIOCGDINFO, (char *)&lab) >= 0)) {
 		pp = &lab.d_partitions[part];
 		if (pp->p_size)
 			return pp->p_size << 9;
 	}
-#endif
 #endif /* HAVE_SYS_DISKLABEL_H */
 	{
-#ifdef HAVE_FSTAT64
+#if defined(HAVE_FSTAT64) && !defined(__OSX_AVAILABLE_BUT_DEPRECATED)
 		struct stat64   st;
 		if (fstat64(fd, &st) == 0)
 #else
@@ -155,7 +164,6 @@ blkid_loff_t blkid_get_dev_size(int fd)
 				return st.st_size;
 	}
 
-
 	/*
 	 * OK, we couldn't figure it out by using a specialized ioctl,
 	 * which is generally the best way.  So do binary search to
@@ -164,8 +172,7 @@ blkid_loff_t blkid_get_dev_size(int fd)
 	low = 0;
 	for (high = 1024; valid_offset(fd, high); high *= 2)
 		low = high;
-	while (low < high - 1)
-	{
+	while (low < high - 1) {
 		const blkid_loff_t mid = (low + high) / 2;
 
 		if (valid_offset(fd, mid))
@@ -179,7 +186,7 @@ blkid_loff_t blkid_get_dev_size(int fd)
 #ifdef TEST_PROGRAM
 int main(int argc, char **argv)
 {
-	blkid_loff_t bytes;
+	long long bytes;
 	int	fd;
 
 	if (argc < 2) {
@@ -192,7 +199,8 @@ int main(int argc, char **argv)
 		perror(argv[0]);
 
 	bytes = blkid_get_dev_size(fd);
-	printf("Device %s has %Ld 1k blocks.\n", argv[1], bytes >> 10);
+	printf("Device %s has %Ld 1k blocks.\n", argv[1],
+	       (unsigned long long) bytes >> 10);
 
 	return 0;
 }

@@ -10,6 +10,9 @@
  * %End-Header%
  */
 
+#define _XOPEN_SOURCE 600 /* for inclusion of strtoull */
+
+#include "config.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -26,7 +29,6 @@
 #include "uuid/uuid.h"
 
 #ifdef HAVE_STRTOULL
-#define __USE_ISOC9X
 #define STRTOULL strtoull /* defined in stdlib.h if you try hard enough */
 #else
 /* FIXME: need to support real strtoull here */
@@ -197,7 +199,8 @@ static int parse_dev(blkid_cache cache, blkid_dev *dev, char **cp)
 	start = skip_over_blank(start + 1);
 	end = skip_over_word(start);
 
-	DBG(DEBUG_READ, printf("device should be %*s\n", end - start, start));
+	DBG(DEBUG_READ, printf("device should be %*s\n",
+			       (int)(end - start), start));
 
 	if (**cp == '>')
 		*cp = end;
@@ -223,8 +226,10 @@ static int parse_dev(blkid_cache cache, blkid_dev *dev, char **cp)
 
 	DBG(DEBUG_READ, printf("found dev %s\n", name));
 
-	if (!(*dev = blkid_get_dev(cache, name, BLKID_DEV_CREATE)))
+	if (!(*dev = blkid_get_dev(cache, name, BLKID_DEV_CREATE))) {
+		free(name);
 		return -BLKID_ERR_MEM;
+	}
 
 	free(name);
 	return 1;
@@ -311,13 +316,12 @@ static int parse_tag(blkid_cache cache, blkid_dev dev, char **cp)
 		return ret;
 
 	/* Some tags are stored directly in the device struct */
-	if (!strcmp(name, "DEVNO")) 
+	if (!strcmp(name, "DEVNO"))
 		dev->bid_devno = STRTOULL(value, 0, 0);
 	else if (!strcmp(name, "PRI"))
 		dev->bid_pri = strtol(value, 0, 0);
 	else if (!strcmp(name, "TIME"))
-		/* FIXME: need to parse a long long eventually */
-		dev->bid_time = strtol(value, 0, 0);
+		dev->bid_time = STRTOULL(value, 0, 0);
 	else
 		ret = blkid_set_tag(dev, name, value, strlen(value));
 
@@ -398,7 +402,7 @@ void blkid_read_cache(blkid_cache cache)
 					cache->bic_filename));
 		goto errout;
 	}
-	
+
 	DBG(DEBUG_CACHE, printf("reading cache file %s\n",
 				cache->bic_filename));
 
@@ -452,15 +456,15 @@ static void debug_dump_dev(blkid_dev dev)
 	}
 
 	printf("  dev: name = %s\n", dev->bid_name);
-	printf("  dev: DEVNO=\"0x%0llx\"\n", dev->bid_devno);
-	printf("  dev: TIME=\"%ld\"\n", dev->bid_time);
+	printf("  dev: DEVNO=\"0x%0llx\"\n", (long long)dev->bid_devno);
+	printf("  dev: TIME=\"%lld\"\n", (long long)dev->bid_time);
 	printf("  dev: PRI=\"%d\"\n", dev->bid_pri);
 	printf("  dev: flags = 0x%08X\n", dev->bid_flags);
 
 	list_for_each(p, &dev->bid_tags) {
 		blkid_tag tag = list_entry(p, struct blkid_struct_tag, bit_tags);
 		if (tag)
-			printf("    tag: %s=\"%s\"\n", tag->bit_name, 
+			printf("    tag: %s=\"%s\"\n", tag->bit_name,
 			       tag->bit_val);
 		else
 			printf("    tag: NULL\n");

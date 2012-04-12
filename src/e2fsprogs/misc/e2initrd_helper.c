@@ -9,9 +9,12 @@
  * %End-Header%
  */
 
+#include "config.h"
 #include <stdio.h>
 #include <unistd.h>
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
 #include <ctype.h>
 #include <string.h>
 #include <time.h>
@@ -24,14 +27,13 @@
 #include <utime.h>
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>
-#else 
+#else
 extern int optind;
 extern char *optarg;
 #endif
 
 #include "ext2fs/ext2_fs.h"
 #include "ext2fs/ext2fs.h"
-#include "e2p/e2p.h"
 #include "blkid/blkid.h"
 
 #include "../version.h"
@@ -67,12 +69,12 @@ static void usage(void)
 	exit (1);
 }
 
-static errcode_t get_file(ext2_filsys fs, const char * filename, 
+static errcode_t get_file(ext2_filsys fs, const char * filename,
 		   struct mem_file *ret_file)
 {
 	errcode_t	retval;
 	char 		*buf;
-	ext2_file_t	e2_file;
+	ext2_file_t	e2_file = NULL;
 	unsigned int	got;
 	struct ext2_inode inode;
 	ext2_ino_t	ino;
@@ -81,7 +83,7 @@ static errcode_t get_file(ext2_filsys fs, const char * filename,
 	ret_file->size = 0;
 	ret_file->ptr = 0;
 
-	retval = ext2fs_namei(fs, EXT2_ROOT_INO, EXT2_ROOT_INO, 
+	retval = ext2fs_namei(fs, EXT2_ROOT_INO, EXT2_ROOT_INO,
 			      filename, &ino);
 	if (retval)
 		return retval;
@@ -100,21 +102,24 @@ static errcode_t get_file(ext2_filsys fs, const char * filename,
 
 	retval = ext2fs_file_open(fs, ino, 0, &e2_file);
 	if (retval)
-		return retval;
+		goto errout;
 
 	retval = ext2fs_file_read(e2_file, buf, inode.i_size, &got);
-	if (retval) 
+	if (retval)
 		goto errout;
 
 	retval = ext2fs_file_close(e2_file);
 	if (retval)
-		return retval;
+		goto errout;
 
 	ret_file->buf = buf;
 	ret_file->size = (int) got;
+	return 0;
 
 errout:
-	ext2fs_file_close(e2_file);
+	free(buf);
+	if (e2_file)
+		ext2fs_file_close(e2_file);
 	return retval;
 }
 
@@ -246,7 +251,7 @@ static int parse_fstab_line(char *line, struct fs_info *fs)
 
 	if (!device)
 		return -1;	/* Allow blank lines */
-	
+
 	if (!mntpnt || !type)
 		return -1;
 
@@ -273,9 +278,8 @@ static int parse_fstab_line(char *line, struct fs_info *fs)
 	fs->flags = 0;
 	fs->next = NULL;
 
-	if (dev)
-		free(dev);
-	   
+	free(dev);
+
 	return 0;
 }
 
@@ -302,6 +306,7 @@ static void PRS(int argc, char **argv)
 	setlocale(LC_CTYPE, "");
 	bindtextdomain(NLS_CAT_NAME, LOCALEDIR);
 	textdomain(NLS_CAT_NAME);
+	set_com_err_gettext(gettext);
 #endif
 
 	while ((c = getopt(argc, argv, "rv")) != EOF) {
@@ -311,7 +316,7 @@ static void PRS(int argc, char **argv)
 			break;
 
 		case 'v':
-			printf("%s %s (%s)\n", program_name, 
+			printf("%s %s (%s)\n", program_name,
 			       E2FSPROGS_VERSION, E2FSPROGS_DATE);
 			break;
 		default:
@@ -322,7 +327,7 @@ static void PRS(int argc, char **argv)
 		usage();
 	device_name = blkid_get_devname(NULL, argv[optind], NULL);
 	if (!device_name) {
-		com_err("tune2fs", 0, _("Unable to resolve '%s'"), 
+		com_err("tune2fs", 0, _("Unable to resolve '%s'"),
 			argv[optind]);
 		exit(1);
 	}
@@ -342,9 +347,9 @@ static void get_root_type(ext2_filsys fs)
 		buf = get_line(&file);
 		if (!buf)
 			continue;
-		
+
 		ret = parse_fstab_line(buf, &fs_info);
-		if (ret < 0) 
+		if (ret < 0)
 			goto next_line;
 
 		if (!strcmp(fs_info.mountpt, "/"))
@@ -364,23 +369,25 @@ int main (int argc, char ** argv)
 	ext2_filsys fs;
 	io_manager io_ptr;
 
-	initialize_ext2_error_table();
+	add_error_table(&et_ext2_error_table);
 
 	blkid_get_cache(&cache, NULL);
 	PRS(argc, argv);
-	
+
 #ifdef CONFIG_TESTIO_DEBUG
-	io_ptr = test_io_manager;
-	test_io_backing_manager = unix_io_manager;
-#else
-	io_ptr = unix_io_manager;
+	if (getenv("TEST_IO_FLAGS") || getenv("TEST_IO_BLOCK")) {
+		io_ptr = test_io_manager;
+		test_io_backing_manager = unix_io_manager;
+	} else
 #endif
+		io_ptr = unix_io_manager;
 	retval = ext2fs_open (device_name, open_flag, 0, 0, io_ptr, &fs);
         if (retval)
 		exit(1);
 
-	if (root_type) 
+	if (root_type)
 		get_root_type(fs);
 
+	remove_error_table(&et_ext2_error_table);
 	return (ext2fs_close (fs) ? 1 : 0);
 }

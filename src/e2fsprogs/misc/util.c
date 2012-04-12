@@ -1,6 +1,6 @@
 /*
  * util.c --- helper functions used by tune2fs and mke2fs
- * 
+ *
  * Copyright 1995, 1996, 1997, 1998, 1999, 2000 by Theodore Ts'o.
  *
  * %Begin-Header%
@@ -12,6 +12,7 @@
 #define _LARGEFILE_SOURCE
 #define _LARGEFILE64_SOURCE
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #ifdef HAVE_ERRNO_H
@@ -23,6 +24,7 @@
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
+#include <time.h>
 
 #include "et/com_err.h"
 #include "e2p/e2p.h"
@@ -71,24 +73,18 @@ void proceed_question(void)
 	fflush(stderr);
 	fputs(_("Proceed anyway? (y,n) "), stdout);
 	buf[0] = 0;
-	fgets(buf, sizeof(buf), stdin);
-	if (strchr(short_yes, buf[0]) == 0)
+	if (!fgets(buf, sizeof(buf), stdin) ||
+	    strchr(short_yes, buf[0]) == 0)
 		exit(1);
 }
 
 void check_plausibility(const char *device)
 {
 	int val;
-#ifdef HAVE_OPEN64
-	struct stat64 s;
-	
-	val = stat64(device, &s);
-#else
-	struct stat s;
-	
-	val = stat(device, &s);
-#endif
-	
+	ext2fs_struct_stat s;
+
+	val = ext2fs_stat(device, &s);
+
 	if(val == -1) {
 		fprintf(stderr, _("Could not stat %s --- %s\n"),
 			device, error_message(errno));
@@ -154,7 +150,7 @@ void check_mount(const char *device, int force, const char *type)
 	}
 	if (mount_flags & EXT2_MF_MOUNTED) {
 		fprintf(stderr, _("%s is mounted; "), device);
-		if (force) {
+		if (force > 2) {
 			fputs(_("mke2fs forced anyway.  Hope /etc/mtab is "
 				"incorrect.\n"), stderr);
 			return;
@@ -166,7 +162,7 @@ void check_mount(const char *device, int force, const char *type)
 	if (mount_flags & EXT2_MF_BUSY) {
 		fprintf(stderr, _("%s is apparently in use by the system; "),
 			device);
-		if (force) {
+		if (force > 2) {
 			fputs(_("mke2fs forced anyway.\n"), stderr);
 			return;
 		}
@@ -194,7 +190,7 @@ void parse_journal_opts(const char *opts)
 		if (p) {
 			*p = 0;
 			next = p+1;
-		} 
+		}
 		arg = strchr(token, '=');
 		if (arg) {
 			*arg = 0;
@@ -207,6 +203,10 @@ void parse_journal_opts(const char *opts)
 		if (strcmp(token, "device") == 0) {
 			journal_device = blkid_get_devname(NULL, arg, NULL);
 			if (!journal_device) {
+				if (arg)
+					fprintf(stderr, _("\nCould not find "
+						"journal device matching %s\n"),
+						arg);
 				journal_usage++;
 				continue;
 			}
@@ -233,68 +233,73 @@ void parse_journal_opts(const char *opts)
 			"\tsize=<journal size in megabytes>\n"
 			"\tdevice=<journal device>\n\n"
 			"The journal size must be between "
-			"1024 and 102400 filesystem blocks.\n\n"), stderr);
+			"1024 and 10240000 filesystem blocks.\n\n"), stderr);
+		free(buf);
 		exit(1);
 	}
-}	
+	free(buf);
+}
 
 /*
  * Determine the number of journal blocks to use, either via
  * user-specified # of megabytes, or via some intelligently selected
  * defaults.
- * 
+ *
  * Find a reasonable journal file size (in blocks) given the number of blocks
  * in the filesystem.  For very small filesystems, it is not reasonable to
  * have a journal that fills more than half of the filesystem.
  */
-int figure_journal_size(int size, ext2_filsys fs)
+unsigned int figure_journal_size(int size, ext2_filsys fs)
 {
-	blk_t j_blocks;
+	int j_blocks;
 
-	if (fs->super->s_blocks_count < 2048) {
+	j_blocks = ext2fs_default_journal_size(ext2fs_blocks_count(fs->super));
+	if (j_blocks < 0) {
 		fputs(_("\nFilesystem too small for a journal\n"), stderr);
 		return 0;
 	}
-	
+
 	if (size > 0) {
 		j_blocks = size * 1024 / (fs->blocksize	/ 1024);
-		if (j_blocks < 1024 || j_blocks > 102400) {
+		if (j_blocks < 1024 || j_blocks > 10240000) {
 			fprintf(stderr, _("\nThe requested journal "
 				"size is %d blocks; it must be\n"
-				"between 1024 and 102400 blocks.  "
+				"between 1024 and 10240000 blocks.  "
 				"Aborting.\n"),
 				j_blocks);
 			exit(1);
 		}
-		if (j_blocks > fs->super->s_free_blocks_count) {
+		if ((unsigned) j_blocks > ext2fs_free_blocks_count(fs->super) / 2) {
 			fputs(_("\nJournal size too big for filesystem.\n"),
 			      stderr);
 			exit(1);
 		}
-		return j_blocks;
 	}
-
-	if (fs->super->s_blocks_count < 32768)
-		j_blocks = 1024;
-	else if (fs->super->s_blocks_count < 256*1024)
-		j_blocks = 4096;
-	else if (fs->super->s_blocks_count < 512*1024)
-		j_blocks = 8192;
-	else if (fs->super->s_blocks_count < 1024*1024)
-		j_blocks = 16384;
-	else
-		j_blocks = 32768;
-
-
 	return j_blocks;
 }
 
-void print_check_message(ext2_filsys fs)
+void print_check_message(int mnt, unsigned int check)
 {
+	if (mnt < 0)
+		mnt = 0;
+	if (!mnt && !check)
+		return;
 	printf(_("This filesystem will be automatically "
 		 "checked every %d mounts or\n"
 		 "%g days, whichever comes first.  "
 		 "Use tune2fs -c or -i to override.\n"),
-	       fs->super->s_max_mnt_count,
-	       (double)fs->super->s_checkinterval / (3600 * 24));
+	       mnt, ((double) check) / (3600 * 24));
+}
+
+void dump_mmp_msg(struct mmp_struct *mmp, const char *msg)
+{
+
+	if (msg)
+		printf("MMP check failed: %s\n", msg);
+	if (mmp) {
+		time_t t = mmp->mmp_time;
+
+		printf("MMP error info: last update: %s node: %s device: %s\n",
+		       ctime(&t), mmp->mmp_nodename, mmp->mmp_bdevname);
+	}
 }

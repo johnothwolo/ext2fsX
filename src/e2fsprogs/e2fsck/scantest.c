@@ -2,6 +2,7 @@
  * scantest.c - test the speed of the inode scan routine
  */
 
+#include "config.h"
 #include <string.h>
 #include <fcntl.h>
 #include <ctype.h>
@@ -55,7 +56,7 @@ struct resource_track	global_rtrack;
 void init_resource_track(struct resource_track *track)
 {
 	struct rusage r;
-	
+
 	track->brk_start = sbrk(0);
 	gettimeofday(&track->time_start, 0);
 	getrusage(RUSAGE_SELF, &r);
@@ -100,7 +101,7 @@ int main (int argc, char *argv[])
 	printf(_("size of inode=%d\n"), sizeof(inode));
 
 	device_name = "/dev/hda3";
-	
+
 	init_resource_track(&global_rtrack);
 
 	retval = ext2fs_open(device_name, 0,
@@ -133,11 +134,11 @@ int main (int argc, char *argv[])
 			exit(1);
 		}
 	}
-	
+
 
 	ext2fs_close(fs);
-	
+
 	print_resource_track(&global_rtrack);
-	
+
 	return exit_value;
 }

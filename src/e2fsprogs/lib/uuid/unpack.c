@@ -1,6 +1,6 @@
 /*
  * Internal routine for unpacking UUID
- * 
+ *
  * Copyright (C) 1996, 1997 Theodore Ts'o.
  *
  * %Begin-Header%
@@ -16,7 +16,7 @@
  * 3. The name of the author may not be used to endorse or promote
  *    products derived from this software without specific prior
  *    written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, ALL OF
@@ -32,6 +32,7 @@
  * %End-Header%
  */
 
+#include "config.h"
 #include <string.h>
 #include "uuidP.h"
 
@@ -49,7 +50,7 @@ void uuid_unpack(const uuid_t in, struct uuid *uu)
 	tmp = *ptr++;
 	tmp = (tmp << 8) | *ptr++;
 	uu->time_mid = tmp;
-	
+
 	tmp = *ptr++;
 	tmp = (tmp << 8) | *ptr++;
 	uu->time_hi_and_version = tmp;

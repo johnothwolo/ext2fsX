@@ -4,19 +4,17 @@
 .\" 
 .TH DUMPE2FS 8 "@E2FSPROGS_MONTH@ @E2FSPROGS_YEAR@" "E2fsprogs version @E2FSPROGS_VERSION@"
 .SH NAME
-dumpe2fs \- dump ext2/ext3 filesystem information
+dumpe2fs \- dump ext2/ext3/ext4 filesystem information
 .SH SYNOPSIS
 .B dumpe2fs
 [
 .B \-bfhixV
 ]
 [
-.B \-ob 
-.I superblock
+.B \-o superblock=\fIsuperblock
 ]
 [
-.B \-oB
-.I blocksize
+.B \-o blocksize=\fIblocksize
 ]
 .I device
 .SH DESCRIPTION
@@ -25,23 +23,22 @@ prints the super block and blocks group information for the filesystem
 present on
 .I device.
 .PP
-.B dumpe2fs
-is similar to Berkeley's
-.B dumpfs
-program for the BSD Fast File System.
+.B Note:
+When used with a mounted filesystem, the printed
+information may be old or inconsistent.
 .SH OPTIONS
 .TP
 .B \-b
 print the blocks which are reserved as bad in the filesystem.
 .TP
-.BI \-ob " superblock"
+.B \-o superblock=\fIsuperblock
 use the block
 .I superblock
 when examining the filesystem.
 This option is not usually needed except by a filesystem wizard who 
 is examining the remains of a very badly corrupted filesystem.
 .TP
-.BI \-oB " blocksize"
+.B \-o blocksize=\fIblocksize
 use blocks of
 .I blocksize
 bytes when examining the filesystem.

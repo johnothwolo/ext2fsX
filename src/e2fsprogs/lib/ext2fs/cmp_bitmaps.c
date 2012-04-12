@@ -25,6 +25,7 @@
 
 #include "ext2_fs.h"
 #include "ext2fs.h"
+#include "bmap64.h"
 
 errcode_t ext2fs_compare_block_bitmap(ext2fs_block_bitmap bm1,
 				      ext2fs_block_bitmap bm2)

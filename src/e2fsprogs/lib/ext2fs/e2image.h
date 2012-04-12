@@ -1,17 +1,25 @@
 /*
  * e2image.h --- header file describing the ext2 image format
- * 
+ *
  * Copyright (C) 2000 Theodore Ts'o.
  *
  * Note: this uses the POSIX IO interfaces, unlike most of the other
- * functions in this library.  So sue me.  
+ * functions in this library.  So sue me.
  *
  * %Begin-Header%
- * This file may be redistributed under the terms of the GNU Public
- * License.
+ * This file may be redistributed under the terms of the GNU Library
+ * General Public License, version 2.
  * %End-Header%
  */
 
+/* Image types */
+#define E2IMAGE_RAW	1
+#define E2IMAGE_QCOW2	2
+
+/* Image flags */
+#define E2IMAGE_INSTALL_FLAG	1
+#define E2IMAGE_SCRAMBLE_FLAG	2
+#define E2IMAGE_IS_QCOW2_FLAG	3
 
 struct ext2_image_hdr {
 	__u32	magic_number;	/* This must be EXT2_ET_MAGIC_E2IMAGE */
@@ -24,7 +32,7 @@ struct ext2_image_hdr {
 	char	fs_uuid[16];	/* UUID of filesystem */
 	__u32	fs_blocksize;	/* Block size of the filesystem */
 	__u32	fs_reserved[8];
-	
+
 	__u32	image_device;	/* Device number of image file */
 	__u32	image_inode;	/* Inode number of image file */
 	__u32	image_time;	/* Time of image creation */
@@ -36,16 +44,3 @@ struct ext2_image_hdr {
 	__u32	offset_blockmap; /* Byte offset of the inode bitmaps */
 	__u32	offset_reserved[8];
 };
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	

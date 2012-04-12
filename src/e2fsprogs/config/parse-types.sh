@@ -1,15 +1,6 @@
 #!/bin/sh
 
-ASM_TYPES=/usr/include/asm/types.h
-
-if test ! -f $ASM_TYPES
-then
-    echo "" > asm_types.h
-    echo "No asm_types file found"
-    exit 1
-fi
-
-cat > /tmp/sed.script << "EOF"
+cat > sed.script << "EOF"
 /^#/d
 /^$/d
 s/__extension__ //
@@ -17,11 +8,24 @@ s/typedef \(.*\) __u\([1-9]*\);/#define __U\2_TYPEDEF \1/
 s/typedef \(.*\) __s\([1-9]*\);/#define __S\2_TYPEDEF \1/
 EOF
 
-gcc -E $ASM_TYPES | sed -f /tmp/sed.script | grep ^# > asm_types.h
+if test -z "$CC"; then
+    CC=gcc
+fi
+
+if test -z "$CPP"; then
+    CPP="$CC -E"
+fi
+
+echo '#include <asm/types.h>' | $CPP - | \
+    sed -f sed.script | grep '^#' > asm_types.h
+
+rm sed.script
 
 cp asm_types.h asm_types.c
 
 cat >> asm_types.c <<EOF
+#include <stdio.h>
+#include <stdlib.h>
 main(int argc, char **argv)
 {
 #ifdef __U8_TYPEDEF
@@ -102,9 +106,11 @@ main(int argc, char **argv)
 }
 EOF
 
-cc -o asm_types asm_types.c
-if ! ./asm_types 
+${BUILD_CC-${CC-gcc}} -o asm_types asm_types.c
+if ./asm_types
 then
+    true
+else
     echo "Problem detected with asm_types.h"
     echo "" > asm_types.h
 fi

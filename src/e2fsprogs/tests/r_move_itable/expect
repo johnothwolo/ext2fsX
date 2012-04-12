@@ -1,9 +1,9 @@
 mke2fs -q -F -o Linux -b 1024 -g 256 test.img 1024
 resize2fs -p test.img 10000
-Resizing the filesystem on ./test.img to 10000 (1k) blocks.
+Resizing the filesystem on test.img to 10000 (1k) blocks.
 Begin pass 1 (max = 35)
 Extending the inode table     ----------------------------------------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-The filesystem on ./test.img is now 9985 blocks long.
+The filesystem on test.img is now 9985 blocks long.
 
 Pass 1: Checking inodes, blocks, and sizes
 Pass 2: Checking directory structure
@@ -18,14 +18,14 @@ Filesystem volume name:   <none>
 Last mounted on:          <not available>
 Filesystem magic number:  0xEF53
 Filesystem revision #:    1 (dynamic)
-Filesystem features:      resize_inode dir_index filetype sparse_super
+Filesystem features:      ext_attr resize_inode dir_index filetype sparse_super
 Default mount options:    (none)
 Filesystem state:         clean
 Errors behavior:          Continue
 Filesystem OS type:       Linux
 Inode count:              1248
 Block count:              9985
-Reserved block count:     399
+Reserved block count:     497
 Free blocks:              8704
 Free inodes:              1237
 First block:              1
@@ -41,8 +41,8 @@ Check interval:           15552000 (6 months)
 Reserved blocks uid:      0
 Reserved blocks gid:      0
 First inode:              11
-Inode size:		  128
-Default directory hash:   tea
+Inode size:	          128
+Default directory hash:   half_md4
 
 
 Group 0: (Blocks 1-256)
@@ -297,10 +297,10 @@ Group 38: (Blocks 9729-9984)
   Free inodes: 1217-1248
 --------------------------------
 resize2fs -p test.img 20000
-Resizing the filesystem on ./test.img to 20000 (1k) blocks.
+Resizing the filesystem on test.img to 20000 (1k) blocks.
 Begin pass 1 (max = 39)
 Extending the inode table     ----------------------------------------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-The filesystem on ./test.img is now 19969 blocks long.
+The filesystem on test.img is now 19969 blocks long.
 
 Filesystem did not have a UUID; generating one.
 
@@ -309,24 +309,22 @@ Pass 2: Checking directory structure
 Pass 3: Checking directory connectivity
 Pass 4: Checking reference counts
 Pass 5: Checking group summary information
-
-test_filesys: ***** FILE SYSTEM WAS MODIFIED *****
 test_filesys: 11/2496 files (0.0% non-contiguous), 1644/19969 blocks
-Exit status is 1
+Exit status is 0
 dumpe2fs test.img
 
 Filesystem volume name:   <none>
 Last mounted on:          <not available>
 Filesystem magic number:  0xEF53
 Filesystem revision #:    1 (dynamic)
-Filesystem features:      resize_inode dir_index filetype sparse_super
+Filesystem features:      ext_attr resize_inode dir_index filetype sparse_super
 Default mount options:    (none)
 Filesystem state:         clean
 Errors behavior:          Continue
 Filesystem OS type:       Linux
 Inode count:              2496
 Block count:              19969
-Reserved block count:     599
+Reserved block count:     993
 Free blocks:              18325
 Free inodes:              2485
 First block:              1
@@ -342,8 +340,8 @@ Check interval:           15552000 (6 months)
 Reserved blocks uid:      0
 Reserved blocks gid:      0
 First inode:              11
-Inode size:		  128
-Default directory hash:   tea
+Inode size:	          128
+Default directory hash:   half_md4
 
 
 Group 0: (Blocks 1-256)
@@ -834,10 +832,10 @@ Group 77: (Blocks 19713-19968)
   Free inodes: 2465-2496
 --------------------------------
 resize2fs -p test.img 30000
-Resizing the filesystem on ./test.img to 30000 (1k) blocks.
+Resizing the filesystem on test.img to 30000 (1k) blocks.
 Begin pass 1 (max = 39)
 Extending the inode table     ----------------------------------------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-The filesystem on ./test.img is now 29953 blocks long.
+The filesystem on test.img is now 29953 blocks long.
 
 Filesystem did not have a UUID; generating one.
 
@@ -846,24 +844,22 @@ Pass 2: Checking directory structure
 Pass 3: Checking directory connectivity
 Pass 4: Checking reference counts
 Pass 5: Checking group summary information
-
-test_filesys: ***** FILE SYSTEM WAS MODIFIED *****
 test_filesys: 11/3744 files (0.0% non-contiguous), 2007/29953 blocks
-Exit status is 1
+Exit status is 0
 dumpe2fs test.img
 
 Filesystem volume name:   <none>
 Last mounted on:          <not available>
 Filesystem magic number:  0xEF53
 Filesystem revision #:    1 (dynamic)
-Filesystem features:      resize_inode dir_index filetype sparse_super
+Filesystem features:      ext_attr resize_inode dir_index filetype sparse_super
 Default mount options:    (none)
 Filesystem state:         clean
 Errors behavior:          Continue
 Filesystem OS type:       Linux
 Inode count:              3744
 Block count:              29953
-Reserved block count:     599
+Reserved block count:     1489
 Free blocks:              27946
 Free inodes:              3733
 First block:              1
@@ -879,8 +875,8 @@ Check interval:           15552000 (6 months)
 Reserved blocks uid:      0
 Reserved blocks gid:      0
 First inode:              11
-Inode size:		  128
-Default directory hash:   tea
+Inode size:	          128
+Default directory hash:   half_md4
 
 
 Group 0: (Blocks 1-256)
@@ -1607,10 +1603,10 @@ Group 116: (Blocks 29697-29952)
   Free inodes: 3713-3744
 --------------------------------
 resize2fs -p test.img 40000
-Resizing the filesystem on ./test.img to 40000 (1k) blocks.
+Resizing the filesystem on test.img to 40000 (1k) blocks.
 Begin pass 1 (max = 40)
 Extending the inode table     ----------------------------------------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-The filesystem on ./test.img is now 40000 blocks long.
+The filesystem on test.img is now 40000 blocks long.
 
 Filesystem did not have a UUID; generating one.
 
@@ -1619,24 +1615,22 @@ Pass 2: Checking directory structure
 Pass 3: Checking directory connectivity
 Pass 4: Checking reference counts
 Pass 5: Checking group summary information
-
-test_filesys: ***** FILE SYSTEM WAS MODIFIED *****
 test_filesys: 11/5024 files (0.0% non-contiguous), 2376/40000 blocks
-Exit status is 1
+Exit status is 0
 dumpe2fs test.img
 
 Filesystem volume name:   <none>
 Last mounted on:          <not available>
 Filesystem magic number:  0xEF53
 Filesystem revision #:    1 (dynamic)
-Filesystem features:      resize_inode dir_index filetype sparse_super
+Filesystem features:      ext_attr resize_inode dir_index filetype sparse_super
 Default mount options:    (none)
 Filesystem state:         clean
 Errors behavior:          Continue
 Filesystem OS type:       Linux
 Inode count:              5024
 Block count:              40000
-Reserved block count:     400
+Reserved block count:     1988
 Free blocks:              37624
 Free inodes:              5013
 First block:              1
@@ -1652,8 +1646,8 @@ Check interval:           15552000 (6 months)
 Reserved blocks uid:      0
 Reserved blocks gid:      0
 First inode:              11
-Inode size:		  128
-Default directory hash:   tea
+Inode size:	          128
+Default directory hash:   half_md4
 
 
 Group 0: (Blocks 1-256)
