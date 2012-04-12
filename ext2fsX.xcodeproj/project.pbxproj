@@ -64,7 +64,6 @@
 		55F64099153600FA00F6E73D /* e2fsck.8 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55F64098153600FA00F6E73D /* e2fsck.8 */; };
 		55F6409D1536010A00F6E73D /* argv_parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EC413C15EBE006C2DAD /* argv_parse.c */; };
 		55F6409E1536010D00F6E73D /* badblocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EC613C15EBE006C2DAD /* badblocks.c */; };
-		55F6409F1536016B00F6E73D /* dict.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EC913C15EBE006C2DAD /* dict.c */; };
 		55F640A01536016B00F6E73D /* dirinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7ECB13C15EBE006C2DAD /* dirinfo.c */; };
 		55F640A11536016B00F6E73D /* dx_dirinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7ECC13C15EBE006C2DAD /* dx_dirinfo.c */; };
 		55F640A21536016B00F6E73D /* e2fsck.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7ECE13C15EBE006C2DAD /* e2fsck.c */; };
@@ -275,6 +274,18 @@
 		55F644FA1537616600F6E73D /* icount.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642E81537562200F6E73D /* icount.c */; };
 		55F644FD153762D500F6E73D /* libquota.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55F644EF153760A100F6E73D /* libquota.a */; };
 		55F644FE1537631000F6E73D /* mkjournal.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F6430D1537562300F6E73D /* mkjournal.c */; };
+		55F645001537650F00F6E73D /* default_profile.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F644FF1537650E00F6E73D /* default_profile.c */; };
+		55F64501153765E400F6E73D /* ismounted.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642FA1537562300F6E73D /* ismounted.c */; };
+		55F64505153767CD00F6E73D /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F64502153767C900F6E73D /* crc32.c */; };
+		55F64506153767F200F6E73D /* libe2p.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E5A59B13C1A55600BF3DD3 /* libe2p.2.1.dylib */; };
+		55F6450A1537686A00F6E73D /* quota.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F645091537686900F6E73D /* quota.c */; };
+		55F6450C1537690E00F6E73D /* getsize.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F642E41537562200F6E73D /* getsize.c */; };
+		55F6450E1537695400F6E73D /* sigcatcher.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F6450D1537695200F6E73D /* sigcatcher.c */; };
+		55F6451015376A3000F6E73D /* logfile.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F6450F15376A2E00F6E73D /* logfile.c */; };
+		55F6451315376A6F00F6E73D /* libquota.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55F644EF153760A100F6E73D /* libquota.a */; };
+		55F6451415376A9C00F6E73D /* libss.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577058E13C3CD5600457317 /* libss.1.0.dylib */; };
+		55F6451A15376B3F00F6E73D /* prof_err.c in Sources */ = {isa = PBXBuildFile; fileRef = 55F6451815376B3E00F6E73D /* prof_err.c */; };
+		55F6451B15376C3100F6E73D /* dict.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7EC913C15EBE006C2DAD /* dict.c */; };
 		D32B1F8E09946A3B001A78A0 /* ext2_apple.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B4645704099F8700A80164 /* ext2_apple.h */; };
 		D32B203D099470A7001A78A0 /* kext_load.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485770405AC0900A80164 /* kext_load.c */; };
 		D32B2040099470A7001A78A0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32E761D05FD2919002928A8 /* SystemConfiguration.framework */; };
@@ -548,6 +559,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 55F644EE153760A100F6E73D;
 			remoteInfo = quota;
+		};
+		55F64507153767F900F6E73D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55E5A59A13C1A55600BF3DD3;
+			remoteInfo = e2p;
+		};
+		55F6451115376A6A00F6E73D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55F644EE153760A100F6E73D;
+			remoteInfo = quota;
+		};
+		55F6451515376AA000F6E73D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5577058D13C3CD5600457317;
+			remoteInfo = ss;
 		};
 		55FB838E13C162CC006C2DAD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -899,6 +931,15 @@
 		55F644E71537608E00F6E73D /* quotaio_v2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = quotaio_v2.c; sourceTree = "<group>"; };
 		55F644E81537608E00F6E73D /* quotaio_v2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = quotaio_v2.h; sourceTree = "<group>"; };
 		55F644EF153760A100F6E73D /* libquota.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libquota.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		55F644FF1537650E00F6E73D /* default_profile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = default_profile.c; sourceTree = "<group>"; };
+		55F64502153767C900F6E73D /* crc32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = crc32.c; sourceTree = "<group>"; };
+		55F64503153767CA00F6E73D /* crc32defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crc32defs.h; sourceTree = "<group>"; };
+		55F64504153767CC00F6E73D /* crc32table.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crc32table.h; sourceTree = "<group>"; };
+		55F645091537686900F6E73D /* quota.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = quota.c; sourceTree = "<group>"; };
+		55F6450D1537695200F6E73D /* sigcatcher.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sigcatcher.c; sourceTree = "<group>"; };
+		55F6450F15376A2E00F6E73D /* logfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = logfile.c; sourceTree = "<group>"; };
+		55F6451815376B3E00F6E73D /* prof_err.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = prof_err.c; sourceTree = "<group>"; };
+		55F6451915376B3E00F6E73D /* prof_err.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prof_err.h; sourceTree = "<group>"; };
 		55FB784C13C15EBB006C2DAD /* dkcksum.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkcksum.c; sourceTree = "<group>"; };
 		55FB784D13C15EBB006C2DAD /* dkdisklabel.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkdisklabel.c; sourceTree = "<group>"; };
 		55FB784E13C15EBB006C2DAD /* dkopen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dkopen.c; sourceTree = "<group>"; };
@@ -2012,6 +2053,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F64506153767F200F6E73D /* libe2p.2.1.dylib in Frameworks */,
 				55F644F91537613900F6E73D /* libquota.a in Frameworks */,
 				55F640ED1536180100F6E73D /* libblkid.2.0.dylib in Frameworks */,
 				55F640BF15360AD600F6E73D /* libcom_err.dylib in Frameworks */,
@@ -2031,6 +2073,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F6451315376A6F00F6E73D /* libquota.a in Frameworks */,
 				55F6410915362C2000F6E73D /* libe2p.2.1.dylib in Frameworks */,
 				55F6410515362BE400F6E73D /* libext2fs.2.1.dylib in Frameworks */,
 				55F6410615362BFB00F6E73D /* libcom_err.dylib in Frameworks */,
@@ -2041,6 +2084,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F6451415376A9C00F6E73D /* libss.1.0.dylib in Frameworks */,
 				55F644FD153762D500F6E73D /* libquota.a in Frameworks */,
 				55F641241536320200F6E73D /* libblkid.2.0.dylib in Frameworks */,
 				55F6411D1536316100F6E73D /* libe2p.2.1.dylib in Frameworks */,
@@ -2737,6 +2781,12 @@
 		55FB7EC213C15EBE006C2DAD /* e2fsck */ = {
 			isa = PBXGroup;
 			children = (
+				55F6450F15376A2E00F6E73D /* logfile.c */,
+				55F6450D1537695200F6E73D /* sigcatcher.c */,
+				55F645091537686900F6E73D /* quota.c */,
+				55F64502153767C900F6E73D /* crc32.c */,
+				55F64503153767CA00F6E73D /* crc32defs.h */,
+				55F64504153767CC00F6E73D /* crc32table.h */,
 				55F640C315360B8C00F6E73D /* prof_err.c */,
 				55F640C415360B8D00F6E73D /* prof_err.h */,
 				55FB7EC413C15EBE006C2DAD /* argv_parse.c */,
@@ -3231,6 +3281,9 @@
 		55FB80C813C15EBF006C2DAD /* misc */ = {
 			isa = PBXGroup;
 			children = (
+				55F6451815376B3E00F6E73D /* prof_err.c */,
+				55F6451915376B3E00F6E73D /* prof_err.h */,
+				55F644FF1537650E00F6E73D /* default_profile.c */,
 				55FB80CA13C15EBF006C2DAD /* badblocks.8.in */,
 				55FB80CB13C15EBF006C2DAD /* badblocks.c */,
 				55FB80CC13C15EBF006C2DAD /* base_device.c */,
@@ -4949,6 +5002,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				55F64508153767F900F6E73D /* PBXTargetDependency */,
 				55F644F81537613200F6E73D /* PBXTargetDependency */,
 				55F640EC153617F900F6E73D /* PBXTargetDependency */,
 				55F640D1153614E200F6E73D /* PBXTargetDependency */,
@@ -4987,6 +5041,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				55F6451215376A6A00F6E73D /* PBXTargetDependency */,
 				55F6410815362C1A00F6E73D /* PBXTargetDependency */,
 				55F6410415362BDC00F6E73D /* PBXTargetDependency */,
 			);
@@ -5006,6 +5061,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				55F6451615376AA000F6E73D /* PBXTargetDependency */,
 				55F644FC153762CF00F6E73D /* PBXTargetDependency */,
 				55F64123153631FD00F6E73D /* PBXTargetDependency */,
 				55F6411A1536315900F6E73D /* PBXTargetDependency */,
@@ -5446,6 +5502,8 @@
 				55F644D115375C3900F6E73D /* closefs.c in Sources */,
 				55F644FA1537616600F6E73D /* icount.c in Sources */,
 				55F644FE1537631000F6E73D /* mkjournal.c in Sources */,
+				55F64501153765E400F6E73D /* ismounted.c in Sources */,
+				55F6450C1537690E00F6E73D /* getsize.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5481,7 +5539,6 @@
 			files = (
 				55F6409D1536010A00F6E73D /* argv_parse.c in Sources */,
 				55F6409E1536010D00F6E73D /* badblocks.c in Sources */,
-				55F6409F1536016B00F6E73D /* dict.c in Sources */,
 				55F640A01536016B00F6E73D /* dirinfo.c in Sources */,
 				55F640A11536016B00F6E73D /* dx_dirinfo.c in Sources */,
 				55F640A21536016B00F6E73D /* e2fsck.c in Sources */,
@@ -5508,6 +5565,10 @@
 				55F640C515360B8F00F6E73D /* prof_err.c in Sources */,
 				55F640D31536152500F6E73D /* journal.c in Sources */,
 				55F640D4153615DE00F6E73D /* unix.c in Sources */,
+				55F64505153767CD00F6E73D /* crc32.c in Sources */,
+				55F6450A1537686A00F6E73D /* quota.c in Sources */,
+				55F6450E1537695400F6E73D /* sigcatcher.c in Sources */,
+				55F6451015376A3000F6E73D /* logfile.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5549,6 +5610,8 @@
 				55F641181536304200F6E73D /* mke2fs.c in Sources */,
 				55F64120153631B600F6E73D /* util.c in Sources */,
 				55F641251536324000F6E73D /* profile.c in Sources */,
+				55F645001537650F00F6E73D /* default_profile.c in Sources */,
+				55F6451A15376B3F00F6E73D /* prof_err.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5568,6 +5631,7 @@
 				55F644F41537610F00F6E73D /* quotaio.c in Sources */,
 				55F644F51537611200F6E73D /* quotaio_tree.c in Sources */,
 				55F644F61537611900F6E73D /* quotaio_v2.c in Sources */,
+				55F6451B15376C3100F6E73D /* dict.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5760,6 +5824,21 @@
 			isa = PBXTargetDependency;
 			target = 55F644EE153760A100F6E73D /* quota */;
 			targetProxy = 55F644FB153762CF00F6E73D /* PBXContainerItemProxy */;
+		};
+		55F64508153767F900F6E73D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55E5A59A13C1A55600BF3DD3 /* e2p */;
+			targetProxy = 55F64507153767F900F6E73D /* PBXContainerItemProxy */;
+		};
+		55F6451215376A6A00F6E73D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55F644EE153760A100F6E73D /* quota */;
+			targetProxy = 55F6451115376A6A00F6E73D /* PBXContainerItemProxy */;
+		};
+		55F6451615376AA000F6E73D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5577058D13C3CD5600457317 /* ss */;
+			targetProxy = 55F6451515376AA000F6E73D /* PBXContainerItemProxy */;
 		};
 		55FB838F13C162CC006C2DAD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

@@ -283,7 +283,7 @@ errcode_t ext2fs_get_device_size(const char *file, int blocksize,
 
 #endif /* WIN32 */
 
-#ifdef DEBUG
+#ifdef DEBUG_TOOL
 int main(int argc, char **argv)
 {
 	blk_t	blocks;
