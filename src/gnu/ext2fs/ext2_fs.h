@@ -545,7 +545,21 @@ struct ext2_super_block {
 	__u32	s_default_mount_opts;
 	__u32	s_first_meta_bg;	/* First metablock group */
 	__u32	s_mkfs_time;		/* When the filesystem was created */
-	__u32	s_reserved[189];	/* Padding to the end of the block */
+	__u32	s_jnl_blks[17];   /* backup of the journal inode */
+	__u32	s_bcount_hi;      /* block count */
+	__u32	s_rbcount_hi;     /* reserved blocks count */
+	__u32	s_fbcount_hi;     /* free blocks count */
+	__u16	s_min_extra_isize;/* all inodes have at least some bytes */
+	__u16	s_want_extra_isize; /* inodes must reserve some bytes */
+	__u32	s_flags;	  /* miscellaneous flags */
+	__u16	s_raid_stride;    /* RAID stride */
+	__u16	s_mmpintv;	/* number of seconds to wait in MMP checking */
+	uint64_t  s_mmpblk;	 /* block for multi-mount protection */
+	__u32	s_raid_stripe_wid;/* blocks on all data disks (N * stride) */
+	__u8	s_log_gpf;	/* FLEX_BG group size */ 
+	__u8	s_char_pad2;
+	__u16	s_pad;
+	__u32	s_reserved[162];	/* Padding to the end of the block */
 };
 
 #ifdef __KERNEL__
