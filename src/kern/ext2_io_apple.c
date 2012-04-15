@@ -343,7 +343,7 @@ ext2_blkalloc(ip, lbn, size, cred, flags)
 	 * Determine the number of levels of indirection.
 	 */
 	pref = 0;
-	if (error = ext2_getlbns(vp, lbn, indirs, &num))
+	if ((error = ext2_getlbns(vp, lbn, indirs, &num)))
 		ext2_trace_return(error);
 
 	if(num < 1) {
@@ -380,7 +380,7 @@ ext2_blkalloc(ip, lbn, size, cred, flags)
 		 * Write synchronously so that indirect blocks
 		 * never point at garbage.
 		 */
-		if (error = buf_bwrite(bp))
+		if ((error = buf_bwrite(bp)))
 			goto fail;
         IXLOCK(ip);
 		allocib = &ip->i_ib[indirs[0].in_off];
@@ -434,7 +434,7 @@ ext2_blkalloc(ip, lbn, size, cred, flags)
 		 * Write synchronously so that indirect blocks
 		 * never point at garbage.
 		 */
-		if (error = buf_bwrite(nbp)) {
+		if ((error = buf_bwrite(nbp))) {
 			buf_brelse(bp);
 			goto fail;
 		}
@@ -459,8 +459,8 @@ ext2_blkalloc(ip, lbn, size, cred, flags)
 	if (nb == 0) {
 		IXLOCK(ip);
         pref = ext2_blkpref(ip, lbn, indirs[i].in_off, &bap[0], buf_lblkno(bp));
-		if (error = ext2_alloc(ip,
-		    lbn, pref, (int)EXT2_BLOCK_SIZE(fs), cred, &newb)) {
+		if ((error = ext2_alloc(ip,
+		    lbn, pref, (int)EXT2_BLOCK_SIZE(fs), cred, &newb))) {
 			IULOCK(ip);
             buf_brelse(bp);
 			goto fail;
