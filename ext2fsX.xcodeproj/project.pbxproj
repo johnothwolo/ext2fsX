@@ -5368,12 +5368,12 @@
 				55E5A54B13C1A17400BF3DD3 /* ext2fs */,
 				55E5A59A13C1A55600BF3DD3 /* e2p */,
 				5577058D13C3CD5600457317 /* ss */,
-				55F64092153600FA00F6E73D /* e2fsck */,
 				55F640D91536169400F6E73D /* blkid */,
+				55F644EE153760A100F6E73D /* quota */,
+				55F64092153600FA00F6E73D /* e2fsck */,
 				55F640F21536284700F6E73D /* resize2fs */,
 				55F6410D1536301D00F6E73D /* mke2fs */,
 				55F6412F153637CF00F6E73D /* e2label */,
-				55F644EE153760A100F6E73D /* quota */,
 				55F6451F1537781800F6E73D /* lsattr */,
 			);
 		};
@@ -6027,7 +6027,6 @@
 				DYLIB_CURRENT_VERSION = 1.0;
 				EXECUTABLE_PREFIX = lib;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_ERRNO_H,
@@ -6049,7 +6048,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_CURRENT_VERSION = 1.0;
 				EXECUTABLE_PREFIX = lib;
-				GCC_MODEL_TUNING = G5;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_ERRNO_H,
 					HAVE_UNISTD_H,
@@ -6059,7 +6058,6 @@
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/ss;
 				PRODUCT_NAME = "ss.${DYLIB_CURRENT_VERSION}";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/ss;
-				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -6123,6 +6121,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 2;
 				DYLIB_CURRENT_VERSION = 2.1;
 				EXECUTABLE_PREFIX = lib;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_UNISTD_H,
@@ -6206,6 +6205,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 2;
 				DYLIB_CURRENT_VERSION = 2.1;
 				EXECUTABLE_PREFIX = lib;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					HAVE_UNISTD_H,
@@ -6333,6 +6333,7 @@
 				DYLIB_CURRENT_VERSION = 2.0;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -7237,6 +7238,7 @@
 				55F644F2153760A200F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55F645271537781D00F6E73D /* Build configuration list for PBXNativeTarget "lsattr" */ = {
 			isa = XCConfigurationList;
@@ -7245,6 +7247,7 @@
 				55F645291537781D00F6E73D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D32B1FA609946A3B001A78A0 /* Build configuration list for PBXNativeTarget "ext2_kext" */ = {
 			isa = XCConfigurationList;
