@@ -35,6 +35,26 @@
 		551BADBB13C1596300080BD5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D376F3C7040DF6C200A80164 /* InfoPlist.strings */; };
 		5577045813C3CCB400457317 /* libcom_err.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577045713C3CCB400457317 /* libcom_err.dylib */; };
 		557705B213C3CEF800457317 /* libcom_err.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577045713C3CCB400457317 /* libcom_err.dylib */; };
+		5578395F153C95B7003B68F6 /* ExtFSMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB832313C15EC1006C2DAD /* ExtFSMedia.m */; };
+		55783960153C95BE003B68F6 /* ExtFSMediaController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB832513C15EC1006C2DAD /* ExtFSMediaController.m */; };
+		55783961153C95C2003B68F6 /* ExtFSMediaPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB832713C15EC1006C2DAD /* ExtFSMediaPrivate.m */; };
+		55783962153C95C6003B68F6 /* ExtFSMediaSMART.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB832913C15EC1006C2DAD /* ExtFSMediaSMART.m */; };
+		55783963153C95CE003B68F6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55FB832B13C15EC1006C2DAD /* Localizable.strings */; };
+		55783964153C95D6003B68F6 /* efsprobe.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833013C15EC1006C2DAD /* efsprobe.m */; };
+		55783965153C95E2003B68F6 /* efssmartd.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833213C15EC1006C2DAD /* efssmartd.m */; };
+		55783966153C95E9003B68F6 /* SMARTAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833713C15EC1006C2DAD /* SMARTAlertController.m */; };
+		55783967153C95F3003B68F6 /* SMARTAlert.nib in Resources */ = {isa = PBXBuildFile; fileRef = 55FB833513C15EC1006C2DAD /* SMARTAlert.nib */; };
+		55783968153C965A003B68F6 /* ExtFSManagerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833D13C15EC1006C2DAD /* ExtFSManagerAdditions.m */; };
+		55783969153C9667003B68F6 /* Eject.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834313C15EC1006C2DAD /* Eject.icns */; };
+		5578396A153C9667003B68F6 /* ExtFSManager.nib in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834513C15EC1006C2DAD /* ExtFSManager.nib */; };
+		5578396B153C9667003B68F6 /* Info.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834813C15EC1006C2DAD /* Info.icns */; };
+		5578396C153C9667003B68F6 /* Mount.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834913C15EC1006C2DAD /* Mount.icns */; };
+		5578396D153C9667003B68F6 /* Options.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834A13C15EC1006C2DAD /* Options.icns */; };
+		5578396E153C9667003B68F6 /* tux.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834B13C15EC1006C2DAD /* tux.icns */; };
+		5578396F153C9667003B68F6 /* Unmount.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834C13C15EC1006C2DAD /* Unmount.icns */; };
+		55783970153C966E003B68F6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55FB833F13C15EC1006C2DAD /* InfoPlist.strings */; };
+		55783971153C9672003B68F6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834113C15EC1006C2DAD /* Localizable.strings */; };
+		55783972153C9744003B68F6 /* ExtFSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833B13C15EC1006C2DAD /* ExtFSManager.m */; };
 		55E5A54713C19FB800BF3DD3 /* newfs_ext2.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB838213C15EC1006C2DAD /* newfs_ext2.c */; };
 		55E5A59F13C1A57D00BF3DD3 /* feature.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7FB813C15EBF006C2DAD /* feature.c */; };
 		55E5A5A013C1A57D00BF3DD3 /* fgetflags.c in Sources */ = {isa = PBXBuildFile; fileRef = 55FB7FB913C15EBF006C2DAD /* fgetflags.c */; };
@@ -5401,6 +5421,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55783969153C9667003B68F6 /* Eject.icns in Resources */,
+				5578396A153C9667003B68F6 /* ExtFSManager.nib in Resources */,
+				5578396B153C9667003B68F6 /* Info.icns in Resources */,
+				5578396C153C9667003B68F6 /* Mount.icns in Resources */,
+				5578396D153C9667003B68F6 /* Options.icns in Resources */,
+				5578396E153C9667003B68F6 /* tux.icns in Resources */,
+				5578396F153C9667003B68F6 /* Unmount.icns in Resources */,
+				55783970153C966E003B68F6 /* InfoPlist.strings in Resources */,
+				55783971153C9672003B68F6 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5408,6 +5437,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55783963153C95CE003B68F6 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5415,6 +5445,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55783967153C95F3003B68F6 /* SMARTAlert.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5755,6 +5786,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55783968153C965A003B68F6 /* ExtFSManagerAdditions.m in Sources */,
+				55783972153C9744003B68F6 /* ExtFSManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5762,6 +5795,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5578395F153C95B7003B68F6 /* ExtFSMedia.m in Sources */,
+				55783960153C95BE003B68F6 /* ExtFSMediaController.m in Sources */,
+				55783961153C95C2003B68F6 /* ExtFSMediaPrivate.m in Sources */,
+				55783962153C95C6003B68F6 /* ExtFSMediaSMART.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5769,6 +5806,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55783964153C95D6003B68F6 /* efsprobe.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5776,6 +5814,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55783965153C95E2003B68F6 /* efssmartd.m in Sources */,
+				55783966153C95E9003B68F6 /* SMARTAlertController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
