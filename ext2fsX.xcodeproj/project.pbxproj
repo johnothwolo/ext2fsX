@@ -33,6 +33,9 @@
 /* Begin PBXBuildFile section */
 		551BADB913C158D400080BD5 /* ext2fs.util in CopyFiles */ = {isa = PBXBuildFile; fileRef = D32B209F09947656001A78A0 /* ext2fs.util */; };
 		551BADBB13C1596300080BD5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D376F3C7040DF6C200A80164 /* InfoPlist.strings */; };
+		5528A0C7153F1F7C00765DA1 /* e2fsck.conf.5 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5528A0C6153F1F7100765DA1 /* e2fsck.conf.5 */; };
+		5528A0CB153F1FF600765DA1 /* mke2fs.conf.5 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5528A0CA153F1FDE00765DA1 /* mke2fs.conf.5 */; };
+		5528A0CD153F200B00765DA1 /* mke2fs.conf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5528A0C9153F1FDE00765DA1 /* mke2fs.conf */; };
 		5577045813C3CCB400457317 /* libcom_err.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577045713C3CCB400457317 /* libcom_err.dylib */; };
 		557705B213C3CEF800457317 /* libcom_err.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5577045713C3CCB400457317 /* libcom_err.dylib */; };
 		5578395F153C95B7003B68F6 /* ExtFSMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB832313C15EC1006C2DAD /* ExtFSMedia.m */; };
@@ -673,10 +676,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5528A0C5153F1EE100765DA1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/local/share/man/man5/;
+			dstSubfolderSpec = 0;
+			files = (
+				5528A0C7153F1F7C00765DA1 /* e2fsck.conf.5 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		5528A0C8153F1FC200765DA1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/local/share/man/man5/;
+			dstSubfolderSpec = 0;
+			files = (
+				5528A0CB153F1FF600765DA1 /* mke2fs.conf.5 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		5528A0CC153F1FFC00765DA1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/local/etc/;
+			dstSubfolderSpec = 0;
+			files = (
+				5528A0CD153F200B00765DA1 /* mke2fs.conf in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		55F64091153600FA00F6E73D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man8/;
+			dstPath = /usr/local/share/man/man8/;
 			dstSubfolderSpec = 0;
 			files = (
 				55F64099153600FA00F6E73D /* e2fsck.8 in CopyFiles */,
@@ -696,7 +729,7 @@
 		55F6410C1536301D00F6E73D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man8/;
+			dstPath = /usr/local/share/man/man8/;
 			dstSubfolderSpec = 0;
 			files = (
 				55F641141536302000F6E73D /* mke2fs.8 in CopyFiles */,
@@ -748,6 +781,9 @@
 /* Begin PBXFileReference section */
 		551BAD7D13C157B700080BD5 /* ext2.fs */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ext2.fs; sourceTree = BUILT_PRODUCTS_DIR; };
 		551BAD7E13C157B700080BD5 /* ext2_fs1-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ext2_fs1-Info.plist"; sourceTree = "<group>"; };
+		5528A0C6153F1F7100765DA1 /* e2fsck.conf.5 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2fsck.conf.5; sourceTree = "<group>"; };
+		5528A0C9153F1FDE00765DA1 /* mke2fs.conf */ = {isa = PBXFileReference; lastKnownFileType = text; path = mke2fs.conf; sourceTree = "<group>"; };
+		5528A0CA153F1FDE00765DA1 /* mke2fs.conf.5 */ = {isa = PBXFileReference; lastKnownFileType = text; path = mke2fs.conf.5; sourceTree = "<group>"; };
 		5577045713C3CCB400457317 /* libcom_err.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcom_err.dylib; path = usr/lib/libcom_err.dylib; sourceTree = SDKROOT; };
 		5577058E13C3CD5600457317 /* libss.1.0.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libss.1.0.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		55E5A54C13C1A17400BF3DD3 /* libext2fs.2.1.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libext2fs.2.1.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2292,6 +2328,7 @@
 			isa = PBXGroup;
 			children = (
 				55F64098153600FA00F6E73D /* e2fsck.8 */,
+				5528A0C6153F1F7100765DA1 /* e2fsck.conf.5 */,
 			);
 			path = e2fsck;
 			sourceTree = "<group>";
@@ -2308,6 +2345,8 @@
 			isa = PBXGroup;
 			children = (
 				55F641131536302000F6E73D /* mke2fs.8 */,
+				5528A0C9153F1FDE00765DA1 /* mke2fs.conf */,
+				5528A0CA153F1FDE00765DA1 /* mke2fs.conf.5 */,
 			);
 			path = mke2fs;
 			sourceTree = "<group>";
@@ -5048,6 +5087,7 @@
 				55F6408F153600FA00F6E73D /* Sources */,
 				55F64090153600FA00F6E73D /* Frameworks */,
 				55F64091153600FA00F6E73D /* CopyFiles */,
+				5528A0C5153F1EE100765DA1 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -5107,6 +5147,8 @@
 				55F6410A1536301D00F6E73D /* Sources */,
 				55F6410B1536301D00F6E73D /* Frameworks */,
 				55F6410C1536301D00F6E73D /* CopyFiles */,
+				5528A0C8153F1FC200765DA1 /* CopyFiles */,
+				5528A0CC153F1FFC00765DA1 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -6304,7 +6346,7 @@
 					"-DHAVE_SETJMP_H",
 					"-DHAVE_SYS_STAT_H",
 					"-DHAVE_TERMIOS_H",
-					"-DROOT_SYSCONFDIR=\\\"/usr/local/share\\\"",
+					"-DROOT_SYSCONFDIR=\\\"/usr/local/etc\\\"",
 					"-DNO_INLINE_FUNCS",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6336,7 +6378,7 @@
 					"-DHAVE_SYS_IOCTL_H",
 					"-DHAVE_SYS_STAT_H",
 					"-DHAVE_TERMIOS_H",
-					"-DROOT_SYSCONFDIR=\\\"/usr/local/share\\\"",
+					"-DROOT_SYSCONFDIR=\\\"/usr/local/etc\\\"",
 					"-DNO_INLINE_FUNCS",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7126,7 +7168,7 @@
 					"-DHAVE_STRCASECMP",
 					"-DEXT2FS_REQUIRE_486",
 					"-DHAVE_TERMIOS_H",
-					"-DROOT_SYSCONFDIR=\\\"/usr/local/share\\\"",
+					"-DROOT_SYSCONFDIR=\\\"/usr/local/etc\\\"",
 					"-DHAVE_SYS_DISK_H",
 					"-DHAVE_SYS_QUEUE_H",
 					"-DNO_INLINE_FUNCS",
@@ -7172,7 +7214,7 @@
 					"-DHAVE_STRCASECMP",
 					"-DEXT2FS_REQUIRE_486",
 					"-DHAVE_TERMIOS_H",
-					"-DROOT_SYSCONFDIR=\\\"/usr/local/share\\\"",
+					"-DROOT_SYSCONFDIR=\\\"/usr/local/etc\\\"",
 					"-DHAVE_SYS_DISK_H",
 					"-DHAVE_SYS_QUEUE_H",
 					"-DNO_INLINE_FUNCS",
