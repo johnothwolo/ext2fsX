@@ -97,6 +97,10 @@ static const char vwhatid[] __attribute__ ((unused)) =
 #include <gnu/ext2fs/fs.h>
 #include <gnu/ext2fs/ext2_extern.h>
 
+#ifndef ISWHITEOUT
+#define ISWHITEOUT 0x20000
+#endif
+
 #ifdef EXT_KNOTE
 #define vnop_kqfilter_args vnop_kqfilt_add_args
 // Unsupported KPI
