@@ -44,8 +44,6 @@ There should only be one instance of this class.
 */
 @interface ExtFSMediaController : NSObject <ExtFSMCP>
 {
-@private
-   void *e_lock;
    id e_media;
    id e_pending;
    id e_delegate;
@@ -73,7 +71,7 @@ disk and each partition on a disk. This is a snapshot in time,
 media could be added or removed the moment after return.
 @result Count of media objects.
 */
-- (unsigned)mediaCount;
+- (NSUInteger)mediaCount;
 /*!
 @method media
 @abstract Access all media objects.
@@ -289,7 +287,7 @@ containing the filesystem name.
 @param type A valid ExtFSType id.
 @result Filesystem name or nil if the type is invalid.
 */
-const char* EFSNameFromType(int type);
+const char* EFSNameFromType(ExtFSType type);
 /*!
 @function EFSNSNameFromType
 @abstract Converts a filesystem type id to a NSString
@@ -297,7 +295,7 @@ containing the filesystem name.
 @param type A valid ExtFSType id.
 @result Filesystem name or nil if the type is invalid.
 */
-NSString* EFSNSNameFromType(unsigned long type);
+NSString* EFSNSNameFromType(ExtFSType type);
 
 /*!
 @function EFSNSPrettyNameFromType
@@ -307,7 +305,7 @@ to a user.
 @param type A valid ExtFSType id.
 @result Filesystem name or nil if the type is invalid.
 */
-NSString* EFSNSPrettyNameFromType(unsigned long type);
+NSString* EFSNSPrettyNameFromType(ExtFSType type);
 
 /*!
 @function EFSIOTransportNameFromType

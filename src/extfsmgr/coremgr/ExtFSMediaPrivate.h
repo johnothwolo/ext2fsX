@@ -29,6 +29,17 @@
 
 #import "ExtFSMedia.h"
 #import "ExtFSMediaController.h"
+#include <sys/mount.h>
+
+enum ExtFSMediaFlags : uint32_t;
+
+@interface ExtFSMediaController ()
+{
+@private
+	void *e_lock;
+
+}
+@end
 
 @interface ExtFSMediaController (Private)
 - (void)postNotification:(NSArray*)args;
@@ -46,6 +57,31 @@ withObject:args waitUntilDone:NO]; \
 #define EXTFS_DM_BNDL_ID @"net.sourceforge.ext2fsx.ExtFSDiskManager"
 #endif
 #define EFS_PROBE_RSRC @"efsprobe"
+
+@interface ExtFSMedia ()
+{
+@private
+	void *e_lock;
+	time_t e_lastSMARTUpdate;
+	int e_smartStatus;
+	ExtFSIOTransportType e_ioTransport;
+	enum ExtFSMediaFlags e_attributeFlags;
+	NSString *e_ioregName;
+	ExtFSMedia *e_parent;
+	NSDictionary *e_iconDesc;
+	ExtFSOpticalMediaType e_opticalType;
+	NSDictionary *e_media;
+	NSString *e_where, *e_volName, *e_bsdName;
+	uint64_t e_size, e_blockCount, e_blockAvail;
+	uint32_t e_devBlockSize, e_fsBlockSize,
+	e_volCaps, e_dirCount;
+	int64_t e_fileCount;
+	time_t e_lastFSUpdate;
+	ExtFSType e_fsType;
+	NSImage* e_icon;
+	io_object_t e_smartService;
+}
+@end
 
 @interface ExtFSMedia (ExtFSMediaControllerPrivate)
 - (BOOL)updateAttributesFromIOService:(io_service_t)service;
@@ -135,7 +171,7 @@ __private_extern__ void PantherInitSMART();
 @constant kfsNoMount Media cannot be mounted (partition map, driver partition, etc).
 @constant kfsPermsEnabled Filesystem permissions are in effect.
 */
-enum {
+typedef NS_OPTIONS(uint32_t, ExtFSMediaFlags) {
    kfsDiskArb		= (1<<0), /* Mount/unmount with Disk Arb */
    kfsMounted		= (1<<1),
    kfsWritable		= (1<<2),

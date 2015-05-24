@@ -1182,7 +1182,7 @@ static BOOL PlayRestoreActions(ExtFSMedia *m)
     return (played);
 }
 
-#define ELOG(f) NSLog(@"EFSM: %@\n")
+#define ELOG(f) NSLog(@"EFSM: %@\n", f)
 #define ELOG1(f,a) NSLog((f), "EFSM", __LINE__, (a))
 #define STRING_ERROR_ALLOC_MEM @"Memory alloc failed"
 

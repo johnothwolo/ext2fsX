@@ -42,7 +42,7 @@
 @constant fsTypeNTFS NTFS filesystem id.
 @constant fsTypeUnknown Unknown filesystem id.
 */
-typedef enum {
+typedef NS_ENUM(NSInteger, ExtFSType) {
    fsTypeExt2 = 0,
    fsTypeExt3 = 1,
    fsTypeHFS  = 2,
@@ -57,7 +57,7 @@ typedef enum {
    fsTypeNTFS  = 11,
    fsTypeUnknown = 12,
    fsTypeNULL
-}ExtFSType;
+};
 
 /*!
 @enum ExtFSType
@@ -74,7 +74,7 @@ typedef enum {
 @constant efsIOTransportTypeFibreChannel FibreChannel bus transport id.
 @constant efsIOTransportTypeUnknown Unknown bus transport id.
 */
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, ExtFSIOTransportType) {
     efsIOTransportTypeInternal = (1<<0),
     efsIOTransportTypeExternal = (1<<1),
     efsIOTransportTypeVirtual  = (1<<2),
@@ -87,7 +87,7 @@ typedef enum {
     efsIOTransportTypeSATA     = (1<<14),
     efsIOTransportTypeFibreChannel = (1<<15),
     efsIOTransportTypeUnknown  = (1<<31)
-}ExtFSIOTransportType;
+};
 
 /*!
 @enum ExtFSOpticalMediaType
@@ -103,7 +103,7 @@ typedef enum {
 @constant efsOpticalTypeDVDRAM DVD-RAM
 @constant efsOpticalTypeUnknown Unknown optical disc.
 */
-typedef enum {
+typedef NS_ENUM(short, ExtFSOpticalMediaType) {
     efsOpticalTypeCD        = 0,
     efsOpticalTypeCDR       = 1,
     efsOpticalTypeCDRW      = 2,
@@ -116,7 +116,7 @@ typedef enum {
     
     efsOpticalTypeUnknown   = 32767
     
-}ExtFSOpticalMediaType;
+};
 
 static __inline__ BOOL
 IsOpticalCDMedia(ExtFSOpticalMediaType type)
@@ -130,9 +130,6 @@ IsOpticalDVDMedia(ExtFSOpticalMediaType type)
     return (type >= efsOpticalTypeDVD && type <= efsOpticalTypeDVDRAM);
 }
 
-// Forward declaration for an ExtFSMedia private type.
-struct superblock;
-
 /*!
 @class ExtFSMedia
 @abstract Representation of filesystem and/or device.
@@ -143,27 +140,6 @@ a filesystem or device for its properties.
 {
 @protected
     NSDictionary *e_probedAttributes;
-@private
-   void *e_lock; // lock storage
-   ExtFSMedia *e_parent;
-   id e_children;
-   
-   id e_media, e_iconDesc, e_object;
-   NSString *e_where, *e_ioregName, *e_volName, *e_uuid, *e_bsdName;
-   struct superblock *e_sb;
-   u_int64_t e_size, e_blockCount, e_blockAvail;
-   u_int32_t e_devBlockSize, e_fsBlockSize, e_attributeFlags,
-      e_volCaps, e_lastFSUpdate, e_fileCount, e_dirCount;
-   ExtFSType e_fsType;
-   ExtFSIOTransportType e_ioTransport;
-   NSImage *e_icon;
-   ExtFSOpticalMediaType e_opticalType;
-   unsigned int e_smartService;
-   u_int32_t e_lastSMARTUpdate;
-   int e_smartStatus;
-#ifndef NOEXT2
-   unsigned char e_reserved[32];
-#endif
 }
 
 /*!
@@ -174,23 +150,19 @@ from the IO Registry.
 @result A new ExtFSMedia object or nil if there was an error.
 The object will be returned auto-released.
 */
-- (ExtFSMedia*)initWithIORegProperties:(NSDictionary*)properties;
+- (instancetype)initWithIORegProperties:(NSDictionary*)properties;
 
 /*!
-@method representedObject
-@abstract Access associated context object.
-@result Context object or nil if a context object
-has not been set.
-*/
-- (id)representedObject;
-/*!
-@method setRepresentedObject
-@abstract Associate some object with the target ExtFSMedia object.
-@discussion The represented object is retained for the lifetime
-of the media object (or until replaced). Call with object == nil
-to release the represented object manually.
-*/
-- (void)setRepresentedObject:(id)object;
+ @property representedObject
+ @abstract Access associated context object.
+ @result Context object or nil if a context object
+ has not been set.
+ @discussion The represented object is retained for the lifetime
+ of the media object (or until replaced). Call with object == nil
+ to release the represented object manually.
+
+ */
+@property (retain) id representedObject;
 
 /*!
 @method parent
@@ -201,7 +173,7 @@ hierarchy.
 the target object -- nil is returned if the target has
 no parent.
 */
-- (ExtFSMedia*)parent;
+@property (readonly, assign) ExtFSMedia *parent;
 /*!
 @method children
 @abstract Access the children of the target object.
@@ -220,7 +192,7 @@ no descendants.
 could possibly change the moment after return.
 @result Integer containing the number of children.
 */
-- (unsigned)childCount;
+@property (readonly) NSUInteger childCount;
 
 /* Device */
 /*!
@@ -229,7 +201,7 @@ could possibly change the moment after return.
 identifies it.
 @result String containing the IOKit name.
 */
-- (NSString*)ioRegistryName;
+@property (readonly, copy) NSString *ioRegistryName;
 /*!
 @method bsdName
 @abstract Access the device name of the object as the
@@ -243,14 +215,14 @@ BSD kernel identifies it.
 @abstract Access the icon of the object as determined by the IO Registry.
 @result Preferred device image for the target object.
 */
-- (NSImage*)icon;
+@property (readonly, copy) NSImage *icon;
 
 /*!
 @method isEjectable
 @abstract Determine if the media is ejectable from its enclosure.
 @result YES if the media can be ejected, otherwise NO.
 */
-- (BOOL)isEjectable;
+@property (readonly, getter=isEjectable) BOOL ejectable;
 /*!
 @method canMount
 @abstract Determine if the media is mountable.
@@ -296,7 +268,7 @@ as a whole (ie the total disk, not a partition of the disk).
 @discussion If the media is not an optical disc, efsOpticalTypeUnknown is always returned.
 @result Type of media.
 */
-- (ExtFSOpticalMediaType)opticalMediaType;
+@property (readonly) ExtFSOpticalMediaType opticalMediaType;
 /*!
 @method usesDiskArb
 @abstract Determine if the media is managed by the Disk Arbitration
@@ -311,7 +283,7 @@ daemon.
 the filesystem only. Otherwise, it applies only to the media.
 @result Size of the filesystem or media in bytes.
 */
-- (u_int64_t)size; /* bytes */
+@property (readonly) u_int64_t size; /* bytes */
 /*!
 @method blockSize
 @abstract Determine the block size of the filesystem or media.

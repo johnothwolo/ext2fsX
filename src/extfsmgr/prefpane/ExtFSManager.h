@@ -45,7 +45,7 @@
    IBOutlet id e_copyrightText;
    IBOutlet id e_infoText;
    
-   IBOutlet id e_startupProgress;
+   IBOutlet NSProgressIndicator *e_startupProgress;
    IBOutlet id e_startupText;
    
    IBOutlet id e_opProgress;

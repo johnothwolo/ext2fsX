@@ -23,13 +23,15 @@
 *
 */
 
-#import <unistd.h>
+#include <unistd.h>
 
-#import <IOKit/storage/ata/ATASMARTLib.h>
+#include <IOKit/storage/ata/ATASMARTLib.h>
 
 #import "ExtFSMediaPrivate.h"
 #import "ExtFSMediaSMART.h"
 #import "ExtFSLock.h"
+
+#import <Cocoa/Cocoa.h>
 
 NSString * const ExtFSMediaNotificationSMARTStatus = @"ExtFSMediaNotificationSMARTStatus";
 NSString * const ExtFSMediaKeySMARTStatus = @"ExtFSMediaKeySMARTStatus";

@@ -23,19 +23,21 @@
 *
 */
 
-#import <stdio.h>
-#import <sys/types.h>
-#import <sys/mount.h>
-#import <sys/mman.h>
-#import <unistd.h>
-#import <fcntl.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/mount.h>
+#include <sys/mman.h>
+#include <unistd.h>
+#include <fcntl.h>
 
+#ifdef DETECT_UFS
 #import <ufs/ufs/dinode.h>
 #import <ufs/ffs/fs.h>
+#endif
 
-#import "ext2_byteorder.h"
+#include "ext2_byteorder.h"
 #ifndef NOEXT2
-#import "gnu/ext2fs/ext2_fs.h"
+#include "gnu/ext2fs/ext2_fs.h"
 #endif
 
 #ifndef EFSM_PRIVATE
@@ -43,9 +45,9 @@
 #endif
 // We don't want HFSVolumes.h from CarbonCore
 #define __HFSVOLUMES__
-#import "ExtFSMedia.h"
+#include "ExtFSMedia.h"
 #undef __HFSVOLUMES__
-#import <hfs/hfs_format.h>
+#include <hfs/hfs_format.h>
 
 char *progname;
 
@@ -68,7 +70,8 @@ struct efsattrs {
 #define HFS_SUPER_OFF 1024
 static ExtFSType efs_getdevicefs (const char *device, struct efsattrs *fsa)
 {
-    int fd, bytes;
+    int fd;
+	size_t bytes;
     char *buf;
     #ifndef NOEXT2
     struct superblock sb;
@@ -172,6 +175,7 @@ efs_hfs:
                 fsa->fsBlockCount = be16_to_cpu(hsuper->drNmAlBlks);
                 fsa->fsBlockSize = be32_to_cpu(hsuper->drAlBlkSiz);
             }
+#ifdef DETECT_UFS
         } else {
             usuper = (struct fs*)(buf+SBOFF);
             if (FS_MAGIC == be32_to_cpu(usuper->fs_magic)) {
@@ -183,6 +187,7 @@ efs_hfs:
             fsa->fsBlockCount = be32_to_cpu(usuper->fs_size);
             fsa->fsBlockSize = be32_to_cpu(usuper->fs_bsize);
         }
+#endif
     }
     }
     

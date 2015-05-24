@@ -114,7 +114,18 @@ do { \
 #endif
 
 @implementation ExtFSMedia
+{
+@private
+	id e_children;
+	
+	id e_object;
+	NSString *e_uuid;
+	struct superblock *e_sb;
+#ifndef NOEXT2
+	unsigned char e_reserved[32];
+#endif
 
+}
 /* Private */
 
 - (void)postNotification:(NSArray*)args
@@ -262,7 +273,7 @@ eminfo_exit:
             if (type >= 0 && type < fsTypeNULL) {
                 NSFileHandle *f;
                 NSData *d;
-                unsigned len;
+                NSUInteger len;
                 
                 // See if there was any attributes output
                 f = [output fileHandleForReading];
@@ -381,9 +392,9 @@ init_err:
    return ([c autorelease]);
 }
 
-- (unsigned)childCount
+- (NSUInteger)childCount
 {
-   unsigned ct;
+   NSUInteger ct;
    erlock(e_lock);
    ct  = [e_children count];
    eulock(e_lock);
@@ -539,8 +550,6 @@ init_err:
       if (nil == (e_icon = [e_mediaIconCache objectForKey:cacheKey])) {
          e_icon = ico;
          [e_icon setName:cacheKey];
-         // This supposedly allows images to be cached safely across threads
-         [e_icon setCachedSeparately:YES];
          [e_mediaIconCache setObject:e_icon forKey:cacheKey];
          E2DiagLog(@"ExtFS: Added icon %@ to icon cache (%lu).\n", cacheKey, [e_icon retainCount]);
       } else {
@@ -624,10 +633,7 @@ emicon_exit:
    return (test);
 }
 
-- (ExtFSOpticalMediaType)opticalMediaType
-{
-    return (e_opticalType);
-}
+@synthesize opticalMediaType = e_opticalType;
 
 - (BOOL)usesDiskArb
 {
@@ -920,7 +926,7 @@ emicon_exit:
 
 - (void)dealloc
 {
-   unsigned count;
+   NSUInteger count;
    E2DiagLog(@"ExtFS: Media <%@, %p> dealloc.\n",
       [e_media objectForKey:NSSTR(kIOBSDNameKey)], self);
    
