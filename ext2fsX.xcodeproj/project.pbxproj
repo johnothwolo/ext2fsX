@@ -319,7 +319,11 @@
 		55F6453B15377F2900F6E73D /* quotaio_tree.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F644E51537608E00F6E73D /* quotaio_tree.h */; };
 		55F6453C15377F2900F6E73D /* quotaio_v2.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F644E81537608E00F6E73D /* quotaio_v2.h */; };
 		55F6453D15377F6400F6E73D /* blkidP.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB7F7413C15EBF006C2DAD /* blkidP.h */; };
-		D32B1F8E09946A3B001A78A0 /* ext2_apple.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B4645704099F8700A80164 /* ext2_apple.h */; };
+		55FCD7091B12855D00A57C43 /* ExtFSMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB832213C15EC1006C2DAD /* ExtFSMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55FCD70A1B12856500A57C43 /* ExtFSMediaController.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB832413C15EC1006C2DAD /* ExtFSMediaController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55FCD70B1B12856C00A57C43 /* ExtFSMediaSMART.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB832813C15EC1006C2DAD /* ExtFSMediaSMART.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55FCD70C1B12857600A57C43 /* ExtFSDiskManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB832013C15EC1006C2DAD /* ExtFSDiskManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55FCD70D1B1289F500A57C43 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3D4AF27057913CB00A80164 /* Cocoa.framework */; };
 		D32B203D099470A7001A78A0 /* kext_load.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485770405AC0900A80164 /* kext_load.c */; };
 		D32B2040099470A7001A78A0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32E761D05FD2919002928A8 /* SystemConfiguration.framework */; };
 		D32B208009947574001A78A0 /* getmntopts.c in Sources */ = {isa = PBXBuildFile; fileRef = D32B207F09947574001A78A0 /* getmntopts.c */; };
@@ -1963,14 +1967,14 @@
 		55FB832213C15EC1006C2DAD /* ExtFSMedia.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtFSMedia.h; sourceTree = "<group>"; };
 		55FB832313C15EC1006C2DAD /* ExtFSMedia.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtFSMedia.m; sourceTree = "<group>"; };
 		55FB832413C15EC1006C2DAD /* ExtFSMediaController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtFSMediaController.h; sourceTree = "<group>"; };
-		55FB832513C15EC1006C2DAD /* ExtFSMediaController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaController.m; sourceTree = "<group>"; };
+		55FB832513C15EC1006C2DAD /* ExtFSMediaController.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaController.m; sourceTree = "<group>"; usesTabs = 0; };
 		55FB832613C15EC1006C2DAD /* ExtFSMediaPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtFSMediaPrivate.h; sourceTree = "<group>"; };
 		55FB832713C15EC1006C2DAD /* ExtFSMediaPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaPrivate.m; sourceTree = "<group>"; };
 		55FB832813C15EC1006C2DAD /* ExtFSMediaSMART.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtFSMediaSMART.h; sourceTree = "<group>"; };
 		55FB832913C15EC1006C2DAD /* ExtFSMediaSMART.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaSMART.m; sourceTree = "<group>"; };
-		55FB832C13C15EC1006C2DAD /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		55FB832D13C15EC1006C2DAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		55FB832E13C15EC1006C2DAD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		55FB832C13C15EC1006C2DAD /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; lineEnding = 0; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		55FB832D13C15EC1006C2DAD /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		55FB832E13C15EC1006C2DAD /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55FB833013C15EC1006C2DAD /* efsprobe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = efsprobe.m; sourceTree = "<group>"; };
 		55FB833213C15EC1006C2DAD /* efssmartd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = efssmartd.m; sourceTree = "<group>"; };
 		55FB833413C15EC1006C2DAD /* efssmartd-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "efssmartd-Info.plist"; sourceTree = "<group>"; };
@@ -2074,7 +2078,6 @@
 		D387FCA20595597500C31A93 /* super.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = super.c; sourceTree = "<group>"; };
 		D38A5F0806711DDB00E9E666 /* efssmartd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = efssmartd.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3A9B8150582E26500B93FC7 /* mount_extmgr.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = mount_extmgr.c; sourceTree = "<group>"; };
-		D3B4645704099F8700A80164 /* ext2_apple.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ext2_apple.h; path = src/ext2_apple.h; sourceTree = "<group>"; };
 		D3D485770405AC0900A80164 /* kext_load.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = kext_load.c; path = src/kext_load.c; sourceTree = "<group>"; };
 		D3D485870405C3B900A80164 /* ext2util.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = ext2util.c; path = src/ext2util.c; sourceTree = "<group>"; };
 		D3D4AF27057913CB00A80164 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -2235,6 +2238,7 @@
 			files = (
 				D366103C064409E2009810C9 /* DiskArbitration.framework in Frameworks */,
 				D366103D064409E2009810C9 /* IOKit.framework in Frameworks */,
+				55FCD70D1B1289F500A57C43 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2260,9 +2264,7 @@
 			isa = PBXGroup;
 			children = (
 				55FB784713C15EBB006C2DAD /* src */,
-				D3B4645704099F8700A80164 /* ext2_apple.h */,
-				D3D485770405AC0900A80164 /* kext_load.c */,
-				D33C06890418779900A80164 /* newfs_ext2.c */,
+				55FCD7081B12853200A57C43 /* Shared */,
 				D376F3C6040DF69900A80164 /* fs_bndl */,
 				D376F3CC040E085900A80164 /* fs_util */,
 				D30B790D04059A6B00A80164 /* mount_ext2fs */,
@@ -2274,7 +2276,7 @@
 				55F64132153637D000F6E73D /* e2label */,
 				55F645221537781900F6E73D /* lsattr */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
-				5577049413C3CCF200457317 /* Frameworks and Libraries */,
+				5577049413C3CCF200457317 /* Frameworks */,
 				D32B1FAC09946A3B001A78A0 /* ExtFSDiskManager-Info.plist */,
 				D32B210E09947828001A78A0 /* Info-extprefpane.plist */,
 				55EA77240F9DB4E50036BB09 /* ext2-Info.plist */,
@@ -2310,7 +2312,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5577049413C3CCF200457317 /* Frameworks and Libraries */ = {
+		5577049413C3CCF200457317 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				D376F3CD040E088100A80164 /* CoreFoundation.framework */,
@@ -2321,7 +2323,7 @@
 				D3D4AF28057913CB00A80164 /* PreferencePanes.framework */,
 				5577045713C3CCB400457317 /* libcom_err.dylib */,
 			);
-			name = "Frameworks and Libraries";
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		55F64095153600FA00F6E73D /* e2fsck */ = {
@@ -4856,6 +4858,15 @@
 			path = specfs;
 			sourceTree = "<group>";
 		};
+		55FCD7081B12853200A57C43 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				D3D485770405AC0900A80164 /* kext_load.c */,
+				D33C06890418779900A80164 /* newfs_ext2.c */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
 		D30B790D04059A6B00A80164 /* mount_ext2fs */ = {
 			isa = PBXGroup;
 			children = (
@@ -4994,7 +5005,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D32B1F8E09946A3B001A78A0 /* ext2_apple.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5002,6 +5012,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55FCD70C1B12857600A57C43 /* ExtFSDiskManager.h in Headers */,
+				55FCD70A1B12856500A57C43 /* ExtFSMediaController.h in Headers */,
+				55FCD70B1B12856C00A57C43 /* ExtFSMediaSMART.h in Headers */,
+				55FCD7091B12855D00A57C43 /* ExtFSMedia.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6842,18 +6856,15 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_FAST_OBJC_DISPATCH = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(BUILT_PRODUCTS_DIR)/ExtFSDiskManager.framework/Headers/ExtFSDiskManager.h";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					OSX,
 					EXT_KNOTE,
-					DEBUG,
 					"EXT2FS_DEBUG=1",
 					DIAGNOSTIC,
 					DX_DEBUG,
 					EXT2FS_TRACE,
+					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Resources/Info-extprefpane.plist";
 				OTHER_CFLAGS = "$(inherited)";
@@ -6862,10 +6873,6 @@
 					"-twolevel_namespace",
 				);
 				PRODUCT_NAME = ExtFSManager;
-				WARNING_CFLAGS = (
-					"$(value)",
-					"-Wunreachable-code",
-				);
 				WRAPPER_EXTENSION = prefPane;
 			};
 			name = Debug;
@@ -6875,15 +6882,14 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_FAST_OBJC_DISPATCH = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(BUILT_PRODUCTS_DIR)/ExtFSDiskManager.framework/Headers/ExtFSDiskManager.h";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					OSX,
 					EXT_KNOTE,
+					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Resources/Info-extprefpane.plist";
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-bundle",
 					"-twolevel_namespace",
@@ -6974,8 +6980,6 @@
 				INFOPLIST_FILE = "Resources/ExtFSDiskManager-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				OTHER_CFLAGS = (
-					"-DOSX",
-					"-DDEBUG",
 					"-DEXT2FS_DEBUG=1",
 					"-DDIAGNOSTIC",
 					"-DDX_DEBUG",
@@ -6983,16 +6987,10 @@
 					"-DEFSM_PRIVATE",
 				);
 				OTHER_LDFLAGS = (
-					"-framework",
-					Cocoa,
 					"-seg1addr",
 					0xEB110000,
 				);
 				PRODUCT_NAME = ExtFSDiskManager;
-				WARNING_CFLAGS = (
-					"$(value)",
-					"-Wunreachable-code",
-				);
 			};
 			name = Debug;
 		};
@@ -7019,18 +7017,12 @@
 				);
 				INFOPLIST_FILE = "Resources/ExtFSDiskManager-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				OTHER_CFLAGS = (
-					"-DOSX",
-					"-DEFSM_PRIVATE",
-				);
+				OTHER_CFLAGS = "-DEFSM_PRIVATE";
 				OTHER_LDFLAGS = (
-					"-framework",
-					Cocoa,
 					"-seg1addr",
 					0xEB110000,
 				);
 				PRODUCT_NAME = ExtFSDiskManager;
-				SECTORDER_FLAGS = "";
 			};
 			name = Release;
 		};
@@ -7170,9 +7162,13 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_FAST_OBJC_DISPATCH = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					OSX,
+					EXT_KNOTE,
+				);
 				GCC_THREADSAFE_STATICS = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -7184,9 +7180,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
-					"-DOSX",
-					"-DEXT_KNOTE",
-					"-DDEBUG",
 					"-DEXT2FS_DEBUG=1",
 					"-DDIAGNOSTIC",
 					"-DDX_DEBUG",
@@ -7233,12 +7226,16 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_FAST_OBJC_DISPATCH = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OSX,
+					EXT_KNOTE,
+				);
 				GCC_THREADSAFE_STATICS = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -7249,8 +7246,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CFLAGS = (
-					"-DOSX",
-					"-DEXT_KNOTE",
 					"-DHAVE_STDLIB_H",
 					"-DHAVE_ERRNO_H",
 					"-DHAVE_PWD_H",

@@ -29,7 +29,7 @@
 "Virtual" = "Virtuell";
 /******* S.M.A.R.T Descriptions *******/
 "!! Critical Error !!" = "!! Kritischer Fehler !!";
-"A disk electrical failure was detected! " "Es gibt ein Problem mit der Festplatten-Elektronik! ";
+"A disk electrical failure was detected! " = "Es gibt ein Problem mit der Festplatten-Elektronik! ";
 "A disk motor failure was detected! " = "Es gibt ein Problem mit dem Festplatten-Motor! ";
 "A disk read failure was detected! " = "Ein Festplatten-Lesefehler trat auf! ";
 "A fatal disk error was detected! " = "Ein nicht zu behebender Festplatten-Fehler trat auf! ";
