@@ -48,7 +48,6 @@
 		55783966153C95E9003B68F6 /* SMARTAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833713C15EC1006C2DAD /* SMARTAlertController.m */; };
 		55783968153C965A003B68F6 /* ExtFSManagerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833D13C15EC1006C2DAD /* ExtFSManagerAdditions.m */; };
 		55783969153C9667003B68F6 /* Eject.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834313C15EC1006C2DAD /* Eject.icns */; };
-		5578396A153C9667003B68F6 /* ExtFSManager.nib in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834513C15EC1006C2DAD /* ExtFSManager.nib */; };
 		5578396B153C9667003B68F6 /* Info.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834813C15EC1006C2DAD /* Info.icns */; };
 		5578396C153C9667003B68F6 /* Mount.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834913C15EC1006C2DAD /* Mount.icns */; };
 		5578396D153C9667003B68F6 /* Options.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834A13C15EC1006C2DAD /* Options.icns */; };
@@ -324,6 +323,7 @@
 		55FCD70C1B12857600A57C43 /* ExtFSDiskManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB832013C15EC1006C2DAD /* ExtFSDiskManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55FCD70D1B1289F500A57C43 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3D4AF27057913CB00A80164 /* Cocoa.framework */; };
 		55FCD70F1B129DF500A57C43 /* SMARTAlert.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55FCD70E1B129DF500A57C43 /* SMARTAlert.xib */; };
+		55FCD7111B12BD1E00A57C43 /* ExtFSManager.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55FCD7101B12BD1E00A57C43 /* ExtFSManager.xib */; };
 		D32B203D099470A7001A78A0 /* kext_load.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485770405AC0900A80164 /* kext_load.c */; };
 		D32B2040099470A7001A78A0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32E761D05FD2919002928A8 /* SystemConfiguration.framework */; };
 		D32B208009947574001A78A0 /* getmntopts.c in Sources */ = {isa = PBXBuildFile; fileRef = D32B207F09947574001A78A0 /* getmntopts.c */; };
@@ -1988,7 +1988,6 @@
 		55FB834213C15EC1006C2DAD /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55FB834313C15EC1006C2DAD /* Eject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Eject.icns; sourceTree = "<group>"; };
 		55FB834413C15EC1006C2DAD /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		55FB834513C15EC1006C2DAD /* ExtFSManager.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ExtFSManager.nib; sourceTree = "<group>"; };
 		55FB834613C15EC1006C2DAD /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		55FB834713C15EC1006C2DAD /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55FB834813C15EC1006C2DAD /* Info.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Info.icns; sourceTree = "<group>"; };
@@ -2043,6 +2042,7 @@
 		55FB838B13C15EC1006C2DAD /* fifo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fifo.h; sourceTree = "<group>"; };
 		55FB838D13C15EC1006C2DAD /* specdev.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = specdev.h; sourceTree = "<group>"; };
 		55FCD70E1B129DF500A57C43 /* SMARTAlert.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SMARTAlert.xib; sourceTree = "<group>"; };
+		55FCD7101B12BD1E00A57C43 /* ExtFSManager.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExtFSManager.xib; sourceTree = "<group>"; };
 		D30B790F04059A6B00A80164 /* mount_ext2fs.8 */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = mount_ext2fs.8; sourceTree = "<group>"; };
 		D30B791004059A6B00A80164 /* mount_ext2fs.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = mount_ext2fs.c; sourceTree = "<group>"; };
 		D31F7D3A0569E49300A80164 /* apprentice.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = apprentice.c; sourceTree = "<group>"; };
@@ -2271,8 +2271,8 @@
 				55F641101536301D00F6E73D /* mke2fs */,
 				55F64132153637D000F6E73D /* e2label */,
 				55F645221537781900F6E73D /* lsattr */,
-				19C28FB6FE9D52B211CA2CBB /* Products */,
 				5577049413C3CCF200457317 /* Frameworks */,
+				19C28FB6FE9D52B211CA2CBB /* Products */,
 			);
 			name = ext2fsX;
 			sourceTree = "<group>";
@@ -4668,7 +4668,7 @@
 				55FB834113C15EC1006C2DAD /* Localizable.strings */,
 				D32B210E09947828001A78A0 /* Info.plist */,
 				55FB834313C15EC1006C2DAD /* Eject.icns */,
-				55FB834513C15EC1006C2DAD /* ExtFSManager.nib */,
+				55FCD7101B12BD1E00A57C43 /* ExtFSManager.xib */,
 				55FB834813C15EC1006C2DAD /* Info.icns */,
 				55FB834913C15EC1006C2DAD /* Mount.icns */,
 				55FB834A13C15EC1006C2DAD /* Options.icns */,
@@ -5474,8 +5474,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55FCD7111B12BD1E00A57C43 /* ExtFSManager.xib in Resources */,
 				55783969153C9667003B68F6 /* Eject.icns in Resources */,
-				5578396A153C9667003B68F6 /* ExtFSManager.nib in Resources */,
 				5578396B153C9667003B68F6 /* Info.icns in Resources */,
 				5578396C153C9667003B68F6 /* Mount.icns in Resources */,
 				5578396D153C9667003B68F6 /* Options.icns in Resources */,
