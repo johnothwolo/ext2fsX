@@ -152,7 +152,7 @@ withObject:args waitUntilDone:NO]; \
 #ifdef DEBUG
 #define E2DiagLog NSLog
 #else
-#define E2DiagLog()
+#define E2DiagLog(...)
 #endif
 #endif
 

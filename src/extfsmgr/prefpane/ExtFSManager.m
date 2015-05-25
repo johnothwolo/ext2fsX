@@ -85,6 +85,22 @@ if (e_operations < 0) e_operations = 0; \
 } while(0)
 
 @implementation ExtFSManager : NSPreferencePane
+@synthesize e_mountButton;
+@synthesize e_ejectButton;
+@synthesize e_infoButton;
+@synthesize e_diskIconView;
+@synthesize e_vollist;
+@synthesize e_tabs;
+@synthesize e_mountReadOnlyBox;
+@synthesize e_dontAutomountBox;
+@synthesize e_ignorePermsBox;
+@synthesize e_indexedDirsBox;
+@synthesize e_optionNoteText;
+@synthesize e_copyrightText;
+@synthesize e_infoText;
+@synthesize e_startupProgress;
+@synthesize e_startupText;
+@synthesize e_opProgress;
 
 /* Private */
 

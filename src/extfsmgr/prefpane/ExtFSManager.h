@@ -29,32 +29,31 @@
 
 @interface ExtFSManager : NSPreferencePane <NSOutlineViewDataSource, NSOutlineViewDelegate>
 {
-   IBOutlet NSButton *e_mountButton;
-   IBOutlet NSButton *e_ejectButton;
-   IBOutlet NSButton *e_infoButton;
-   IBOutlet NSImageView *e_diskIconView;
-   IBOutlet NSOutlineView *e_vollist;
-   IBOutlet NSTabView *e_tabs;
-   
-   IBOutlet NSButton *e_mountReadOnlyBox;
-   IBOutlet NSButton *e_dontAutomountBox;
-   IBOutlet NSButton *e_ignorePermsBox;
-   IBOutlet NSButton *e_indexedDirsBox;
-   IBOutlet NSTextField *e_optionNoteText;
-   
-   IBOutlet NSTextField *e_copyrightText;
-   IBOutlet NSTextView *e_infoText;
-   
-   IBOutlet NSProgressIndicator *e_startupProgress;
-   IBOutlet NSTextField *e_startupText;
-   
-   IBOutlet NSProgressIndicator *e_opProgress;
-   
    NSMutableArray *e_volData;
-   ExtFSMedia *e_curSelection;
+   __weak ExtFSMedia *e_curSelection;
    NSString *donateTitle;
    BOOL e_infoButtonAlt;
 }
+@property (weak) IBOutlet NSButton *e_mountButton;
+@property (weak) IBOutlet NSButton *e_ejectButton;
+@property (weak) IBOutlet NSButton *e_infoButton;
+@property (weak) IBOutlet NSImageView *e_diskIconView;
+@property (weak) IBOutlet NSOutlineView *e_vollist;
+@property (weak) IBOutlet NSTabView *e_tabs;
+
+@property (weak) IBOutlet NSButton *e_mountReadOnlyBox;
+@property (weak) IBOutlet NSButton *e_dontAutomountBox;
+@property (weak) IBOutlet NSButton *e_ignorePermsBox;
+@property (weak) IBOutlet NSButton *e_indexedDirsBox;
+@property (weak) IBOutlet NSTextField *e_optionNoteText;
+
+@property (weak) IBOutlet NSTextField *e_copyrightText;
+@property (unsafe_unretained) IBOutlet NSTextView *e_infoText;
+
+@property (weak) IBOutlet NSProgressIndicator *e_startupProgress;
+@property (weak) IBOutlet NSTextField *e_startupText;
+
+@property (weak) IBOutlet NSProgressIndicator *e_opProgress;
 
 - (IBAction)click_readOnly:(id)sender;
 - (IBAction)click_automount:(id)sender;
