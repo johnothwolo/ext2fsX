@@ -250,10 +250,10 @@ e_curSelection = nil; \
    
    EndOp();
    device = [media bsdName];
-   err = [info objectForKey:ExtMediaKeyOpFailureError];
-   op = [info objectForKey:ExtMediaKeyOpFailureType];
-   errStr = [info objectForKey:ExtMediaKeyOpFailureErrorString];
-   errMsg = [info objectForKey:ExtMediaKeyOpFailureMsgString];
+   err = info[ExtMediaKeyOpFailureError];
+   op = info[ExtMediaKeyOpFailureType];
+   errStr = info[ExtMediaKeyOpFailureErrorString];
+   errMsg = info[ExtMediaKeyOpFailureMsgString];
    
    msg = [NSString stringWithFormat:
             ExtLocalizedString(@"Command: %@\nDevice: %@\nMessage: %@\nError: 0x%X", ""),
@@ -334,16 +334,16 @@ line = ExtMakeInfoTitle((title)); \
 data = [@" " stringByAppendingString:(value)]; \
 data = [data stringByAppendingString:@"\n"]; \
 [line appendAttributedString: \
-   [[[NSAttributedString alloc] initWithString:data] autorelease]]; \
+   [[NSAttributedString alloc] initWithString:data]]; \
 [e_infoText insertText:line]; \
 } while(0)
 
 #define ExtFmtInt(i) \
-[intFmt stringForObjectValue:[NSNumber numberWithUnsignedLong:(i)]]
+[intFmt stringForObjectValue:@(i)]
 #define ExtFmtQuad(q) \
-[intFmt stringForObjectValue:[NSNumber numberWithUnsignedLongLong:(q)]]
+[intFmt stringForObjectValue:@(q)]
 #define ExtFmtFloat(f) \
-[floatFmt stringForObjectValue:[NSNumber numberWithDouble:(f)]]
+[floatFmt stringForObjectValue:@(f)]
 
 - (void)generateInfo:(ExtFSMedia*)media
 {
@@ -384,7 +384,7 @@ data = [data stringByAppendingString:@"\n"]; \
       NSDictionary *smartInfo =
          [mc SMARTStatusDescription:[media SMARTStatus]];
       ExtInfoInsert(ExtLocalizedString(@"S.M.A.R.T. Status", ""),
-         [smartInfo objectForKey:ExtFSMediaKeySMARTStatusDescription]);
+         smartInfo[ExtFSMediaKeySMARTStatusDescription]);
    }
    
    ExtInfoInsert(ExtLocalizedString(@"Ejectable", ""),
@@ -491,8 +491,6 @@ data = [data stringByAppendingString:@"\n"]; \
    [e_infoText scrollRangeToVisible:NSMakeRange(0,0)]; 
    
    [e_infoText setEditable:NO];
-   [intFmt release];
-   [floatFmt release];
 }
 
 #undef ExtInfoInsert
@@ -509,9 +507,9 @@ data = [data stringByAppendingString:@"\n"]; \
    
    mediaRO = [media isOptical];
    
-   dict = [e_prefMedia objectForKey:[media uuidString]];
+   dict = e_prefMedia[[media uuidString]];
    
-   boolVal = [dict objectForKey:EXT_PREF_KEY_DIRINDEX];
+   boolVal = dict[EXT_PREF_KEY_DIRINDEX];
    state = ([media hasIndexedDirs] || (boolVal && [boolVal boolValue]) ? NSOnState : NSOffState);
    [e_indexedDirsBox setState:state];
    if (NSOnState == state || mediaRO)
@@ -522,15 +520,15 @@ data = [data stringByAppendingString:@"\n"]; \
    if (!dict)
       return;
    
-   boolVal = [dict objectForKey:EXT_PREF_KEY_NOAUTO];
+   boolVal = dict[EXT_PREF_KEY_NOAUTO];
    state = ([boolVal boolValue] ? NSOnState : NSOffState);
    [e_dontAutomountBox setState:state];
    
-   boolVal = [dict objectForKey:EXT_PREF_KEY_NOPERMS];
+   boolVal = dict[EXT_PREF_KEY_NOPERMS];
    state = ([boolVal boolValue] ? NSOnState : NSOffState);
    [e_ignorePermsBox setState:state];
    
-   boolVal = [dict objectForKey:EXT_PREF_KEY_RDONLY];
+   boolVal = dict[EXT_PREF_KEY_RDONLY];
    state = ([boolVal boolValue] || mediaRO ? NSOnState : NSOffState);
    [e_mountReadOnlyBox setState:state];
    if (!mediaRO)
@@ -589,8 +587,8 @@ data = [data stringByAppendingString:@"\n"]; \
    NSLog(@"ExtFSM: readonly clicked.\n");
 #endif
    
-   boolVal = [NSNumber numberWithBool:
-      (NSOnState == [e_mountReadOnlyBox state] ? YES : NO)];
+   boolVal =
+      (NSOnState == [e_mountReadOnlyBox state] ? @YES : @NO);
    ExtSetPrefVal(e_curSelection, EXT_PREF_KEY_RDONLY, boolVal);
 }
 
@@ -602,8 +600,8 @@ data = [data stringByAppendingString:@"\n"]; \
    NSLog(@"ExtFSM: automount clicked.\n");
 #endif
 
-   boolVal = [NSNumber numberWithBool:
-      (NSOnState == [e_dontAutomountBox state] ? YES : NO)];
+   boolVal =
+      (NSOnState == [e_dontAutomountBox state] ? @YES : @NO);
    ExtSetPrefVal(e_curSelection, EXT_PREF_KEY_NOAUTO, boolVal);
 }
 
@@ -611,8 +609,8 @@ data = [data stringByAppendingString:@"\n"]; \
 {
     NSNumber *boolVal;
     
-    boolVal = [NSNumber numberWithBool:
-       (NSOnState == [e_ignorePermsBox state] ? YES : NO)];
+    boolVal =
+       (NSOnState == [e_ignorePermsBox state] ? @YES : @NO);
     ExtSetPrefVal(e_curSelection, EXT_PREF_KEY_NOPERMS, boolVal);
 }
 
@@ -623,8 +621,8 @@ data = [data stringByAppendingString:@"\n"]; \
    NSLog(@"ExtFSM: indexed dirs clicked.\n");
 #endif
 
-   boolVal = [NSNumber numberWithBool:
-      (NSOnState == [e_indexedDirsBox state] ? YES : NO)];
+   boolVal =
+      (NSOnState == [e_indexedDirsBox state] ? @YES : @NO);
    ExtSetPrefVal(e_curSelection, EXT_PREF_KEY_DIRINDEX, boolVal);
 }
 
@@ -641,10 +639,10 @@ data = [data stringByAppendingString:@"\n"]; \
    if (mount) {
       // Make sure 'Don't Automount' is not set.
       NSNumber *val;
-      NSMutableDictionary *dict = [e_prefMedia objectForKey:[e_curSelection uuidString]];
-      val = [dict objectForKey:EXT_PREF_KEY_NOAUTO];
+      NSMutableDictionary *dict = e_prefMedia[[e_curSelection uuidString]];
+      val = dict[EXT_PREF_KEY_NOAUTO];
       if (dict && val && [val boolValue]) {
-         ExtSetPrefVal(e_curSelection, EXT_PREF_KEY_NOAUTO, [NSNumber numberWithBool:NO]);
+         ExtSetPrefVal(e_curSelection, EXT_PREF_KEY_NOAUTO, @NO);
          AddRestoreAction(e_curSelection, EXT_PREF_KEY_NOAUTO, val);
       }
    }
@@ -761,7 +759,7 @@ info_alt_switch:
    e_infoButtonAlt = NO; // Used to deterimine state
    
    [[e_vollist tableColumnWithIdentifier:@"vols"]
-      setDataCell:[[[NSBrowserCell alloc] init] autorelease]];
+      setDataCell:[[NSBrowserCell alloc] init]];
    
    // Change controls for startup
    [e_startupProgress setStyle:NSProgressIndicatorSpinningStyle];
@@ -779,7 +777,7 @@ info_alt_switch:
    
    /* Get our prefs */
    plist = [[self bundle] infoDictionary];
-   e_bundleid = [plist objectForKey:@"CFBundleIdentifier"];
+   e_bundleid = plist[@"CFBundleIdentifier"];
    
    e_prefRoot = [[NSMutableDictionary alloc] initWithDictionary:
       [[NSUserDefaults standardUserDefaults] persistentDomainForName:e_bundleid]];
@@ -788,29 +786,29 @@ info_alt_switch:
       NSLog(@"ExtFSM: Creating preferences\n");
    #endif
       // Create the defaults
-      [e_prefRoot setObject:[NSMutableDictionary dictionary] forKey:EXT_PREF_KEY_GLOBAL];
-      [e_prefRoot setObject:[NSMutableDictionary dictionary] forKey:EXT_PREF_KEY_MEDIA];
-      [e_prefRoot setObject:[NSMutableDictionary dictionary] forKey:EXT_PREF_KEY_MGR];
+      e_prefRoot[EXT_PREF_KEY_GLOBAL] = [NSMutableDictionary dictionary];
+      e_prefRoot[EXT_PREF_KEY_MEDIA] = [NSMutableDictionary dictionary];
+      e_prefRoot[EXT_PREF_KEY_MGR] = [NSMutableDictionary dictionary];
       // Save them
       [self didUnselect];
    }
    e_prefGlobal = [[NSMutableDictionary alloc] initWithDictionary:
-      [e_prefRoot objectForKey:EXT_PREF_KEY_GLOBAL]];
+      e_prefRoot[EXT_PREF_KEY_GLOBAL]];
    e_prefMedia = [[NSMutableDictionary alloc] initWithDictionary:
-      [e_prefRoot objectForKey:EXT_PREF_KEY_MEDIA]];
+      e_prefRoot[EXT_PREF_KEY_MEDIA]];
    e_prefMgr = [[NSMutableDictionary alloc] initWithDictionary:
-      [e_prefRoot objectForKey:EXT_PREF_KEY_MGR]];
-   [e_prefRoot setObject:e_prefGlobal forKey:EXT_PREF_KEY_GLOBAL];
-   [e_prefRoot setObject:e_prefMedia forKey:EXT_PREF_KEY_MEDIA];
-   [e_prefRoot setObject:e_prefMgr forKey:EXT_PREF_KEY_MGR];
+      e_prefRoot[EXT_PREF_KEY_MGR]];
+   e_prefRoot[EXT_PREF_KEY_GLOBAL] = e_prefGlobal;
+   e_prefRoot[EXT_PREF_KEY_MEDIA] = e_prefMedia;
+   e_prefRoot[EXT_PREF_KEY_MGR] = e_prefMgr;
 #ifdef notnow
    NSLog(@"ExtFSM: Prefs = %@\n", e_prefRoot);
 #endif
    
    /* Setup localized string globals */
-   e_yes = [ExtLocalizedString(@"Yes", "") retain];
-   e_no = [ExtLocalizedString(@"No", "") retain];
-   e_bytes = [ExtLocalizedString(@"bytes", "") retain];
+   e_yes = ExtLocalizedString(@"Yes", "");
+   e_no = ExtLocalizedString(@"No", "");
+   e_bytes = ExtLocalizedString(@"bytes", "");
    e_monikers[0] = e_bytes;
    
    [e_tabs setTabViewType:NSNoTabsNoBorder];
@@ -840,8 +838,6 @@ info_alt_switch:
       image = [[NSImage alloc] initWithContentsOfFile:tmp];
       [button setImage:image];
       
-      [image release];
-      
       /* Setup alternates */
       tmp = alt_titles[i];
       if (tmp) {
@@ -853,7 +849,6 @@ info_alt_switch:
          tmp = [[self bundle] pathForResource:tmp ofType:EXT_TOOLBAR_ICON_TYPE];
          image = [[NSImage alloc] initWithContentsOfFile:tmp];
          [button setAlternateImage:image];
-         [image release];
       }
       
       [button setEnabled:NO];
@@ -877,17 +872,17 @@ info_alt_switch:
       ExtLocalizedString(@"Changes to these options will take effect during the next mount.", "")];
    
    [e_copyrightText setStringValue:[NSString stringWithFormat:@"%@ (%@)",
-      [[[self bundle] localizedInfoDictionary] objectForKey:@"CFBundleGetInfoString"],
+      [[self bundle] localizedInfoDictionary][@"CFBundleGetInfoString"],
       [[self bundle] objectForInfoDictionaryKey:@"ExtGlobalVersion"]]];
    [e_copyrightText setTextColor:[NSColor disabledControlTextColor]];
    
     // Install the SMART monitor into the user's login items
-    boolVal = [e_prefMgr objectForKey:EXT_PREF_KEY_MGR_SMARTD_ADDED];
+    boolVal = e_prefMgr[EXT_PREF_KEY_MGR_SMARTD_ADDED];
     tmp = [[self bundle] pathForResource:@"efssmartd" ofType:@"app"];
     if (nil == boolVal || NO == [boolVal boolValue]) {
         if ([self addLoginItem:tmp]) {
-            boolVal = [NSNumber numberWithBool:YES];
-            [e_prefMgr setObject:boolVal forKey:EXT_PREF_KEY_MGR_SMARTD_ADDED];
+            boolVal = @YES;
+            e_prefMgr[EXT_PREF_KEY_MGR_SMARTD_ADDED] = boolVal;
             e_prefsChanged = YES;
             [self savePrefs];
         }
@@ -932,7 +927,7 @@ info_alt_switch:
       because mount will run as root 99% of the time, and therefore won't
       have access to the user specific prefs. */
    paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSLocalDomainMask, NO);
-   path = [[paths objectAtIndex:0] stringByAppendingPathComponent:
+   path = [paths[0] stringByAppendingPathComponent:
       @"Preferences/" EXT_PREF_ID @".plist"];
    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
       // Remove it since we may not have write access to the file itself
@@ -978,12 +973,12 @@ info_alt_switch:
    NSLog(@"ExtFSM: outline get child at index %d for %@", index, item);
 #endif
    if (nil == item && index < [e_volData count]) {
-      return ([e_volData objectAtIndex:index]);
+      return (e_volData[index]);
    }
    
    children = [item children];
    if (index < [children count])
-      return ([children objectAtIndex:index]);
+      return (children[index]);
    
    NSLog(@"ExtFSM: index is outside of range for object %@\n", item);
    return (nil);
@@ -1029,7 +1024,7 @@ info_alt_switch:
         NSString *iname = [[icon name] stringByAppendingString:@".small"];
         
         if (nil != e_iconCache)
-            cellIcon = [e_iconCache objectForKey:iname];
+            cellIcon = e_iconCache[iname];
         else
             e_iconCache = [[NSMutableDictionary alloc] init];
         
@@ -1038,8 +1033,7 @@ info_alt_switch:
             cellIcon = [icon copy];
             [cellIcon setName:iname];
             [cellIcon setSize:NSMakeSize(16,16)];
-            [e_iconCache setObject:cellIcon forKey:iname];
-            [cellIcon release];
+            e_iconCache[iname] = cellIcon;
         }
         [cell setImage:cellIcon];
     }
@@ -1049,32 +1043,26 @@ info_alt_switch:
         NSMutableDictionary *d = MediaProps(item);
         NSColor *color;
         
-        if (nil == (color = [d objectForKey:EXT_OBJ_PROPERTY_TITLE_COLOR])) {
+        if (nil == (color = d[EXT_OBJ_PROPERTY_TITLE_COLOR])) {
             if ([item SMARTStatus] >= efsSMARTTestFatal)
                 color = [NSColor redColor];
             else
                 color = [NSColor blackColor];
-            [d setObject:color forKey:EXT_OBJ_PROPERTY_TITLE_COLOR];
+            d[EXT_OBJ_PROPERTY_TITLE_COLOR] = color;
         }
         value = [[NSAttributedString alloc] initWithString:name attributes:
-                    [NSDictionary dictionaryWithObjectsAndKeys:
-                        [[NSFontManager sharedFontManager] convertFont:
+                    @{NSFontAttributeName: [[NSFontManager sharedFontManager] convertFont:
                             [cell font] toHaveTrait:NSBoldFontMask],
-                        NSFontAttributeName,
-                        color, NSForegroundColorAttributeName, nil]];
+                        NSForegroundColorAttributeName: color}];
         [cell setAttributedStringValue:value];
-        [value release];
     } else {
         [cell setLeaf:YES];
         if (YES == [item isMounted])
             [cell setStringValue:name];
         else {
             value = [[NSAttributedString alloc] initWithString:name attributes:
-                    [NSDictionary dictionaryWithObjectsAndKeys:
-                        [NSColor disabledControlTextColor],
-                        NSForegroundColorAttributeName, nil]];
+                    @{NSForegroundColorAttributeName: [NSColor disabledControlTextColor]}];
             [cell setAttributedStringValue:value];
-            [value release];
         }
     }
 }
@@ -1088,7 +1076,6 @@ static NSMutableDictionary* MediaProps(ExtFSMedia *m)
     if (nil == d) {
         d = [[NSMutableDictionary alloc] init];
         [m setRepresentedObject:d];
-        [d release];
     }
     return (d);
 }
@@ -1098,16 +1085,14 @@ static void ExtSwapButtonState(id button, BOOL swapImage)
    NSString *title;
    NSImage *image;
    
-   title = [[button alternateTitle] retain];
+   title = [button alternateTitle];
    [button setAlternateTitle:[button title]];
    [button setTitle:title];
-   [title release];
    
    if (swapImage) {
-      image = [[button alternateImage] retain];
+      image = [button alternateImage];
       [button setAlternateImage:[button image]];
       [button setImage:image];
-      [image release];
    }
 }
 
@@ -1117,19 +1102,18 @@ static id ExtMakeInfoTitle(NSString *title)
    str = [[NSMutableAttributedString alloc] initWithString:
       [title stringByAppendingString:@":"]];
    [str applyFontTraits:NSBoldFontMask range:NSMakeRange(0, [str length])];
-   return ([str autorelease]);
+   return (str);
 }
 
 static void ExtSetPrefVal(ExtFSMedia *media, id key, id val)
 {
     NSMutableDictionary *dict;
     NSString *uuid = [media uuidString];
-    if (nil == (dict = [[e_prefMedia objectForKey:uuid] mutableCopy])) {
+    if (nil == (dict = [e_prefMedia[uuid] mutableCopy])) {
         dict = [[NSMutableDictionary alloc] init];
     }
-    [dict setObject:val forKey:key];
-    [e_prefMedia setObject:dict forKey:uuid];
-    [dict release];
+    dict[key] = val;
+    e_prefMedia[uuid] = dict;
     e_prefsChanged = YES;
 }
 
@@ -1138,11 +1122,10 @@ static void AddRestoreAction(ExtFSMedia *m, id key, id val)
     NSMutableDictionary *objd = MediaProps(m);
     NSMutableArray *actions;
     
-    actions = [objd objectForKey:EXT_OBJ_PROPERTY_RESTORE_ACTIONS];
+    actions = objd[EXT_OBJ_PROPERTY_RESTORE_ACTIONS];
     if (nil == actions) {
         actions = [[NSMutableArray alloc] init];
-        [objd setObject:actions forKey:EXT_OBJ_PROPERTY_RESTORE_ACTIONS];
-        [actions release];
+        objd[EXT_OBJ_PROPERTY_RESTORE_ACTIONS] = actions;
     }
 
 #ifdef TRACE
@@ -1150,7 +1133,7 @@ static void AddRestoreAction(ExtFSMedia *m, id key, id val)
         [m bsdName], key, val);
 #endif
     [actions addObject:
-        [NSDictionary dictionaryWithObjectsAndKeys:val, key, nil]];
+        @{key: val}];
 }
 
 static BOOL PlayRestoreActions(ExtFSMedia *m)
@@ -1159,14 +1142,14 @@ static BOOL PlayRestoreActions(ExtFSMedia *m)
     NSMutableArray *actions;
     BOOL played = NO;
     if (objd) {
-        actions = [objd objectForKey:EXT_OBJ_PROPERTY_RESTORE_ACTIONS];
+        actions = objd[EXT_OBJ_PROPERTY_RESTORE_ACTIONS];
         if (actions && [actions count] > 0) {
             NSDictionary *obj;
             id key, val;
             NSEnumerator *en = [actions objectEnumerator];
             while ((obj = [en nextObject])) {
-                key = [[obj allKeys] objectAtIndex:0];
-                val = [[obj allValues] objectAtIndex:0];
+                key = [obj allKeys][0];
+                val = [obj allValues][0];
         #ifdef TRACE
                 NSLog(@"Playing restore action for media '%@' with key '%@' and val '%@'.\n",
                     [m bsdName], key, val);

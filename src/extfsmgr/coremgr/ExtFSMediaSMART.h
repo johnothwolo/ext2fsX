@@ -94,7 +94,7 @@ typedef NS_OPTIONS(NSUInteger, ExtFSSMARTEventFlag) {
 see [ExtFSMediaController(ExtFSMediaControllerSMART) SMARTStatusForMedia:parentDisk:].
 @result An ExtFSMARTStatus status code.
 */
-- (ExtFSMARTStatus)SMARTStatus;
+@property (readonly) ExtFSMARTStatus SMARTStatus;
 
 @end
 

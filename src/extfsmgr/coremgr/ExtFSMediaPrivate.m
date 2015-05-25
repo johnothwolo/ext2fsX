@@ -60,7 +60,7 @@ BOOL IsSMARTCapableTiger(io_service_t is)
     CFMutableDictionaryRef props;
     BOOL smart = NO;
     if (kIOReturnSuccess == IORegistryEntryCreateCFProperties(is, &props, kCFAllocatorDefault, 0)) {
-        smart = (nil != [(NSDictionary*)props objectForKey:NSSTR(kIOPropertySMARTCapableKey)]);
+        smart = (nil != ((NSDictionary*)props)[@kIOPropertySMARTCapableKey]);
         CFRelease(props);
     }
     return (smart);
@@ -93,10 +93,10 @@ __private_extern__ void PantherInitSMART()
 - (void)postNotification:(NSArray*)args
 {
     NSInteger ct = [args count];
-    id obj = (ct >= kNoteArgObject+1) ? [args objectAtIndex:kNoteArgObject] : nil;
-    NSDictionary *info = (ct >= kNoteArgInfo+1) ? [args objectAtIndex:kNoteArgInfo] : nil;
+    id obj = (ct >= kNoteArgObject+1) ? args[kNoteArgObject] : nil;
+    NSDictionary *info = (ct >= kNoteArgInfo+1) ? args[kNoteArgInfo] : nil;
     [[NSNotificationCenter defaultCenter]
-         postNotificationName:[args objectAtIndex:kNoteArgName] object:obj userInfo:info];
+         postNotificationName:args[kNoteArgName] object:obj userInfo:info];
 }
 
 - (NSString*)pathForResource:(NSString*)resource
@@ -158,7 +158,7 @@ __private_extern__ void PantherInitSMART()
       while ((ioparent = IOIteratorNext(piter))) {
 #endif
    if (NO == wholeDisk) {
-      ioparent = nil;
+      ioparent = IO_OBJECT_NULL;
       iterations = 0;
       kr = IORegistryEntryGetParentEntry(service, kIOServicePlane, &ioparent);
       while (kIOReturnSuccess == kr && ioparent && iterations < MAX_PARENT_ITERS) {
@@ -167,7 +167,7 @@ __private_extern__ void PantherInitSMART()
             break;
          /* Otherwise release it */
          ioparentold = ioparent;
-         ioparent = nil;
+         ioparent = IO_OBJECT_NULL;
          kr = IORegistryEntryGetParentEntry(ioparentold, kIOServicePlane, &ioparent);
          IOObjectRelease(ioparentold);
          iterations++;
@@ -192,7 +192,7 @@ __private_extern__ void PantherInitSMART()
             NSString *pdevice;
             
             /* See if the parent object exists */
-            pdevice = [(NSDictionary*)props objectForKey:NSSTR(kIOBSDNameKey)];
+            pdevice = ((NSDictionary*)props)[@kIOBSDNameKey];
             parent = [mc mediaWithBSDName:pdevice];
             if (!parent) {
                /* Parent does not exist */
@@ -212,35 +212,34 @@ __private_extern__ void PantherInitSMART()
         dvd = IsOpticalDVDMedia([parent opticalMediaType]);
         cd = IsOpticalCDMedia([parent opticalMediaType]);
     } else {
-        ioparent = nil;
+        ioparent = IO_OBJECT_NULL;
         kr = IORegistryEntryGetParentEntry(service, kIOServicePlane, &ioparent);
         while (kIOReturnSuccess == kr && ioparent &&
              (efsIOTransportTypeUnknown == (transType & efsIOTransportBusMask) ||
              0 == (transType & efsIOTransportTypeMask))) {
             
             if (kIOReturnSuccess == IORegistryEntryCreateCFProperties(ioparent, &props, kCFAllocatorDefault, 0)) {
-                NSDictionary *protocolSpecs = [(NSDictionary*)props objectForKey:
-                    NSSTR(kIOPropertyProtocolCharacteristicsKey)];
+                NSDictionary *protocolSpecs = ((NSDictionary*)props)[@kIOPropertyProtocolCharacteristicsKey];
                 NSString *type, *location;
                 NSNumber *foundType;
                 
-                if ((type = [protocolSpecs objectForKey:NSSTR(kIOPropertyPhysicalInterconnectTypeKey)])
-                    || (type = [(NSDictionary*)props objectForKey:NSSTR(kIOPropertyPhysicalInterconnectTypeKey)])) {
-                    if ((foundType = [transportNameTypeMap objectForKey:type])
+                if ((type = protocolSpecs[@kIOPropertyPhysicalInterconnectTypeKey])
+                    || (type = ((NSDictionary*)props)[@kIOPropertyPhysicalInterconnectTypeKey])) {
+                    if ((foundType = transportNameTypeMap[type])
                         && (efsIOTransportTypeUnknown == (transType & efsIOTransportBusMask)))
                         transType = [foundType unsignedIntValue] | (transType & efsIOTransportTypeMask);
                 }
                 
-                if ((location = [protocolSpecs objectForKey:NSSTR(kIOPropertyPhysicalInterconnectLocationKey)])
-                    || (location = [(NSDictionary*)props objectForKey:NSSTR(kIOPropertyPhysicalInterconnectLocationKey)])) {
-                    if ((foundType = [transportNameTypeMap objectForKey:location])
+                if ((location = protocolSpecs[@kIOPropertyPhysicalInterconnectLocationKey])
+                    || (location = ((NSDictionary*)props)[@kIOPropertyPhysicalInterconnectLocationKey])) {
+                    if ((foundType = transportNameTypeMap[location])
                         && 0 == (transType & efsIOTransportTypeMask))
                         transType |= [foundType unsignedIntValue];
                 }
                 CFRelease(props);
             }
             ioparentold = ioparent;
-            ioparent = nil;
+            ioparent = IO_OBJECT_NULL;
             kr = IORegistryEntryGetParentEntry(ioparentold, kIOServicePlane, &ioparent);
             IOObjectRelease(ioparentold);
         }
@@ -278,10 +277,10 @@ __private_extern__ void PantherInitSMART()
    NSString * opticalType;
    if (dvd) {
       e_attributeFlags |= kfsDVDROM;
-      opticalType = [e_media objectForKey:NSSTR(kIODVDMediaTypeKey)];
+      opticalType = e_media[@kIODVDMediaTypeKey];
    } else if (cd) {
       e_attributeFlags |= kfsCDROM;
-      opticalType = [e_media objectForKey:NSSTR(kIOCDMediaTypeKey)];
+      opticalType = e_media[@kIOCDMediaTypeKey];
    } else
       opticalType = nil;
 
@@ -315,22 +314,22 @@ __private_extern__ void PantherInitSMART()
         e_media = [properties retain];
         
         #ifdef DEBUG
-        if (NO == [e_bsdName isEqualToString:[e_media objectForKey:NSSTR(kIOBSDNameKey)]])
+        if (NO == [e_bsdName isEqualToString:e_media[@kIOBSDNameKey]])
             trap(); // XXX This should NEVER happen
         #endif
         
-        e_size = [[e_media objectForKey:NSSTR(kIOMediaSizeKey)] unsignedLongLongValue];
-        e_devBlockSize = [[e_media objectForKey:NSSTR(kIOMediaPreferredBlockSizeKey)] unsignedIntValue];
+        e_size = [e_media[@kIOMediaSizeKey] unsignedLongLongValue];
+        e_devBlockSize = [e_media[@kIOMediaPreferredBlockSizeKey] unsignedIntValue];
         e_opticalType = efsOpticalTypeUnknown;
 
         e_attributeFlags &= ~(kfsEjectable|kfsWritable|kfsWholeDisk|kfsLeafDisk|kfsNoMount);
-        if ([[e_media objectForKey:NSSTR(kIOMediaEjectableKey)] boolValue])
+        if ([e_media[@kIOMediaEjectableKey] boolValue])
             e_attributeFlags |= kfsEjectable;
-        if ([[e_media objectForKey:NSSTR(kIOMediaWritableKey)] boolValue])
+        if ([e_media[@kIOMediaWritableKey] boolValue])
             e_attributeFlags |= kfsWritable;
-        if ([[e_media objectForKey:NSSTR(kIOMediaWholeKey)] boolValue])
+        if ([e_media[@kIOMediaWholeKey] boolValue])
             e_attributeFlags |= kfsWholeDisk;
-        if ([[e_media objectForKey:NSSTR(kIOMediaLeafKey)] boolValue])
+        if ([e_media[@kIOMediaLeafKey] boolValue])
             e_attributeFlags |= kfsLeafDisk;
         
         NSSet *gptIgnore = [NSSet setWithObjects:
@@ -340,7 +339,7 @@ __private_extern__ void PantherInitSMART()
             @"8DA63339-0007-60C0-C436-083AC8230908", // Linxu reserved
             nil];
 
-        NSString *hint = [e_media objectForKey:NSSTR(kIOMediaContentKey)];
+        NSString *hint = e_media[@kIOMediaContentKey];
         if ([gptIgnore containsObject:hint]
             || NSNotFound != [hint rangeOfString:@"partition"].location
             || NSNotFound != [hint rangeOfString:@"Boot"].location
@@ -349,7 +348,7 @@ __private_extern__ void PantherInitSMART()
             || NSNotFound != [hint rangeOfString:@"CD_DA"].location) {
             e_attributeFlags |= kfsNoMount;
         } else {
-        hint = [e_media objectForKey:NSSTR(kIOMediaContentKey)];
+        hint = e_media[@kIOMediaContentKey];
             if ([gptIgnore containsObject:hint]
                 || NSNotFound != [hint rangeOfString:@"partition"].location) {
             e_attributeFlags |= kfsNoMount;
@@ -383,7 +382,7 @@ __private_extern__ void PantherInitSMART()
       
       /* Reset the write flag in case the device is writable,
          but the mounted filesystem was not */
-      if ([[e_media objectForKey:NSSTR(kIOMediaWritableKey)] boolValue])
+      if ([e_media[@kIOMediaWritableKey] boolValue])
          e_attributeFlags |= kfsWritable;
 
         if (e_attributeFlags & kfsHasCustomIcon) {
@@ -400,19 +399,19 @@ __private_extern__ void PantherInitSMART()
    }
    
    fsTypes = [[NSDictionary alloc] initWithObjectsAndKeys:
-      [NSNumber numberWithInt:fsTypeExt2], NSSTR(EXT2FS_NAME),
-      [NSNumber numberWithInt:fsTypeExt3], NSSTR(EXT3FS_NAME),
-      [NSNumber numberWithInt:fsTypeHFS], NSSTR(HFS_NAME),
-      [NSNumber numberWithInt:fsTypeUFS], NSSTR(UFS_NAME),
-      [NSNumber numberWithInt:fsTypeCD9660], NSSTR(CD9660_NAME),
-      [NSNumber numberWithInt:fsTypeCDAudio], NSSTR(CDAUDIO_NAME),
-      [NSNumber numberWithInt:fsTypeUDF], NSSTR(UDF_NAME),
-      [NSNumber numberWithInt:fsTypeMSDOS], NSSTR(MSDOS_NAME),
-      [NSNumber numberWithInt:fsTypeNTFS], NSSTR(NTFS_NAME),
-      [NSNumber numberWithInt:fsTypeUnknown], NSSTR("Unknown"),
+      @(fsTypeExt2), @EXT2FS_NAME,
+      @(fsTypeExt3), @EXT3FS_NAME,
+      @(fsTypeHFS), @HFS_NAME,
+      @(fsTypeUFS), @UFS_NAME,
+      @(fsTypeCD9660), @CD9660_NAME,
+      @(fsTypeCDAudio), @CDAUDIO_NAME,
+      @(fsTypeUDF), @UDF_NAME,
+      @(fsTypeMSDOS), @MSDOS_NAME,
+      @(fsTypeNTFS), @NTFS_NAME,
+      @(fsTypeUnknown), @"Unknown",
       nil];
    
-   fstype = [fsTypes objectForKey:NSSTR(stat->f_fstypename)];
+   fstype = fsTypes[@(stat->f_fstypename)];
    ftype = fsTypeUnknown;
    if (fstype)
       ftype = [fstype intValue];
@@ -482,12 +481,12 @@ __private_extern__ void PantherInitSMART()
     if (dict)
         return (IOServiceGetMatchingService(kIOMasterPortDefault, dict));
     
-    return (nil);
+    return (IO_OBJECT_NULL);
 }
 
 - (io_service_t)copySMARTIOService
 {
-    io_service_t me = nil, tmp, parent = nil;
+    io_service_t me = IO_OBJECT_NULL, tmp, parent = IO_OBJECT_NULL;
     
     if ((me = [self copyIOService])) {
         kern_return_t kr = IORegistryEntryGetParentEntry(me, kIOServicePlane, &parent);
@@ -495,7 +494,7 @@ __private_extern__ void PantherInitSMART()
             if (IsSMARTCapable(parent))
                     break;
             tmp = parent;
-            parent = nil;
+            parent = IO_OBJECT_NULL;
             kr = IORegistryEntryGetParentEntry(tmp, kIOServicePlane, &parent);
             IOObjectRelease(tmp);
         }
@@ -601,7 +600,7 @@ __private_extern__ void PantherInitSMART()
         [super release];
         return (nil);
     }
-    e_media = [[NSDictionary alloc] initWithObjectsAndKeys:device, NSSTR(kIOBSDNameKey), nil];
+    e_media = [[NSDictionary alloc] initWithObjectsAndKeys:device, @kIOBSDNameKey, nil];
     e_bsdName = [device retain];
     return (self);
 }

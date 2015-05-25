@@ -130,9 +130,9 @@ do { \
 
 - (void)postNotification:(NSArray*)args
 {
-    NSDictionary *info = ([args count] == 2) ? [args objectAtIndex:1] : nil;
+    NSDictionary *info = ([args count] == 2) ? args[1] : nil;
     [[NSNotificationCenter defaultCenter]
-         postNotificationName:[args objectAtIndex:0] object:self userInfo:info];
+         postNotificationName:args[0] object:self userInfo:info];
 }
 #define EFSMPostNotification(note, info) do {\
 NSArray *args = [[NSArray alloc] initWithObjects:note, info, nil]; \
@@ -260,7 +260,7 @@ eminfo_exit:
             NSTask *probe = [[NSTask alloc] init];
             NSPipe *output = [[NSPipe alloc] init];
             [probe setStandardOutput:output];
-            [probe setArguments:[NSArray arrayWithObjects:[self bsdName], nil]];
+            [probe setArguments:@[[self bsdName]]];
             [probe setLaunchPath:probePath];
             @try {
             [probe launch];
@@ -284,8 +284,8 @@ eminfo_exit:
                     plist = [NSPropertyListSerialization propertyListFromData:d
                         mutabilityOption:NSPropertyListImmutable format:NULL errorDescription:nil];
                     
-                    uuid = [[plist objectForKey:EPROBE_KEY_UUID] retain];
-                    if ([[plist objectForKey:EPROBE_KEY_JOURNALED] boolValue])
+                    uuid = [plist[EPROBE_KEY_UUID] retain];
+                    if ([plist[EPROBE_KEY_JOURNALED] boolValue])
                         e_volCaps |= (VOL_CAP_FMT_JOURNAL|VOL_CAP_FMT_JOURNAL_ACTIVE);
                     else
                         e_volCaps &= ~(VOL_CAP_FMT_JOURNAL|VOL_CAP_FMT_JOURNAL_ACTIVE);
@@ -338,7 +338,7 @@ init_err:
       }
       
       e_attributeFlags = kfsDiskArb | kfsGetAttrlist;
-      e_bsdName = [[properties objectForKey:NSSTR(kIOBSDNameKey)] retain];
+      e_bsdName = [properties[@kIOBSDNameKey] retain];
       e_fsType = fsTypeUnknown;
       [self updateProperties:properties];
       
@@ -411,7 +411,7 @@ init_err:
    NSUInteger idx = [e_children indexOfObject:media];
    if (NSNotFound != idx) {
       (void)[media retain]; // Just in case the ptr is the same as that at idx
-      [e_children replaceObjectAtIndex:idx withObject:media];
+      e_children[idx] = media;
       eulock(e_lock);
       [media release];
       E2DiagLog(@"ExtFS: Oops! Parent '%@' already contains child '%@'.\n",
@@ -481,8 +481,8 @@ init_err:
       return (nil);
    }
    
-   bundleid = [e_iconDesc objectForKey:(NSString*)kCFBundleIdentifierKey];
-   iconName = [e_iconDesc objectForKey:NSSTR(kIOBundleResourceFileKey)];
+   bundleid = e_iconDesc[(NSString*)kCFBundleIdentifierKey];
+   iconName = e_iconDesc[@kIOBundleResourceFileKey];
    cacheKey = [NSString stringWithFormat:@"%@.%@", bundleid, [iconName lastPathComponent]];
    if (!bundleid || !iconName) {
       eulock(e_lock);
@@ -492,7 +492,7 @@ init_err:
    
    /* Try the global cache */
    erlock(e_mediaIconCacheLck);
-   if ((e_icon = [e_mediaIconCache objectForKey:cacheKey])) {
+   if ((e_icon = e_mediaIconCache[cacheKey])) {
       (void)[e_icon retain]; // For ourself
       eulock(e_mediaIconCacheLck);
       eulock(e_lock);
@@ -547,10 +547,10 @@ init_err:
    if (ico) {
       ewlock(e_mediaIconCacheLck);
       // Somebody else could have added us to the cache
-      if (nil == (e_icon = [e_mediaIconCache objectForKey:cacheKey])) {
+      if (nil == (e_icon = e_mediaIconCache[cacheKey])) {
          e_icon = ico;
          [e_icon setName:cacheKey];
-         [e_mediaIconCache setObject:e_icon forKey:cacheKey];
+         e_mediaIconCache[cacheKey] = e_icon;
          E2DiagLog(@"ExtFS: Added icon %@ to icon cache (%lu).\n", cacheKey, [e_icon retainCount]);
       } else {
          // Use the cached icon instead of the one we found
@@ -786,7 +786,7 @@ emicon_exit:
 {
    BOOL test;
    erlock(e_lock);
-   test = [[e_probedAttributes objectForKey:EPROBE_KEY_BLESSED] boolValue];
+   test = [e_probedAttributes[EPROBE_KEY_BLESSED] boolValue];
    eulock(e_lock);
    return (test);
 }
@@ -928,7 +928,7 @@ emicon_exit:
 {
    NSUInteger count;
    E2DiagLog(@"ExtFS: Media <%@, %p> dealloc.\n",
-      [e_media objectForKey:NSSTR(kIOBSDNameKey)], self);
+      e_media[@kIOBSDNameKey], self);
    
    // Icon cache
    ewlock(e_mediaIconCacheLck);

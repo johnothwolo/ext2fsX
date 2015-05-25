@@ -60,8 +60,8 @@ struct superblock {
 struct efsattrs {
     u_int64_t fsBlockCount;
     u_int32_t fsBlockSize;
-    NSString *name;
-    NSString *uuid;
+    CFStringRef name;
+    CFStringRef uuid;
     BOOL isJournaled, blessed;
 };
 
@@ -197,11 +197,11 @@ efs_hfs:
         CFUUIDRef cuuid = CFUUIDCreateFromUUIDBytes(kCFAllocatorDefault,
             *((CFUUIDBytes*)uuidbytes));
         if (cuuid) {
-            fsa->uuid = (NSString*)CFUUIDCreateString(kCFAllocatorDefault, cuuid);
+            fsa->uuid = CFUUIDCreateString(kCFAllocatorDefault, cuuid);
             CFRelease(cuuid);
         }
     } else if (hfsuidbytes) {
-        fsa->uuid = [[NSString alloc] initWithFormat:@"%qX", be64_to_cpu(*((u_int64_t*)hfsuidbytes))];
+        fsa->uuid = CFBridgingRetain([[NSString alloc] initWithFormat:@"%qX", be64_to_cpu(*((u_int64_t*)hfsuidbytes))]);
     }
 
     bzero(buf, EXT_SUPER_SIZE);
@@ -213,39 +213,39 @@ efs_hfs:
 
 int main (int argc, char *argv[])
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    int type;
-    
-    if (2 != argc)
-        return (-1);
-    
-    progname = strrchr(argv[0], '/');
-    if (!progname)
-        progname = argv[0];
-    
-    struct efsattrs fsa = {0};
-    type = efs_getdevicefs(argv[1], &fsa);
-    if (type > -1 && fsTypeUnknown != type) {
-        NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
-        if (fsa.name) {
-            [d setObject:fsa.name forKey:EPROBE_KEY_NAME];
-        }
-        if (fsa.uuid) {
-            [d setObject:fsa.uuid forKey:EPROBE_KEY_UUID];
-        }
-        [d setObject:[NSNumber numberWithBool:fsa.isJournaled] forKey:EPROBE_KEY_JOURNALED];
-        [d setObject:[NSNumber numberWithUnsignedInt:fsa.fsBlockSize] forKey:EPROBE_KEY_FSBLKSIZE];
-        [d setObject:[NSNumber numberWithUnsignedLongLong:fsa.fsBlockCount] forKey:EPROBE_KEY_FSBLKCOUNT];
-        [d setObject:[NSNumber numberWithBool:fsa.blessed] forKey:EPROBE_KEY_BLESSED];
+    @autoreleasepool {
+        int type;
         
-        id plist = [NSPropertyListSerialization dataFromPropertyList:d
-            format:NSPropertyListXMLFormat_v1_0
-        	errorDescription:nil];
-        if (plist)
-            plist = [[NSString alloc] initWithData:plist encoding:NSUTF8StringEncoding]; 
-        if (plist)
-            printf ("%s", [plist  UTF8String]);
+        if (2 != argc)
+            return (-1);
+        
+        progname = strrchr(argv[0], '/');
+        if (!progname)
+            progname = argv[0];
+        
+        struct efsattrs fsa = {0};
+        type = efs_getdevicefs(argv[1], &fsa);
+        if (type > -1 && fsTypeUnknown != type) {
+            NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
+            if (fsa.name) {
+                d[EPROBE_KEY_NAME] = (__bridge id)(fsa.name);
+            }
+            if (fsa.uuid) {
+                d[EPROBE_KEY_UUID] = (__bridge id)(fsa.uuid);
+            }
+            d[EPROBE_KEY_JOURNALED] = @(fsa.isJournaled);
+            d[EPROBE_KEY_FSBLKSIZE] = @(fsa.fsBlockSize);
+            d[EPROBE_KEY_FSBLKCOUNT] = @(fsa.fsBlockCount);
+            d[EPROBE_KEY_BLESSED] = @(fsa.blessed);
+            
+            id plist = [NSPropertyListSerialization dataFromPropertyList:d
+                format:NSPropertyListXMLFormat_v1_0
+            	errorDescription:nil];
+            if (plist)
+                plist = [[NSString alloc] initWithData:plist encoding:NSUTF8StringEncoding]; 
+            if (plist)
+                printf ("%s", [plist  UTF8String]);
+        }
+        return (type);
     }
-    [pool release];
-    return (type);
 }

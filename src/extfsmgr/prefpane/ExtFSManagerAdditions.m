@@ -54,14 +54,14 @@
         loginDict = [[NSMutableDictionary alloc] initWithCapacity:1];
 
     // Get the login items array
-    entries = [[loginDict objectForKey:LOGINITEMS_KEY] mutableCopyWithZone:nil];
+    entries = [loginDict[LOGINITEMS_KEY] mutableCopyWithZone:nil];
     if (nil == entries)
         entries = [[NSMutableArray alloc] initWithCapacity:1];
 
     // Make sure the entry does not exist
     en = [entries objectEnumerator];
     while ((myEntry = [en nextObject])) {
-        if ([path isEqualToString:[myEntry objectForKey:PATH_KEY]]) {
+        if ([path isEqualToString:myEntry[PATH_KEY]]) {
             added = YES;
             myEntry = nil;
             goto add_exit;
@@ -69,16 +69,14 @@
     }
 
     // Build our entry
-    myEntry = [[NSDictionary alloc] initWithObjectsAndKeys:
-         [NSNumber numberWithBool:NO], HIDE_KEY,
-         path, PATH_KEY,
-         nil];
+    myEntry = @{HIDE_KEY: @NO,
+         PATH_KEY: path};
 
     if (loginDict && entries && myEntry) {
         // Add our entry
         [entries insertObject:myEntry atIndex:0];
 
-        [loginDict setObject:entries forKey:LOGINITEMS_KEY];
+        loginDict[LOGINITEMS_KEY] = entries;
 
         // Update the loginwindow prefs
         [ud removePersistentDomainForName:LOGINWINDOW_DOMAIN];
@@ -89,10 +87,7 @@
 
 add_exit:
     // Release everything
-    [myEntry release];
-    [entries release];
-    [loginDict release];
-    [ud release];
+    ;
     return (added);
 }
 

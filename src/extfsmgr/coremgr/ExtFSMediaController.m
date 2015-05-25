@@ -164,10 +164,10 @@ static NSDictionary *opticalMediaNames = nil;
       return;
    
    ewlock(e_lock);
-   pMounts = [e_pending objectAtIndex:kPendingMounts];
+   pMounts = e_pending[kPendingMounts];
    for (i = 0; i < count; ++i) {
-      device = [[NSString stringWithUTF8String:stats[i].f_mntfromname] lastPathComponent];      
-      e2media = [e_media objectForKey:device];
+      device = [@(stats[i].f_mntfromname) lastPathComponent];      
+      e2media = e_media[device];
       if (!e2media)
          continue;
       
@@ -181,8 +181,8 @@ static NSDictionary *opticalMediaNames = nil;
 - (BOOL)volumeDidUnmount:(NSString*)device
 {
    ewlock(e_lock);
-   ExtFSMedia *e2media = [e_media objectForKey:device];
-      NSMutableArray *pUMounts = [e_pending objectAtIndex:kPendingUMounts];
+   ExtFSMedia *e2media = e_media[device];
+      NSMutableArray *pUMounts = e_pending[kPendingUMounts];
    BOOL isMounted = ([e2media isMounted] || [pUMounts containsObject:e2media]);
    if (e2media && isMounted) {
       [pUMounts removeObject:e2media];
@@ -225,10 +225,10 @@ eulock(e_lock); \
       NSString *device = [e2media bsdName];
       ewlock(e_lock);
       #ifdef DIAGNOSTIC
-      if ([e_media objectForKey:device])
+      if (e_media[device])
         trap();
       #endif
-      [e_media setObject:e2media forKey:device];
+      e_media[device] = e2media;
       eulock(e_lock);
       
       E2DiagLog(@"ExtFS: Media %@ created with parent %@.\n", e2media, [e2media parent]);
@@ -237,7 +237,7 @@ eulock(e_lock); \
       [e2media release];
    } else {
       EFSMCPostNotification(ExtFSMediaNotificationCreationFailed,
-        [props objectForKey:NSSTR(kIOBSDNameKey)], nil);
+        props[@kIOBSDNameKey], nil);
    }
    return (e2media);
 }
@@ -276,9 +276,9 @@ eulock(e_lock); \
       kr = IORegistryEntryCreateCFProperties(iomedia, &properties,
          kCFAllocatorDefault, 0);
       if (0 == kr) {
-         device = [(NSMutableDictionary*)properties objectForKey:NSSTR(kIOBSDNameKey)];
+         device = ((NSMutableDictionary*)properties)[@kIOBSDNameKey];
          erlock(e_lock);
-         e2media = [[e_media objectForKey:device] retain];
+         e2media = [e_media[device] retain];
          eulock(e_lock);
          if (e2media) {
             if (remove)
@@ -288,7 +288,7 @@ eulock(e_lock); \
                [e2media updateProperties:(NSDictionary*)properties];
                #ifdef DIAGNOSTIC
                erlock(e_lock);
-               kr = (e2media == [e_media objectForKey:device]) ? 0 : 1;
+               kr = (e2media == e_media[device]) ? 0 : 1;
                eulock(e_lock);
                if (kr)
                   trap();
@@ -333,7 +333,7 @@ eulock(e_lock); \
     ExtFSMedia *media = [timer userInfo];
     
     erlock(e_lock);
-    pMounts = [e_pending objectAtIndex:kPendingMounts];
+    pMounts = e_pending[kPendingMounts];
     if ([pMounts containsObject:media]) {
         eulock(e_lock);
         // Send an error - this also clears the pending state
@@ -350,8 +350,8 @@ eulock(e_lock); \
     NSMutableArray *pUMounts;
     
     ewlock(e_lock);
-    pMounts = [e_pending objectAtIndex:kPendingMounts];
-    pUMounts = [e_pending objectAtIndex:kPendingUMounts];
+    pMounts = e_pending[kPendingMounts];
+    pUMounts = e_pending[kPendingUMounts];
    
     E2DiagLog(@"Attempting to remove %@ from pending states.\n", media);
     [pMounts removeObject:media];
@@ -387,9 +387,7 @@ eulock(e_lock); \
         
         E2DiagLog(@"exclusive claim of '%@' %s\n", device, !error ? "granted" : "denied");
         
-        NSDictionary *d = [NSDictionary dictionaryWithObjectsAndKeys:
-            [NSNumber numberWithInt:error], ExtMediaKeyOpFailureError,
-            nil];
+        NSDictionary *d = @{ExtMediaKeyOpFailureError: @(error)};
         
         EFSMCPostNotification(ExtFSMediaNotificationClaimRequestDidComplete, media, d);
     }
@@ -504,7 +502,7 @@ eulock(e_lock); \
 {
    ExtFSMedia *m;
    erlock(e_lock);
-   m = [[e_media objectForKey:device] retain];
+   m = [e_media[device] retain];
    eulock(e_lock);
    return ([m autorelease]);
 }
@@ -516,8 +514,8 @@ eulock(e_lock); \
    kern_return_t ke;
    
    ewlock(e_lock);
-   pMounts = [e_pending objectAtIndex:kPendingMounts];
-   pUMounts = [e_pending objectAtIndex:kPendingUMounts];
+   pMounts = e_pending[kPendingMounts];
+   pUMounts = e_pending[kPendingUMounts];
    if ([pMounts containsObject:media] || [pUMounts containsObject:media]) {
         eulock(e_lock);
         E2DiagLog(@"ExtFS: Can't mount '%@'. Operation is already in progress.",
@@ -578,8 +576,8 @@ eulock(e_lock); \
    }
    
    ewlock(e_lock);
-   pMounts = [e_pending objectAtIndex:kPendingMounts];
-   pUMounts = [e_pending objectAtIndex:kPendingUMounts];
+   pMounts = e_pending[kPendingMounts];
+   pUMounts = e_pending[kPendingUMounts];
    if ([pMounts containsObject:media] || [pUMounts containsObject:media]) {
         eulock(e_lock);
         E2DiagLog(@"ExtFS: Can't unmount '%@'. Operation is already in progress.",
@@ -646,12 +644,12 @@ unmount_failed:
 
 - (ExtFSOpticalMediaType)opticalMediaTypeForName:(NSString*)name
 {
-    return ([[opticalMediaTypes objectForKey:name] intValue]);
+    return ([opticalMediaTypes[name] shortValue]);
 }
 
 - (NSString*)opticalMediaNameForType:(ExtFSOpticalMediaType)type
 {
-    return ([opticalMediaNames objectForKey:[NSNumber numberWithInt:type]]);
+    return (opticalMediaNames[@(type)]);
 }
 
 - (id)delegate
@@ -694,8 +692,8 @@ unmount_failed:
     [state appendString:@"}\n"];
     
     erlock(e_lock);
-    [state appendFormat:@"pending mounts = %@\n", [e_pending objectAtIndex:kPendingMounts]];
-    [state appendFormat:@"pending unmounts = %@\n", [e_pending objectAtIndex:kPendingUMounts]];
+    [state appendFormat:@"pending mounts = %@\n", e_pending[kPendingMounts]];
+    [state appendFormat:@"pending unmounts = %@\n", e_pending[kPendingUMounts]];
     #ifdef EFSM_GLOBAL_DEVICE_ALLOW
     [state appendFormat:@"denied mounts = %@\n", deviceMountBlockList];
     #endif
@@ -757,7 +755,7 @@ unmount_failed:
     [pool release];
 }
 
-- (id)init
+- (instancetype)init
 {
    kern_return_t kr = 0;
    id obj;
@@ -786,59 +784,59 @@ unmount_failed:
    e_instance = self;
     
     opticalMediaTypes = [[NSDictionary alloc] initWithObjectsAndKeys:
-        [NSNumber numberWithInt:efsOpticalTypeCD], NSSTR(kIOCDMediaTypeROM),
-        [NSNumber numberWithInt:efsOpticalTypeCDR], NSSTR(kIOCDMediaTypeR),
-        [NSNumber numberWithInt:efsOpticalTypeCDRW], NSSTR(kIOCDMediaTypeRW),
-        [NSNumber numberWithInt:efsOpticalTypeDVD], NSSTR(kIODVDMediaTypeROM),
-        [NSNumber numberWithInt:efsOpticalTypeDVDDashR], NSSTR(kIODVDMediaTypeR),
-        [NSNumber numberWithInt:efsOpticalTypeDVDDashRW], NSSTR(kIODVDMediaTypeRW),
-        [NSNumber numberWithInt:efsOpticalTypeDVDPlusR], NSSTR(kIODVDMediaTypePlusR),
-        [NSNumber numberWithInt:efsOpticalTypeDVDPlusRW], NSSTR(kIODVDMediaTypePlusRW),
-        [NSNumber numberWithInt:efsOpticalTypeDVDRAM], NSSTR(kIODVDMediaTypeRAM),
+        @(efsOpticalTypeCD), @kIOCDMediaTypeROM,
+        @(efsOpticalTypeCDR), @kIOCDMediaTypeR,
+        @(efsOpticalTypeCDRW), @kIOCDMediaTypeRW,
+        @(efsOpticalTypeDVD), @kIODVDMediaTypeROM,
+        @(efsOpticalTypeDVDDashR), @kIODVDMediaTypeR,
+        @(efsOpticalTypeDVDDashRW), @kIODVDMediaTypeRW,
+        @(efsOpticalTypeDVDPlusR), @kIODVDMediaTypePlusR,
+        @(efsOpticalTypeDVDPlusRW), @kIODVDMediaTypePlusRW,
+        @(efsOpticalTypeDVDRAM), @kIODVDMediaTypeRAM,
         nil];
         
     NSBundle *me = [NSBundle bundleWithIdentifier:EXTFS_DM_BNDL_ID];
     opticalMediaNames = [[NSDictionary alloc] initWithObjectsAndKeys:
-        NSSTR(kIOCDMediaTypeROM), [NSNumber numberWithInt:efsOpticalTypeCD],
-        NSSTR(kIOCDMediaTypeR), [NSNumber numberWithInt:efsOpticalTypeCDR],
-        NSSTR(kIOCDMediaTypeRW), [NSNumber numberWithInt:efsOpticalTypeCDRW],
-        NSSTR(kIODVDMediaTypeROM), [NSNumber numberWithInt:efsOpticalTypeDVD],
-        NSSTR(kIODVDMediaTypeR), [NSNumber numberWithInt:efsOpticalTypeDVDDashR],
-        NSSTR(kIODVDMediaTypeRW), [NSNumber numberWithInt:efsOpticalTypeDVDDashRW],
-        NSSTR(kIODVDMediaTypePlusR), [NSNumber numberWithInt:efsOpticalTypeDVDPlusR],
-        NSSTR(kIODVDMediaTypePlusRW), [NSNumber numberWithInt:efsOpticalTypeDVDPlusRW],
-        NSSTR(kIODVDMediaTypeRAM), [NSNumber numberWithInt:efsOpticalTypeDVDRAM],
-        [me localizedStringForKey:@"Unknown Optical Disc" value:nil table:nil], [NSNumber numberWithInt:efsOpticalTypeUnknown],
+        @kIOCDMediaTypeROM, @(efsOpticalTypeCD),
+        @kIOCDMediaTypeR, @(efsOpticalTypeCDR),
+        @kIOCDMediaTypeRW, @(efsOpticalTypeCDRW),
+        @kIODVDMediaTypeROM, @(efsOpticalTypeDVD),
+        @kIODVDMediaTypeR, @(efsOpticalTypeDVDDashR),
+        @kIODVDMediaTypeRW, @(efsOpticalTypeDVDDashRW),
+        @kIODVDMediaTypePlusR, @(efsOpticalTypeDVDPlusR),
+        @kIODVDMediaTypePlusRW, @(efsOpticalTypeDVDPlusRW),
+        @kIODVDMediaTypeRAM, @(efsOpticalTypeDVDRAM),
+        [me localizedStringForKey:@"Unknown Optical Disc" value:nil table:nil], @(efsOpticalTypeUnknown),
         nil];
     
     transportNameTypeMap = [[NSDictionary alloc] initWithObjectsAndKeys:
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeInternal],
-            NSSTR(kIOPropertyInternalKey),
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeExternal],
-            NSSTR(kIOPropertyExternalKey),
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeInternal|efsIOTransportTypeExternal],
-            NSSTR(kIOPropertyInternalExternalKey),
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeVirtual],
-            NSSTR(kIOPropertyInterconnectFileKey),
+        @(efsIOTransportTypeInternal),
+            @kIOPropertyInternalKey,
+        @(efsIOTransportTypeExternal),
+            @kIOPropertyExternalKey,
+        @(efsIOTransportTypeInternal|efsIOTransportTypeExternal),
+            @kIOPropertyInternalExternalKey,
+        @(efsIOTransportTypeVirtual),
+            @kIOPropertyInterconnectFileKey,
         
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeATA],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeATA),
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeATAPI],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeATAPI),
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeFirewire],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeFireWire),
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeUSB],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeUSB),
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeSCSI],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeSCSIParallel),
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeSCSI],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeSerialAttachedSCSI),
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeFibreChannel],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeFibreChannel),
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeSATA],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeSerialATA),
-        [NSNumber numberWithUnsignedInt:efsIOTransportTypeImage],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeVirtual),
+        @(efsIOTransportTypeATA),
+            @kIOPropertyPhysicalInterconnectTypeATA,
+        @(efsIOTransportTypeATAPI),
+            @kIOPropertyPhysicalInterconnectTypeATAPI,
+        @(efsIOTransportTypeFirewire),
+            @kIOPropertyPhysicalInterconnectTypeFireWire,
+        @(efsIOTransportTypeUSB),
+            @kIOPropertyPhysicalInterconnectTypeUSB,
+        @(efsIOTransportTypeSCSI),
+            @kIOPropertyPhysicalInterconnectTypeSCSIParallel,
+        @(efsIOTransportTypeSCSI),
+            @kIOPropertyPhysicalInterconnectTypeSerialAttachedSCSI,
+        @(efsIOTransportTypeFibreChannel),
+            @kIOPropertyPhysicalInterconnectTypeFibreChannel,
+        @(efsIOTransportTypeSATA),
+            @kIOPropertyPhysicalInterconnectTypeSerialATA,
+        @(efsIOTransportTypeImage),
+            @kIOPropertyPhysicalInterconnectTypeVirtual,
         nil];
     
    e_pending = [[NSMutableArray alloc] initWithCapacity:kPendingCount];
@@ -971,25 +969,25 @@ NSString* EFSNSPrettyNameFromType(ExtFSType type)
           get the FSName value for each personality. This turns out to be more
           work than it's worth though. */
         e_fsPrettyNames = [[NSDictionary alloc] initWithObjectsAndKeys:
-            @"Linux Ext2", [NSNumber numberWithUnsignedInt:fsTypeExt2],
+            @"Linux Ext2", @(fsTypeExt2),
             [me localizedStringForKey:@"Linux Ext3 (Journaled)" value:nil table:nil],
-                [NSNumber numberWithUnsignedInt:fsTypeExt3],
-            @"Mac OS Standard", [NSNumber numberWithUnsignedInt:fsTypeHFS],
+                @(fsTypeExt3),
+            @"Mac OS Standard", @(fsTypeHFS),
             [me localizedStringForKey:@"Mac OS Extended" value:nil table:nil],
-                [NSNumber numberWithUnsignedInt:fsTypeHFSPlus],
+                @(fsTypeHFSPlus),
             [me localizedStringForKey:@"Mac OS Extended (Journaled)" value:nil table:nil],
-                [NSNumber numberWithUnsignedInt:fsTypeHFSJ],
+                @(fsTypeHFSJ),
             [me localizedStringForKey:@"Mac OS Extended (Journaled/Case Sensitive)" value:nil table:nil],
-                [NSNumber numberWithUnsignedInt:fsTypeHFSX],
-            @"UNIX", [NSNumber numberWithUnsignedInt:fsTypeUFS],
-            @"ISO 9660", [NSNumber numberWithUnsignedInt:fsTypeCD9660],
+                @(fsTypeHFSX),
+            @"UNIX", @(fsTypeUFS),
+            @"ISO 9660", @(fsTypeCD9660),
             [me localizedStringForKey:@"CD Audio" value:nil table:nil],
-                [NSNumber numberWithUnsignedInt:fsTypeCDAudio],
-            @"Universal Disk Format (UDF)", [NSNumber numberWithUnsignedInt:fsTypeUDF],
-            @"MSDOS (FAT)", [NSNumber numberWithUnsignedInt:fsTypeMSDOS],
-            @"Windows NTFS", [NSNumber numberWithUnsignedInt:fsTypeNTFS],
+                @(fsTypeCDAudio),
+            @"Universal Disk Format (UDF)", @(fsTypeUDF),
+            @"MSDOS (FAT)", @(fsTypeMSDOS),
+            @"Windows NTFS", @(fsTypeNTFS),
             [me localizedStringForKey:@"Unknown" value:nil table:nil],
-                [NSNumber numberWithUnsignedInt:fsTypeUnknown],
+                @(fsTypeUnknown),
           nil];
         pthread_mutex_unlock(&e_fsTableInitMutex);
     }
@@ -998,7 +996,7 @@ fspretty_lookup:
     // Once allocated, the name table is considered read-only
     if (type > fsTypeUnknown)
       type = fsTypeUnknown;
-    return ([e_fsPrettyNames objectForKey:[NSNumber numberWithUnsignedInt:type]]);
+    return (e_fsPrettyNames[@(type)]);
 }
 
 NSString* EFSIOTransportNameFromType(unsigned long type)
@@ -1020,21 +1018,21 @@ NSString* EFSIOTransportNameFromType(unsigned long type)
         }
 
         e_fsTransportNames = [[NSDictionary alloc] initWithObjectsAndKeys:
-            [me localizedStringForKey:NSSTR(kIOPropertyInternalKey) value:nil table:nil],
-                [NSNumber numberWithUnsignedInt:efsIOTransportTypeInternal],
-            [me localizedStringForKey:NSSTR(kIOPropertyExternalKey) value:nil table:nil],
-                [NSNumber numberWithUnsignedInt:efsIOTransportTypeExternal],
-            [me localizedStringForKey:NSSTR(kIOPropertyInternalExternalKey) value:nil table:nil],
-                [NSNumber numberWithUnsignedInt:efsIOTransportTypeInternal|efsIOTransportTypeExternal],
+            [me localizedStringForKey:@kIOPropertyInternalKey value:nil table:nil],
+                @(efsIOTransportTypeInternal),
+            [me localizedStringForKey:@kIOPropertyExternalKey value:nil table:nil],
+                @(efsIOTransportTypeExternal),
+            [me localizedStringForKey:@kIOPropertyInternalExternalKey value:nil table:nil],
+                @(efsIOTransportTypeInternal|efsIOTransportTypeExternal),
             [me localizedStringForKey:@"Virtual" value:nil table:nil],
-                [NSNumber numberWithUnsignedInt:efsIOTransportTypeVirtual],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeATA), [NSNumber numberWithUnsignedInt:efsIOTransportTypeATA],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeATAPI), [NSNumber numberWithUnsignedInt:efsIOTransportTypeATAPI],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeFireWire), [NSNumber numberWithUnsignedInt:efsIOTransportTypeFirewire],
-            NSSTR(kIOPropertyPhysicalInterconnectTypeUSB), [NSNumber numberWithUnsignedInt:efsIOTransportTypeUSB],
-            @"SCSI", [NSNumber numberWithUnsignedInt:efsIOTransportTypeSCSI],
+                @(efsIOTransportTypeVirtual),
+            @kIOPropertyPhysicalInterconnectTypeATA, @(efsIOTransportTypeATA),
+            @kIOPropertyPhysicalInterconnectTypeATAPI, @(efsIOTransportTypeATAPI),
+            @kIOPropertyPhysicalInterconnectTypeFireWire, @(efsIOTransportTypeFirewire),
+            @kIOPropertyPhysicalInterconnectTypeUSB, @(efsIOTransportTypeUSB),
+            @"SCSI", @(efsIOTransportTypeSCSI),
             @"Fibre Channel", @(efsIOTransportTypeFibreChannel),
-            NSSTR(kIOPropertyPhysicalInterconnectTypeSerialATA), @(efsIOTransportTypeSATA),
+            @kIOPropertyPhysicalInterconnectTypeSerialATA, @(efsIOTransportTypeSATA),
             [me localizedStringForKey:@"Disk Image" value:nil table:nil],
                 @(efsIOTransportTypeImage),
             [me localizedStringForKey:@"Unknown" value:nil table:nil],
@@ -1047,7 +1045,7 @@ fstrans_lookup:
     // Once allocated, the name table is considered read-only
     if (type > efsIOTransportTypeUnknown)
       type = efsIOTransportTypeUnknown;
-    return ([e_fsTransportNames objectForKey:@(type)]);
+    return (e_fsTransportNames[@(type)]);
 }
 
 /* Callbacks */
@@ -1113,7 +1111,7 @@ static void DiskArbCallback_PathChangeNotification(DADiskRef disk,
 {
     @autoreleasepool {
     NSDictionary *d = CFBridgingRelease(DADiskCopyDescription(disk));
-    NSURL *path = [d objectForKey:(NSString*)kDADiskDescriptionVolumePathKey];
+    NSURL *path = d[(NSString*)kDADiskDescriptionVolumePathKey];
     
     /* Apparently, despite the "watching volume mount changes" documentation,
      DARegisterDiskDescriptionChangedCallback() is not meant to notice mounts.
@@ -1134,7 +1132,7 @@ static void DiskArbCallback_NameChangeNotification(DADiskRef disk,
 {
     @autoreleasepool {
     NSDictionary *d = CFBridgingRelease(DADiskCopyDescription(disk));
-    NSString *name = [d objectForKey:(NSString*)kDADiskDescriptionVolumeNameKey];
+    NSString *name = d[(NSString*)kDADiskDescriptionVolumeNameKey];
     
     if (d && name)
         (void)[[ExtFSMediaController mediaController] nameOfDevice:NSSTR(DADiskGetBSDName(disk)) didChangeTo:name];
@@ -1148,7 +1146,7 @@ static void DiskArbCallback_AppearedNotification(DADiskRef disk, void *context _
     NSURL *path;
     const char *bsd = DADiskGetBSDName(disk);
     E2DiagLog(@"%s: %p - %s\n", __FUNCTION__,  disk, bsd ? bsd : "NULL DEVICE!");
-    if (d && (path = [d objectForKey:(NSString*)kDADiskDescriptionVolumePathKey])
+    if (d && (path = d[(NSString*)kDADiskDescriptionVolumePathKey])
         /* && [[NSFileManager defaultManager] fileExistsAtPath:[path path]]*/) {
         (void)[[ExtFSMediaController mediaController] updateMountStatus];
     }
@@ -1340,14 +1338,12 @@ static void DiskArb_CallFailed(const char *device, int type, int status)
       }
       eulock(e_instanceLock);
       
-      dict = [NSDictionary dictionaryWithObjectsAndKeys:
-         opid, ExtMediaKeyOpFailureID,
-         op, ExtMediaKeyOpFailureType,
-         bsd, ExtMediaKeyOpFailureDevice,
-         [NSNumber numberWithInt:status], ExtMediaKeyOpFailureError,
-         err, ExtMediaKeyOpFailureErrorString,
-         msg, (msg ? ExtMediaKeyOpFailureMsgString : nil),
-         nil];
+      dict = @{ExtMediaKeyOpFailureID: opid,
+         ExtMediaKeyOpFailureType: op,
+         ExtMediaKeyOpFailureDevice: bsd,
+         ExtMediaKeyOpFailureError: @(status),
+         ExtMediaKeyOpFailureErrorString: err,
+         (msg ? ExtMediaKeyOpFailureMsgString : nil): msg};
 
       EFSMCPostNotification(ExtFSMediaNotificationOpFailure, emedia, dict);
       

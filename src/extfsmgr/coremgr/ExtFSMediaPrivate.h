@@ -74,8 +74,8 @@ withObject:args waitUntilDone:NO]; \
 	NSString *e_where, *e_volName, *e_bsdName;
 	uint64_t e_size, e_blockCount, e_blockAvail;
 	uint32_t e_devBlockSize, e_fsBlockSize,
-	e_volCaps, e_dirCount;
-	int64_t e_fileCount;
+	e_volCaps;
+	int64_t e_fileCount, e_dirCount;
 	time_t e_lastFSUpdate;
 	ExtFSType e_fsType;
 	NSImage* e_icon;

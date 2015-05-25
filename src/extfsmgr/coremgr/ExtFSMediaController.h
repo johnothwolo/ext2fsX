@@ -71,7 +71,7 @@ disk and each partition on a disk. This is a snapshot in time,
 media could be added or removed the moment after return.
 @result Count of media objects.
 */
-- (NSUInteger)mediaCount;
+@property (readonly) NSUInteger mediaCount;
 /*!
 @method media
 @abstract Access all media objects.
@@ -79,7 +79,7 @@ media could be added or removed the moment after return.
 or removed the moment after return.
 @result An array of media objects.
 */
-- (NSArray*)media;
+@property (readonly, copy) NSArray *media;
 /*!
 @method rootMedia
 @abstract Access all media that is not a child of some other media.
@@ -87,7 +87,7 @@ or removed the moment after return.
 or removed the moment after return.
 @result An array of media objects.
 */
-- (NSArray*)rootMedia;
+@property (readonly, copy) NSArray *rootMedia;
 /*!
 @method mediaWithFSType
 @abstract Access all media with a specific filesystem type.
@@ -159,8 +159,7 @@ until you receive an ExtFSMediaNotificationExclusiveRequestDidComplete notificat
 - (ExtFSOpticalMediaType)opticalMediaTypeForName:(NSString*)name;
 - (NSString*)opticalMediaNameForType:(ExtFSOpticalMediaType)type;
 
-- (id)delegate;
-- (void)setDelegate:(id)obj;
+@property (retain) id delegate;
 
 #ifdef DIAGNOSTIC
 - (void)dumpState;

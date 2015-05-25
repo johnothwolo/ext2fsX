@@ -31,11 +31,11 @@ static NSPoint lastDisplay = {0.0};
 
 @implementation SMARTAlertController
 
-- (id)initWithMedia:(ExtFSMedia*)media status:(NSDictionary*)dict
+- (instancetype)initWithMedia:(ExtFSMedia*)media status:(NSDictionary*)dict
 {
     if ((self = [super initWithWindowNibName:@"SMARTAlert" owner:self])) {
-        e_media = [media retain];
-        e_status = [dict retain];
+        e_media = media;
+        e_status = dict;
     }
     return (self);
 }
@@ -67,20 +67,19 @@ static NSPoint lastDisplay = {0.0};
 
 - (void)windowWillClose:(NSNotification *)notification
 {
-    [e_media release]; e_media = nil;
-    [e_status release]; e_status = nil;
+    e_media = nil;
+    e_status = nil;
     if (nil == [NSApp windows])
         lastDisplay = NSMakePoint(0.0,0.0);
-    [self autorelease];
 }
 
 - (void)windowDidLoad
 {
     NSString *title;
     
-    [[super window] setTitle:[e_status objectForKey:ExtFSMediaKeySMARTStatusSeverityDescription]];
+    [[super window] setTitle:e_status[ExtFSMediaKeySMARTStatusSeverityDescription]];
     [e_icon setImage:[e_media icon]];
-    [e_text setStringValue:[e_status objectForKey:ExtFSMediaKeySMARTStatusDescription]];
+    [e_text setStringValue:e_status[ExtFSMediaKeySMARTStatusDescription]];
     
     if (nil == (title = [e_media volName]))
         if (nil == (title = [e_media mountPoint]))

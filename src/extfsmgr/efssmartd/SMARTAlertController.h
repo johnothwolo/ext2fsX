@@ -36,5 +36,5 @@
     NSDictionary *e_status;
 }
 
-- (id)initWithMedia:(ExtFSMedia*)media status:(NSDictionary*)dict;
+- (instancetype)initWithMedia:(ExtFSMedia*)media status:(NSDictionary*)dict;
 @end
