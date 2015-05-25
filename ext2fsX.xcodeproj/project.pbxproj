@@ -91,12 +91,6 @@
 		55783965153C95E2003B68F6 /* efssmartd.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833213C15EC1006C2DAD /* efssmartd.m */; };
 		55783966153C95E9003B68F6 /* SMARTAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833713C15EC1006C2DAD /* SMARTAlertController.m */; };
 		55783968153C965A003B68F6 /* ExtFSManagerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833D13C15EC1006C2DAD /* ExtFSManagerAdditions.m */; };
-		55783969153C9667003B68F6 /* Eject.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834313C15EC1006C2DAD /* Eject.icns */; };
-		5578396B153C9667003B68F6 /* Info.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834813C15EC1006C2DAD /* Info.icns */; };
-		5578396C153C9667003B68F6 /* Mount.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834913C15EC1006C2DAD /* Mount.icns */; };
-		5578396D153C9667003B68F6 /* Options.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834A13C15EC1006C2DAD /* Options.icns */; };
-		5578396E153C9667003B68F6 /* tux.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834B13C15EC1006C2DAD /* tux.icns */; };
-		5578396F153C9667003B68F6 /* Unmount.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834C13C15EC1006C2DAD /* Unmount.icns */; };
 		55783970153C966E003B68F6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55FB833F13C15EC1006C2DAD /* InfoPlist.strings */; };
 		55783971153C9672003B68F6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834113C15EC1006C2DAD /* Localizable.strings */; };
 		55783972153C9744003B68F6 /* ExtFSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833B13C15EC1006C2DAD /* ExtFSManager.m */; };
@@ -372,6 +366,7 @@
 		55FCD75A1B12E1F700A57C43 /* DiskArbitrationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB831F13C15EC1006C2DAD /* DiskArbitrationPrivate.h */; };
 		55FCD75B1B12E1FC00A57C43 /* ExtFSLock.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB832113C15EC1006C2DAD /* ExtFSLock.h */; };
 		55FCD75C1B12E20200A57C43 /* ExtFSMediaPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB832613C15EC1006C2DAD /* ExtFSMediaPrivate.h */; };
+		55FCD75E1B12E36300A57C43 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55FCD75D1B12E36300A57C43 /* Icons.xcassets */; };
 		D32B203D099470A7001A78A0 /* kext_load.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485770405AC0900A80164 /* kext_load.c */; };
 		D32B2040099470A7001A78A0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32E761D05FD2919002928A8 /* SystemConfiguration.framework */; };
 		D32B209309947656001A78A0 /* ext2util.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485870405C3B900A80164 /* ext2util.c */; };
@@ -2039,15 +2034,9 @@
 		55FB833D13C15EC1006C2DAD /* ExtFSManagerAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtFSManagerAdditions.m; sourceTree = "<group>"; };
 		55FB834013C15EC1006C2DAD /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		55FB834213C15EC1006C2DAD /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		55FB834313C15EC1006C2DAD /* Eject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Eject.icns; sourceTree = "<group>"; };
 		55FB834413C15EC1006C2DAD /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		55FB834613C15EC1006C2DAD /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		55FB834713C15EC1006C2DAD /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		55FB834813C15EC1006C2DAD /* Info.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Info.icns; sourceTree = "<group>"; };
-		55FB834913C15EC1006C2DAD /* Mount.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Mount.icns; sourceTree = "<group>"; };
-		55FB834A13C15EC1006C2DAD /* Options.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Options.icns; sourceTree = "<group>"; };
-		55FB834B13C15EC1006C2DAD /* tux.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = tux.icns; sourceTree = "<group>"; };
-		55FB834C13C15EC1006C2DAD /* Unmount.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Unmount.icns; sourceTree = "<group>"; };
 		55FB834D13C15EC1006C2DAD /* test_main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test_main.m; sourceTree = "<group>"; };
 		55FB835113C15EC1006C2DAD /* alpha-bitops.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "alpha-bitops.h"; sourceTree = "<group>"; };
 		55FB835213C15EC1006C2DAD /* COPYRIGHT.INFO */ = {isa = PBXFileReference; lastKnownFileType = text; path = COPYRIGHT.INFO; sourceTree = "<group>"; };
@@ -2092,6 +2081,7 @@
 		55FB838D13C15EC1006C2DAD /* specdev.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = specdev.h; sourceTree = "<group>"; };
 		55FCD70E1B129DF500A57C43 /* SMARTAlert.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SMARTAlert.xib; sourceTree = "<group>"; };
 		55FCD7101B12BD1E00A57C43 /* ExtFSManager.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExtFSManager.xib; sourceTree = "<group>"; };
+		55FCD75D1B12E36300A57C43 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		D32B1FAC09946A3B001A78A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D32B1FAE09946A3B001A78A0 /* ext2fs.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ext2fs.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		D32B2049099470A8001A78A0 /* mount_ext2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mount_ext2; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4549,13 +4539,8 @@
 				55FB833F13C15EC1006C2DAD /* InfoPlist.strings */,
 				55FB834113C15EC1006C2DAD /* Localizable.strings */,
 				D32B210E09947828001A78A0 /* Info.plist */,
-				55FB834313C15EC1006C2DAD /* Eject.icns */,
 				55FCD7101B12BD1E00A57C43 /* ExtFSManager.xib */,
-				55FB834813C15EC1006C2DAD /* Info.icns */,
-				55FB834913C15EC1006C2DAD /* Mount.icns */,
-				55FB834A13C15EC1006C2DAD /* Options.icns */,
-				55FB834B13C15EC1006C2DAD /* tux.icns */,
-				55FB834C13C15EC1006C2DAD /* Unmount.icns */,
+				55FCD75D1B12E36300A57C43 /* Icons.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -5353,13 +5338,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55FCD75E1B12E36300A57C43 /* Icons.xcassets in Resources */,
 				55FCD7111B12BD1E00A57C43 /* ExtFSManager.xib in Resources */,
-				55783969153C9667003B68F6 /* Eject.icns in Resources */,
-				5578396B153C9667003B68F6 /* Info.icns in Resources */,
-				5578396C153C9667003B68F6 /* Mount.icns in Resources */,
-				5578396D153C9667003B68F6 /* Options.icns in Resources */,
-				5578396E153C9667003B68F6 /* tux.icns in Resources */,
-				5578396F153C9667003B68F6 /* Unmount.icns in Resources */,
 				55783970153C966E003B68F6 /* InfoPlist.strings in Resources */,
 				55783971153C9672003B68F6 /* Localizable.strings in Resources */,
 			);
@@ -6842,6 +6822,7 @@
 		D32B210B09947828001A78A0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = tux;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -6867,6 +6848,7 @@
 		D32B210C09947828001A78A0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = tux;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -7362,6 +7344,7 @@
 				55FCD7161B12DA9E00A57C43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55FCD7491B12DBCD00A57C43 /* Build configuration list for PBXAggregateTarget "extfsmgr" */ = {
 			isa = XCConfigurationList;
@@ -7370,6 +7353,7 @@
 				55FCD74B1B12DBCD00A57C43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55FCD7511B12DBFD00A57C43 /* Build configuration list for PBXAggregateTarget "BuildAll" */ = {
 			isa = XCConfigurationList;
@@ -7378,6 +7362,7 @@
 				55FCD7531B12DBFD00A57C43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D32B1FA609946A3B001A78A0 /* Build configuration list for PBXNativeTarget "ext2_kext" */ = {
 			isa = XCConfigurationList;
