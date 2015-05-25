@@ -42,15 +42,16 @@
    IBOutlet NSButton *e_indexedDirsBox;
    IBOutlet NSTextField *e_optionNoteText;
    
-   IBOutlet id e_copyrightText;
-   IBOutlet id e_infoText;
+   IBOutlet NSTextField *e_copyrightText;
+   IBOutlet NSTextView *e_infoText;
    
    IBOutlet NSProgressIndicator *e_startupProgress;
-   IBOutlet id e_startupText;
+   IBOutlet NSTextField *e_startupText;
    
    IBOutlet NSProgressIndicator *e_opProgress;
    
-   id e_volData, e_curSelection;
+   NSMutableArray *e_volData;
+   ExtFSMedia *e_curSelection;
    NSString *donateTitle;
    BOOL e_infoButtonAlt;
 }
