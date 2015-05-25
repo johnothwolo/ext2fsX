@@ -6518,7 +6518,7 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -6534,7 +6534,9 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EXECUTABLE_PREFIX = lib;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -6648,11 +6650,10 @@
 					src/gnu/ext2fs/linux/include,
 				);
 				INFOPLIST_FILE = "Resources/Info-ext2_kext.plist";
-				KERNEL_MODULE = YES;
 				MODULE_NAME = net.sourceforge.ext2fs.fs.ext2;
 				MODULE_START = ext2fs_start;
 				MODULE_STOP = ext2fs_stop;
-				MODULE_VERSION = 1.4;
+				MODULE_VERSION = 1.4.1;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-no-cpp-precomp",
@@ -6677,11 +6678,10 @@
 					src/gnu/ext2fs/linux/include,
 				);
 				INFOPLIST_FILE = "Resources/Info-ext2_kext.plist";
-				KERNEL_MODULE = YES;
 				MODULE_NAME = net.sourceforge.ext2fs.fs.ext2;
 				MODULE_START = ext2fs_start;
 				MODULE_STOP = ext2fs_stop;
-				MODULE_VERSION = 1.4;
+				MODULE_VERSION = 1.4.1;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-no-cpp-precomp",
@@ -7019,9 +7019,6 @@
 				INSTALL_PATH = "$(USER_APPS_DIR)";
 				LD_RUNPATH_SEARCH_PATHS = "/Library/Frameworks $(inherited)";
 				OTHER_CFLAGS = (
-					"-DOSX",
-					"-DEXT_KNOTE",
-					"-DDEBUG",
 					"-DEXT2FS_DEBUG=1",
 					"-DDIAGNOSTIC",
 					"-DDX_DEBUG",
@@ -7049,10 +7046,7 @@
 				INFOPLIST_FILE = "src/extfsmgr/efssmartd/Resources/efssmartd-Info.plist";
 				INSTALL_PATH = "$(USER_APPS_DIR)";
 				LD_RUNPATH_SEARCH_PATHS = "/Library/Frameworks $(inherited)";
-				OTHER_CFLAGS = (
-					"-DOSX",
-					"-DEXT_KNOTE",
-				);
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = efssmartd;
 				SECTORDER_FLAGS = "";
 			};
