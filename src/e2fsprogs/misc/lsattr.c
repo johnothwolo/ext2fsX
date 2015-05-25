@@ -130,7 +130,7 @@ static int lsattr_dir_proc (const char * dir_name, struct dirent * de,
 {
 	STRUCT_STAT	st;
 	char *path;
-	int dir_len = strlen(dir_name);
+	size_t dir_len = strlen(dir_name);
 
 	path = malloc(dir_len + strlen (de->d_name) + 2);
 
