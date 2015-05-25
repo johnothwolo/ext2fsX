@@ -36,11 +36,11 @@
    IBOutlet NSOutlineView *e_vollist;
    IBOutlet NSTabView *e_tabs;
    
-   IBOutlet id e_mountReadOnlyBox;
-   IBOutlet id e_dontAutomountBox;
-   IBOutlet id e_ignorePermsBox;
-   IBOutlet id e_indexedDirsBox;
-   IBOutlet id e_optionNoteText;
+   IBOutlet NSButton *e_mountReadOnlyBox;
+   IBOutlet NSButton *e_dontAutomountBox;
+   IBOutlet NSButton *e_ignorePermsBox;
+   IBOutlet NSButton *e_indexedDirsBox;
+   IBOutlet NSTextField *e_optionNoteText;
    
    IBOutlet id e_copyrightText;
    IBOutlet id e_infoText;
@@ -48,7 +48,7 @@
    IBOutlet NSProgressIndicator *e_startupProgress;
    IBOutlet id e_startupText;
    
-   IBOutlet id e_opProgress;
+   IBOutlet NSProgressIndicator *e_opProgress;
    
    id e_volData, e_curSelection;
    NSString *donateTitle;
