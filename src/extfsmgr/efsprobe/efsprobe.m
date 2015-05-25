@@ -45,7 +45,7 @@
 #endif
 // We don't want HFSVolumes.h from CarbonCore
 #define __HFSVOLUMES__
-#include "ExtFSMedia.h"
+#import "ExtFSMedia.h"
 #undef __HFSVOLUMES__
 #include <hfs/hfs_format.h>
 

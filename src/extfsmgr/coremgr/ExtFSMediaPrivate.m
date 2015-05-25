@@ -568,9 +568,9 @@ __private_extern__ void PantherInitSMART()
     eulock(e_lock);
     
     FSRef fref;
-    CFURLRef url = path ? (CFURLRef)[NSURL fileURLWithPath:path] : NULL;
+    NSURL *url = path ? [NSURL fileURLWithPath:path] : NULL;
     if (url)
-        CFURLGetFSRef(url, &fref);
+        CFURLGetFSRef((CFURLRef)url, &fref);
     FSCatalogInfo cinfo;
     ((FolderInfo*)&cinfo.finderInfo)->finderFlags = 0;
     (void)FSGetCatalogInfo(&fref, kFSCatInfoFinderInfo, &cinfo, NULL, NULL, NULL);
@@ -593,8 +593,9 @@ __private_extern__ void PantherInitSMART()
     return (found);
 }
 
-- (ExtFSMedia*)initWithDeviceName:(NSString*)device
+- (instancetype)initWithDeviceName:(NSString*)device
 {
+    self = [super init];
     if (0 != eilock(&e_lock)) {
         E2Log(@"ExtFS: Failed to allocate media object lock!\n");
         [super release];

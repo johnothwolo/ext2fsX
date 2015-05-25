@@ -44,7 +44,7 @@ There should only be one instance of this class.
 */
 @interface ExtFSMediaController : NSObject <ExtFSMCP>
 {
-   id e_media;
+   NSMutableDictionary *e_media;
    id e_pending;
    id e_delegate;
    u_int64_t e_smonPollInterval;

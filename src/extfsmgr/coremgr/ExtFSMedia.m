@@ -504,7 +504,7 @@ init_err:
    /* Load the icon from disk */
    eulock(e_lock); // Drop the lock, as this can take many seconds
    ico = nil;
-   if (noErr == (err = FSFindFolder (kSystemDomain,
+   if (noErr == (err = FSFindFolder (kLocalDomain,
       kKernelExtensionsFolderType, NO, &ref))) {
       CFURLRef url;
       

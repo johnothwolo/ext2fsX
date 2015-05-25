@@ -44,18 +44,24 @@
 */
 typedef NS_ENUM(NSInteger, ExtFSType) {
    fsTypeExt2 = 0,
-   fsTypeExt3 = 1,
-   fsTypeHFS  = 2,
-   fsTypeHFSPlus = 3,
-   fsTypeHFSJ = 4,
-   fsTypeHFSX = 5,
-   fsTypeUFS  = 6,
-   fsTypeCD9660 = 7,
-   fsTypeCDAudio = 8,
-   fsTypeUDF   = 9,
-   fsTypeMSDOS = 10,
-   fsTypeNTFS  = 11,
-   fsTypeUnknown = 12,
+   fsTypeExt3,
+   fsTypeExt4,
+   fsTypeHFS,
+   fsTypeHFSPlus,
+   fsTypeHFSJ,
+   fsTypeHFSX,
+   fsTypeUFS,
+   fsTypeCD9660,
+   fsTypeCDAudio,
+   fsTypeUDF,
+   fsTypeMSDOS,
+   fsTypeNTFS,
+   fsTypeExFat,
+   fsTypeZFS,
+   fsTypeXFS,
+   fsTypeReiserFS,
+   fsTypeReiser4,
+   fsTypeUnknown,
    fsTypeNULL
 };
 
@@ -75,18 +81,20 @@ typedef NS_ENUM(NSInteger, ExtFSType) {
 @constant efsIOTransportTypeUnknown Unknown bus transport id.
 */
 typedef NS_OPTIONS(NSUInteger, ExtFSIOTransportType) {
-    efsIOTransportTypeInternal = (1<<0),
-    efsIOTransportTypeExternal = (1<<1),
-    efsIOTransportTypeVirtual  = (1<<2),
-    efsIOTransportTypeATA      = (1<<8),
-    efsIOTransportTypeATAPI    = (1<<9),
-    efsIOTransportTypeFirewire = (1<<10),
-    efsIOTransportTypeUSB      = (1<<11),
-    efsIOTransportTypeSCSI     = (1<<12),
-    efsIOTransportTypeImage    = (1<<13),
-    efsIOTransportTypeSATA     = (1<<14),
-    efsIOTransportTypeFibreChannel = (1<<15),
-    efsIOTransportTypeUnknown  = (1<<31)
+   efsIOTransportTypeInternal = (1<<0),
+   efsIOTransportTypeExternal = (1<<1),
+   efsIOTransportTypeVirtual  = (1<<2),
+   efsIOTransportTypeATA      = (1<<8),
+   efsIOTransportTypeATAPI    = (1<<9),
+   efsIOTransportTypeFirewire = (1<<10),
+   efsIOTransportTypeUSB      = (1<<11),
+   efsIOTransportTypeSCSI     = (1<<12),
+   efsIOTransportTypeImage    = (1<<13),
+   efsIOTransportTypeSATA     = (1<<14),
+   efsIOTransportTypeFibreChannel = (1<<15),
+   efsIOTransportTypePCIe     = (1<<16),
+   efsIOTransportTypeSD       = (1<<17),
+   efsIOTransportTypeUnknown  = (1<<31)
 };
 
 /*!
@@ -104,18 +112,27 @@ typedef NS_OPTIONS(NSUInteger, ExtFSIOTransportType) {
 @constant efsOpticalTypeUnknown Unknown optical disc.
 */
 typedef NS_ENUM(short, ExtFSOpticalMediaType) {
-    efsOpticalTypeCD        = 0,
-    efsOpticalTypeCDR       = 1,
-    efsOpticalTypeCDRW      = 2,
-    efsOpticalTypeDVD       = 3,
-    efsOpticalTypeDVDDashR  = 4,
-    efsOpticalTypeDVDDashRW = 5,
-    efsOpticalTypeDVDPlusR  = 6,
-    efsOpticalTypeDVDPlusRW = 7,
-    efsOpticalTypeDVDRAM    = 8,
-    
-    efsOpticalTypeUnknown   = 32767
-    
+   efsOpticalTypeCD = 0,
+   efsOpticalTypeCDR,
+   efsOpticalTypeCDRW,
+   
+   efsOpticalTypeDVD,
+   efsOpticalTypeDVDDashR,
+   efsOpticalTypeDVDDashRW,
+   efsOpticalTypeDVDPlusR,
+   efsOpticalTypeDVDPlusRW,
+   efsOpticalTypeDVDRAM,
+   
+   efsOpticalTypeHDDVD,
+   efsOpticalTypeHDDVDR,
+   efsOpticalTypeHDDVDRW,
+   efsOpticalTypeHDDVDRAM,
+   
+   efsOpticalTypeBD,
+   efsOpticalTypeBDR,
+   efsOpticalTypeBDRE,
+   
+   efsOpticalTypeUnknown   = 32767
 };
 
 static __inline__ BOOL
@@ -128,6 +145,18 @@ static __inline__ BOOL
 IsOpticalDVDMedia(ExtFSOpticalMediaType type)
 {
     return (type >= efsOpticalTypeDVD && type <= efsOpticalTypeDVDRAM);
+}
+
+static __inline__ BOOL
+IsOpticalHDDVDMedia(ExtFSOpticalMediaType type)
+{
+	return (type >= efsOpticalTypeHDDVD && type <= efsOpticalTypeHDDVDRAM);
+}
+
+static __inline__ BOOL
+IsOpticalBDMedia(ExtFSOpticalMediaType type)
+{
+   return (type >= efsOpticalTypeBD && type <= efsOpticalTypeBDRE);
 }
 
 /*!
@@ -530,7 +559,7 @@ extern NSString * const ExtFSMediaNotificationChildChange;
 @defined NSSTR
 @abstract Convenience macro to convert a C string to an NSString.
 */
-#define NSSTR(cstr) [NSString stringWithUTF8String:(cstr)]
+#define NSSTR(cstr) @(cstr)
 
 #define EPROBE_KEY_NAME @"name"
 #define EPROBE_KEY_UUID @"uuid"

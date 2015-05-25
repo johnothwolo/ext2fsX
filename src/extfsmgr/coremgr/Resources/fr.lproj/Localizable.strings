@@ -16,3 +16,6 @@
 "Virtual" = "Virtuel";
 /******* S.M.A.R.T Descriptions *******/
 "!! Critical Error !!" = "!! Critique Erreur !!";
+
+"PCI-e" = "PCIe";
+"SecureDigital" = "Secure Digital";

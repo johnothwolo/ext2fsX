@@ -267,10 +267,12 @@ fssmart_lookup:
         statusStr = e_SMARTDescrip[@(status)];
     severityStr = e_SMARTSeverityDescrip[@(severity)];
     
-    info = @{ExtFSMediaKeySMARTStatus: @(status),
-        ExtFSMediaKeySMARTStatusSeverity: @(severity),
-        ExtFSMediaKeySMARTStatusSeverityDescription: severityStr,
-        (statusStr ? ExtFSMediaKeySMARTStatusDescription : nil): statusStr};
+    info = [NSDictionary dictionaryWithObjectsAndKeys:
+            @(status), ExtFSMediaKeySMARTStatus,
+            @(severity), ExtFSMediaKeySMARTStatusSeverity,
+            severityStr, ExtFSMediaKeySMARTStatusSeverityDescription,
+            statusStr, (statusStr ? ExtFSMediaKeySMARTStatusDescription : nil),
+            nil];
     
     return (info);
 }

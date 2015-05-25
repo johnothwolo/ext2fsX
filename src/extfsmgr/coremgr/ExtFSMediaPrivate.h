@@ -81,6 +81,9 @@ withObject:args waitUntilDone:NO]; \
 	NSImage* e_icon;
 	io_object_t e_smartService;
 }
+
+- (CFUUIDRef)uuid CF_RETURNS_RETAINED;
+
 @end
 
 @interface ExtFSMedia (ExtFSMediaControllerPrivate)
@@ -113,6 +116,9 @@ withObject:args waitUntilDone:NO]; \
 #ifndef EXT3FS_NAME
 #define EXT3FS_NAME "ext3"
 #endif
+#ifndef EXT4FS_NAME
+#define EXT4FS_NAME "ext4"
+#endif
 
 #define HFS_NAME "hfs"
 #define UFS_NAME "ufs"
@@ -121,6 +127,11 @@ withObject:args waitUntilDone:NO]; \
 #define UDF_NAME "udf"
 #define MSDOS_NAME "msdos"
 #define NTFS_NAME "ntfs"
+#define EXFAT_NAME "exfat"
+#define ZFS_NAME "zfs"
+#define XFS_NAME "xfs"
+#define REISERFS_NAME "rfs"
+#define REISER4_NAME "rfs4"
 
 #define efsIOTransportTypeMask 0x00000007
 #define efsIOTransportBusMask  0xFFFFFFF8

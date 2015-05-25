@@ -43,3 +43,6 @@
 "The disk test is currently in progress." = "Die Festplatten-Überprüfung wird derzeit durchgeführt.";
 "The status query failed due to an OS error." = "Die Status-Abfrage schlug aufgrund eines Betriebssystem-Fehlers fehl.";
 "Warning Status" = "Warnungs-Status";
+
+"PCI-e" = "PCIe";
+"SecureDigital" = "Secure Digital";

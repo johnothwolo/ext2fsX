@@ -42,3 +42,6 @@
 "The disk test is currently in progress." = "The disk test is currently in progress.";
 "The status query failed due to an OS error." = "The status query failed due to an OS error.";
 "Warning Status" = "Warning Status";
+
+"PCI-e" = "PCIe";
+"SecureDigital" = "Secure Digital";
