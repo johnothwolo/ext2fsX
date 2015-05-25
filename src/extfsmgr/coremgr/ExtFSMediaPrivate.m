@@ -418,7 +418,7 @@ __private_extern__ void PantherInitSMART()
    else
       E2Log(@"ExtFS: Unknown filesystem '%@'.\n", fstype);
    [fsTypes release];
-   tmpstr = [[NSString alloc] initWithUTF8String:stat->f_mntonname];
+   tmpstr = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:stat->f_mntonname length:strnlen(stat->f_mntonname, PATH_MAX)];
    
    ewlock(e_lock);
    e_fsType = ftype;

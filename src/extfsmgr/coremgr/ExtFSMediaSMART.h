@@ -88,7 +88,7 @@ typedef NS_OPTIONS(NSUInteger, ExtFSSMARTEventFlag) {
 @interface ExtFSMedia (ExtFSMediaSMART)
 
 /*!
-@method SMARTStatus
+@property SMARTStatus
 @abstract Obtain the S.M.A.R.T. status of the object.
 @discussion This is a convenience method. For more information
 see [ExtFSMediaController(ExtFSMediaControllerSMART) SMARTStatusForMedia:parentDisk:].
@@ -125,7 +125,7 @@ query that for its S.M.A.R.T. status.
 @method SMARTStatusDescription:
 @abstract Given a ExtFSMARTStatus code, create a dictionary containing
 information that can be presented to a user.
-@param ExtFSMARTStatus code.
+@param status code.
 @result A dictionary, containing one or more ExtFSMediaKeySMARTStatus* keys.
 */
 - (NSDictionary*)SMARTStatusDescription:(ExtFSMARTStatus)status;

@@ -64,7 +64,7 @@ it needs access to the main run-loop.
 + (ExtFSMediaController*)mediaController;
 
 /*!
-@method mediaCount
+@property mediaCount
 @abstract Determine the number of media objects.
 @discussion One media object is created for each
 disk and each partition on a disk. This is a snapshot in time,
@@ -73,7 +73,7 @@ media could be added or removed the moment after return.
 */
 @property (readonly) NSUInteger mediaCount;
 /*!
-@method media
+@property media
 @abstract Access all media objects.
 @discussion This is a snapshot in time, media could be added
 or removed the moment after return.
@@ -81,7 +81,7 @@ or removed the moment after return.
 */
 @property (readonly, copy) NSArray *media;
 /*!
-@method rootMedia
+@property rootMedia
 @abstract Access all media that is not a child of some other media.
 @discussion This is a snapshot in time, media could be added
 or removed the moment after return.
@@ -123,7 +123,7 @@ or removed the moment after return.
 before the mount has completed. If the mount fails later, a
 ExtFSMediaNotificationOpFailure notification will be sent.
 @param media Media to mount.
-@param on A string containing the absolute path to the directory the media should be mounted on.
+@param dir A string containing the absolute path to the directory the media should be mounted on.
 @result 0 if successful or an error code (possibly from Disk Arbitration).
 */
 - (int)mount:(ExtFSMedia*)media on:(NSString*)dir;

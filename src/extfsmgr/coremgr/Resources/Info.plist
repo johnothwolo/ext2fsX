@@ -7,9 +7,9 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleGetInfoString</key>
-	<string>2.1, © 2004,2006 Brian Bergstrand</string>
+	<string>2.1, © 2004, 2006 Brian Bergstrand</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.sourceforge.ext2fsx.ExtFSDiskManager</string>
+	<string>net.sourceforge.ext2fsx.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

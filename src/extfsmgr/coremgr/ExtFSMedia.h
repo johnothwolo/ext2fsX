@@ -165,7 +165,7 @@ The object will be returned auto-released.
 @property (retain) id representedObject;
 
 /*!
-@method parent
+@property parent
 @abstract Access the parent of the target object.
 @discussion The parent object is determined from the IO Registry
 hierarchy.
@@ -175,7 +175,7 @@ no parent.
 */
 @property (readonly, assign) ExtFSMedia *parent;
 /*!
-@method children
+@property children
 @abstract Access the children of the target object.
 @discussion Children are determined from the IO Registry hierarchy.
 This is a snapshot in time, the number of children
@@ -186,7 +186,7 @@ no descendants.
 */
 @property (readonly, copy) NSArray *children;
 /*!
-@method childCount
+@property childCount
 @abstract Convenience method to obtain the child count of the target.
 @discussion This is a snapshot in time, the number of children
 could possibly change the moment after return.
@@ -196,14 +196,14 @@ could possibly change the moment after return.
 
 /* Device */
 /*!
-@method ioRegistryName
+@property ioRegistryName
 @abstract Access the name of the object as the IO Registry
 identifies it.
 @result String containing the IOKit name.
 */
 @property (readonly, copy) NSString *ioRegistryName;
 /*!
-@method bsdName
+@property bsdName
 @abstract Access the device name of the object as the
 BSD kernel identifies it.
 @result String containing the kernel device name.
@@ -211,32 +211,32 @@ BSD kernel identifies it.
 @property (readonly, copy) NSString *bsdName;
 
 /*!
-@method icon
+@property icon
 @abstract Access the icon of the object as determined by the IO Registry.
 @result Preferred device image for the target object.
 */
 @property (readonly, copy) NSImage *icon;
 
 /*!
-@method isEjectable
+@property ejectable
 @abstract Determine if the media is ejectable from its enclosure.
 @result YES if the media can be ejected, otherwise NO.
 */
 @property (readonly, getter=isEjectable) BOOL ejectable;
 /*!
-@method canMount
+@property canMount
 @abstract Determine if the media is mountable.
 @result YES if the media can be mounted, otherwise NO.
 */
 @property (readonly) BOOL canMount;
 /*!
-@method isMounted
+@property mounted
 @abstract Determine if the media is currently mounted.
 @result YES if the filesystem on the device is currently mounted, otherwise NO.
 */
 @property (getter=isMounted, readonly) BOOL mounted;
 /*!
-@method isWritable
+@property writable
 @abstract Determine if the media/filesystem is writable.
 @discussion If the media is mounted, then this applies to
 the filesystem only. Otherwise, it applies only to the media.
@@ -244,40 +244,40 @@ the filesystem only. Otherwise, it applies only to the media.
 */
 @property (getter=isWritable, readonly) BOOL writable;
 /*!
-@method isWholeDisk
+@property wholeDisk
 @abstract Determine if the target object represents the media
 as a whole (ie the total disk, not a partition of the disk).
 @result YES or NO.
 */
 @property (getter=isWholeDisk, readonly) BOOL wholeDisk;
 /*!
-@method isLeafDisk
+@property leafDisk
 @abstract Determine if the media contains any partitions.
 @result YES if the media does not contain partitions, otherwise NO.
 */
 @property (getter=isLeafDisk, readonly) BOOL leafDisk;
 /*!
-@method isOptical
+@property optical
 @abstract Determine if the media is any type of optical disc.
 @result YES if the media is an optical disc, otherwise NO.
 */
 @property (getter=isOptical, readonly) BOOL optical;
 /*!
-@method opticalMediaType
+@property opticalMediaType
 @abstract Determine specific optical media type.
 @discussion If the media is not an optical disc, efsOpticalTypeUnknown is always returned.
 @result Type of media.
 */
 @property (readonly) ExtFSOpticalMediaType opticalMediaType;
 /*!
-@method usesDiskArb
+@property usesDiskArbitration
 @abstract Determine if the media is managed by the Disk Arbitration
 daemon.
 @result YES if the media is DA managed, otherwise NO.
 */
-@property (readonly) BOOL usesDiskArb;
+@property (readonly, getter=usesDiskArb) BOOL usesDiskArbitration;
 /*!
-@method size
+@property size
 @abstract Determine the size of the filesystem or media.
 @discussion If the media is mounted, then this applies to
 the filesystem only. Otherwise, it applies only to the media.
@@ -285,7 +285,7 @@ the filesystem only. Otherwise, it applies only to the media.
 */
 @property (readonly) u_int64_t size; /* bytes */
 /*!
-@method blockSize
+@property blockSize
 @abstract Determine the block size of the filesystem or media.
 @discussion If the media is mounted, then this applies to
 the filesystem only. Otherwise, it applies only to the media.
@@ -294,7 +294,7 @@ the filesystem only. Otherwise, it applies only to the media.
 @property (readonly) u_int32_t blockSize;
 
 /*!
-@method fsType
+@property fsType
 @abstract Determine the filesystem type.
 @discussion If the media is not mounted, the result may
 be fsTypeUnknown.
@@ -302,7 +302,7 @@ be fsTypeUnknown.
 */
 @property (readonly) ExtFSType fsType;
 /*!
-@method fsName
+@property fsName
 @abstract Get the filesystem name in a format suitable for display to a user.
 @discussion If the media is not mounted, the result will always
 be nil.
@@ -310,20 +310,20 @@ be nil.
 */
 @property (readonly, copy) NSString *fsName;
 /*!
-@method mountPoint
+@property mountPoint
 @abstract Determine the directory that the filesystem is mounted on.
 @result String containing mount path, or nil if the media is not mounted.
 */
 @property (readonly, copy) NSString *mountPoint;
 /*!
-@method availableSize
+@property availableSize
 @abstract Determine the filesystem's available space.
 @result Size of available space in bytes. Always 0 if the filesystem is
 not mounted.
 */
 @property (readonly) u_int64_t availableSize;
 /*!
-@method blockCount
+@property blockCount
 @abstract Determine the block count of the filesystem or media.
 @discussion If the media is mounted, then this applies to
 the filesystem only. Otherwise, it applies only to the media.
@@ -331,13 +331,13 @@ the filesystem only. Otherwise, it applies only to the media.
 */
 @property (readonly) u_int64_t blockCount;
 /*!
-@method fileCount
+@property fileCount
 @abstract Determine the number of files in the filesystem.
 @result The number of files, or 0 if the media is not mounted.
 */
 @property (readonly) u_int64_t fileCount;
 /*!
-@method dirCount
+@property dirCount
 @abstract Determine the number of directories in the filesystem.
 @discussion The filesystem must support the getattrlist() sys call or
 0 will be returned.
@@ -345,28 +345,28 @@ the filesystem only. Otherwise, it applies only to the media.
 */
 @property (readonly) u_int64_t dirCount;
 /*!
-@method volName
+@property volName
 @abstract Get the filesystem name.
 @result String containing the filesystem name or nil if it
 cannot be determined (ie the media is not mounted).
 */
 @property (readonly, copy) NSString *volName;
 /*!
-@method hasPermissions
+@property hasPermissions
 @abstract Determine if filesystem permissions are in effect.
 @result YES if permissions are active, otherwise NO.
 Always NO if the media is not mounted.
 */
 @property (readonly) BOOL hasPermissions;
 /*!
-@method hasJournal
+@property hasJournal
 @abstract Determine if the filesystem has a journal log.
 @result YES if a journal is present, otherwise NO.
 Always NO if the media is not mounted.
 */
 @property (readonly) BOOL hasJournal;
 /*!
-@method isJournaled
+@property journaled
 @abstract Determine if the filesystem journal is active.
 @discussion A filesystem may have a journal on disk, but it
 may not be currently in use.
@@ -375,13 +375,13 @@ Always NO if the media is not mounted.
 */
 @property (getter=isJournaled, readonly) BOOL journaled;
 /*!
-@method isCaseSensitive
+@property caseSensitive
 @abstract Determine if the filesystem uses case-sensitive file names.
 @result YES or NO. Always NO if the media is not mounted.
 */
 @property (getter=isCaseSensitive, readonly) BOOL caseSensitive;
 /*!
-@method isCasePreserving
+@property casePreserving
 @abstract Determine if the filesystem preserves file name case.
 @discussion HFS is case-preserving, but not case-sensitive, 
 Ext2 and UFS are both and FAT12/16 are neither.
@@ -389,7 +389,7 @@ Ext2 and UFS are both and FAT12/16 are neither.
 */
 @property (getter=isCasePreserving, readonly) BOOL casePreserving;
 /*!
-@method hasSparseFiles
+@property hasSparseFiles
 @abstract Determine if the filesystem supports sparse files.
 @discussion Sparse files are files with "holes" in them, the filesystem
 will automatically return zero's when these "holes" are accessed. HFS does
@@ -399,20 +399,20 @@ Always NO if the media is not mounted.
 */
 @property (readonly) BOOL hasSparseFiles;
 /*!
-@method isBlessed
+@property blessed
 @abstract Determine if the volume contains an OS X blessed folder (always false for non-HFS+).
 @result True if the volume is blessed (bootable).
 */
 @property (getter=isBlessed, readonly) BOOL blessed;
 
 /*!
-@method isExtFS
+@property extFS
 @abstract Convenience method to determine if a filesystem is Ext2 or Ext3.
 @result YES if the filesystem is Ext2/3, otherwise NO.
 */
 @property (getter=isExtFS, readonly) BOOL extFS;
 /*!
-@method uuidString
+@property uuidString
 @abstract Get the filesystem UUID as a string.
 @discussion This is only supported by Ext2/3 and UFS currrently.
 @result String containing UUID or nil if a UUID is not present.
@@ -420,7 +420,7 @@ This may be nil if the media is not mounted.
 */
 @property (readonly, copy) NSString *uuidString;
 /*!
-@method hasIndexedDirs
+@property hasIndexedDirs
 @abstract Determine if directory indexing is active.
 @discussion Directory indexing is an Ext2/3 specific option.
 It greatly speeds up file name lookup for large directories.
@@ -429,7 +429,7 @@ Always NO if the media is not mounted or the filesystem is not Ext2/3.
 */
 @property (readonly) BOOL hasIndexedDirs;
 /*!
-@method hasLargeFiles
+@property hasLargeFiles
 @abstract Determine if the filesystem supports large files (> 2GB).
 @discussion This only works with Ext2/3 filesystems currently.
 @result YES if large files are supported, otherwise NO.
@@ -437,7 +437,7 @@ Always NO if the media is not mounted or the filesystem is not Ext2/3.
 */
 @property (readonly) BOOL hasLargeFiles;
 /*!
-@method maxFileSize
+@property maxFileSize
 @abstract Determine the max file size supported by the filesystem.
 @discussion Currently, this method always returns 0.
 @result Max file size or 0 if the filesystem is not mounted.
@@ -445,19 +445,19 @@ Always NO if the media is not mounted or the filesystem is not Ext2/3.
 @property (readonly) u_int64_t maxFileSize;
 
 /*!
-@method transportType
+@property transportType
 @abstract Determine how the device is connected.
 @result An ExtFSConnectionType id.
 */
 @property (readonly) ExtFSIOTransportType transportType;
 /*!
-@method transportBus
+@property transportBus
 @abstract Determine the type of bus the device is connected to.
 @result An ExtFSConnectionType id.
 */
 @property (readonly) ExtFSIOTransportType transportBus;
 /*!
-@method transportName
+@property transportName
 @abstract Determine the name of the device bus.
 @result A string containing a name suitable for display to a user
 or nil if there was an error.
