@@ -262,10 +262,10 @@ e_curSelection = nil; \
    win = [NSApp keyWindow];
    if (nil == [win attachedSheet]) {
         NSBeginCriticalAlertSheet(ExtLocalizedString(@"Disk Error", ""), @"OK",
-            nil, nil, win, nil, nil, nil, nil, msg);
+            nil, nil, win, nil, nil, nil, nil, @"%@", msg);
    } else {
         NSRunCriticalAlertPanel(ExtLocalizedString(@"Disk Error", ""),
-            msg, @"OK", nil, nil);
+            @"%@", @"OK", nil, nil, msg);
    }
 }
 
@@ -665,9 +665,9 @@ data = [data stringByAppendingString:@"\n"]; \
       op = ExtLocalizedString(op, "");
       NSBeginCriticalAlertSheet(ExtLocalizedString(@"Disk Error", ""),
          @"OK", nil, nil, [NSApp keyWindow], nil, nil, nil, nil,
-         [NSString stringWithFormat:@"%@ %@ '%@'. Error = %d.",
+         @"%@ %@ '%@'. Error = %d.",
             ExtLocalizedString(@"Could not", ""), op,
-            [e_curSelection bsdName]], err);
+            [e_curSelection bsdName], err);
    }
 }
 
@@ -691,8 +691,8 @@ data = [data stringByAppendingString:@"\n"]; \
    } else {
          NSBeginCriticalAlertSheet(ExtLocalizedString(@"Disk Error", ""),
          @"OK", nil, nil, [NSApp keyWindow], nil, nil, nil, nil,
-         [NSString stringWithFormat:@"%@ '%@'",
-            ExtLocalizedString(@"Could not eject", ""), [e_curSelection bsdName]]);
+         @"%@ '%@'",
+            ExtLocalizedString(@"Could not eject", ""), [e_curSelection bsdName]);
    }
 }
 
@@ -948,7 +948,7 @@ info_alt_switch:
 
 /* Delegate */
 
-- (int)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
 #ifdef TRACE
    NSLog(@"ExtFSM: outline # children for %@", item);
@@ -970,7 +970,7 @@ info_alt_switch:
    return (NO);
 }
 
-- (id)outlineView:(NSOutlineView *)outlineView child:(int)index ofItem:(id)item
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
    NSArray *children;
    
@@ -1016,7 +1016,7 @@ info_alt_switch:
             name = [[item mountPoint] lastPathComponent];
     } @catch (NSException *e) {
 #ifdef DIAGNOSTIC
-        NSLog(@"ExtFSM: Item (0x%08X) is not a valid media object.\n", item);
+        NSLog(@"ExtFSM: Item (0x%08lX) is not a valid media object.\n", (uintptr_t)item);
 #endif
         return;
     }
@@ -1037,7 +1037,6 @@ info_alt_switch:
             // Not found in cache
             cellIcon = [icon copy];
             [cellIcon setName:iname];
-            [cellIcon setScalesWhenResized:YES];
             [cellIcon setSize:NSMakeSize(16,16)];
             [e_iconCache setObject:cellIcon forKey:iname];
             [cellIcon release];

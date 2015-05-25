@@ -46,7 +46,6 @@
 		55783964153C95D6003B68F6 /* efsprobe.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833013C15EC1006C2DAD /* efsprobe.m */; };
 		55783965153C95E2003B68F6 /* efssmartd.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833213C15EC1006C2DAD /* efssmartd.m */; };
 		55783966153C95E9003B68F6 /* SMARTAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833713C15EC1006C2DAD /* SMARTAlertController.m */; };
-		55783967153C95F3003B68F6 /* SMARTAlert.nib in Resources */ = {isa = PBXBuildFile; fileRef = 55FB833513C15EC1006C2DAD /* SMARTAlert.nib */; };
 		55783968153C965A003B68F6 /* ExtFSManagerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FB833D13C15EC1006C2DAD /* ExtFSManagerAdditions.m */; };
 		55783969153C9667003B68F6 /* Eject.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834313C15EC1006C2DAD /* Eject.icns */; };
 		5578396A153C9667003B68F6 /* ExtFSManager.nib in Resources */ = {isa = PBXBuildFile; fileRef = 55FB834513C15EC1006C2DAD /* ExtFSManager.nib */; };
@@ -324,6 +323,7 @@
 		55FCD70B1B12856C00A57C43 /* ExtFSMediaSMART.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB832813C15EC1006C2DAD /* ExtFSMediaSMART.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55FCD70C1B12857600A57C43 /* ExtFSDiskManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FB832013C15EC1006C2DAD /* ExtFSDiskManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55FCD70D1B1289F500A57C43 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3D4AF27057913CB00A80164 /* Cocoa.framework */; };
+		55FCD70F1B129DF500A57C43 /* SMARTAlert.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55FCD70E1B129DF500A57C43 /* SMARTAlert.xib */; };
 		D32B203D099470A7001A78A0 /* kext_load.c in Sources */ = {isa = PBXBuildFile; fileRef = D3D485770405AC0900A80164 /* kext_load.c */; };
 		D32B2040099470A7001A78A0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D32E761D05FD2919002928A8 /* SystemConfiguration.framework */; };
 		D32B208009947574001A78A0 /* getmntopts.c in Sources */ = {isa = PBXBuildFile; fileRef = D32B207F09947574001A78A0 /* getmntopts.c */; };
@@ -1977,7 +1977,6 @@
 		55FB833013C15EC1006C2DAD /* efsprobe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = efsprobe.m; sourceTree = "<group>"; };
 		55FB833213C15EC1006C2DAD /* efssmartd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = efssmartd.m; sourceTree = "<group>"; };
 		55FB833413C15EC1006C2DAD /* efssmartd-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "efssmartd-Info.plist"; sourceTree = "<group>"; };
-		55FB833513C15EC1006C2DAD /* SMARTAlert.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = SMARTAlert.nib; sourceTree = "<group>"; };
 		55FB833613C15EC1006C2DAD /* SMARTAlertController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMARTAlertController.h; sourceTree = "<group>"; };
 		55FB833713C15EC1006C2DAD /* SMARTAlertController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMARTAlertController.m; sourceTree = "<group>"; };
 		55FB833813C15EC1006C2DAD /* extfsmgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = extfsmgr.h; sourceTree = "<group>"; };
@@ -2043,6 +2042,7 @@
 		55FB838613C15EC1006C2DAD /* super.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = super.c; sourceTree = "<group>"; };
 		55FB838B13C15EC1006C2DAD /* fifo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fifo.h; sourceTree = "<group>"; };
 		55FB838D13C15EC1006C2DAD /* specdev.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = specdev.h; sourceTree = "<group>"; };
+		55FCD70E1B129DF500A57C43 /* SMARTAlert.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SMARTAlert.xib; sourceTree = "<group>"; };
 		D30B790F04059A6B00A80164 /* mount_ext2fs.8 */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = mount_ext2fs.8; sourceTree = "<group>"; };
 		D30B791004059A6B00A80164 /* mount_ext2fs.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = mount_ext2fs.c; sourceTree = "<group>"; };
 		D31F7D3A0569E49300A80164 /* apprentice.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = apprentice.c; sourceTree = "<group>"; };
@@ -2074,7 +2074,7 @@
 		D38226D406697F7000AD3D37 /* efsprobe */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = efsprobe; sourceTree = BUILT_PRODUCTS_DIR; };
 		D387FC9F059558E400C31A93 /* fsck_ext2.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = fsck_ext2.c; sourceTree = "<group>"; };
 		D387FCA10595597500C31A93 /* spawn.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = spawn.c; sourceTree = "<group>"; };
-		D387FCA20595597500C31A93 /* super.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = super.c; sourceTree = "<group>"; };
+		D387FCA20595597500C31A93 /* super.c */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 3; lastKnownFileType = sourcecode.c.c; path = super.c; sourceTree = "<group>"; };
 		D38A5F0806711DDB00E9E666 /* efssmartd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = efssmartd.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3A9B8150582E26500B93FC7 /* mount_extmgr.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = mount_extmgr.c; sourceTree = "<group>"; };
 		D3D485770405AC0900A80164 /* kext_load.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = kext_load.c; path = src/kext_load.c; sourceTree = "<group>"; };
@@ -4643,7 +4643,7 @@
 			isa = PBXGroup;
 			children = (
 				55FB833413C15EC1006C2DAD /* efssmartd-Info.plist */,
-				55FB833513C15EC1006C2DAD /* SMARTAlert.nib */,
+				55FCD70E1B129DF500A57C43 /* SMARTAlert.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -5497,7 +5497,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55783967153C95F3003B68F6 /* SMARTAlert.nib in Resources */,
+				55FCD70F1B129DF500A57C43 /* SMARTAlert.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

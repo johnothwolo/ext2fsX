@@ -27,7 +27,7 @@
 
 @class ExtFSMedia;
 
-@interface ExtFSManager : NSPreferencePane
+@interface ExtFSManager : NSPreferencePane <NSOutlineViewDataSource, NSOutlineViewDelegate>
 {
    IBOutlet NSButton *e_mountButton;
    IBOutlet NSButton *e_ejectButton;
@@ -68,13 +68,6 @@
 - (void)savePrefs;
 
 - (void)doMediaSelection:(ExtFSMedia*)media;
-
-/* Delegate stuff */
-- (int)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item;
-- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item;
-- (id)outlineView:(NSOutlineView *)outlineView child:(int)index ofItem:(id)item;
-- (id)outlineView:(NSOutlineView *)outlineView
-   objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item;
 
 @end
 

@@ -92,7 +92,7 @@ __private_extern__ void PantherInitSMART()
 
 - (void)postNotification:(NSArray*)args
 {
-    unsigned ct = [args count];
+    NSInteger ct = [args count];
     id obj = (ct >= kNoteArgObject+1) ? [args objectAtIndex:kNoteArgObject] : nil;
     NSDictionary *info = (ct >= kNoteArgInfo+1) ? [args objectAtIndex:kNoteArgInfo] : nil;
     [[NSNotificationCenter defaultCenter]
@@ -320,7 +320,7 @@ __private_extern__ void PantherInitSMART()
         #endif
         
         e_size = [[e_media objectForKey:NSSTR(kIOMediaSizeKey)] unsignedLongLongValue];
-        e_devBlockSize = [[e_media objectForKey:NSSTR(kIOMediaPreferredBlockSizeKey)] unsignedLongValue];
+        e_devBlockSize = [[e_media objectForKey:NSSTR(kIOMediaPreferredBlockSizeKey)] unsignedIntValue];
         e_opticalType = efsOpticalTypeUnknown;
 
         e_attributeFlags &= ~(kfsEjectable|kfsWritable|kfsWholeDisk|kfsLeafDisk|kfsNoMount);

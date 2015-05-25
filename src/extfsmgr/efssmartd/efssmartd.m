@@ -28,8 +28,7 @@
 #import "extfsmgr.h"
 #import "SMARTAlertController.h"
 
-@interface EAppDelegate : NSObject {
-}
+@interface EAppDelegate : NSObject <NSApplicationDelegate>
 
 @end
 
@@ -93,13 +92,13 @@
 
 int main (int argc, const char *argv[])
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
     
     // Add in global prefs
     [[NSUserDefaults standardUserDefaults] addSuiteNamed:EXT_PREF_ID];
     
     [[NSApplication sharedApplication] setDelegate:[[EAppDelegate alloc] init]];
-    [pool release];
-    
+		
     return (NSApplicationMain(argc,argv));
+	}
 }

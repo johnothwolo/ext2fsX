@@ -78,8 +78,7 @@ static ExtFSType efs_getdevicefs (const char *device, struct efsattrs *fsa)
     #endif
     HFSPlusVolumeHeader *hpsuper;
     HFSMasterDirectoryBlock *hsuper;
-    struct fs *usuper;
-    ExtFSType type = fsTypeUnknown; 
+    ExtFSType type = fsTypeUnknown;
     char path[PATH_MAX] = "/dev/r";
     BOOL slocked = NO;
     
@@ -177,6 +176,7 @@ efs_hfs:
             }
 #ifdef DETECT_UFS
         } else {
+			struct fs *usuper;
             usuper = (struct fs*)(buf+SBOFF);
             if (FS_MAGIC == be32_to_cpu(usuper->fs_magic)) {
                 struct ufslabel *ulabel = (struct ufslabel*)(buf+UFS_LABEL_OFFSET);

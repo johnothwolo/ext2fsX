@@ -15,7 +15,7 @@
 
 #define HAVE_EXT2_INODE_VERSION 1
 
-#define inline __forceinline
+#define inline static __inline__
 
 #define _CTYPE_DISABLE_MACROS
 

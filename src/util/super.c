@@ -32,7 +32,8 @@ extern char* __progname;
 #define EXT_SUPER_OFF 1024
 static int extsuper_read (const char *device, char **bout, struct ext2_super_block **sbp)
 {
-   int fd, bytes;
+   int fd;
+   ssize_t bytes;
    char *buf;
    
    *bout = NULL;
