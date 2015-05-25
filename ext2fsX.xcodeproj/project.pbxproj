@@ -784,7 +784,7 @@
 
 /* Begin PBXFileReference section */
 		551BAD7D13C157B700080BD5 /* ext2.fs */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ext2.fs; sourceTree = BUILT_PRODUCTS_DIR; };
-		551BAD7E13C157B700080BD5 /* ext2_fs1-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ext2_fs1-Info.plist"; sourceTree = "<group>"; };
+		551BAD7E13C157B700080BD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5528A0C6153F1F7100765DA1 /* e2fsck.conf.5 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2fsck.conf.5; sourceTree = "<group>"; };
 		5528A0C9153F1FDE00765DA1 /* mke2fs.conf */ = {isa = PBXFileReference; lastKnownFileType = text; path = mke2fs.conf; sourceTree = "<group>"; };
 		5528A0CA153F1FDE00765DA1 /* mke2fs.conf.5 */ = {isa = PBXFileReference; lastKnownFileType = text; path = mke2fs.conf.5; sourceTree = "<group>"; };
@@ -792,7 +792,6 @@
 		5577058E13C3CD5600457317 /* libss.1.0.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libss.1.0.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		55E5A54C13C1A17400BF3DD3 /* libext2fs.2.1.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libext2fs.2.1.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		55E5A59B13C1A55600BF3DD3 /* libe2p.2.1.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libe2p.2.1.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		55EA77240F9DB4E50036BB09 /* ext2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ext2-Info.plist"; sourceTree = "<group>"; };
 		55F64093153600FA00F6E73D /* e2fsck */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = e2fsck; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F64098153600FA00F6E73D /* e2fsck.8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2fsck.8; sourceTree = "<group>"; };
 		55F640BE1536029500F6E73D /* blkid_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = blkid_types.h; sourceTree = "<group>"; };
@@ -805,7 +804,7 @@
 		55F641131536302000F6E73D /* mke2fs.8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = mke2fs.8; sourceTree = "<group>"; };
 		55F64130153637CF00F6E73D /* e2label */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = e2label; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F64135153637D500F6E73D /* e2label.8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2label.8; sourceTree = "<group>"; };
-		55F641E71536996D00F6E73D /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
+		55F641E71536996D00F6E73D /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = InfoPlist.strings; sourceTree = "<group>"; };
 		55F641F21537559800F6E73D /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
 		55F641F31537559800F6E73D /* ct_c.awk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ct_c.awk; sourceTree = "<group>"; };
 		55F641F41537559800F6E73D /* ct_c.sed */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ct_c.sed; sourceTree = "<group>"; };
@@ -1986,13 +1985,13 @@
 		55FB833B13C15EC1006C2DAD /* ExtFSManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtFSManager.m; sourceTree = "<group>"; };
 		55FB833C13C15EC1006C2DAD /* ExtFSManagerAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtFSManagerAdditions.h; sourceTree = "<group>"; };
 		55FB833D13C15EC1006C2DAD /* ExtFSManagerAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtFSManagerAdditions.m; sourceTree = "<group>"; };
-		55FB834013C15EC1006C2DAD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		55FB834213C15EC1006C2DAD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		55FB834013C15EC1006C2DAD /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		55FB834213C15EC1006C2DAD /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55FB834313C15EC1006C2DAD /* Eject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Eject.icns; sourceTree = "<group>"; };
-		55FB834413C15EC1006C2DAD /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		55FB834413C15EC1006C2DAD /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		55FB834513C15EC1006C2DAD /* ExtFSManager.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = ExtFSManager.nib; sourceTree = "<group>"; };
-		55FB834613C15EC1006C2DAD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		55FB834713C15EC1006C2DAD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		55FB834613C15EC1006C2DAD /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		55FB834713C15EC1006C2DAD /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55FB834813C15EC1006C2DAD /* Info.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Info.icns; sourceTree = "<group>"; };
 		55FB834913C15EC1006C2DAD /* Mount.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Mount.icns; sourceTree = "<group>"; };
 		55FB834A13C15EC1006C2DAD /* Options.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Options.icns; sourceTree = "<group>"; };
@@ -2053,14 +2052,14 @@
 		D31F7D400569E49300A80164 /* is_tar.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = is_tar.c; sourceTree = "<group>"; };
 		D31F7D410569E49300A80164 /* log.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = log.c; sourceTree = "<group>"; };
 		D31F7D420569E49300A80164 /* softmagic.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = softmagic.c; sourceTree = "<group>"; };
-		D32B1FAC09946A3B001A78A0 /* ExtFSDiskManager-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ExtFSDiskManager-Info.plist"; path = "Resources/ExtFSDiskManager-Info.plist"; sourceTree = "<group>"; };
+		D32B1FAC09946A3B001A78A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D32B1FAE09946A3B001A78A0 /* ext2fs.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ext2fs.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		D32B2049099470A8001A78A0 /* mount_ext2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mount_ext2; sourceTree = BUILT_PRODUCTS_DIR; };
 		D32B207F09947574001A78A0 /* getmntopts.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = getmntopts.c; path = src/depend/disklib/getmntopts.c; sourceTree = SOURCE_ROOT; };
 		D32B209F09947656001A78A0 /* ext2fs.util */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ext2fs.util; sourceTree = BUILT_PRODUCTS_DIR; };
 		D32B20CA0994777A001A78A0 /* newfs_ext2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = newfs_ext2; sourceTree = BUILT_PRODUCTS_DIR; };
 		D32B20E2099477DE001A78A0 /* fsck_ext2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fsck_ext2; sourceTree = BUILT_PRODUCTS_DIR; };
-		D32B210E09947828001A78A0 /* Info-extprefpane.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-extprefpane.plist"; path = "Resources/Info-extprefpane.plist"; sourceTree = "<group>"; };
+		D32B210E09947828001A78A0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D32B211009947829001A78A0 /* ExtFSManager.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExtFSManager.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
 		D32E761D05FD2919002928A8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		D33C06890418779900A80164 /* newfs_ext2.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = newfs_ext2.c; path = src/newfs_ext2/newfs_ext2.c; sourceTree = "<group>"; };
@@ -2085,13 +2084,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		551BAD7B13C157B700080BD5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5577058C13C3CD5600457317 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2263,9 +2255,13 @@
 		089C166AFE841209C02AAC07 /* ext2fsX */ = {
 			isa = PBXGroup;
 			children = (
-				55FB784713C15EBB006C2DAD /* src */,
+				55FB831B13C15EC1006C2DAD /* extfsmgr */,
+				55FB837C13C15EC1006C2DAD /* mount_ext2fs */,
+				55FB838113C15EC1006C2DAD /* newfs_ext2 */,
+				55FB788F13C15EBB006C2DAD /* e2fsprogs */,
+				55FB784713C15EBB006C2DAD /* Kernel */,
 				55FCD7081B12853200A57C43 /* Shared */,
-				D376F3C6040DF69900A80164 /* fs_bndl */,
+				D376F3C6040DF69900A80164 /* File System bundle */,
 				D376F3CC040E085900A80164 /* fs_util */,
 				D30B790D04059A6B00A80164 /* mount_ext2fs */,
 				D387FC9E059558B700C31A93 /* util */,
@@ -2277,10 +2273,6 @@
 				55F645221537781900F6E73D /* lsattr */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
 				5577049413C3CCF200457317 /* Frameworks */,
-				D32B1FAC09946A3B001A78A0 /* ExtFSDiskManager-Info.plist */,
-				D32B210E09947828001A78A0 /* Info-extprefpane.plist */,
-				55EA77240F9DB4E50036BB09 /* ext2-Info.plist */,
-				551BAD7E13C157B700080BD5 /* ext2_fs1-Info.plist */,
 			);
 			name = ext2fsX;
 			sourceTree = "<group>";
@@ -2620,25 +2612,22 @@
 			path = lsattr;
 			sourceTree = "<group>";
 		};
-		55FB784713C15EBB006C2DAD /* src */ = {
+		55FB784713C15EBB006C2DAD /* Kernel */ = {
 			isa = PBXGroup;
 			children = (
 				55F641E41536995900F6E73D /* Kernel resources */,
 				55FB784A13C15EBB006C2DAD /* depend */,
-				55FB788F13C15EBB006C2DAD /* e2fsprogs */,
 				55FB82FD13C15EC1006C2DAD /* e2undel */,
 				55FB831513C15EC1006C2DAD /* ext2_apple.h */,
 				55FB831613C15EC1006C2DAD /* ext2_bigendian.h */,
 				55FB831713C15EC1006C2DAD /* ext2_byteorder.h */,
 				55FB831813C15EC1006C2DAD /* ext2_littleendian.h */,
-				55FB831B13C15EC1006C2DAD /* extfsmgr */,
 				55FB834E13C15EC1006C2DAD /* gnu */,
 				55FB837413C15EC1006C2DAD /* kern */,
-				55FB837C13C15EC1006C2DAD /* mount_ext2fs */,
-				55FB838113C15EC1006C2DAD /* newfs_ext2 */,
 				55FB838313C15EC1006C2DAD /* util */,
 				55FB838713C15EC1006C2DAD /* xnu */,
 			);
+			name = Kernel;
 			path = src;
 			sourceTree = "<group>";
 		};
@@ -2723,7 +2712,8 @@
 				55FB82FB13C15EC1006C2DAD /* version.h */,
 				55FB82FC13C15EC1006C2DAD /* wordwrap.pl */,
 			);
-			path = e2fsprogs;
+			name = e2fsprogs;
+			path = src/e2fsprogs;
 			sourceTree = "<group>";
 		};
 		55FB7E6013C15EBE006C2DAD /* config */ = {
@@ -4590,17 +4580,18 @@
 			isa = PBXGroup;
 			children = (
 				55FB831D13C15EC1006C2DAD /* buildtest.sh */,
-				55FB831E13C15EC1006C2DAD /* coremgr */,
+				55FB831E13C15EC1006C2DAD /* ExtFSDiskManager */,
 				55FB832F13C15EC1006C2DAD /* efsprobe */,
 				55FB833113C15EC1006C2DAD /* efssmartd */,
 				55FB833813C15EC1006C2DAD /* extfsmgr.h */,
 				55FB833913C15EC1006C2DAD /* prefpane */,
 				55FB834D13C15EC1006C2DAD /* test_main.m */,
 			);
-			path = extfsmgr;
+			name = extfsmgr;
+			path = src/extfsmgr;
 			sourceTree = "<group>";
 		};
-		55FB831E13C15EC1006C2DAD /* coremgr */ = {
+		55FB831E13C15EC1006C2DAD /* ExtFSDiskManager */ = {
 			isa = PBXGroup;
 			children = (
 				55FB831F13C15EC1006C2DAD /* DiskArbitrationPrivate.h */,
@@ -4616,12 +4607,14 @@
 				55FB832913C15EC1006C2DAD /* ExtFSMediaSMART.m */,
 				55FB832A13C15EC1006C2DAD /* Resources */,
 			);
+			name = ExtFSDiskManager;
 			path = coremgr;
 			sourceTree = "<group>";
 		};
 		55FB832A13C15EC1006C2DAD /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D32B1FAC09946A3B001A78A0 /* Info.plist */,
 				55FB832B13C15EC1006C2DAD /* Localizable.strings */,
 			);
 			path = Resources;
@@ -4672,6 +4665,7 @@
 			children = (
 				55FB833F13C15EC1006C2DAD /* InfoPlist.strings */,
 				55FB834113C15EC1006C2DAD /* Localizable.strings */,
+				D32B210E09947828001A78A0 /* Info.plist */,
 				55FB834313C15EC1006C2DAD /* Eject.icns */,
 				55FB834513C15EC1006C2DAD /* ExtFSManager.nib */,
 				55FB834813C15EC1006C2DAD /* Info.icns */,
@@ -4796,7 +4790,8 @@
 				55FB837F13C15EC1006C2DAD /* mount_ext2fs.c */,
 				55FB838013C15EC1006C2DAD /* mount_extmgr.c */,
 			);
-			path = mount_ext2fs;
+			name = mount_ext2fs;
+			path = src/mount_ext2fs;
 			sourceTree = "<group>";
 		};
 		55FB838113C15EC1006C2DAD /* newfs_ext2 */ = {
@@ -4804,7 +4799,8 @@
 			children = (
 				55FB838213C15EC1006C2DAD /* newfs_ext2.c */,
 			);
-			path = newfs_ext2;
+			name = newfs_ext2;
+			path = src/newfs_ext2;
 			sourceTree = "<group>";
 		};
 		55FB838313C15EC1006C2DAD /* util */ = {
@@ -4895,12 +4891,14 @@
 			path = src/e2undel;
 			sourceTree = "<group>";
 		};
-		D376F3C6040DF69900A80164 /* fs_bndl */ = {
+		D376F3C6040DF69900A80164 /* File System bundle */ = {
 			isa = PBXGroup;
 			children = (
+				551BAD7E13C157B700080BD5 /* Info.plist */,
 				D376F3C7040DF6C200A80164 /* InfoPlist.strings */,
 			);
-			name = fs_bndl;
+			name = "File System bundle";
+			path = fs_bndl;
 			sourceTree = "<group>";
 		};
 		D376F3CC040E085900A80164 /* fs_util */ = {
@@ -5027,8 +5025,6 @@
 			buildConfigurationList = 551BAD8113C157B800080BD5 /* Build configuration list for PBXNativeTarget "ext2_fs" */;
 			buildPhases = (
 				551BAD7913C157B700080BD5 /* Resources */,
-				551BAD7A13C157B700080BD5 /* Sources */,
-				551BAD7B13C157B700080BD5 /* Frameworks */,
 				551BADBC13C1598100080BD5 /* CopyFiles */,
 			);
 			buildRules = (
@@ -5529,13 +5525,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		551BAD7A13C157B700080BD5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5577058B13C3CD5600457317 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6077,6 +6066,7 @@
 				D376F3CB040DF79100A80164 /* German */,
 			);
 			name = InfoPlist.strings;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -6091,9 +6081,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "ext2_fs1-Info.plist";
+				INFOPLIST_FILE = fs_bndl/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				PRODUCT_NAME = ext2;
 				WRAPPER_EXTENSION = fs;
@@ -6108,9 +6096,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "ext2_fs1-Info.plist";
+				INFOPLIST_FILE = fs_bndl/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				PRODUCT_NAME = ext2;
 				WRAPPER_EXTENSION = fs;
@@ -6866,7 +6852,7 @@
 					EXT2FS_TRACE,
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Resources/Info-extprefpane.plist";
+				INFOPLIST_FILE = src/extfsmgr/prefpane/Resources/Info.plist;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-bundle",
@@ -6888,7 +6874,7 @@
 					EXT_KNOTE,
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Resources/Info-extprefpane.plist";
+				INFOPLIST_FILE = src/extfsmgr/prefpane/Resources/Info.plist;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-bundle",
@@ -6977,7 +6963,7 @@
 					"\"$(SOURCE_ROOT)\"/src",
 					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs/linux/include",
 				);
-				INFOPLIST_FILE = "Resources/ExtFSDiskManager-Info.plist";
+				INFOPLIST_FILE = src/extfsmgr/coremgr/Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				OTHER_CFLAGS = (
 					"-DEXT2FS_DEBUG=1",
@@ -7015,7 +7001,7 @@
 					"\"$(SOURCE_ROOT)\"/src",
 					"\"$(SOURCE_ROOT)\"/src/gnu/ext2fs/linux/include",
 				);
-				INFOPLIST_FILE = "Resources/ExtFSDiskManager-Info.plist";
+				INFOPLIST_FILE = src/extfsmgr/coremgr/Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				OTHER_CFLAGS = "-DEFSM_PRIVATE";
 				OTHER_LDFLAGS = (
