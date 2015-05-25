@@ -284,9 +284,9 @@ fssmart_lookup:
     
     e_smonActive = YES;
     if ([args count] > 0)
-        flags = [args[0] unsignedLongValue];
+        flags = [args[0] unsignedIntegerValue];
     do {
-        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        @autoreleasepool {
         NSArray *media = [self mediaWithIOTransportBus:efsIOTransportTypeATA];
         NSEnumerator *en;
         ExtFSMedia *obj;
@@ -304,8 +304,7 @@ fssmart_lookup:
             }
         }
         
-        [pool release];
-        
+        }
         usleep(e_smonPollInterval * 1000);
     } while (0 != e_smonPollInterval);
     [tpool release];

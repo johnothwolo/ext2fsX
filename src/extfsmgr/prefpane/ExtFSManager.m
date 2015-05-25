@@ -45,8 +45,6 @@ static const char whatid[] __attribute__ ((unused)) =
 #define EXT_TOOLBAR_ALT_ACTION_MOUNT @"Unmount"
 #define EXT_TOOLBAR_ALT_ACTION_INFO @"Options"
 
-#define EXT_TOOLBAR_ICON_TYPE @"icns"	
-
 // Object property support
 #define EXT_OBJ_PROPERTY_RESTORE_ACTIONS @"Restore"
 #define EXT_OBJ_PROPERTY_TITLE_COLOR @"TitleColor"
@@ -351,17 +349,22 @@ data = [data stringByAppendingString:@"\n"]; \
    NSMutableAttributedString *line;
    NSNumberFormatter *floatFmt, *intFmt;
    ExtFSMediaController *mc = [ExtFSMediaController mediaController];
-   double size;
-   short i;
+   uint64_t size;
    BOOL mounted;
    
    intFmt = [[NSNumberFormatter alloc] init];
+   intFmt.formatterBehavior = NSNumberFormatterBehavior10_0;
    [intFmt setFormat:@",0"];
    [intFmt setLocalizesFormat:YES];
    floatFmt = [[NSNumberFormatter alloc] init];
+   floatFmt.formatterBehavior = NSNumberFormatterBehavior10_0;
    [floatFmt setFormat:@",0.00"];
    [floatFmt setLocalizesFormat:YES];
-   
+   NSByteCountFormatter *byteFormatter = [[NSByteCountFormatter alloc] init];
+   byteFormatter.includesActualByteCount = YES;
+   NSByteCountFormatter *blockFormatter = [[NSByteCountFormatter alloc] init];
+   blockFormatter.allowedUnits = NSByteCountFormatterUseBytes;
+
    mounted = [media isMounted];
    
    [e_infoText setEditable:YES];
@@ -433,22 +436,14 @@ data = [data stringByAppendingString:@"\n"]; \
          ([media isCasePreserving] ? e_yes : e_no));
       
       size = [media size]; // expensive conversion on G5
-      for (i=0; size > 1024.0; ++i)
-         size /= 1024.0;
-      data = e_monikers[i];
-      data = [NSString stringWithFormat:@"%@ %@ (%@ %@)",
-         ExtFmtFloat(size), data, ExtFmtQuad([media size]), e_bytes];
+      data = [byteFormatter stringFromByteCount:size];
       ExtInfoInsert(ExtLocalizedString(@"Size", ""), data);
       
       size = [media availableSize];  // expensive conversion on G5
-      for (i=0; size > 1024.0; ++i)
-         size /= 1024.0;
-      data = e_monikers[i];
-      data = [NSString stringWithFormat:@"%@ %@ (%@ %@)",
-         ExtFmtFloat(size), data, ExtFmtQuad([media availableSize]), e_bytes];
+      data = [byteFormatter stringFromByteCount:size];
       ExtInfoInsert(ExtLocalizedString(@"Available Space", ""), data);
       
-      data = [NSString stringWithFormat:@"%@ %@", ExtFmtInt([media blockSize]), e_bytes];
+      data = [blockFormatter stringFromByteCount:[media blockSize]];
       ExtInfoInsert(ExtLocalizedString(@"Block Size", ""), data);
       
       data = [NSString stringWithFormat:@"%@", ExtFmtQuad([media blockCount])];
@@ -476,14 +471,10 @@ data = [data stringByAppendingString:@"\n"]; \
       
    } else {// mounted
       size = [media size]; // expensive conversion on G5
-      for (i=0; size > 1024.0; ++i)
-         size /= 1024.0;
-      data = e_monikers[i];
-      data = [NSString stringWithFormat:@"%@ %@ (%@ %@)",
-         ExtFmtFloat(size), data, ExtFmtQuad([media size]), e_bytes];
+      data = [byteFormatter stringFromByteCount:size];
       ExtInfoInsert(ExtLocalizedString(@"Device Size", ""), data);
       
-      data = [NSString stringWithFormat:@"%@ %@", ExtFmtInt([media blockSize]), e_bytes];
+      data = [blockFormatter stringFromByteCount:[media blockSize]];
       ExtInfoInsert(ExtLocalizedString(@"Device Block Size", ""), data);
    }
    
@@ -834,8 +825,7 @@ info_alt_switch:
       title = ExtLocalizedString(tmp, "Toolbar Item Title");
       [button setTitle:title];
       
-      tmp = [[self bundle] pathForResource:tmp ofType:EXT_TOOLBAR_ICON_TYPE];
-      image = [[NSImage alloc] initWithContentsOfFile:tmp];
+      image = [[self bundle] imageForResource:tmp];
       [button setImage:image];
       
       /* Setup alternates */
@@ -846,8 +836,7 @@ info_alt_switch:
       }
       tmp = alt_images[i];
       if (tmp) {
-         tmp = [[self bundle] pathForResource:tmp ofType:EXT_TOOLBAR_ICON_TYPE];
-         image = [[NSImage alloc] initWithContentsOfFile:tmp];
+         image = [[self bundle] imageForResource:tmp];
          [button setAlternateImage:image];
       }
       

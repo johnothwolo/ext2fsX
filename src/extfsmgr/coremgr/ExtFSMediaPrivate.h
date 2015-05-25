@@ -63,7 +63,7 @@ withObject:args waitUntilDone:NO]; \
 @private
 	void *e_lock;
 	time_t e_lastSMARTUpdate;
-	int e_smartStatus;
+	ExtFSMARTStatus e_smartStatus;
 	ExtFSIOTransportType e_ioTransport;
 	enum ExtFSMediaFlags e_attributeFlags;
 	NSString *e_ioregName;
