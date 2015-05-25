@@ -1966,11 +1966,11 @@
 		55FB832213C15EC1006C2DAD /* ExtFSMedia.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtFSMedia.h; sourceTree = "<group>"; };
 		55FB832313C15EC1006C2DAD /* ExtFSMedia.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtFSMedia.m; sourceTree = "<group>"; };
 		55FB832413C15EC1006C2DAD /* ExtFSMediaController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtFSMediaController.h; sourceTree = "<group>"; };
-		55FB832513C15EC1006C2DAD /* ExtFSMediaController.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaController.m; sourceTree = "<group>"; usesTabs = 0; };
+		55FB832513C15EC1006C2DAD /* ExtFSMediaController.m */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaController.m; sourceTree = "<group>"; usesTabs = 0; };
 		55FB832613C15EC1006C2DAD /* ExtFSMediaPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtFSMediaPrivate.h; sourceTree = "<group>"; };
-		55FB832713C15EC1006C2DAD /* ExtFSMediaPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaPrivate.m; sourceTree = "<group>"; };
+		55FB832713C15EC1006C2DAD /* ExtFSMediaPrivate.m */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaPrivate.m; sourceTree = "<group>"; };
 		55FB832813C15EC1006C2DAD /* ExtFSMediaSMART.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtFSMediaSMART.h; sourceTree = "<group>"; };
-		55FB832913C15EC1006C2DAD /* ExtFSMediaSMART.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaSMART.m; sourceTree = "<group>"; };
+		55FB832913C15EC1006C2DAD /* ExtFSMediaSMART.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtFSMediaSMART.m; sourceTree = "<group>"; usesTabs = 0; };
 		55FB832C13C15EC1006C2DAD /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; lineEnding = 0; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55FB832D13C15EC1006C2DAD /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		55FB832E13C15EC1006C2DAD /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2276,6 +2276,7 @@
 			);
 			name = ext2fsX;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		19C28FB6FE9D52B211CA2CBB /* Products */ = {
 			isa = PBXGroup;

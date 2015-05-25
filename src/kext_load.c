@@ -104,7 +104,7 @@ int checkLoadable()
 }
 
 #define LOAD_COMMAND "/sbin/kextload"
-#define MODULE_PATH "/System/Library/Extensions/ext2fs.kext"
+#define MODULE_PATH "/Library/Extensions/ext2fs.kext"
 
 
 int load_kmod()
