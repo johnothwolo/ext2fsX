@@ -5274,7 +5274,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0730;
 				TargetAttributes = {
 					55FCD7131B12DA9E00A57C43 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -6034,6 +6034,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = fs_bndl/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = net.sourceforge.ext2fs.filesystems.util.ext2;
 				PRODUCT_NAME = ext2;
 				WRAPPER_EXTENSION = fs;
 			};
@@ -6049,6 +6050,7 @@
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = fs_bndl/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = net.sourceforge.ext2fs.filesystems.util.ext2;
 				PRODUCT_NAME = ext2;
 				WRAPPER_EXTENSION = fs;
 			};
@@ -6658,6 +6660,7 @@
 					"$(inherited)",
 					"-no-cpp-precomp",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.sourceforge.ext2fs.fs.ext2.kext;
 				PRODUCT_NAME = ext2fs;
 				WRAPPER_EXTENSION = kext;
 			};
@@ -6686,6 +6689,7 @@
 					"$(inherited)",
 					"-no-cpp-precomp",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.sourceforge.ext2fs.fs.ext2.kext;
 				PRODUCT_NAME = ext2fs;
 				WRAPPER_EXTENSION = kext;
 			};
@@ -6852,6 +6856,7 @@
 				INFOPLIST_FILE = src/extfsmgr/prefpane/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "/Library/Frameworks $(inherited)";
 				OTHER_CFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = net.sourceforge.ext2fsx.ExtFSManager;
 				PRODUCT_NAME = ExtFSManager;
 				WRAPPER_EXTENSION = prefPane;
 			};
@@ -6874,6 +6879,7 @@
 				INFOPLIST_FILE = src/extfsmgr/prefpane/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "/Library/Frameworks $(inherited)";
 				OTHER_CFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = net.sourceforge.ext2fsx.ExtFSManager;
 				PRODUCT_NAME = ExtFSManager;
 				WRAPPER_EXTENSION = prefPane;
 			};
@@ -6967,6 +6973,7 @@
 					"-seg1addr",
 					0xEB110000,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.sourceforge.ext2fsx.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = ExtFSDiskManager;
 			};
 			name = Debug;
@@ -6996,6 +7003,7 @@
 					"-seg1addr",
 					0xEB110000,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.sourceforge.ext2fsx.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = ExtFSDiskManager;
 			};
 			name = Release;
@@ -7024,6 +7032,7 @@
 					"-DDX_DEBUG",
 					"-DEXT2FS_TRACE",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.sourceforge.ext2fsx.efssmartd;
 				PRODUCT_NAME = efssmartd;
 				SECTORDER_FLAGS = "";
 			};
@@ -7047,6 +7056,7 @@
 				INSTALL_PATH = "$(USER_APPS_DIR)";
 				LD_RUNPATH_SEARCH_PATHS = "/Library/Frameworks $(inherited)";
 				OTHER_CFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = net.sourceforge.ext2fsx.efssmartd;
 				PRODUCT_NAME = efssmartd;
 				SECTORDER_FLAGS = "";
 			};
@@ -7106,6 +7116,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
