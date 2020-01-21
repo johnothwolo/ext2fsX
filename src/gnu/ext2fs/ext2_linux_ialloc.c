@@ -37,7 +37,7 @@ static const char vwhatid[] __attribute__ ((unused)) =
 #include <sys/buf.h>
 #include <sys/mount.h>
 #include <sys/vnode.h>
-#include <machine/spl.h>
+//#include <machine/spl.h>
 
 #include "ext2_apple.h"
 

@@ -104,13 +104,13 @@ static int ext2_unpackattr(struct vnode*, struct ucred*,
    struct attrlist*, void*);
 
 int
-ext2_getattrlist(ap)
+ext2_getattrlist(
 	struct vnop_getattrlist_args /* {
 	vnode_t a_vp;
 	struct attrlist *a_alist
 	struct uio *a_uio; // INOUT
 	vfs_context_t a_context;
-	} */ *ap;
+	} */ *ap)
 {
    vnode_t vp = ap->a_vp;
    struct attrlist *alist = ap->a_alist;

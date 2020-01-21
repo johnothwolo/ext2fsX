@@ -87,7 +87,7 @@ static int ext2_blkalloc(register struct inode *, int32_t, int, struct ucred *, 
  */
 /* ARGSUSED */
 int
-ext2_pagein(ap)
+ext2_pagein(
 	struct vnop_pagein_args /* {
 	   	vnode_t a_vp,
 	   	upl_t 	a_pl,
@@ -96,7 +96,7 @@ ext2_pagein(ap)
 		size_t        a_size,
 		struct ucred *a_cred,
 		int           a_flags
-	} */ *ap;
+	} */ *ap)
 {
 	register vnode_t vp = ap->a_vp;
 	upl_t pl = ap->a_pl;
@@ -131,7 +131,7 @@ ext2_pagein(ap)
  * make sure the buf is not in hash queue when you return
  */
 int
-ext2_pageout(ap)
+ext2_pageout(
 	struct vnop_pageout_args /* {
 	   vnode_t a_vp,
 	   upl_t        a_pl,
@@ -140,7 +140,7 @@ ext2_pageout(ap)
 	   size_t        a_size,
 	   struct ucred *a_cred,
 	   int           a_flags
-	} */ *ap;
+	} */ *ap)
 {
 	register vnode_t vp = ap->a_vp;
 	upl_t pl = ap->a_pl;
@@ -263,12 +263,12 @@ ext2_pageout(ap)
  * from pageouts.
  */
 static int
-ext2_blkalloc(ip, lbn, size, cred, flags)
-	register struct inode *ip;
-	int32_t lbn;
-	int size;
-	struct ucred *cred;
-	int flags;
+ext2_blkalloc(
+	register struct inode *ip,
+	int32_t lbn,
+	int size,
+	struct ucred *cred,
+	int flags)
 {
 	register FS *fs;
 	register int32_t nb;
@@ -509,20 +509,20 @@ fail:
  */
 /* ARGSUSED */
 int
-ext2_mmap(ap)
+ext2_mmap(
 	struct vnop_mmap_args /* {
 		vnode_t a_vp;
 		int  a_fflags;
 		vfs_context_t context;
-	} */ *ap;
+	} */ *ap)
 {
 
 	return (0);
 }
 
 __private_extern__ int
-ext2_blktooff (ap)
-   struct vnop_blktooff_args *ap;
+ext2_blktooff (
+   struct vnop_blktooff_args *ap)
 {
    
    struct inode *ip;
@@ -544,8 +544,8 @@ ext2_blktooff (ap)
 }
 
 __private_extern__ int
-ext2_offtoblk (ap)
-   struct vnop_offtoblk_args *ap;
+ext2_offtoblk (
+   struct vnop_offtoblk_args *ap)
 {
    struct inode *ip;
    struct ext2_sb_info *fs;
@@ -567,7 +567,7 @@ ext2_offtoblk (ap)
  * number on the disk And returns a contiguous size for transfer.
  */
 int
-ext2_blockmap(ap)
+ext2_blockmap(
 	struct vnop_blockmap_args /* {
 		vnode_t a_vp;
 		off_t a_foffset;    
@@ -576,7 +576,7 @@ ext2_blockmap(ap)
 		size_t *a_run;
 		void *a_poff;
         int a_flags;
-	} */ *ap;
+	} */ *ap)
 {
 	vnode_t  vp = ap->a_vp;
 	daddr64_t *bnp = ap->a_bpn;

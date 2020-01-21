@@ -39,7 +39,7 @@ fi
 BUILD="${EXT2BUILD}/build"
 
 if [ ! -d "${BUILD}" ]; then
-	echo "Invalid source directory."
+	echo "Invalid source directory." ${BUILD}
 	exit 1
 fi
 
@@ -86,10 +86,10 @@ mkdir -p "${INSTALL}/usr/local/share/doc"
 mkdir -p "${INSTALL}/usr/local/man"
 
 #install e2fsprogs
-if [ ! -d "${EXT2BUILD}/src/e2fsprogs/build-uni" ]; then
-	echo "e2fsprogs Universal build dir does not exist"
-	exit 1
-fi
+#if [ ! -d "${EXT2BUILD}/src/e2fsprogs/build-uni" ]; then
+#	echo "e2fsprogs Universal build dir does not exist"
+#	exit 1
+#fi
 
 cd "${EXT2BUILD}/src/e2fsprogs/build-uni"
 echo "Copying e2fsprogs..."
@@ -108,15 +108,15 @@ ln -f e2fsck.8 ./fsck_ext2.8
 ln -f mke2fs.8 ./newfs_ext2.8
 
 # link them into man also, since MANPATH defaults to /usr/local/man
-cd "${INSTALL}/usr/local/share/man"
-PAGES=`find . -type f`
-for i in ${PAGES}
-do
-if [ ! -d ../../man/`dirname $i` ]; then
-mkdir ../../man/`dirname $i`
-fi
-ln -f $i ../../man/$i
-done
+#cd "${INSTALL}/usr/local/share/man"
+#PAGES=`find . -type f`
+#for i in ${PAGES}
+#do
+#if [ ! -d ../../man/`dirname $i` ]; then
+#mkdir ../../man/`dirname $i`
+#fi
+#ln -f $i ../../man/$i
+#done
 
 #lib sym links
 cd "${INSTALL}/usr/local/lib"

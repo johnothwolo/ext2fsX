@@ -80,7 +80,7 @@ static const char whatid[] __attribute__ ((unused)) =
 #include <sys/kauth.h>
 
 #include <string.h>
-#include <machine/spl.h>
+//#include <machine/spl.h>
 
 // Exported by BSD KPI, but not in headers
 extern int spec_fsync(struct vnop_fsync_args*); // fsync
