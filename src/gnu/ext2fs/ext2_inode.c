@@ -74,9 +74,9 @@ static int ext2_indirtrunc(struct inode *, int32_t, int32_t, int32_t, int,
  * set, then wait for the write to complete.
  */
 int
-ext2_update(vp, waitfor)
-	vnode_t vp;
-	int waitfor;
+ext2_update(
+	vnode_t vp,
+	int waitfor)
 {
 	struct ext2_sb_info *fs;
 	buf_t  bp;
@@ -121,12 +121,12 @@ ext2_update(vp, waitfor)
  * disk blocks.
  */
 int
-ext2_truncate(vp, length, flags, cred, p)
-	vnode_t vp;
-	off_t length;
-	int flags;
-	kauth_cred_t cred;
-	proc_t p;
+ext2_truncate(
+	vnode_t vp,
+	off_t length,
+	int flags,
+	kauth_cred_t cred,
+	proc_t p)
 {
 	vnode_t ovp = vp;
 	int32_t lastblock;
@@ -405,12 +405,13 @@ done:
  */
 
 static int
-ext2_indirtrunc(ip, lbn, dbn, lastbn, level, countp)
-	struct inode *ip;
-	int32_t lbn, lastbn;
-	int32_t dbn;
-	int level;
-	long *countp;
+ext2_indirtrunc(
+	struct inode *ip,
+	int32_t lbn,
+	int32_t lastbn,
+	int32_t dbn,
+	int level,
+	long *countp)
 {
 	buf_t  bp;
 	struct ext2_sb_info *fs = ip->i_e2fs;
@@ -464,6 +465,7 @@ ext2_indirtrunc(ip, lbn, dbn, lastbn, level, countp)
 	} else {
 		trace(TR_BREADMISS, pack(vp, fs->fs_bsize), lbn);
 		current_proc()->p_stats->p_ru.ru_inblock++;	/* pay for read */
+	}
 #endif
 	if (0 == buf_valid(bp)) {
 		// cache miss
@@ -539,11 +541,11 @@ ext2_indirtrunc(ip, lbn, dbn, lastbn, level, countp)
  *	discard preallocated blocks
  */
 int
-ext2_inactive(ap)
+ext2_inactive(
         struct vnop_inactive_args /* {
 		vnode_t a_vp;
 		vfs_context_t a_context;
-	} */ *ap;
+	} */ *ap)
 {
 	vnode_t vp = ap->a_vp;
 	struct inode *ip = VTOI(vp);
@@ -601,12 +603,11 @@ out:
 /*
  * Reclaim an inode so that it can be used for other purposes.
  */
-int
-ext2_reclaim(ap)
-	struct vnop_reclaim_args /* {
+int ext2_reclaim(struct vnop_reclaim_args
+	/* {
 		vnode_t a_vp;
 		vfs_context_t a_context;
-	} */ *ap;
+	 } */ *ap)
 {
 	struct inode *ip;
 	vnode_t vp = ap->a_vp;
@@ -669,8 +670,8 @@ e2vprint(const char *label, struct vnode *vp)
 	char sbuf[64];
 
 	if (label != NULL)
-		printf("%s: ", label);
-	printf("type %s, usecount %d",
+		ext2_debug("%s: ", label);
+	ext2_debug("type %s, usecount %d",
 	       e2typename[vnode_vtype(vp)], vnode_isinuse(vp, 1));
 	sbuf[0] = '\0';
 	if (vnode_isvroot(vp))
@@ -678,5 +679,5 @@ e2vprint(const char *label, struct vnode *vp)
 	if (vnode_issystem(vp))
 		strcat(sbuf, "|VSYSTEM");
 	if (sbuf[0] != '\0')
-		printf(" flags (%s)", &sbuf[1]);
+		ext2_debug(" flags (%s)", &sbuf[1]);
 }

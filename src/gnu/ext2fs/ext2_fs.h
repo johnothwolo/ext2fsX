@@ -26,17 +26,31 @@
 
 #include <sys/types.h>
 
+#define __u64 u_int32_t
+#define u64   u_int32_t
 #define __u32 u_int32_t
 #define u32   u_int32_t
 #define __u16 u_int16_t
 #define __u8  u_int8_t
 
+#define __s64 int64_t
 #define __s32 int32_t
 #define __s16 int16_t
 #define __s8  int8_t
 
 #define umode_t mode_t
 #define loff_t  off_t
+
+
+# ifndef __bitwise
+#  define __bitwise
+# endif
+typedef __u16	__bitwise	__le16;
+typedef __u32	__bitwise	__le32;
+typedef __u64	__bitwise	__le64;
+typedef __u16	__bitwise	__be16;
+typedef __u32	__bitwise	__be32;
+typedef __u64	__bitwise	__be64;
 
 #include "ext2_byteorder.h"
 
@@ -60,18 +74,20 @@
 /*
  * The second extended file system version
  */
-#define EXT2FS_DATE		"95/08/09"
-#define EXT2FS_VERSION		"0.5b"
+#define EXT2FS_DATE		"23/04/20"
+#define EXT2FS_VERSION		"0.5c"
 
 /*
  * Debug code
  */
 #ifdef EXT2FS_DEBUG
-#	define ext2_debug(f, a...)	{ \
-					printf ("EXT2-fs DEBUG (%s, %d): %s:", \
-						__FILE__, __LINE__, __func__); \
-				  	printf (f, ## a); \
-					}
+
+void
+__ext2_debug(const char*, int,
+			 const char*, const char*, ...);
+
+#	define ext2_debug(f, a...) \
+				__ext2_debug (__FILE__, __LINE__, __func__, f, ##a)
 #else
 #	define ext2_debug(f, a...)	/**/
 #endif
@@ -212,8 +228,12 @@ struct ext2_group_desc
 	__u16	bg_free_blocks_count;	/* Free blocks count */
 	__u16	bg_free_inodes_count;	/* Free inodes count */
 	__u16	bg_used_dirs_count;	/* Directories count */
-	__u16	bg_pad;
-	__u32	bg_reserved[3];
+	__u16	bg_flags;
+	__u32	bg_exclude_bitmap_lo;	/* Exclude bitmap for snapshots */
+	__u16	bg_block_bitmap_csum_lo;/* crc32c(s_uuid+grp_num+bitmap) LSB */
+	__u16	bg_inode_bitmap_csum_lo;/* crc32c(s_uuid+grp_num+bitmap) LSB */
+	__u16	bg_itable_unused;	/* Unused inodes count */
+	__u16	bg_checksum;		/* crc16(s_uuid+group_num+group_desc)*/
 };
 
 /*
@@ -475,12 +495,13 @@ struct ext2_inode_large {
  * Structure of the super block
  */
 #define ext3_super_block ext2_super_block
+#define ext4_super_block ext3_super_block
 struct ext2_super_block {
 	__u32	s_inodes_count;		/* Inodes count */
 	__u32	s_blocks_count;		/* Blocks count */
-	__u32	s_r_blocks_count;	/* Reserved blocks count */
-	__u32	s_free_blocks_count;	/* Free blocks count */
-	__u32	s_free_inodes_count;	/* Free inodes count */
+	__u32	s_r_blocks_count;	/* Reserved blocks (for superuser) count */
+	__u32	s_free_blocks_count;	/* Free unallocated blocks count */
+	__u32	s_free_inodes_count;	/* Free unallocated inodes count */
 	__u32	s_first_data_block;	/* First Data Block */
 	__u32	s_log_block_size;	/* Block size */
 	__s32	s_log_frag_size;	/* Fragment size */
@@ -490,13 +511,13 @@ struct ext2_super_block {
 	__u32	s_mtime;		/* Mount time */
 	__u32	s_wtime;		/* Write time */
 	__u16	s_mnt_count;		/* Mount count */
-	__s16	s_max_mnt_count;	/* Maximal mount count */
+	__s16	s_max_mnt_count;	/* Max mount count */
 	__u16	s_magic;		/* Magic signature */
 	__u16	s_state;		/* File system state */
 	__u16	s_errors;		/* Behaviour when detecting errors */
 	__u16	s_minor_rev_level; 	/* minor revision level */
-	__u32	s_lastcheck;		/* time of last check */
-	__u32	s_checkinterval;	/* max. time between checks */
+	__u32	s_lastcheck;		/* time of last fsck check */
+	__u32	s_checkinterval;	/* max. time between fsck checks */
 	__u32	s_creator_os;		/* OS */
 	__u32	s_rev_level;		/* Revision level */
 	__u16	s_def_resuid;		/* Default uid for reserved blocks */
@@ -528,9 +549,9 @@ struct ext2_super_block {
 	 * Performance hints.  Directory preallocation should only
 	 * happen if the EXT2_COMPAT_PREALLOC flag is on.
 	 */
-	__u8	s_prealloc_blocks;	/* Nr of blocks to try to preallocate*/
-	__u8	s_prealloc_dir_blocks;	/* Nr to preallocate for dirs */
-	__u16	s_padding1;
+	__u8	s_prealloc_blocks;	/* # of blocks to try to preallocate*/
+	__u8	s_prealloc_dir_blocks;	/* # of blocks to preallocate for dirs */
+	__u16   s_reserved_gd_blocks;	/* # of reserved gd blocks for resize */
 	/*
 	 * Journaling support valid if EXT2_FEATURE_COMPAT_HAS_JOURNAL set.
 	 */
@@ -540,8 +561,8 @@ struct ext2_super_block {
 	__u32	s_last_orphan;		/* start of list of inodes to delete */
 	__u32	s_hash_seed[4];		/* HTREE hash seed */
 	__u8	s_def_hash_version;	/* Default hash version to use */
-	__u8	s_reserved_char_pad;
-	__u16	s_reserved_word_pad;
+	__u8	s_jnl_backup_type;
+	__u16	s_desc_size;		/* size of group descriptor */
 	__u32	s_default_mount_opts;
 	__u32	s_first_meta_bg;	/* First metablock group */
 	__u32	s_mkfs_time;		/* When the filesystem was created */
@@ -554,12 +575,51 @@ struct ext2_super_block {
 	__u32	s_flags;	  /* miscellaneous flags */
 	__u16	s_raid_stride;    /* RAID stride */
 	__u16	s_mmpintv;	/* number of seconds to wait in MMP checking */
-	uint64_t  s_mmpblk;	 /* block for multi-mount protection */
-	__u32	s_raid_stripe_wid;/* blocks on all data disks (N * stride) */
+	__u64   s_mmpblk;	 /* block for multi-mount protection */
+	__u32	s_raid_stripe_wid;  /* blocks on all data disks (N * stride) */
 	__u8	s_log_gpf;	/* FLEX_BG group size */ 
-	__u8	s_char_pad2;
-	__u16	s_pad;
-	__u32	s_reserved[162];	/* Padding to the end of the block */
+	__u8	s_chksum_type;	/* metadata checksum algorithm used */
+	__u16	s_encrypt;		/* versioning level for encryption */
+	__u8	s_reserved_pad;		/* Padding to next 32bits */
+	__u64	s_kbytes_written;	/* nr of lifetime kilobytes written */
+	/*180*/	__u32	s_snapshot_inum;	/* Inode number of active snapshot */
+		__u32	s_snapshot_id;		/* sequential ID of active snapshot */
+		__u64	s_snapshot_r_blocks_count; /* active snapshot reserved blocks */
+	/*190*/	__u32	s_snapshot_list;	/* inode number of disk snapshot list */
+	#define EXT4_S_ERR_START ext4_offsetof(struct ext2_super_block, s_error_count)
+		__u32	s_error_count;		/* number of fs errors */
+		__u32	s_first_error_time;	/* first time an error happened */
+		__u32	s_first_error_ino;	/* inode involved in first error */
+	/*1a0*/	__u64	s_first_error_block;	/* block involved in first error */
+		__u8	s_first_error_func[32];	/* function where error hit, no NUL? */
+	/*1c8*/	__u32	s_first_error_line;	/* line number where error happened */
+		__u32	s_last_error_time;	/* most recent time of an error */
+	/*1d0*/	__u32	s_last_error_ino;	/* inode involved in last error */
+		__u32	s_last_error_line;	/* line number where error happened */
+		__u64	s_last_error_block;	/* block involved of last error */
+	/*1e0*/	__u8	s_last_error_func[32];	/* function where error hit, no NUL? */
+	#define EXT4_S_ERR_END ext4_offsetof(struct ext2_super_block, s_mount_opts)
+	/*200*/	__u8	s_mount_opts[64];	/* default mount options, no NUL? */
+	/*240*/	__u32	s_usr_quota_inum;	/* inode number of user quota file */
+		__u32	s_grp_quota_inum;	/* inode number of group quota file */
+		__u32	s_overhead_clusters;	/* overhead blocks/clusters in fs */
+	/*24c*/	__u32	s_backup_bgs[2];	/* If sparse_super2 enabled */
+	/*254*/	__u8	s_encrypt_algos[4];	/* Encryption algorithms in use  */
+	/*258*/	__u8	s_encrypt_pw_salt[16];	/* Salt used for string2key algorithm */
+	/*268*/	__le32	s_lpf_ino;		/* Location of the lost+found inode */
+		__le32  s_prj_quota_inum;	/* inode for tracking project quota */
+	/*270*/	__le32	s_checksum_seed;	/* crc32c(orig_uuid) if csum_seed set */
+	/*274*/	__u8	s_wtime_hi;
+		__u8	s_mtime_hi;
+		__u8	s_mkfs_time_hi;
+		__u8	s_lastcheck_hi;
+		__u8	s_first_error_time_hi;
+		__u8	s_last_error_time_hi;
+		__u8	s_pad[2];
+	/*27c*/ __le16	s_encoding;		/* Filename charset encoding */
+		__le16	s_encoding_flags;	/* Filename charset encoding flags */
+		__le32	s_reserved[95];		/* Padding to the end of the block */
+	/*3fc*/	__u32	s_checksum;		/* crc32c(superblock) */
 };
 
 #ifdef __KERNEL__
@@ -571,6 +631,7 @@ struct ext2_super_block {
 #define EXT2_SB(sb)	(sb)
 #endif
 #define EXT3_SB EXT2_SB
+#define EXT4_SB EXT2_SB
 
 /*
  * Codes for operating systems
@@ -627,22 +688,56 @@ struct ext2_super_block {
 #define EXT2_FEATURE_COMPAT_EXT_ATTR		0x0008
 #define EXT2_FEATURE_COMPAT_RESIZE_INO		0x0010
 #define EXT3_FEATURE_COMPAT_DIR_INDEX		0x0020
-#define EXT2_FEATURE_COMPAT_ANY			0xffffffff
+#define EXT2_FEATURE_COMPAT_LAZY_BG		0x0040
+/* #define EXT2_FEATURE_COMPAT_EXCLUDE_INODE	0x0080 not used, legacy */
+#define EXT2_FEATURE_COMPAT_EXCLUDE_BITMAP	0x0100
+#define EXT4_FEATURE_COMPAT_SPARSE_SUPER2	0x0200
+#define EXT4_FEATURE_COMPAT_FAST_COMMIT		0x0400
+#define EXT4_FEATURE_COMPAT_STABLE_INODES	0x0800
 
 #define EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER	0x0001
 #define EXT2_FEATURE_RO_COMPAT_LARGE_FILE	0x0002
-#define EXT2_FEATURE_RO_COMPAT_BTREE_DIR	0x0004
-#define EXT2_FEATURE_RO_COMPAT_ANY		0xffffffff
+/* #define EXT2_FEATURE_RO_COMPAT_BTREE_DIR	0x0004 not used */
+#define EXT4_FEATURE_RO_COMPAT_HUGE_FILE	0x0008
+#define EXT4_FEATURE_RO_COMPAT_GDT_CSUM		0x0010
+#define EXT4_FEATURE_RO_COMPAT_DIR_NLINK	0x0020
+#define EXT4_FEATURE_RO_COMPAT_EXTRA_ISIZE	0x0040
+#define EXT4_FEATURE_RO_COMPAT_HAS_SNAPSHOT	0x0080
+#define EXT4_FEATURE_RO_COMPAT_QUOTA		0x0100
+#define EXT4_FEATURE_RO_COMPAT_BIGALLOC		0x0200
+
+/*
+* METADATA_CSUM implies GDT_CSUM.  When METADATA_CSUM is set, group
+* descriptor checksums use the same algorithm as all other data
+* structures' checksums.
+*/
+#define EXT4_FEATURE_RO_COMPAT_METADATA_CSUM 0x0400
+#define EXT4_FEATURE_RO_COMPAT_REPLICA		 0x0800
+#define EXT4_FEATURE_RO_COMPAT_READONLY		 0x1000
+#define EXT4_FEATURE_RO_COMPAT_PROJECT		 0x2000 /* Project quota */
+#define EXT4_FEATURE_RO_COMPAT_SHARED_BLOCKS 0x4000
+#define EXT4_FEATURE_RO_COMPAT_VERITY		 0x8000
 
 #define EXT2_FEATURE_INCOMPAT_COMPRESSION	0x0001
 #define EXT2_FEATURE_INCOMPAT_FILETYPE		0x0002
 #define EXT3_FEATURE_INCOMPAT_RECOVER		0x0004
 #define EXT3_FEATURE_INCOMPAT_JOURNAL_DEV	0x0008
 #define EXT2_FEATURE_INCOMPAT_META_BG		0x0010
-#define EXT2_FEATURE_INCOMPAT_ANY		0xffffffff
+#define EXT3_FEATURE_INCOMPAT_EXTENTS		0x0040
+#define EXT4_FEATURE_INCOMPAT_64BIT		0x0080
+#define EXT4_FEATURE_INCOMPAT_MMP		0x0100
+#define EXT4_FEATURE_INCOMPAT_FLEX_BG		0x0200
+#define EXT4_FEATURE_INCOMPAT_EA_INODE		0x0400
+#define EXT4_FEATURE_INCOMPAT_DIRDATA		0x1000
+#define EXT4_FEATURE_INCOMPAT_CSUM_SEED		0x2000
+#define EXT4_FEATURE_INCOMPAT_LARGEDIR		0x4000 /* >2GB or 3-lvl htree */
+#define EXT4_FEATURE_INCOMPAT_INLINE_DATA	0x8000 /* data in inode */
+#define EXT4_FEATURE_INCOMPAT_ENCRYPT		0x10000
+#define EXT4_FEATURE_INCOMPAT_CASEFOLD		0x20000
 
 #define EXT2_FEATURE_COMPAT_SUPP	EXT3_FEATURE_COMPAT_DIR_INDEX
 #define EXT2_FEATURE_INCOMPAT_SUPP	EXT2_FEATURE_INCOMPAT_FILETYPE
+
 #ifdef notyet
 #define EXT2_FEATURE_RO_COMPAT_SUPP	(EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER| \
 					 EXT2_FEATURE_RO_COMPAT_LARGE_FILE| \

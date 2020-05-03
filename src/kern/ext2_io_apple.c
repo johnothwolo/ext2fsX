@@ -87,8 +87,8 @@ static int ext2_blkalloc(register struct inode *, int32_t, int, struct ucred *, 
  */
 /* ARGSUSED */
 int
-ext2_pagein(
-	struct vnop_pagein_args /* {
+ext2_pagein(struct vnop_pagein_args *ap)
+	/* {
 	   	vnode_t a_vp,
 	   	upl_t 	a_pl,
 		vm_offset_t   a_pl_offset,
@@ -96,7 +96,7 @@ ext2_pagein(
 		size_t        a_size,
 		struct ucred *a_cred,
 		int           a_flags
-	} */ *ap)
+	} */
 {
 	register vnode_t vp = ap->a_vp;
 	upl_t pl = ap->a_pl;
@@ -114,9 +114,9 @@ ext2_pagein(
 #if DIAGNOSTIC
 	if (VLNK == vnode_vtype(vp)) {
 		if ((int)ip->i_size < vfs_maxsymlen(vnode_mount(vp)))
-			panic("%s: short symlink", "ext2_pagein");
+			panic("ext2_pagein: short symlink");
 	} else if (VREG != vnode_vtype(vp) && VDIR != vnode_vtype(vp))
-		panic("%s: type %d", "ext2_pagein", vnode_vtype(vp));
+		panic("ext2_pagein: type %d", vnode_vtype(vp));
 #endif
 
   	error = cluster_pagein(vp, pl, pl_offset, f_offset, size,
@@ -131,8 +131,8 @@ ext2_pagein(
  * make sure the buf is not in hash queue when you return
  */
 int
-ext2_pageout(
-	struct vnop_pageout_args /* {
+ext2_pageout(struct vnop_pageout_args *ap)
+	/* {
 	   vnode_t a_vp,
 	   upl_t        a_pl,
 	   vm_offset_t   a_pl_offset,
@@ -140,7 +140,7 @@ ext2_pageout(
 	   size_t        a_size,
 	   struct ucred *a_cred,
 	   int           a_flags
-	} */ *ap)
+	} */
 {
 	register vnode_t vp = ap->a_vp;
 	upl_t pl = ap->a_pl;
@@ -263,12 +263,8 @@ ext2_pageout(
  * from pageouts.
  */
 static int
-ext2_blkalloc(
-	register struct inode *ip,
-	int32_t lbn,
-	int size,
-	struct ucred *cred,
-	int flags)
+ext2_blkalloc(register struct inode *ip, int32_t lbn, int size,
+			  struct ucred *cred, int flags)
 {
 	register FS *fs;
 	register int32_t nb;
@@ -276,7 +272,8 @@ ext2_blkalloc(
 	vnode_t vp = ITOV(ip);
 	struct indir indirs[NIADDR + 2];
 	int32_t newb, *bap, pref;
-	int deallocated, osize, nsize, num, i, error;
+	uint32_t deallocated, osize, nsize;
+	int num, i, error;
 	int32_t *allocib, *blkp, *allocblk, allociblk[NIADDR + 1];
 
 	fs = ip->i_e2fs;
@@ -296,7 +293,7 @@ ext2_blkalloc(
     IULOCK(ip);
     nb = lblkno(fs, isize);
 	if (nb < NDADDR && nb < lbn) {
-		panic("ext2_blkalloc(): cannot extend file: i_size %d, lbn %d\n", isize, lbn);
+		panic("ext2_blkalloc(): cannot extend file: i_size %llu, lbn %d\n", isize, lbn);
 	}
 	/*
 	 * The first NDADDR blocks are direct blocks
@@ -509,20 +506,19 @@ fail:
  */
 /* ARGSUSED */
 int
-ext2_mmap(
-	struct vnop_mmap_args /* {
+ext2_mmap(struct vnop_mmap_args *ap)
+	/* {
 		vnode_t a_vp;
 		int  a_fflags;
 		vfs_context_t context;
-	} */ *ap)
+	} */
 {
 
 	return (0);
 }
 
 __private_extern__ int
-ext2_blktooff (
-   struct vnop_blktooff_args *ap)
+ext2_blktooff (struct vnop_blktooff_args *ap)
 {
    
    struct inode *ip;
@@ -544,8 +540,7 @@ ext2_blktooff (
 }
 
 __private_extern__ int
-ext2_offtoblk (
-   struct vnop_offtoblk_args *ap)
+ext2_offtoblk (struct vnop_offtoblk_args *ap)
 {
    struct inode *ip;
    struct ext2_sb_info *fs;
@@ -567,8 +562,8 @@ ext2_offtoblk (
  * number on the disk And returns a contiguous size for transfer.
  */
 int
-ext2_blockmap(
-	struct vnop_blockmap_args /* {
+ext2_blockmap(struct vnop_blockmap_args *ap)
+	/* {
 		vnode_t a_vp;
 		off_t a_foffset;    
 		size_t a_size;
@@ -576,7 +571,7 @@ ext2_blockmap(
 		size_t *a_run;
 		void *a_poff;
         int a_flags;
-	} */ *ap)
+	} */
 {
 	vnode_t  vp = ap->a_vp;
 	daddr64_t *bnp = ap->a_bpn;

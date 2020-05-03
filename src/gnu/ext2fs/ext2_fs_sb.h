@@ -88,4 +88,10 @@ struct ext2_sb_info {
 	char    fs_fsmnt[MAXMNTLEN];            /* name mounted on */
 };
 
+static inline int
+e2fs_overflow(struct ext2_sb_info *fs, off_t lower, off_t value)
+{
+	return (value < lower || value > fs->s_maxfilesize);
+}
+
 #endif	/* _LINUX_EXT2_FS_SB */

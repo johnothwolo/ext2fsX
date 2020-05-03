@@ -119,7 +119,7 @@ ext2_checkoverlap(bp, ip)
 		    ep->b_blkno + btodb(ep->b_bcount) <= start)
 			continue;
 		vprint("Disk overlap", vp);
-		(void)printf("\tstart %d, end %d overlap start %lld, end %ld\n",
+		(void)ext2_debug("\tstart %d, end %d overlap start %lld, end %ld\n",
 			start, last, (long long)ep->b_blkno,
 			(long)(ep->b_blkno + btodb(ep->b_bcount) - 1));
 		panic("Disk buffer overlap");

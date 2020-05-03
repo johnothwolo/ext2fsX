@@ -79,7 +79,7 @@
 #define fsbtodb(fs, b)	((b) << ((fs)->s_fsbtodb))
 #define	dbtofsb(fs, b)	((b) >> ((fs)->s_fsbtodb))
 
-/* get group containing inode */
+/* get cylinder group number containing inode */
 #define ino_to_cg(fs, x)	(((x) - 1) / EXT2_INODES_PER_GROUP(fs))
 
 /* get block containing inode from its number x */

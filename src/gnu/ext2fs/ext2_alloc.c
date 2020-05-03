@@ -102,12 +102,12 @@ ext2_discard_prealloc(ip)
  * preallocation is done as Linux does it
  */
 int
-ext2_alloc(ip, lbn, bpref, size, cred, bnp)
-	struct inode *ip;
-	ext2_daddr_t lbn, bpref;
-	int size;
-	struct ucred *cred;
-	ext2_daddr_t *bnp;
+ext2_alloc(struct inode *ip,
+		   ext2_daddr_t lbn,
+		   ext2_daddr_t bpref,
+		   int size,
+		   struct ucred *cred,
+		   ext2_daddr_t *bnp)
 {
 	struct ext2_sb_info *fs;
 	ext2_daddr_t bno;
@@ -117,7 +117,7 @@ ext2_alloc(ip, lbn, bpref, size, cred, bnp)
 	fs = ip->i_e2fs;
 #if DIAGNOSTIC
 	if ((u_int)size > fs->s_blocksize || blkoff(fs, size) != 0) {
-		printf("dev = %s, bsize = %lu, size = %d, fs = %s\n",
+		ext2_debug("dev = %s, bsize = %lu, size = %d, fs = %s\n",
 		    devtoname(ip->i_dev), fs->s_blocksize, size, fs->fs_fsmnt);
 		panic("ext2_alloc: bad size");
 	}
@@ -220,14 +220,14 @@ SYSCTL_INT(_debug, 14, doasyncfree, CTLFLAG_RW, &doasyncfree, 0, "");
 #endif
 
 int
-ext2_reallocblks(ap)
+ext2_reallocblks(
 	struct vop_reallocblks_args /* {
 		vnode_t a_vp;
 		struct cluster_save *a_buflist;
-	} */ *ap;
+	} */ *ap)
 {
 #ifndef FANCY_REALLOC
-/* printf("ext2_reallocblks not implemented\n"); */
+/* ext2_debug("ext2_reallocblks not implemented\n"); */
 return ENOSPC;
 #else
 
@@ -381,16 +381,14 @@ fail:
  * ext2_new_inode(), to make sure we get the policies right
  */
 int
-ext2_valloc(pvp, mode, vaargsp, vpp)
-	vnode_t pvp;
-	int mode;
-	evalloc_args_t *vaargsp;
-	vnode_t *vpp;
+ext2_valloc(vnode_t pvp, int mode, evalloc_args_t *vaargsp, vnode_t *vpp)
 {
 	struct inode *pip;
 	struct ext2_sb_info *fs;
 	struct inode *ip;
 	ino_t ino;
+	struct timespec ts;
+	struct timeval time;
 	int i, error;
 	
     assert (NULL != vaargsp->va_vctx);
@@ -407,11 +405,13 @@ ext2_valloc(pvp, mode, vaargsp, vpp)
 	if (ino == 0)
 		goto noinodes;
    
-   vaargsp->va_ino = ino;
-   vaargsp->va_flags |= EVALLOC_CREATE;
-   vaargsp->va_createmode = mode;
-   error = EXT2_VGET(vnode_mount(pvp), vaargsp, vpp, vaargsp->va_vctx);
-   vaargsp->va_flags &= ~EVALLOC_CREATE;
+	
+//	vaargsp->va_ino = ino;
+//	vaargsp->va_flags |= EVALLOC_CREATE;
+//	vaargsp->va_createmode = mode;
+	error = /*ext2fs_vfsops.vfs_vget*/ext2_vget(vnode_mount(pvp), ino, vpp, vaargsp->va_vctx);
+//	EXT2_VGET(vnode_mount(pvp), vaargsp, vpp, vaargsp->va_vctx);
+//	vaargsp->va_flags &= ~EVALLOC_CREATE;
    
 	if (error) {
 		ext2_vfree(pvp, ino, mode);
@@ -441,9 +441,16 @@ ext2_valloc(pvp, mode, vaargsp, vpp)
 	 */
 	if (ip->i_gen == 0 || ++ip->i_gen == 0)
 		ip->i_gen = random() / 2 + 1;
+	
+    microtime(&time);
+    TIMEVAL_TO_TIMESPEC(&time, &ts);
+	ip->i_btime = (uint32_t)ts.tv_sec;
+	ip->i_btimensec = (uint32_t)ts.tv_nsec;
+	
+	
     IULOCK(ip);
 /*
-printf("ext2_valloc: allocated inode %d\n", ino);
+ext2_debug("ext2_valloc: allocated inode %d\n", ino);
 */
 	return (0);
 noinodes:
@@ -466,12 +473,11 @@ noinodes:
  * that will hold the pointer
  */
 ext2_daddr_t
-ext2_blkpref(ip, lbn, indx, bap, blocknr)
-	struct inode *ip;
-	ext2_daddr_t lbn;
-	int indx;
-	ext2_daddr_t *bap;
-	ext2_daddr_t blocknr;
+ext2_blkpref(struct inode *ip,
+			 ext2_daddr_t lbn,
+			 int indx,
+			 ext2_daddr_t *bap,
+			 ext2_daddr_t blocknr)
 {
 	int	tmp;
 
@@ -524,10 +530,9 @@ ext2_blkpref(ip, lbn, indx, bap, blocknr)
  * pass it on to the Linux code
  */
 void
-ext2_blkfree(ip, bno, size)
-	struct inode *ip;
-	ext2_daddr_t bno;
-	long size;
+ext2_blkfree(struct inode *ip,
+			 ext2_daddr_t bno,
+			 long size)
 {
 	struct ext2_sb_info *fs;
 
@@ -544,10 +549,9 @@ ext2_blkfree(ip, bno, size)
  * the maintenance of the actual bitmaps is again up to the linux code
  */
 int
-ext2_vfree(pvp, ino, mode)
-	vnode_t pvp;
-	ino_t ino;
-	int mode;
+ext2_vfree(vnode_t pvp,
+		   ino_t ino,
+		   int mode)
 {
 	struct ext2_sb_info *fs;
 	struct inode *pip;
@@ -584,11 +588,8 @@ ext2_vfree(pvp, ino, mode)
  *	fs: error message
  */
 static void
-ext2_fserr(fs, uid, cp)
-	struct ext2_sb_info *fs;
-	u_int uid;
-	char *cp;
+ext2_fserr(struct ext2_sb_info *fs, u_int uid, char *cp)
 {
 
-	printf("uid %d on %s: %s\n", uid, fs->fs_fsmnt, cp);
+	ext2_debug("uid %d on %s: %s\n", uid, fs->fs_fsmnt, cp);
 }

@@ -68,18 +68,44 @@ static const char whatid[] __attribute__ ((unused)) =
 #define	WRITE			ext2_write
 #define	WRITE_S			"ext2_write"
 
+static int ext2_read_internal(vnode_t a_vp, struct uio *a_uio,
+							  int a_ioflag, struct vfs_context *a_context);
+static int ext2_write_internal(vnode_t a_vp, struct uio *a_uio,
+							   int a_ioflag, struct vfs_context *a_context);
+
 /*
  * Vnode op for reading.
  */
 /* ARGSUSED */
-__private_extern__ int
-READ(ap)
-	struct vnop_read_args /* {
+__private_extern__ int READ(struct vnop_read_args *ap)
+/* {
 		vnode_t a_vp;
 		struct uio *a_uio;
 		int a_ioflag;
-		struct ucred *a_cred;
-	} */ *ap;
+		struct vfs_context *a_context;
+ } */
+{
+	return ext2_read_internal(ap->a_vp, ap->a_uio, ap->a_ioflag, ap->a_context);
+}
+
+
+/*
+ * Vnode op for writing.
+ */
+__private_extern__ int WRITE(struct vnop_write_args *ap)
+	/* {
+		vnode_t a_vp;
+		struct uio *a_uio;
+		int a_ioflag;
+		struct vfs_context *a_context;
+	} */
+{
+	return ext2_write_internal(ap->a_vp, ap->a_uio, ap->a_ioflag, ap->a_context);
+}
+
+
+static int ext2_read_internal(vnode_t a_vp, struct uio *a_uio,
+										  int a_ioflag, struct vfs_context *a_context)
 {
 	vnode_t vp;
 	struct inode *ip;
@@ -96,14 +122,14 @@ READ(ap)
    
     ext2_trace_enter();
 
-	vp = ap->a_vp;
+	vp = a_vp;
 	ip = VTOI(vp);
     ISLOCK(ip);
 	mode = ip->i_mode;
     typeof(ip->i_size) isize = ip->i_size;
     fs = ip->I_FS;
     IULOCK(ip);
-	uio = ap->a_uio;
+	uio = a_uio;
 
 #ifdef DIAGNOSTIC
 	if (uio_rw(uio) != UIO_READ)
@@ -207,17 +233,8 @@ READ(ap)
 	ext2_trace_return(error);
 }
 
-/*
- * Vnode op for writing.
- */
-__private_extern__ int
-WRITE(ap)
-	struct vnop_write_args /* {
-		vnode_t a_vp;
-		struct uio *a_uio;
-		int a_ioflag;
-		struct ucred *a_cred;
-	} */ *ap;
+static int ext2_write_internal(vnode_t a_vp, struct uio *a_uio,
+							   int a_ioflag, struct vfs_context *a_context)
 {
 	vnode_t vp;
 	uio_t uio;
@@ -229,25 +246,32 @@ WRITE(ap)
 	int blkoffset, error, flags, ioflag, resid, size, xfersize;
     int rsd, blkalloc=0, save_error=0, save_size=0;
     int file_extended = 0, dodir=0;
-    vfs_context_t context = ap->a_context;
+    vfs_context_t context = a_context;
     typeof(ip->i_size) isize;
 
-	ioflag = ap->a_ioflag;
-	uio = ap->a_uio;
-	vp = ap->a_vp;
+	ioflag = a_ioflag;
+	uio = a_uio;
+	vp = a_vp;
 	ip = VTOI(vp);
 
 #ifdef DIAGNOSTIC
 	if (uio_rw(uio) != UIO_WRITE)
 		panic("%s: uio_rw = %x\n", WRITE_S, uio_rw(uio));
 #endif
-
+		
+	/*
+	 * If writing 0 bytes, succeed and do not change
+	 * update time or file offset (standards compliance)
+	 */
+	if (uio_resid(uio) == 0)
+		return (0);
+	
 	switch (vnode_vtype(vp)) {
 	case VREG:
 		ISLOCK(ip);
         if (ioflag & IO_APPEND)
 			uio_setoffset(uio, ip->i_size);
-		if ((ip->i_flags & APPEND) && uio_offset(uio) != ip->i_size) {
+		if ((ip->i_flags & EXT2_APPEND) && uio_offset(uio) != ip->i_size) {
 			IULOCK(ip);
             ext2_trace_return(EPERM);
         }
@@ -269,145 +293,146 @@ WRITE(ap)
 	ext2_trace(" vn=%p,inode=%d,isize=%qu,woff=%qu,wsize=%d\n",
         vp, ip->i_number, ip->i_size, uio_offset(uio), uio_resid(uio));
     
-    if (uio_offset(uio) < 0 ||
-	    ((u_quad_t)(uio_offset(uio) + uio_resid(uio))) > fs->s_maxfilesize)
-		ext2_trace_return(EFBIG);
-    if (uio_resid(uio) == 0)
-        return (0);
+#if 0
+	if (e2fs_overflow(fs, uio_resid(uio), uio_offset(uio) + uio_resid(uio)))
+		return (EFBIG);
+#endif
+	
 
 	resid = uio_resid(uio);
     IXLOCK(ip);
 	osize = ip->i_size;
 	flags = ioflag & IO_SYNC ? B_SYNC : 0;
    
-   if (UBCISVALID(vp)) {
-      off_t filesize, endofwrite, local_offset, head_offset;
-      int local_flags, first_block, fboff, fblk, loopcount;
-   
-      endofwrite = uio_offset(uio) + uio_resid(uio);
-   
-      if (endofwrite > ip->i_size) {
-         filesize = endofwrite;
-         file_extended = 1;
-      } else 
-         filesize = ip->i_size;
-   
-      head_offset = ip->i_size;
-   
-      /* Go ahead and allocate the blocks that are going to be written */
-      rsd = uio_resid(uio);
-      local_offset = uio_offset(uio);
-      local_flags = ioflag & IO_SYNC ? B_SYNC : 0;
-      local_flags |= B_NOBUFF;
+	
+	
+	if (UBCISVALID(vp)) {
+		off_t filesize, endofwrite, local_offset, head_offset;
+		int local_flags, first_block, fboff, fblk, loopcount;
 
-      first_block = 1;
-      fboff = 0;
-      fblk = 0;
-      loopcount = 0;
-      /* There's no need for this, since we can't get here with rsd == 0, but the compiler
-        is not smart enough to figure this out and warns of possible badness. */
-      xfersize = 0;
-   
-      for (error = 0; rsd > 0;) {
-         blkalloc = 0;
-         lbn = lblkno(fs, local_offset);
-         blkoffset = blkoff(fs, local_offset);
-         xfersize = EXT2_BLOCK_SIZE(fs) - blkoffset;
-         if (first_block)
-            fboff = blkoffset;
-         if (rsd < xfersize)
-            xfersize = rsd;
-         if (EXT2_BLOCK_SIZE(fs) > xfersize)
-            local_flags |= B_CLRBUF;
-         else
-            local_flags &= ~B_CLRBUF;
-         
-         /* Allocate block without reading into a buf (B_NOBUFF) */
-         error = ext2_balloc2(ip,
-            lbn, blkoffset + xfersize, vfs_context_ucred(context), 
-            &bp, local_flags, &blkalloc);
-         assert(NULL == bp);
-         if (error)
-            break;
-         if (first_block) {
-            fblk = blkalloc;
-            first_block = 0;
-         }
-         loopcount++;
-   
-         rsd -= xfersize;
-         local_offset += (off_t)xfersize;
-         if (local_offset > ip->i_size)
-            ip->i_size = local_offset;
-      }
-   
-      if(error) {
-         save_error = error;
-         save_size = rsd;
-         uio_setresid(uio, uio_resid(uio) - rsd);
-         if (file_extended)
-            filesize -= rsd;
-      }
-   
-      flags = ioflag & IO_SYNC ? IO_SYNC : 0;
-      /* UFS does not set this flag, but if we don't then 
-         previously written data is zero filled and the file is corrupt.
-         Perhaps a difference in balloc()?
-      */
-      flags |= IO_NOZEROVALID;
-   
-      if((error == 0) && fblk && fboff) {
-         if(fblk > EXT2_BLOCK_SIZE(fs)) 
-            panic("ext2_write : ext2_balloc allocated more than bsize(head)");
-         /* We need to zero out the head */
-         head_offset = uio_offset(uio) - (off_t)fboff ;
-         flags |= IO_HEADZEROFILL;
-         flags &= ~IO_NOZEROVALID;
-      }
-   
-      if((error == 0) && blkalloc && ((blkalloc - xfersize) > 0)) {
-         /* We need to zero out the tail */
-         if( blkalloc > EXT2_BLOCK_SIZE(fs)) 
-            panic("ext2_write : ext2_balloc allocated more than bsize(tail)");
-         local_offset += (blkalloc - xfersize);
-         if (loopcount == 1) {
-            /* blkalloc is same as fblk; so no need to check again*/
-            local_offset -= fboff;
-         }
-         flags |= IO_TAILZEROFILL;
-         /*  Freshly allocated block; bzero even if find a page */
-         flags &= ~IO_NOZEROVALID;
-      }
-      /*
-      * if the write starts beyond the current EOF then
-      * we we'll zero fill from the current EOF to where the write begins
-      */
-      
-      IULOCK(ip);
-      
-      error = cluster_write(vp, uio, osize, filesize, head_offset, local_offset, flags);
-      
-      if (uio_offset(uio) > osize) {
-         if (error && 0 == (ioflag & IO_UNIT))
-            (void)ext2_truncate(vp, uio_offset(uio),
-               ioflag & IO_SYNC, vfs_context_ucred(context), vfs_context_proc(context));
-         
-         IXLOCK(ip);
-         isize = ip->i_size = uio_offset(uio);
-         IULOCK(ip);
-         
-         ubc_setsize(vp, (off_t)isize);
-      }
-      if(save_error) {
-         uio_setresid(uio, uio_resid(uio) + save_size);
-         if(!error)
-            error = save_error;	
-      }
-      
-      IXLOCK(ip);
-      
-      ip->i_flag |= IN_CHANGE | IN_UPDATE;
-   } else {
+		endofwrite = uio_offset(uio) + uio_resid(uio);
+
+		if (endofwrite > ip->i_size) {
+			filesize = endofwrite;
+			file_extended = 1;
+		} else
+			filesize = ip->i_size;
+
+		head_offset = ip->i_size;
+
+		/* Go ahead and allocate the blocks that are going to be written */
+		rsd = uio_resid(uio);
+		local_offset = uio_offset(uio);
+		local_flags = ioflag & IO_SYNC ? B_SYNC : 0;
+		local_flags |= B_NOBUFF;
+
+		first_block = 1;
+		fboff = 0;
+		fblk = 0;
+		loopcount = 0;
+		/* There's no need for this, since we can't get here with rsd == 0, but the compiler
+		 is not smart enough to figure this out and warns of possible badness. */
+		xfersize = 0;
+
+		for (error = 0; rsd > 0;) {
+			  blkalloc = 0;
+			  lbn = lblkno(fs, local_offset);
+			  blkoffset = blkoff(fs, local_offset);
+			  xfersize = EXT2_BLOCK_SIZE(fs) - blkoffset;
+			  if (first_block)
+				 fboff = blkoffset;
+			  if (rsd < xfersize)
+				 xfersize = rsd;
+			  if (EXT2_BLOCK_SIZE(fs) > xfersize)
+				 local_flags |= B_CLRBUF;
+			  else
+				 local_flags &= ~B_CLRBUF;
+
+			  /* Allocate block without reading into a buf (B_NOBUFF) */
+			  error = ext2_balloc2(ip,
+				 lbn, blkoffset + xfersize, vfs_context_ucred(context),
+				 &bp, local_flags, &blkalloc);
+			  assert(NULL == bp);
+			  if (error)
+				 break;
+			  if (first_block) {
+				 fblk = blkalloc;
+				 first_block = 0;
+			  }
+			  loopcount++;
+
+			  rsd -= xfersize;
+			  local_offset += (off_t)xfersize;
+			  if (local_offset > ip->i_size)
+				 ip->i_size = local_offset;
+		}
+
+		if(error) {
+			  save_error = error;
+			  save_size = rsd;
+			  uio_setresid(uio, uio_resid(uio) - rsd);
+			  if (file_extended)
+				 filesize -= rsd;
+		}
+		flags = ioflag & IO_SYNC ? IO_SYNC : 0;
+		/* UFS does not set this flag, but if we don't then
+			previously written data is zero filled and the file is corrupt.
+			Perhaps a difference in balloc()?
+		*/
+		flags |= IO_NOZEROVALID;
+
+		if((error == 0) && fblk && fboff) {
+		   if(fblk > EXT2_BLOCK_SIZE(fs))
+			  panic("ext2_write : ext2_balloc allocated more than bsize(head)");
+		   /* We need to zero out the head */
+		   head_offset = uio_offset(uio) - (off_t)fboff ;
+		   flags |= IO_HEADZEROFILL;
+		   flags &= ~IO_NOZEROVALID;
+		}
+
+		if((error == 0) && blkalloc && ((blkalloc - xfersize) > 0)) {
+		   /* We need to zero out the tail */
+		   if( blkalloc > EXT2_BLOCK_SIZE(fs))
+			   panic("ext2_write : ext2_balloc allocated more than bsize(tail)");
+		   local_offset += (blkalloc - xfersize);
+		   if (loopcount == 1) {
+			   /* blkalloc is same as fblk; so no need to check again*/
+			   local_offset -= fboff;
+		   }
+		   flags |= IO_TAILZEROFILL;
+		   /*  Freshly allocated block; bzero even if find a page */
+		   flags &= ~IO_NOZEROVALID;
+		}
+		/*
+		 * if the write starts beyond the current EOF then
+		 * we we'll zero fill from the current EOF to where the write begins
+		 */
+
+		IULOCK(ip);
+
+		error = cluster_write(vp, uio, osize, filesize, head_offset, local_offset, flags);
+
+		if (uio_offset(uio) > osize) {
+		   if (error && 0 == (ioflag & IO_UNIT))
+			  (void)ext2_truncate(vp, uio_offset(uio),
+				 ioflag & IO_SYNC, vfs_context_ucred(context), vfs_context_proc(context));
+
+		   IXLOCK(ip);
+		   isize = ip->i_size = uio_offset(uio);
+		   IULOCK(ip);
+
+		   ubc_setsize(vp, (off_t)isize);
+		}
+		if(save_error) {
+		   uio_setresid(uio, uio_resid(uio) + save_size);
+		   if(!error)
+			  error = save_error;
+		}
+
+		IXLOCK(ip);
+
+		ip->i_flag |= IN_CHANGE | IN_UPDATE;
+	} else {
 	for (error = 0; uio_resid(uio) > 0;) {
 		lbn = lblkno(fs, uio_offset(uio));
 		blkoffset = blkoff(fs, uio_offset(uio));
@@ -437,7 +462,7 @@ WRITE(ap)
 		size = BLKSIZE(fs, ip, lbn) - buf_resid(bp);
 		if (size < xfersize)
 			xfersize = size;
-        
+
         if (xfersize > 0) {
             caddr_t data = (caddr_t)(((char *)buf_dataptr(bp)) + blkoffset);
             error = uiomove(data, (int)xfersize, uio);
@@ -446,7 +471,7 @@ WRITE(ap)
             buf_brelse(bp);
 			break;
         }
-        
+
         ip->i_flag |= IN_CHANGE | IN_UPDATE;
         IULOCK(ip);
 
@@ -458,7 +483,7 @@ WRITE(ap)
 		} else {
 			buf_bdwrite(bp);
 		}
-        
+
         IXLOCK(ip);
 	}
    } /* if (UBCISVALID(vp)) */

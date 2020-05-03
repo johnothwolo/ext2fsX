@@ -54,6 +54,7 @@ struct ext2_dir_entry_2;
 struct indir;
 struct inode;
 
+/* Embeded Valloc args */
 typedef struct ext2_valloc_args {
 	ino_t va_ino;
 	vnode_t va_parent;
@@ -65,6 +66,7 @@ typedef struct ext2_valloc_args {
 #define EVALLOC_CREATE 0x0001
 
 //xxx this will break if kernel space ever goes 64bit
+// Welp. It broke.
 #define EVALLOC_ARGS_MAGIC(eap) (ino64_t)(0x5000000000000000LL | (ino64_t)((uintptr_t)(eap)))
 #define IS_EVALLOC_ARGS(ino64) (((ino64_t)(ino64) & 0xffffffff00000000LL) == 0x5000000000000000LL ? 1 : 0)
 #define EVALLOC_ARGS(ino64) (evalloc_args_t*)((uintptr_t)((ino64) & 0x00000000ffffffffULL))
@@ -93,8 +95,7 @@ void	ext2_i2ei(struct inode *, struct ext2_inode *);
 int	ext2_ihashget(dev_t, ino_t, int, vnode_t *);
 void	ext2_ihashinit(void);
 void	ext2_ihashins(struct inode *);
-vnode_t 
-	ext2_ihashlookup(dev_t, ino_t);
+vnode_t ext2_ihashlookup(dev_t, ino_t);
 void	ext2_ihashrem(struct inode *);
 void	ext2_ihashuninit(void);
 void	ext2_itimes(vnode_t);
@@ -132,6 +133,13 @@ struct  ext2_group_desc * get_group_desc(mount_t   ,
 int	ext2_group_sparse(int group);
 void	ext2_discard_prealloc(struct inode *);
 int	ext2_inactive(struct vnop_inactive_args *);
+int	ext2_htree_has_idx(struct inode *);
+int	ext2_htree_hash(const char *, int, uint32_t *, int, uint32_t *,
+uint32_t *);
+int	ext2_is_dirent_tail(struct inode *, struct ext2_dir_entry_2 *);
+int	ext2_htree_lookup(struct inode *, const char *, int, struct buf **, int *, doff_t *, doff_t *, doff_t *, struct ext2fs_searchslot *);
+int	ext2_search_dirblock(struct inode *, void *, int *, const char *, int, int *, doff_t *, doff_t *, doff_t *, struct ext2fs_searchslot *);
+uint64_t	ext2_gd_get_i_tables(struct ext2_group_desc *);
 int	ext2_new_block(mount_t   mp, unsigned long goal,
 	    u_int32_t *prealloc_count, u_int32_t *prealloc_block);
 ino_t	ext2_new_inode(const struct inode * dir, int mode);
@@ -177,6 +185,10 @@ static __inline__ int ext2_balloc(struct inode *ip,
 {
    return (ext2_balloc2(ip, bn, size, cred, bpp, flags, NULL));
 }
+
+int
+ext2_vget(mount_t mp, ino64_t ino,
+		  vnode_t *vpp, vfs_context_t context);
 
 /* Sysctl OID numbers. */
 #define EXT2_SYSCTL_INT_DIRCHECK 1

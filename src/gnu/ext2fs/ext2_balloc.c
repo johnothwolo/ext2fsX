@@ -60,14 +60,14 @@ static const char whatid[] __attribute__ ((unused)) =
  * the inode and the logical block number in a file.
  */
 int
-ext2_balloc2(ip, bn, size, cred, bpp, flags, blk_alloc)
-	struct inode *ip;
-	ext2_daddr_t bn;
-	int size;
-	struct ucred *cred;
-	buf_t  *bpp;
-	int flags;
-    int *blk_alloc;
+ext2_balloc2(
+	struct inode *ip,
+	ext2_daddr_t bn,
+	int size,
+	struct ucred *cred,
+	buf_t  *bpp,
+	int flags,
+    int *blk_alloc)
 {
 	struct ext2_sb_info *fs;
 	ext2_daddr_t nb;
@@ -147,9 +147,10 @@ ext2_balloc2(ip, bn, size, cred, bpp, flags, blk_alloc)
                 newb = nb;
 			} else {
 			/* Godmar thinks: this shouldn't happen w/o fragments */
-				printf("nsize %d(%d) > osize %d(%d) nb %d\n", 
+				ext2_debug("nsize %d(%d) > osize %d(%d) nb %d\n", 
 					(int)nsize, (int)size, (int)osize, 
 					(int)ip->i_size, (int)nb);
+				
 				panic("ext2_balloc: Something is terribly wrong");
 /*
  * please note there haven't been any changes from here on -

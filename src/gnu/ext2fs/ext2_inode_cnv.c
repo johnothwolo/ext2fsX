@@ -79,22 +79,22 @@ ext2_print_inode( in )
 {
 	int i;
 
-	printf( "Inode: %5d", in->i_number);
-	printf( /* "Inode: %5d" */
+	ext2_debug( "Inode: %5d", in->i_number);
+	ext2_debug( /* "Inode: %5d" */
 		" Type: %10s Mode: 0x%o Flags: 0x%x  Version: %d\n",
 		"n/a", in->i_mode, in->i_flags, in->i_gen);
-	printf( "User: %5lu Group: %5lu  Size: %qu\n",
+	ext2_debug( "User: %5lu Group: %5lu  Size: %qu\n",
 		(unsigned long)in->i_uid, (unsigned long)in->i_gid,
 		in->i_size);
-	printf( "Links: %3d Blockcount: %d\n",
+	ext2_debug( "Links: %3d Blockcount: %d\n",
 		in->i_nlink, in->i_blocks);
-	printf( "ctime: 0x%x", in->i_ctime);
-	printf( "atime: 0x%x", in->i_atime);
-	printf( "mtime: 0x%x", in->i_mtime);
-	printf( "BLOCKS: ");
+	ext2_debug( "ctime: 0x%x", in->i_ctime);
+	ext2_debug( "atime: 0x%x", in->i_atime);
+	ext2_debug( "mtime: 0x%x", in->i_mtime);
+	ext2_debug( "BLOCKS: ");
 	for(i=0; i < (in->i_blocks <= 24 ? ((in->i_blocks+1)/2): 12); i++)
-		printf("%d ", in->i_db[i]);
-	printf("\n");
+		ext2_debug("%d ", in->i_db[i]);
+	ext2_debug("\n");
 }
 
 /*

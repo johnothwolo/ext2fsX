@@ -198,6 +198,8 @@ struct inode {
 	int32_t		i_mtimensec;	/* Last modified time. */
 	int32_t		i_ctime;	/* Last inode change time. */
 	int32_t		i_ctimensec;	/* Last inode change time. */
+	int32_t		i_btime;	/* Inode creation time. */
+	int32_t		i_btimensec;	/* Inode creation time. */
 	ext2_daddr_t	i_db[NDADDR];	/* Direct disk blocks. */
 	ext2_daddr_t	i_ib[NIADDR];	/* Indirect disk blocks. */
 	u_int32_t	i_flags;	/* Status flags (chflags). */
@@ -248,12 +250,20 @@ struct inode {
 #define	IN_HASHED	0x00000020		/* Inode is on hash list */
 #define	IN_LAZYMOD	0x00000040		/* Modified, but don't write yet. */
 #define	IN_SPACECOUNTED	0x00000080	/* Blocks to be freed in free count. */
+#define	IN_LAZYACCESS   0x0100		/* Process IN_ACCESS after the suspension finished */
 #define	IN_DX_UPDATE	0x00000100	/* In-core dir index needs to be sync'd with disk */
 #define IN_INIT		0x00000200		/* inode is being created */
 #define IN_INITWAIT 0x00000400		/* waiting for creation */
 /* These are used to protect inode lookup cache members w/o having to hold the lock */
 #define IN_LOOK     0x00000800      /* dir lookup in progress */
 #define IN_LOOKWAIT 0x00001000      /* waiting for lookup completion */
+
+/*
+ * These are translation flags for some attributes that Ext4
+ * passes as inode flags but that we cannot pass directly.
+ */
+#define	IN_E3INDEX	0x010000
+#define	IN_E4EXTENTS	0x020000
 
 #ifdef _KERNEL
 /*

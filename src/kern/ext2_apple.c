@@ -235,8 +235,7 @@ ext2_checkdir_locked(dvp)
    buf_brelse(bp);
    
    if ((size - offset) != EXT2_BLOCK_SIZE(dp->i_e2fs)) {
-      panic("ext2: dir (%d) entries at offset '%qu' do not match block size '%u'!\n",
-         dp->i_number, offset, EXT2_BLOCK_SIZE(dp->i_e2fs));
+	   panic("ext2: dir (%u) entries at offset '%lld' do not match block size '%lu'!\n", dp->i_number, offset, EXT2_BLOCK_SIZE(dp->i_e2fs));
    }
    
    offset += EXT2_BLOCK_SIZE(dp->i_e2fs);

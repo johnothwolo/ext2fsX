@@ -92,7 +92,7 @@ int ext3_journal_dirty_metadata(handle_t *handle, buf_t bp)
    int bytes = (int)buf_count(bp);
    int err = -buf_bwrite(bp);
    if (bp != buf_getblk(vp, blk, bytes, 0, 0, BLK_ONLYVALID))
-      panic("ext3: dirty buffer %d not found!", blk);
+      panic("ext3: dirty buffer %lld not found!", blk);
    return (err);
 }
 

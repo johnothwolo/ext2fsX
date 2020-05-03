@@ -232,7 +232,7 @@ void ext2_free_inode (struct inode * inode)
 		return;
 
 	if (inode->i_nlink) {
-		printf ("ext2_free_inode: inode has nlink=%d\n",
+		ext2_debug ("ext2_free_inode: inode has nlink=%d\n",
 			inode->i_nlink);
 		return;
 	}
@@ -244,7 +244,7 @@ void ext2_free_inode (struct inode * inode)
 	lock_super (sb);
 	if (inode->i_number < EXT2_FIRST_INO ||
 	    inode->i_number > le32_to_cpu(sb->s_es->s_inodes_count)) {
-		printf ("free_inode reserved inode or nonexistent inode");
+		ext2_debug ("free_inode reserved inode or nonexistent inode");
 		unlock_super (sb);
 		return;
 	}
@@ -258,7 +258,7 @@ void ext2_free_inode (struct inode * inode)
 	bitmap_nr = load_inode_bitmap (mp, block_group, &bp);
 #endif
    if (!ext2_clear_bit (bit, (char*)buf_dataptr(bp)))
-		printf ( "ext2_free_inode:"
+		ext2_debug ( "ext2_free_inode:"
 		      "bit already cleared for inode %lu",
 		      (unsigned long)inode->i_number);
 	else {
@@ -309,7 +309,7 @@ static void inc_inode_version (struct inode * inode,
 			EXT2_INODES_PER_BLOCK(inode->i_sb));
 	bp = bread (inode->i_sb->s_dev, inode_block, inode->i_sb->s_blocksize);
 	if (!bp) {
-		printf ("inc_inode_version Cannot load inode table block - "
+		ext2_debug ("inc_inode_version Cannot load inode table block - "
 			    "inode=%lu, inode_block=%lu\n",
 			    inode->i_number, inode_block);
 		inode->u.ext2_i.i_version = 1;
@@ -340,7 +340,7 @@ static void inc_inode_version (struct inode * inode,
  * group to find a free inode.
  */
 /*
- * this functino has been reduced to the actual 'find the inode number' part
+ * this function has been reduced to the actual 'find the inode number' part
  */
 ino_t ext2_new_inode (const struct inode * dir, int mode)
 {
@@ -454,7 +454,7 @@ repeat:
 		EXT2_INODES_PER_GROUP(sb))) <
 	    EXT2_INODES_PER_GROUP(sb)) {
       if (ext2_set_bit (j, data)) {
-			printf ( "ext2_new_inode:"
+			ext2_debug ( "ext2_new_inode:"
 				      "bit already set for inode %d", j);
 		#if !EXT2_SB_BITMAP_CACHE
 			buf_brelse(bp);
@@ -476,7 +476,7 @@ repeat:
 		buf_brelse(bp);
 	#endif
 		if (gdp->bg_free_inodes_count != 0) {
-			printf ( "ext2_new_inode:"
+			ext2_debug ( "ext2_new_inode:"
 				    "Free inodes count corrupted in group %d",
 				    i);
 			unlock_super (sb);
@@ -486,7 +486,7 @@ repeat:
 	}
 	j += i * EXT2_INODES_PER_GROUP(sb) + 1;
 	if (j < EXT2_FIRST_INO || j > le32_to_cpu(es->s_inodes_count)) {
-		printf ( "ext2_new_inode:"
+		ext2_debug ( "ext2_new_inode:"
 			    "reserved inode or inode > inodes count - "
 			    "block_group = %d,inode=%d", i, j);
 		unlock_super (sb);
@@ -574,14 +574,14 @@ void ext2_check_inodes_bitmap (mount_t   mp)
 		x = ext2_count_free (sb->u.ext2_sb.s_inode_bitmap[bitmap_nr],
 				     EXT2_INODES_PER_GROUP(sb) / 8);
 		if (le16_to_cpu(gdp->bg_free_inodes_count) != x)
-			printf ( "ext2_check_inodes_bitmap:"
+			ext2_debug ( "ext2_check_inodes_bitmap:"
 				    "Wrong free inodes count in group %d, "
 				    "stored = %d, counted = %lu", i,
 				    le16_to_cpu(gdp->bg_free_inodes_count), x);
 		bitmap_count += x;
 	}
 	if (le32_to_cpu(es->s_free_inodes_count) != bitmap_count)
-		printf ( "ext2_check_inodes_bitmap:"
+		ext2_debug ( "ext2_check_inodes_bitmap:"
 			    "Wrong free inodes count in super block, "
 			    "stored = %lu, counted = %lu",
 			    (unsigned long) le32_to_cpu(es->s_free_inodes_count), bitmap_count);

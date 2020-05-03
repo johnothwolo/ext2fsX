@@ -75,6 +75,15 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		524CAF12244EF2890054143E /* ext2fs.kext in CopyFiles */ = {isa = PBXBuildFile; fileRef = D32B1FAE09946A3B001A78A0 /* ext2fs.kext */; };
+		52D0E3C22450879100670866 /* ext2_extents.h in Headers */ = {isa = PBXBuildFile; fileRef = 52D0E3C12450879100670866 /* ext2_extents.h */; };
+		52D0E3C42450C0B500670866 /* ext2_htree.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D0E3C32450C0B500670866 /* ext2_htree.c */; };
+		52D0E3C62451019300670866 /* ext2_dir.h in Headers */ = {isa = PBXBuildFile; fileRef = 52D0E3C52451019300670866 /* ext2_dir.h */; };
+		52D0E3C9245101FC00670866 /* htree.h in Headers */ = {isa = PBXBuildFile; fileRef = 52D0E3C7245101FC00670866 /* htree.h */; };
+		52D0E3CA245101FC00670866 /* ext2_dinode.h in Headers */ = {isa = PBXBuildFile; fileRef = 52D0E3C8245101FC00670866 /* ext2_dinode.h */; };
+		52D0E3CC24510E5E00670866 /* ext2_csum.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D0E3CB24510E5D00670866 /* ext2_csum.c */; };
+		52D0E3D02451189900670866 /* ext2_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D0E3CF2451189900670866 /* ext2_hash.c */; };
+		52D0E3D2245150AF00670866 /* ext2_debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D0E3D1245150AF00670866 /* ext2_debug.c */; };
 		551BADB913C158D400080BD5 /* ext2fs.util in CopyFiles */ = {isa = PBXBuildFile; fileRef = D32B209F09947656001A78A0 /* ext2fs.util */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		551BADBB13C1596300080BD5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D376F3C7040DF6C200A80164 /* InfoPlist.strings */; };
 		5528A0C7153F1F7C00765DA1 /* e2fsck.conf.5 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5528A0C6153F1F7100765DA1 /* e2fsck.conf.5 */; };
@@ -847,6 +856,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		524CAF11244EF27A0054143E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = $HOME/mount;
+			dstSubfolderSpec = 0;
+			files = (
+				524CAF12244EF2890054143E /* ext2fs.kext in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		551BADBC13C1598100080BD5 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -965,6 +984,15 @@
 		52B17A6323BB658700CF519C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = fs_bndl/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		52B17A6423BB658700CF519C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		52B17A6523BB658700CF519C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		52C88485245A0C8300AB5CAB /* ext2_vnops.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ext2_vnops.h; sourceTree = "<group>"; };
+		52D0E3C12450879100670866 /* ext2_extents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ext2_extents.h; sourceTree = "<group>"; };
+		52D0E3C32450C0B500670866 /* ext2_htree.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ext2_htree.c; sourceTree = "<group>"; };
+		52D0E3C52451019300670866 /* ext2_dir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ext2_dir.h; sourceTree = "<group>"; };
+		52D0E3C7245101FC00670866 /* htree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = htree.h; sourceTree = "<group>"; };
+		52D0E3C8245101FC00670866 /* ext2_dinode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ext2_dinode.h; sourceTree = "<group>"; };
+		52D0E3CB24510E5D00670866 /* ext2_csum.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ext2_csum.c; sourceTree = "<group>"; };
+		52D0E3CF2451189900670866 /* ext2_hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ext2_hash.c; sourceTree = "<group>"; };
+		52D0E3D1245150AF00670866 /* ext2_debug.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ext2_debug.c; sourceTree = "<group>"; };
 		551BAD7D13C157B700080BD5 /* ext2.fs */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ext2.fs; sourceTree = BUILT_PRODUCTS_DIR; };
 		551BAD7E13C157B700080BD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5528A0C6153F1F7100765DA1 /* e2fsck.conf.5 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2fsck.conf.5; sourceTree = "<group>"; };
@@ -4605,7 +4633,12 @@
 				55FB835313C15EC1006C2DAD /* ext2_alloc.c */,
 				55FB835413C15EC1006C2DAD /* ext2_balloc.c */,
 				55FB835513C15EC1006C2DAD /* ext2_bmap.c */,
+				52D0E3C8245101FC00670866 /* ext2_dinode.h */,
+				52D0E3C7245101FC00670866 /* htree.h */,
 				55FB835613C15EC1006C2DAD /* ext2_extern.h */,
+				52D0E3C52451019300670866 /* ext2_dir.h */,
+				52D0E3CB24510E5D00670866 /* ext2_csum.c */,
+				52D0E3C12450879100670866 /* ext2_extents.h */,
 				55FB835713C15EC1006C2DAD /* ext2_fs.h */,
 				55FB835813C15EC1006C2DAD /* ext2_fs_sb.h */,
 				55FB835913C15EC1006C2DAD /* ext2_ihash.c */,
@@ -4614,9 +4647,13 @@
 				55FB835C13C15EC1006C2DAD /* ext2_linux_balloc.c */,
 				55FB835D13C15EC1006C2DAD /* ext2_linux_ialloc.c */,
 				55FB835E13C15EC1006C2DAD /* ext2_lookup.c */,
+				52D0E3D1245150AF00670866 /* ext2_debug.c */,
+				52D0E3CF2451189900670866 /* ext2_hash.c */,
+				52D0E3C32450C0B500670866 /* ext2_htree.c */,
 				55FB835F13C15EC1006C2DAD /* ext2_mount.h */,
 				55FB836013C15EC1006C2DAD /* ext2_readwrite.c */,
 				55FB836113C15EC1006C2DAD /* ext2_subr.c */,
+				52C88485245A0C8300AB5CAB /* ext2_vnops.h */,
 				55FB836213C15EC1006C2DAD /* ext2_vfsops.c */,
 				55FB836313C15EC1006C2DAD /* ext2_vnops.c */,
 				55FB836413C15EC1006C2DAD /* fs.h */,
@@ -4894,6 +4931,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52D0E3CA245101FC00670866 /* ext2_dinode.h in Headers */,
+				52D0E3C9245101FC00670866 /* htree.h in Headers */,
+				52D0E3C22450879100670866 /* ext2_extents.h in Headers */,
+				52D0E3C62451019300670866 /* ext2_dir.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5130,6 +5171,7 @@
 				D32B1F9109946A3B001A78A0 /* Sources */,
 				D32B1FA309946A3B001A78A0 /* Frameworks */,
 				D32B1FA509946A3B001A78A0 /* ShellScript */,
+				524CAF11244EF27A0054143E /* CopyFiles */,
 			);
 			buildRules = (
 				D32B1FAD09946A3B001A78A0 /* PBXBuildRule */,
@@ -5350,7 +5392,7 @@
 						ProvisioningStyle = Automatic;
 					};
 					D32B1F8B09946A3B001A78A0 = {
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					D32B2037099470A7001A78A0 = {
 						ProvisioningStyle = Automatic;
@@ -5488,7 +5530,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "script=\"${SYSTEM_DEVELOPER_DIR}/ProjectBuilder Extras/Kernel Extension Support/KEXTPostprocess\";\nif [ -x \"$script\" ]; then\n    . \"$script\"\nfi";
+			shellScript = "script=\"${SYSTEM_DEVELOPER_DIR}/ProjectBuilder Extras/Kernel Extension Support/KEXTPostprocess\";\nif [ -x \"$script\" ]; then\n    . \"$script\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -5742,15 +5784,19 @@
 			files = (
 				55F641AB153652D500F6E73D /* ext2_alloc.c in Sources */,
 				55F641AC153652FA00F6E73D /* ext2_balloc.c in Sources */,
+				52D0E3D02451189900670866 /* ext2_hash.c in Sources */,
 				55F641AD153652FA00F6E73D /* ext2_bmap.c in Sources */,
 				55F641AE153652FA00F6E73D /* ext2_ihash.c in Sources */,
 				55F641AF153652FB00F6E73D /* ext2_inode.c in Sources */,
+				52D0E3C42450C0B500670866 /* ext2_htree.c in Sources */,
+				52D0E3D2245150AF00670866 /* ext2_debug.c in Sources */,
 				55F641B0153652FB00F6E73D /* ext2_inode_cnv.c in Sources */,
 				55F641B1153652FB00F6E73D /* ext2_linux_balloc.c in Sources */,
 				55F641B2153652FB00F6E73D /* ext2_linux_ialloc.c in Sources */,
 				55F641B3153652FB00F6E73D /* ext2_lookup.c in Sources */,
 				55F641B4153652FB00F6E73D /* ext2_subr.c in Sources */,
 				55F641B5153652FB00F6E73D /* ext2_vfsops.c in Sources */,
+				52D0E3CC24510E5E00670866 /* ext2_csum.c in Sources */,
 				55F641B6153652FB00F6E73D /* ext2_vnops.c in Sources */,
 				55F641B71536530600F6E73D /* hash.c in Sources */,
 				55F641B81536530A00F6E73D /* super.c in Sources */,
@@ -6767,7 +6813,10 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_KERNEL,
@@ -6788,12 +6837,15 @@
 				MODULE_START = ext2fs_start;
 				MODULE_STOP = ext2fs_stop;
 				MODULE_VERSION = 1.4.1;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-no-cpp-precomp",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.sourceforge.ext2fs.fs.ext2.kext;
 				PRODUCT_NAME = ext2fs;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = kext;
 			};
 			name = Debug;
@@ -6803,7 +6855,9 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_KERNEL,
@@ -6825,6 +6879,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.sourceforge.ext2fs.fs.ext2.kext;
 				PRODUCT_NAME = ext2fs;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = kext;
 			};
 			name = Release;
@@ -7262,6 +7318,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -7308,7 +7365,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-DEXT2FS_DEBUG=1",
 					"-DDIAGNOSTIC",
@@ -7346,6 +7403,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;

@@ -34,7 +34,7 @@ static const char me_whatid[] __attribute__ ((unused)) =
 
 #include <CoreFoundation/CoreFoundation.h>
 
-#include "extfsmgr.h"
+#include "../extfsmgr/extfsmgr.h"
 #include <sys/mount.h>
 #include "ext2_apple.h"
 

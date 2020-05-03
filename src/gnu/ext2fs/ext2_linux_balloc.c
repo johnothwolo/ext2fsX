@@ -222,13 +222,13 @@ void ext2_free_blocks (mount_t mp, unsigned long block,
 	struct ext2_super_block * es = sb->s_es;
 
 	if (!sb) {
-		printf ("ext2_free_blocks: nonexistent device");
+		ext2_debug ("ext2_free_blocks: nonexistent device");
 		return;
 	}
 	lock_super (sb);
 	if (block < le32_to_cpu(es->s_first_data_block) || 
 	    (block + count) > le32_to_cpu(es->s_blocks_count)) {
-		printf ( "ext2_free_blocks: "
+		ext2_debug ( "ext2_free_blocks: "
 			    "Freeing blocks not in datazone - "
 			    "block = %lu, count = %lu", block, count);
 		unlock_super (sb);
@@ -267,7 +267,7 @@ void ext2_free_blocks (mount_t mp, unsigned long block,
 
 	for (i = 0; i < count; i++) {
       if (!ext2_clear_bit (bit + i, (caddr_t)buf_dataptr(bp)))
-			printf ("ext2_free_blocks: "
+			ext2_debug ("ext2_free_blocks: "
 				      "bit already cleared for block %lu", 
 				      block);
 		else {
@@ -321,7 +321,7 @@ int ext2_new_block (mount_t mp, unsigned long goal,
 	static int goal_hits = 0, goal_attempts = 0;
 #endif
 	if (!sb) {
-		printf ("ext2_new_block: nonexistent device");
+		ext2_debug ("ext2_new_block: nonexistent device");
 		return 0;
 	}
 	lock_super (sb);
@@ -441,7 +441,7 @@ repeat:
 					 EXT2_BLOCKS_PER_GROUP(sb));
 	data = NULL;
 	if (j >= EXT2_BLOCKS_PER_GROUP(sb)) {
-		printf ( "ext2_new_block: "
+		ext2_debug ( "ext2_new_block: "
 			 "Free blocks count corrupted for block group %d", i);
 		unlock_super (sb);
 #if !EXT2_SB_BITMAP_CACHE
@@ -484,7 +484,7 @@ got_block:
    }
    
    if (ext2_set_bit (j, (char*)buf_dataptr(bp))) {
-		printf ( "ext2_new_block: "
+		ext2_debug ( "ext2_new_block: "
 			 "bit already set for block %d", j);
 #if !EXT2_SB_BITMAP_CACHE
 		buf_brelse(bp);
@@ -537,7 +537,7 @@ got_block:
 ****/
 	sync = vfs_issynchronous(mp);
 	if (j >= le32_to_cpu(es->s_blocks_count)) {
-		printf ( "ext2_new_block: "
+		ext2_debug ( "ext2_new_block: "
 			    "block(%d) >= blocks count(%d) - "
 			    "block_group = %d", j, le32_to_cpu(es->s_blocks_count), i);
 		unlock_super (sb);
@@ -665,43 +665,43 @@ static void ext2_check_blocks_bitmap (mount_t   mp)
 		     EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER) ||
 		    ext2_group_sparse(i)) {
 			if (!ext2_test_bit (0, bp->b_data))
-				printf ("ext2_check_blocks_bitmap: "
+				ext2_debug ("ext2_check_blocks_bitmap: "
 					    "Superblock in group %d "
 					    "is marked free", i);
 
 			for (j = 0; j < desc_blocks; j++)
 				if (!ext2_test_bit (j + 1, bp->b_data))
-					printf ("ext2_check_blocks_bitmap: "
+					ext2_debug ("ext2_check_blocks_bitmap: "
 					    "Descriptor block #%d in group "
 					    "%d is marked free", j, i);
 		}
 
 		if (!block_in_use (le32_to_cpu(gdp->bg_block_bitmap), sb, bp->b_data))
-			printf ("ext2_check_blocks_bitmap: "
+			ext2_debug ("ext2_check_blocks_bitmap: "
 				    "Block bitmap for group %d is marked free",
 				    i);
 
 		if (!block_in_use (le32_to_cpu(gdp->bg_inode_bitmap), sb, bp->b_data))
-			printf ("ext2_check_blocks_bitmap: "
+			ext2_debug ("ext2_check_blocks_bitmap: "
 				    "Inode bitmap for group %d is marked free",
 				    i);
 
 		for (j = 0; j < sb->s_itb_per_group; j++)
 			if (!block_in_use (le32_to_cpu(gdp->bg_inode_table) + j, sb, bp->b_data))
-				printf ("ext2_check_blocks_bitmap: "
+				ext2_debug ("ext2_check_blocks_bitmap: "
 					    "Block #%d of the inode table in "
 					    "group %d is marked free", j, i);
 
 		x = ext2_count_free (bp, sb->s_blocksize);
 		if (le16_to_cpu(gdp->bg_free_blocks_count) != x)
-			printf ("ext2_check_blocks_bitmap: "
+			ext2_debug ("ext2_check_blocks_bitmap: "
 				    "Wrong free blocks count for group %d, "
 				    "stored = %d, counted = %lu", i,
 				    le16_to_cpu(gdp->bg_free_blocks_count), x);
 		bitmap_count += x;
 	}
 	if (le32_to_cpu(es->s_free_blocks_count) != bitmap_count)
-		printf ("ext2_check_blocks_bitmap: "
+		ext2_debug ("ext2_check_blocks_bitmap: "
 			    "Wrong free blocks count in super block, "
 			    "stored = %lu, counted = %lu",
 			    (unsigned long) le32_to_cpu(es->s_free_blocks_count), bitmap_count);

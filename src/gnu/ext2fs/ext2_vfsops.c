@@ -95,6 +95,8 @@ extern int spec_fsync(struct vnop_fsync_args*); // fsync
 #include <gnu/ext2fs/ext2_extern.h>
 #include <gnu/ext2fs/ext2_fs_sb.h>
 #include <ext2_byteorder.h>
+#include <gnu/ext2fs/ext2_vnops.h>
+
 
 __private_extern__ int ext2_fsync(struct vnop_fsync_args *);
 
@@ -115,7 +117,7 @@ static int ext2_setattrfs(mount_t, struct vfs_attr *, vfs_context_t);
 static int ext2_sync(mount_t, int, vfs_context_t);
 static int ext2_uninit(struct vfsconf *);
 static int ext2_unmount(mount_t, int, vfs_context_t);
-static int ext2_vget(mount_t, ino64_t, vnode_t *, vfs_context_t);
+//static int ext2_vget(mount_t, ino64_t, vnode_t *, vfs_context_t);
 static int ext2_vptofh(vnode_t, int*, unsigned char *, vfs_context_t);
 
 static int ext2_sysctl(int *, u_int, user_addr_t, size_t *, user_addr_t, size_t, vfs_context_t);
@@ -140,20 +142,19 @@ struct ext2_iter_cargs {
 };
 
 __private_extern__ struct vfsops ext2fs_vfsops = {
-	ext2_mount,
-	vfs_stdstart,
-	ext2_unmount,
-	ext2_root,		/* root inode via vget */
-	ext2_quotactl,
-	ext2_getattrfs,
-	ext2_sync,
-	ext2_vget,
-	ext2_fhtovp,
-	ext2_vptofh,
-	ext2_init,
-	ext2_sysctl,
-	ext2_setattrfs,
-	{NULL,}
+	.vfs_mount 		= ext2_mount,
+	.vfs_start 		= vfs_stdstart,
+	.vfs_unmount 	= ext2_unmount,
+	.vfs_root 		= ext2_root,		/* root inode via vget */
+	.vfs_quotactl 	= ext2_quotactl,
+	.vfs_getattr 	= ext2_getattrfs,
+	.vfs_sync 		= ext2_sync,
+	.vfs_vget 		= ext2_vget,
+	.vfs_fhtovp 	= ext2_fhtovp,
+	.vfs_vptofh 	= ext2_vptofh,
+	.vfs_init 		= ext2_init,
+	.vfs_sysctl 	= ext2_sysctl,
+	.vfs_setattr 	= ext2_setattrfs,
 };
 
 #define bsd_malloc _MALLOC
@@ -223,7 +224,7 @@ ext2_mountroot()
 	int error;
 	
 	if ((error = bdevvp(rootdev, &rootvp))) {
-		printf("ext2_mountroot: can't find rootvp\n");
+		printf("EXT2-fs: ext2_mountroot: can't find rootvp\n");
 		ext2_trace_return(error);
 	}
 	mp = bsd_malloc((u_long)sizeof(struct mount), M_MOUNT, M_WAITOK);
@@ -266,11 +267,10 @@ ext2_mountroot()
  * mount system call
  */
 static int
-ext2_mount(mp, devvp, data, context)
-	mount_t mp;
-	vnode_t devvp;
-    user_addr_t data;
-	vfs_context_t context;
+ext2_mount(mount_t mp,
+		   vnode_t devvp,
+		   user_addr_t data,
+		   vfs_context_t context)
 {
 	struct ext2mount *ump = 0;
 	struct ext2_sb_info *fs;
@@ -315,6 +315,8 @@ ext2_mount(mp, devvp, data, context)
                cpu_to_le16(le16_to_cpu(fs->s_es->s_state) | EXT2_VALID_FS);
 				ext2_sbupdate(context, ump, MNT_WAIT);
 			}
+			if (error)
+				ext2_trace_return(error);
 			fs->s_rd_only = 1;
 		}
 		if (!error && vfs_isreload(mp))
@@ -331,11 +333,11 @@ ext2_mount(mp, devvp, data, context)
 			    (le16_to_cpu(fs->s_es->s_state) & EXT2_ERROR_FS)) {
 				if (vfs_isforce(mp)) {
 					printf(
-"EXT2 WARNING: %s was not properly dismounted\n",
+"EXT2-fs WARNING: %s was not properly dismounted\n",
 					    fs->fs_fsmnt);
 				} else {
 					printf(
-"EXT2 WARNING: R/W mount of %s denied.  Filesystem is not clean - run fsck\n",
+"EXT2-fs WARNING: R/W mount of %s denied.  Filesystem is not clean - run fsck\n",
 					    fs->fs_fsmnt);
 					ext2_trace_return(EPERM);
 				}
@@ -421,7 +423,7 @@ static int ext2_check_descriptors (struct ext2_sb_info * sb)
 		if (le32_to_cpu(gdp->bg_block_bitmap) < block ||
 			le32_to_cpu(gdp->bg_block_bitmap) >= block + EXT2_BLOCKS_PER_GROUP(sb))
 		{
-			printf ("ext2_check_descriptors: "
+			printf ("EXT2-fs: ext2_check_descriptors: "
 				"Block bitmap for group %d"
 				" not in group (block %lu)!\n",
 				i, (unsigned long) le32_to_cpu(gdp->bg_block_bitmap));
@@ -430,7 +432,7 @@ static int ext2_check_descriptors (struct ext2_sb_info * sb)
 		if (le32_to_cpu(gdp->bg_inode_bitmap) < block ||
 			le32_to_cpu(gdp->bg_inode_bitmap) >= block + EXT2_BLOCKS_PER_GROUP(sb))
 		{
-			printf ("ext2_check_descriptors: "
+			printf ("EXT2-fs: ext2_check_descriptors: "
 				"Inode bitmap for group %d"
 				" not in group (block %lu)!\n",
 				i, (unsigned long) le32_to_cpu(gdp->bg_inode_bitmap));
@@ -440,7 +442,7 @@ static int ext2_check_descriptors (struct ext2_sb_info * sb)
 			le32_to_cpu(gdp->bg_inode_table) + sb->s_itb_per_group >=
 			block + EXT2_BLOCKS_PER_GROUP(sb))
 		{
-			printf ("ext2_check_descriptors: "
+			printf ("EXT2-fs: ext2_check_descriptors: "
 				"Inode table for group %d"
 				" not in group (block %lu)!\n",
 				i, (unsigned long) le32_to_cpu(gdp->bg_inode_table));
@@ -455,21 +457,21 @@ static int ext2_check_descriptors (struct ext2_sb_info * sb)
 }
 
 static int
-ext2_check_sb_compat(es, dev, ronly)
-	struct ext2_super_block *es;
-	dev_t dev;
-	int ronly;
+ext2_check_sb_compat(
+	struct ext2_super_block *es,
+	dev_t dev,
+	int ronly)
 {
 
 	if (le16_to_cpu(es->s_magic) != EXT2_SUPER_MAGIC) {
-		printf("ext2fs: %s: wrong magic number %#x (expected %#x)\n",
+		printf("EXT2-fs: %s: wrong magic number %#x (expected %#x)\n",
 		    devtoname(dev), le16_to_cpu(es->s_magic), EXT2_SUPER_MAGIC);
 		ext2_trace_return(1);
 	}
 	if (le32_to_cpu(es->s_rev_level) > EXT2_GOOD_OLD_REV) {
 		if (le32_to_cpu(es->s_feature_incompat) & ~EXT2_FEATURE_INCOMPAT_SUPP) {
 			printf(
-"EXT2 WARNING: mount of %s denied due to unsupported optional features (%08X)\n",
+"EXT2-fs WARNING: mount of %s denied due to unsupported optional features (%08X)\n",
 			    devtoname(dev),
              (le32_to_cpu(es->s_feature_incompat) & ~EXT2_FEATURE_INCOMPAT_SUPP));
 			ext2_trace_return(1);
@@ -477,7 +479,7 @@ ext2_check_sb_compat(es, dev, ronly)
 		if (!ronly &&
 		    (le32_to_cpu(es->s_feature_ro_compat) & ~EXT2_FEATURE_RO_COMPAT_SUPP)) {
 			printf(
-"EXT2 WARNING: R/W mount of %s denied due to unsupported optional features (%08X)\n",
+"EXT2-fs WARNING: R/W mount of %s denied due to unsupported optional features (%08X)\n",
 			    devtoname(dev),
              (le32_to_cpu(es->s_feature_ro_compat) & ~EXT2_FEATURE_RO_COMPAT_SUPP));
 			ext2_trace_return(1);
@@ -660,9 +662,8 @@ ext2_reload_callback(vnode_t vp, void *cargs)
 }
 
 static int
-ext2_reload(mountp, context)
-	mount_t mountp;
-	vfs_context_t context;
+ext2_reload(mount_t mountp,
+			vfs_context_t context)
 {
 	struct ext2_iter_cargs cargs;
 	vnode_t devvp;
@@ -721,10 +722,9 @@ ext2_reload(mountp, context)
  * Common code for mount and mountroot
  */
 static int
-ext2_mountfs(devvp, mp, context)
-	vnode_t devvp;
-	mount_t mp;
-	vfs_context_t context;
+ext2_mountfs(vnode_t devvp,
+			 mount_t mp,
+			 vfs_context_t context)
 {
 	struct timeval tv;
     struct ext2mount *ump;
@@ -772,7 +772,7 @@ ext2_mountfs(devvp, mp, context)
    
    /* cache the IO attributes */
 	if ((error = vfs_init_io_attributes(devvp, mp))) {
-		printf("ext2_mountfs: vfs_init_io_attributes returned %d\n",
+		printf("EXT2-fs: ext2_mountfs: vfs_init_io_attributes returned %d\n",
 			error);
 		ext2_trace_return(error);
 	}
@@ -782,7 +782,7 @@ ext2_mountfs(devvp, mp, context)
 	bp = NULL;
 	ump = NULL;
 	#if defined(DIAGNOSTIC)
-	printf("ext2fs: reading superblock from block %u, with size %u and offset %u\n",
+	printf("EXT2-fs: reading superblock from block %u, with size %u and offset %u\n",
 		SBLOCK, SBSIZE, SBOFF);
 	#endif
 	if ((error = buf_meta_bread(devvp, (daddr64_t)SBLOCK, SBSIZE, NOCRED, &bp)) != 0)
@@ -794,7 +794,7 @@ if (le16_to_cpu(es->s_magic) == EXT2_SUPER_MAGIC && (es->s_feature_compat & cpu_
 	// haven't tested dx write support yet, and with the inode locking there's likely problems
 	vfs_setflags(mp, MNT_RDONLY);
 	ronly = 1;
-	printf("ext2fs: dir_index feature detected - write support disabled\n");
+	printf("EXT2-fs: dir_index feature detected - write support disabled\n");
 }
 #endif
 	if (ext2_check_sb_compat(es, dev, ronly) != 0) {
@@ -815,7 +815,7 @@ if (le16_to_cpu(es->s_magic) == EXT2_SUPER_MAGIC && (es->s_feature_compat & cpu_
 	}
    if ((int16_t)le16_to_cpu(es->s_max_mnt_count) >= 0 &&
 		 le16_to_cpu(es->s_mnt_count) >= (u_int16_t)le16_to_cpu(es->s_max_mnt_count))
-		printf ("EXT2-fs WARNING: maximal mount count reached, "
+		printf ("EXT2-fs:EXT2-fs WARNING: maximal mount count reached, "
 			"running fsck is recommended\n");
 	else if (le32_to_cpu(es->s_checkinterval) &&
 		(le32_to_cpu(es->s_lastcheck) + le32_to_cpu(es->s_checkinterval) <= tv.tv_sec))
@@ -992,16 +992,16 @@ ext2_flushfiles(mp, flags, context)
  * taken from ext2/super.c ext2_statfs
  */
 static int
-ext2_getattrfs(mp, attrs, context)
-	mount_t mp;
-	struct vfs_attr *attrs;
-	vfs_context_t context;
+ext2_getattrfs(mount_t mp,
+			   struct vfs_attr *attrs,
+			   vfs_context_t context)
 {
 	unsigned long overhead;
 	struct ext2mount *ump;
 	struct ext2_sb_info *fs;
 	struct ext2_super_block *es;
-	int i, nsb;
+	uint64_t nsb;
+	int i;
 
 	ump = VFSTOEXT2(mp);
 	fs = ump->um_e2fs;
@@ -1034,7 +1034,7 @@ ext2_getattrfs(mp, attrs, context)
 	VFSATTR_RETURN(attrs, f_ffree, le32_to_cpu(es->s_free_inodes_count));
 	
 	struct vfsstatfs *sbp = vfs_statfs(mp);
-	int numdirs = fs->s_dircount;
+	uint64_t numdirs = fs->s_dircount;
 	if (VFSATTR_IS_ACTIVE(attrs, f_signature))
 		VFSATTR_RETURN(attrs, f_signature, (typeof(attrs->f_signature))EXT2_SUPER_MAGIC);
 	if (VFSATTR_IS_ACTIVE(attrs, f_objcount))
@@ -1174,10 +1174,10 @@ static int ext2_setattrfs(mount_t mp, struct vfs_attr *attrs, vfs_context_t cont
 	if (VFSATTR_IS_ACTIVE(attrs, f_vol_name)) {
 		struct ext2_sb_info *fsp = (VFSTOEXT2(mp))->um_e2fs;
 		const char *name = attrs->f_vol_name;
-		int	 name_length = strlen(name);
+		size_t name_length = strlen(name);
       
 		if (name_length > EXT2_VOL_LABEL_LENGTH) {
-			printf("%s: Warning volume label too long, truncating.\n", __FUNCTION__);
+			printf("EXT2-fs: %s: Warning volume label too long, truncating.\n", __FUNCTION__);
 			name_length = EXT2_VOL_LABEL_LENGTH;
 		}
       
@@ -1230,10 +1230,9 @@ ext2_sync_callback(vnode_t vp, void *cargs)
 }
 
 static int
-ext2_sync(mp, waitfor, context)
-	mount_t mp;
-	int waitfor;
-	vfs_context_t context;
+ext2_sync(mount_t mp,
+		  int waitfor,
+		  vfs_context_t context)
 {
 	struct ext2_iter_cargs args;
 	struct ext2mount *ump = VFSTOEXT2(mp);
@@ -1242,7 +1241,7 @@ ext2_sync(mp, waitfor, context)
 	
 	fs = ump->um_e2fs;
 	if (fs->s_dirt != 0 && fs->s_rd_only != 0) {		/* XXX */
-		printf("fs = %s\n", fs->fs_fsmnt);
+		printf("EXT2-fs: fs = %s\n", fs->fs_fsmnt);
 		panic("ext2_sync: rofs mod");
 	}
 	// Called for each node attached to mount point.
@@ -1328,12 +1327,9 @@ void ext2_vget_irelse (struct inode *ip)
  * return the inode locked.  Detection and handling of mount points must be
  * done by the calling routine.
  */
-static int
-ext2_vget(mp, ino, vpp, context)
-	mount_t mp;
-    ino64_t ino;
-	vnode_t *vpp;
-	vfs_context_t context;
+int
+ext2_vget(mount_t mp, ino64_t ino,
+		  vnode_t *vpp, vfs_context_t context)
 {
 	evinit_args_t viargs;
 	struct ext2_sb_info *fs;
@@ -1391,7 +1387,7 @@ restart:
 	bzero((caddr_t)ip, sizeof(struct inode));
 	ip->i_e2fs = fs = ump->um_e2fs;
 	ip->i_dev = dev;
-	ip->i_number = ino;
+	ip->i_number = (ino_t)ino;
     /* Init our private lock */
 	ip->i_lock = lck_mtx_alloc_init(EXT2_LCK_GRP, LCK_ATTR_NULL);
     assert(fs->s_lock != NULL);
@@ -1411,9 +1407,8 @@ restart:
 	(void)OSCompareAndSwap(ext2fs_inode_hash_lock, 0, (UInt32*)&ext2fs_inode_hash_lock);
 
 	/* Read in the disk contents for the inode, copy into the inode. */
-#if 0
-printf("ext2_vget(%d) dbn= %d ", ino, fsbtodb(fs, ino_to_fsba(fs, ino)));
-#endif
+//	ext2_debug("ext2_vget(%llu) dbn= %llu ", ino, fsbtodb(fs, ino_to_fsba(fs, (ino_t)ino)));
+
 	if ((error = buf_bread(ump->um_devvp, (daddr64_t)fsbtodb(fs, ino_to_fsba(fs, ino)),
 	    (int)fs->s_blocksize, NOCRED, &bp)) != 0) {
 		ext2_vget_irelse(ip);
@@ -1429,11 +1424,13 @@ printf("ext2_vget(%d) dbn= %d ", ino, fsbtodb(fs, ino_to_fsba(fs, ino)));
 	ip->i_next_alloc_goal = 0;
 	ip->i_prealloc_count = 0;
 	ip->i_prealloc_block = 0;
-	/* now we want to make sure that block pointers for unused
+	
+	/* Now we want to make sure that block pointers for unused
 	   blocks are zeroed out - ext2_balloc depends on this 
 	   although for regular files and directories only
 	*/
-	if(S_ISDIR(ip->i_mode) || S_ISREG(ip->i_mode)) {
+	if(/* !(ip->i_flag & IN_E4EXTENTS) && */
+	   (S_ISDIR(ip->i_mode) || S_ISREG(ip->i_mode))) {
 		used_blocks = (ip->i_size+fs->s_blocksize-1) / fs->s_blocksize;
 		for(i = used_blocks; i < EXT2_NDIR_BLOCKS; i++)
 			ip->i_db[i] = 0;
@@ -1560,10 +1557,9 @@ ext2_vptofh(vp, fhlen, fhp, context)
  * Write a superblock and associated information back to disk.
  */
 static int
-ext2_sbupdate(context, mp, waitfor)
-	vfs_context_t context;
-	struct ext2mount *mp;
-	int waitfor;
+ext2_sbupdate(vfs_context_t context,
+			  struct ext2mount *mp,
+			  int waitfor)
 {
 	struct ext2_sb_info *fs = mp->um_e2fs;
 	struct ext2_super_block *es = fs->s_es;
@@ -1573,7 +1569,7 @@ ext2_sbupdate(context, mp, waitfor)
    
     EVOP_DEVBLOCKSIZE(mp->um_devvp, &devBlockSize, context);
 /*
-printf("\nupdating superblock, waitfor=%s\n", waitfor == MNT_WAIT ? "yes":"no");
+printf("EXT2-fs: \nupdating superblock, waitfor=%s\n", waitfor == MNT_WAIT ? "yes":"no");
 */	
 	/* group descriptors */
 	lock_super(fs);
@@ -1648,10 +1644,9 @@ printf("\nupdating superblock, waitfor=%s\n", waitfor == MNT_WAIT ? "yes":"no");
  * Return the root of a filesystem.
  */
 static int
-ext2_root(mp, vpp, context)
-	mount_t mp;
-	vnode_t *vpp;
-	vfs_context_t context;
+ext2_root(mount_t mp,
+		  vnode_t *vpp,
+		  vfs_context_t context)
 {
 	vnode_t nvp;
 	struct inode *ip;
@@ -1816,10 +1811,6 @@ ext2_sysctl(int *name, u_int namelen, user_addr_t oldp, size_t *oldlenp, user_ad
 
 /* Kernel entry/exit points */
 
-__private_extern__ struct vnodeopv_desc ext2fs_vnodeop_opv_desc;
-__private_extern__ struct vnodeopv_desc ext2fs_specop_opv_desc;
-__private_extern__ struct vnodeopv_desc ext2fs_fifoop_opv_desc;
-
 extern struct sysctl_oid sysctl__vfs_e2fs;
 extern struct sysctl_oid sysctl__vfs_e2fs_dircheck;
 extern struct sysctl_oid sysctl__vfs_e2fs_lookcacheinval;
@@ -1846,8 +1837,11 @@ kern_return_t ext2fs_start (kmod_info_t * ki, void * d) {
 		lck_grp_attr_free(lgattr);
 	
 	struct vfs_fsentry fsc;
-	struct vnodeopv_desc* vnops[] =
-		{&ext2fs_vnodeop_opv_desc, &ext2fs_specop_opv_desc, &ext2fs_fifoop_opv_desc};
+	struct vnodeopv_desc* vnops[3] = {
+		&ext2fs_vnodeop_opv_desc,
+		&ext2fs_specop_opv_desc,
+		&ext2fs_fifoop_opv_desc
+	};
 	int kret, i;
 	
 	bzero(&fsc, sizeof(struct vfs_fsentry));
@@ -1863,7 +1857,7 @@ kern_return_t ext2fs_start (kmod_info_t * ki, void * d) {
 	fsc.vfe_flags = VFS_TBLTHREADSAFE/*|VFS_TBLNOTYPENUM*/|VFS_TBLLOCALVOL;
 	kret = vfs_fsadd(&fsc, &ext2_tableid);
 	if (kret) {
-		printf ("ext2fs_start: Failed to register with kernel, error = %d\n", kret);
+		printf ("EXT2-fs: ext2fs_start: Failed to register with kernel, error = %d\n", kret);
 		lck_grp_free(ext2_lck_grp);
 		return (KERN_FAILURE);
 	}
@@ -1873,7 +1867,7 @@ kern_return_t ext2fs_start (kmod_info_t * ki, void * d) {
 	/* Register our sysctl's */
 	for (i=0; e2sysctl_list[i]; ++i) {
 		#ifdef DIAGNOSTIC
-		printf ("ext2fs: registering sysctl '%s' with OID %d\n", (e2sysctl_list[i])->oid_name, (e2sysctl_list[i])->oid_number);
+		printf ("EXT2-fs: ext2fs_start: registering sysctl '%s' with OID %d\n", (e2sysctl_list[i])->oid_name, (e2sysctl_list[i])->oid_number);
 		#endif
 		sysctl_register_oid(e2sysctl_list[i]);
 	};
@@ -1884,7 +1878,7 @@ kern_return_t ext2fs_start (kmod_info_t * ki, void * d) {
 kern_return_t ext2fs_stop (kmod_info_t * ki, void * d) {
 	int error, i;
 	
-	/* Deregister with the kernel */
+	/* Unregister with the kernel */
 
 	if ((error = vfs_fsremove(ext2_tableid)))
 		return (KERN_FAILURE);
