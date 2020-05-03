@@ -117,7 +117,7 @@ static int ext2_setattrfs(mount_t, struct vfs_attr *, vfs_context_t);
 static int ext2_sync(mount_t, int, vfs_context_t);
 static int ext2_uninit(struct vfsconf *);
 static int ext2_unmount(mount_t, int, vfs_context_t);
-//static int ext2_vget(mount_t, ino64_t, vnode_t *, vfs_context_t);
+static int ext2_vget(mount_t, ino64_t, vnode_t *, vfs_context_t);
 static int ext2_vptofh(vnode_t, int*, unsigned char *, vfs_context_t);
 
 static int ext2_sysctl(int *, u_int, user_addr_t, size_t *, user_addr_t, size_t, vfs_context_t);
@@ -1322,14 +1322,29 @@ void ext2_vget_irelse (struct inode *ip)
 }
 
 /*
- * Look up an EXT2FS dinode number to find its incore vnode, otherwise read it
- * in from disk.  If it is in core, wait for the lock bit to clear, then
- * return the inode locked.  Detection and handling of mount points must be
- * done by the calling routine.
+ * For greater versatility everything was moved below
+ 
  */
 int
 ext2_vget(mount_t mp, ino64_t ino,
 		  vnode_t *vpp, vfs_context_t context)
+{
+	evalloc_args_t ea_local = {0};
+	ea_local.va_ino = (ino_t)ino;
+	ea_local.va_vctx = context;
+	
+	return ext2_vget_internal(mp, &ea_local, vpp, context);
+}
+
+/*
+* Look up an EXT2FS dinode number to find its incore vnode, otherwise read it
+* in from disk.  If it is in core, wait for the lock bit to clear, then
+* return the inode locked.  Detection and handling of mount points must be
+* done by the calling routine.
+*/
+int
+ext2_vget_internal(mount_t mp, evalloc_args_t *valloc_args,
+				   vnode_t *vpp, vfs_context_t context)
 {
 	evinit_args_t viargs;
 	struct ext2_sb_info *fs;
@@ -1340,17 +1355,18 @@ ext2_vget(mount_t mp, ino64_t ino,
 	dev_t dev;
 	int i, error;
 	int used_blocks;
-	evalloc_args_t ea_local = {0};
+//	evalloc_args_t ea_local = {0};
 	evalloc_args_t *eap = NULL;
+	ino64_t ino;
 	
-	if (IS_EVALLOC_ARGS(ino)) {
-		eap = EVALLOC_ARGS(ino);
-		ino = (ino64_t)eap->va_ino;
-	} else {
-		ea_local.va_ino = (ino_t)ino;
-		ea_local.va_vctx = context;
-		eap = &ea_local;
-	}
+//	if (IS_EVALLOC_ARGS(valloc_args)) {
+	eap = valloc_args;
+	ino = (ino64_t)eap->va_ino;
+//	} else {
+//		ea_local.va_ino = (ino_t)ino;
+//		ea_local.va_vctx = context;
+//		eap = &ea_local;
+//	}
 
 	ump = VFSTOEXT2(mp);
 	dev = ump->um_dev;

@@ -903,8 +903,7 @@ found:
 			vallocargs.va_vctx = context;
 			vallocargs.va_cnp = cnp;
 			IULOCK(dp);
-			if (0 != (error =  ext2fs_vfsops.vfs_vget(vnode_mount(vdp), dp->i_ino, &tdp, context)))
-				//EXT2_VGET(mp, &vallocargs, &tdp, context)))
+			if (0 != (error = EXT2_VGET(mp, &vallocargs, &tdp, context)))
 			{
 				ext2_trace_return(error);
 			}
@@ -960,8 +959,7 @@ found:
         vallocargs.va_parent = vdp;
         vallocargs.va_vctx = context;
         vallocargs.va_cnp = cnp;
-		if (0 != (error = ext2fs_vfsops.vfs_vget(vnode_mount(vdp), dp->i_ino, &tdp, context)))
-				//EXT2_VGET(mp, &vallocargs, &tdp, context)))
+		if (0 != (error = EXT2_VGET(mp, &vallocargs, &tdp, context)))
 			ext2_trace_return(error);
 		*vpp = tdp;
         } // (vpp)
@@ -996,8 +994,7 @@ found:
         vallocargs.va_parent = pdp;
         vallocargs.va_vctx = context;
         vallocargs.va_cnp = cnp;
-		if (0 != (error = ext2fs_vfsops.vfs_vget(vnode_mount(vdp), dp->i_ino, &tdp, context))){
-			//EXT2_VGET(mp, &vallocargs, &tdp, context)))
+		if (0 != (EXT2_VGET(mp, &vallocargs, &tdp, context))){
             ext2_trace_return(error);
 		}
         
@@ -1010,8 +1007,7 @@ found:
       vallocargs.va_parent = pdp;
       vallocargs.va_vctx = context;
       vallocargs.va_cnp = cnp;
-		if ((error = ext2fs_vfsops.vfs_vget(vnode_mount(vdp), dp->i_ino, &tdp, context)) != 0){
-		  //EXT2_VGET(mp, &vallocargs, &tdp, context)) != 0)
+		if ((error = EXT2_VGET(mp, &vallocargs, &tdp, context)) != 0){
 			ext2_trace_return(error);
 		}
         

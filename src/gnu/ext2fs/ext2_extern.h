@@ -63,21 +63,27 @@ typedef struct ext2_valloc_args {
 	u_int16_t va_flags;
 	u_int16_t va_createmode;
 } evalloc_args_t;
-#define EVALLOC_CREATE 0x0001
 
+#define EVALLOC_CREATE 0x0001
+#define EXT2_VGET ext2_vget_internal
+
+__private_extern__ struct vfsops ext2fs_vfsops;
+
+#if 0
 //xxx this will break if kernel space ever goes 64bit
 // Welp. It broke.
 #define EVALLOC_ARGS_MAGIC(eap) (ino64_t)(0x5000000000000000LL | (ino64_t)((uintptr_t)(eap)))
 #define IS_EVALLOC_ARGS(ino64) (((ino64_t)(ino64) & 0xffffffff00000000LL) == 0x5000000000000000LL ? 1 : 0)
 #define EVALLOC_ARGS(ino64) (evalloc_args_t*)((uintptr_t)((ino64) & 0x00000000ffffffffULL))
 
-__private_extern__ struct vfsops ext2fs_vfsops;
 static __inline__
 int EXT2_VGET(mount_t mp, evalloc_args_t *eap, vnode_t *vpp, vfs_context_t cp)
 {
     ino64_t arg = EVALLOC_ARGS_MAGIC(eap);
     return (ext2fs_vfsops.vfs_vget(mp, arg, vpp, cp));
 }
+#endif
+
 
 int	ext2_alloc(struct inode *,
 	    ext2_daddr_t, ext2_daddr_t, int, struct ucred *, ext2_daddr_t *);
@@ -187,8 +193,8 @@ static __inline__ int ext2_balloc(struct inode *ip,
 }
 
 int
-ext2_vget(mount_t mp, ino64_t ino,
-		  vnode_t *vpp, vfs_context_t context);
+ext2_vget_internal(mount_t mp, evalloc_args_t *valloc_args,
+				   vnode_t *vpp, vfs_context_t context);
 
 /* Sysctl OID numbers. */
 #define EXT2_SYSCTL_INT_DIRCHECK 1
