@@ -66,7 +66,7 @@
 #include <gnu/ext2fs/ext2_mount.h>
 #include <gnu/ext2fs/ext2_fs.h>
 #include <gnu/ext2fs/ext2_fs_sb.h>
-#include <gnu/ext2fs/htree.h>
+//#include <gnu/ext2fs/htree.h>
 #include <gnu/ext2fs/ext2_extern.h>
 
 

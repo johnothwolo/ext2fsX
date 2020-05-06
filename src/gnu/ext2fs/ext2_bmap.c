@@ -73,12 +73,8 @@ static const char whatid[] __attribute__ ((unused)) =
  */
 
 int
-ext2_bmaparray(vp, bn, bnp, runp, runb)
-	vnode_t vp;
-	ext2_daddr_t bn;
-	ext2_daddr_t *bnp;
-	int *runp;
-	int *runb;
+ext2_bmaparray(vnode_t vp, ext2_daddr_t bn,
+			   ext2_daddr_t *bnp, int *runp, int *runb)
 {
 	struct vfsioattr vfsio;
     struct inode *ip;
@@ -233,11 +229,7 @@ ext2_bmaparray(vp, bn, bnp, runp, runb)
  * once with the offset into the page itself.
  */
 int
-ext2_getlbns(vp, bn, ap, nump)
-	vnode_t vp;
-	ext2_daddr_t bn;
-	struct indir *ap;
-	int *nump;
+ext2_getlbns(vnode_t vp, ext2_daddr_t bn, struct indir *ap, int *nump)
 {
 	ext2_daddr_t blockcnt, metalbn, realbn;
 	struct ext2mount *ump;

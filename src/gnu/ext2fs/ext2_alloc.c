@@ -220,11 +220,11 @@ SYSCTL_INT(_debug, 14, doasyncfree, CTLFLAG_RW, &doasyncfree, 0, "");
 #endif
 
 int
-ext2_reallocblks(
-	struct vop_reallocblks_args /* {
+ext2_reallocblks(struct vop_reallocblks_args *ap)
+	/* {
 		vnode_t a_vp;
 		struct cluster_save *a_buflist;
-	} */ *ap)
+	} */
 {
 #ifndef FANCY_REALLOC
 /* ext2_debug("ext2_reallocblks not implemented\n"); */

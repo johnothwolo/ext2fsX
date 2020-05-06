@@ -78,7 +78,7 @@ static void read_block_bitmap (mount_t mp,
 	buf_t bp;
 	int    error;
 	
-	gdp = get_group_desc (mp, block_group, NULL);
+	gdp = get_group_desc(mp, block_group, NULL);
 	
 	ext2_daddr_t lbn = le32_to_cpu(gdp->bg_block_bitmap);
 	unlock_super(sb);
@@ -228,14 +228,14 @@ void ext2_free_blocks (mount_t mp, unsigned long block,
 	lock_super (sb);
 	if (block < le32_to_cpu(es->s_first_data_block) || 
 	    (block + count) > le32_to_cpu(es->s_blocks_count)) {
-		ext2_debug ( "ext2_free_blocks: "
+		ext2_debug( "ext2_free_blocks: "
 			    "Freeing blocks not in datazone - "
 			    "block = %lu, count = %lu", block, count);
 		unlock_super (sb);
 		return;
 	}
 
-	ext2_debug ("ext2_free_blocks: freeing blocks %lu to %lu\n", block, block+count-1);
+	ext2_debug("ext2_free_blocks: freeing blocks %lu to %lu\n", block, block+count-1);
 
 	block_group = (block - le32_to_cpu(es->s_first_data_block)) /
 		      EXT2_BLOCKS_PER_GROUP(sb);

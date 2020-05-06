@@ -53,7 +53,7 @@
 #include <gnu/ext2fs/ext2_dir.h>
 #include <gnu/ext2fs/ext2_extern.h>
 #include <gnu/ext2fs/ext2_dinode.h>
-#include <gnu/ext2fs/htree.h>
+//#include <gnu/ext2fs/htree.h>
 
 static void	ext2_append_entry(char *block, uint32_t blksize,
 		    struct ext2fs_direct_2 *last_entry,

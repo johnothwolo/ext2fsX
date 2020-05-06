@@ -582,44 +582,59 @@ struct ext2_super_block {
 	__u16	s_encrypt;		/* versioning level for encryption */
 	__u8	s_reserved_pad;		/* Padding to next 32bits */
 	__u64	s_kbytes_written;	/* nr of lifetime kilobytes written */
-	/*180*/	__u32	s_snapshot_inum;	/* Inode number of active snapshot */
-		__u32	s_snapshot_id;		/* sequential ID of active snapshot */
-		__u64	s_snapshot_r_blocks_count; /* active snapshot reserved blocks */
+	/*180*/
+	__u32	s_snapshot_inum;	/* Inode number of active snapshot */
+	__u32	s_snapshot_id;		/* sequential ID of active snapshot */
+	__u64	s_snapshot_r_blocks_count; /* active snapshot reserved blocks */
 	/*190*/	__u32	s_snapshot_list;	/* inode number of disk snapshot list */
-	#define EXT4_S_ERR_START ext4_offsetof(struct ext2_super_block, s_error_count)
-		__u32	s_error_count;		/* number of fs errors */
-		__u32	s_first_error_time;	/* first time an error happened */
-		__u32	s_first_error_ino;	/* inode involved in first error */
-	/*1a0*/	__u64	s_first_error_block;	/* block involved in first error */
-		__u8	s_first_error_func[32];	/* function where error hit, no NUL? */
-	/*1c8*/	__u32	s_first_error_line;	/* line number where error happened */
-		__u32	s_last_error_time;	/* most recent time of an error */
-	/*1d0*/	__u32	s_last_error_ino;	/* inode involved in last error */
-		__u32	s_last_error_line;	/* line number where error happened */
-		__u64	s_last_error_block;	/* block involved of last error */
-	/*1e0*/	__u8	s_last_error_func[32];	/* function where error hit, no NUL? */
-	#define EXT4_S_ERR_END ext4_offsetof(struct ext2_super_block, s_mount_opts)
-	/*200*/	__u8	s_mount_opts[64];	/* default mount options, no NUL? */
-	/*240*/	__u32	s_usr_quota_inum;	/* inode number of user quota file */
-		__u32	s_grp_quota_inum;	/* inode number of group quota file */
-		__u32	s_overhead_clusters;	/* overhead blocks/clusters in fs */
-	/*24c*/	__u32	s_backup_bgs[2];	/* If sparse_super2 enabled */
-	/*254*/	__u8	s_encrypt_algos[4];	/* Encryption algorithms in use  */
-	/*258*/	__u8	s_encrypt_pw_salt[16];	/* Salt used for string2key algorithm */
-	/*268*/	__le32	s_lpf_ino;		/* Location of the lost+found inode */
-		__le32  s_prj_quota_inum;	/* inode for tracking project quota */
-	/*270*/	__le32	s_checksum_seed;	/* crc32c(orig_uuid) if csum_seed set */
-	/*274*/	__u8	s_wtime_hi;
-		__u8	s_mtime_hi;
-		__u8	s_mkfs_time_hi;
-		__u8	s_lastcheck_hi;
-		__u8	s_first_error_time_hi;
-		__u8	s_last_error_time_hi;
-		__u8	s_pad[2];
-	/*27c*/ __le16	s_encoding;		/* Filename charset encoding */
-		__le16	s_encoding_flags;	/* Filename charset encoding flags */
-		__le32	s_reserved[95];		/* Padding to the end of the block */
-	/*3fc*/	__u32	s_checksum;		/* crc32c(superblock) */
+#define EXT4_S_ERR_START ext4_offsetof(struct ext2_super_block, s_error_count)
+	__u32	s_error_count;		/* number of fs errors */
+	__u32	s_first_error_time;	/* first time an error happened */
+	__u32	s_first_error_ino;	/* inode involved in first error */
+	/*1a0*/
+	__u64	s_first_error_block;	/* block involved in first error */
+	__u8	s_first_error_func[32];	/* function where error hit, no NUL? */
+	/*1c8*/
+	__u32	s_first_error_line;	/* line number where error happened */
+	__u32	s_last_error_time;	/* most recent time of an error */
+	/*1d0*/
+	__u32	s_last_error_ino;	/* inode involved in last error */
+	__u32	s_last_error_line;	/* line number where error happened */
+	__u64	s_last_error_block;	/* block involved of last error */
+	/*1e0*/
+	__u8	s_last_error_func[32];	/* function where error hit, no NUL? */
+#define EXT4_S_ERR_END ext4_offsetof(struct ext2_super_block, s_mount_opts)
+	/*200*/
+	__u8	s_mount_opts[64];	/* default mount options, no NUL? */
+	/*240*/
+	__u32	s_usr_quota_inum;	/* inode number of user quota file */
+	__u32	s_grp_quota_inum;	/* inode number of group quota file */
+	__u32	s_overhead_clusters;	/* overhead blocks/clusters in fs */
+	/*24c*/
+	__u32	s_backup_bgs[2];	/* If sparse_super2 enabled */
+	/*254*/
+	__u8	s_encrypt_algos[4];	/* Encryption algorithms in use  */
+	/*258*/
+	__u8	s_encrypt_pw_salt[16];	/* Salt used for string2key algorithm */
+	/*268*/
+	__le32	s_lpf_ino;		/* Location of the lost+found inode */
+	__le32  s_prj_quota_inum;	/* inode for tracking project quota */
+	/*270*/
+	__le32	s_checksum_seed;	/* crc32c(orig_uuid) if csum_seed set */
+	/*274*/
+	__u8	s_wtime_hi;
+	__u8	s_mtime_hi;
+	__u8	s_mkfs_time_hi;
+	__u8	s_lastcheck_hi;
+	__u8	s_first_error_time_hi;
+	__u8	s_last_error_time_hi;
+	__u8	s_pad[2];
+	/*27c*/
+	__le16	s_encoding;		/* Filename charset encoding */
+	__le16	s_encoding_flags;	/* Filename charset encoding flags */
+	__le32	s_reserved[95];		/* Padding to the end of the block */
+	/*3fc*/
+	__u32	s_checksum;		/* crc32c(superblock) */
 };
 
 #ifdef __KERNEL__

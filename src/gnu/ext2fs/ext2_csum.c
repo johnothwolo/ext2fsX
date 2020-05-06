@@ -44,8 +44,8 @@
 #include <gnu/ext2fs/ext2_fs_sb.h>
 #include <gnu/ext2fs/ext2_dinode.h>
 #include <gnu/ext2fs/inode.h>
-#include <gnu/ext2fs/ext2_dir.h>
-#include <gnu/ext2fs/htree.h>
+//#include <gnu/ext2fs/ext2_dir.h>
+//#include <gnu/ext2fs/htree.h>
 //#include <gnu/ext2fs/ext2_extattr.h>
 #include <gnu/ext2fs/ext2_extern.h>
 
