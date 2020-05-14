@@ -219,7 +219,6 @@ ext2_truncate(
 	 * zero'ed in case it ever become accessible again because
 	 * of subsequent file growth.
 	 */
-	/* I don't understand the comment above */
    IULOCK(oip);
    
    if (UBCINFOEXISTS(ovp))

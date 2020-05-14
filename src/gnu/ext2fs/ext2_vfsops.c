@@ -918,10 +918,7 @@ out:
  * unmount system call
  */
 static int
-ext2_unmount(mp, mntflags, context)
-	mount_t mp;
-	int mntflags;
-	vfs_context_t context;
+ext2_unmount(mount_t mp, int mntflags, vfs_context_t context)
 {
 	struct ext2mount *ump;
 	struct ext2_sb_info *fs;
@@ -975,10 +972,7 @@ ext2_unmount(mp, mntflags, context)
  * Flush out all the files in a filesystem.
  */
 static int
-ext2_flushfiles(mp, flags, context)
-	mount_t mp;
-	int flags;
-	vfs_context_t context;
+ext2_flushfiles(mount_t mp, int flags, vfs_context_t context)
 {
 	int error;
 	
@@ -992,9 +986,7 @@ ext2_flushfiles(mp, flags, context)
  * taken from ext2/super.c ext2_statfs
  */
 static int
-ext2_getattrfs(mount_t mp,
-			   struct vfs_attr *attrs,
-			   vfs_context_t context)
+ext2_getattrfs(mount_t mp, struct vfs_attr *attrs, vfs_context_t context)
 {
 	unsigned long overhead;
 	struct ext2mount *ump;
@@ -1329,10 +1321,7 @@ int
 ext2_vget(mount_t mp, ino64_t ino,
 		  vnode_t *vpp, vfs_context_t context)
 {
-	evalloc_args_t ea_local = {0};
-	ea_local.va_ino = (ino_t)ino;
-	ea_local.va_vctx = context;
-	
+	evalloc_args_t ea_local = {ino, NULL};
 	return ext2_vget_internal(mp, &ea_local, vpp, context);
 }
 
@@ -1355,18 +1344,12 @@ ext2_vget_internal(mount_t mp, evalloc_args_t *valloc_args,
 	dev_t dev;
 	int i, error;
 	int used_blocks;
-//	evalloc_args_t ea_local = {0};
 	evalloc_args_t *eap = NULL;
 	ino64_t ino;
 	
-//	if (IS_EVALLOC_ARGS(valloc_args)) {
 	eap = valloc_args;
 	ino = (ino64_t)eap->va_ino;
-//	} else {
-//		ea_local.va_ino = (ino_t)ino;
-//		ea_local.va_vctx = context;
-//		eap = &ea_local;
-//	}
+
 
 	ump = VFSTOEXT2(mp);
 	dev = ump->um_dev;

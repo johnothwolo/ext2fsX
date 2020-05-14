@@ -56,7 +56,7 @@ struct inode;
 
 /* Embeded Valloc args */
 typedef struct ext2_valloc_args {
-	ino_t va_ino;
+	ino64_t va_ino;
 	vnode_t va_parent;
 	vfs_context_t va_vctx;
 	struct componentname *va_cnp;
@@ -142,7 +142,7 @@ int	ext2_inactive(struct vnop_inactive_args *);
 int	ext2_htree_has_idx(struct inode *);
 int	ext2_htree_hash(const char *, int, uint32_t *, int, uint32_t *,
 uint32_t *);
-int	ext2_is_dirent_tail(struct inode *, struct ext2_dir_entry_2 *);
+//int	ext2_is_dirent_tail(struct inode *, struct ext2_dir_entry_2 *);
 int	ext2_htree_lookup(struct inode *, const char *, int, struct buf **, int *, doff_t *, doff_t *, doff_t *, struct ext2fs_searchslot *);
 int	ext2_search_dirblock(struct inode *, void *, int *, const char *, int, int *, doff_t *, doff_t *, doff_t *, struct ext2fs_searchslot *);
 uint64_t	ext2_gd_get_i_tables(struct ext2_group_desc *);

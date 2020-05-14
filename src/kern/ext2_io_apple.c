@@ -523,13 +523,13 @@ ext2_blktooff (struct vnop_blktooff_args *ap)
    
    struct inode *ip;
    struct ext2_sb_info *fs;
-   typeof(ap->a_lblkno) bn = ap->a_lblkno; 
+   /*typeof(ap->a_lblkno)*/ daddr64_t bn = ap->a_lblkno;
    
    ext2_trace_enter();
    
    if (bn < 0) {
 		bn = -bn;
-        panic("-ve blkno in ext2_blktooff");
+        panic("negative blkno in ext2_blktooff");
 	}
    
 	ip = VTOI(ap->a_vp);

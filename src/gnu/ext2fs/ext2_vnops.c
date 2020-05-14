@@ -225,52 +225,6 @@ static struct vnodeopv_entry_desc ext2_vnodeop_entries[] = {
 __private_extern__ struct vnodeopv_desc ext2fs_vnodeop_opv_desc =
 	{ &ext2_vnodeop_p, ext2_vnodeop_entries };
 
-// Exported by BSD KPI, but not in headers
-//extern int spec_lookup(struct vnop_lookup_args*);
-//extern int spec_open(struct vnop_open_args*);
-//extern int spec_read(struct vnop_read_args*);
-//extern int spec_write(struct vnop_write_args*);
-//extern int spec_ioctl(struct vnop_ioctl_args*);
-//extern int spec_select(struct vnop_select_args*);
-//extern int spec_fsync(struct vnop_fsync_args*);
-//extern int spec_strategy(struct vnop_strategy_args*);
-//extern int spec_close(struct vnop_close_args*);
-//extern int spec_pathconf(struct vnop_pathconf_args*);
-//#define spec_create err_create
-//#define spec_link err_link
-//#define spec_mkdir err_mkdir
-//#define spec_mknod err_mknod
-//#define spec_readdir err_readdir
-//#define spec_readlink err_readlink
-//#define spec_remove err_remove
-//#define spec_rename err_rename
-//#define spec_rmdir err_rmdir
-//#define spec_symlink err_symlink
-//#define spec_mmap err_mmap
-
-//extern int fifo_lookup(struct vnop_lookup_args*);
-//extern int fifo_open(struct vnop_open_args*);
-//extern int fifo_read(struct vnop_read_args*);
-//extern int fifo_write(struct vnop_write_args*);
-//extern int fifo_ioctl(struct vnop_ioctl_args*);
-//extern int fifo_select(struct vnop_select_args*);
-//extern int fifo_inactive(struct vnop_inactive_args*);
-//extern int fifo_close(struct vnop_close_args*);
-//extern int fifo_pathconf(struct vnop_pathconf_args*);
-//extern int fifo_advlock(struct vnop_advlock_args*);
-//#define fifo_create err_create
-//#define fifo_link err_link
-//#define fifo_mkdir err_mkdir
-//#define fifo_mknod err_mknod
-//#define fifo_readdir err_readdir
-//#define fifo_readlink err_readlink
-//#define fifo_remove err_remove
-//#define fifo_rename err_rename
-//#define fifo_rmdir err_rmdir
-//#define fifo_symlink err_symlink
-//#define fifo_mmap err_mmap
-#define fifo_blockmap err_blockmap
-
 vnop_t **ext2_specop_p;
 static struct vnodeopv_entry_desc ext2_specop_entries[] = {
     { &vnop_default_desc,		(vnop_t *) vn_default_error },
@@ -445,13 +399,16 @@ ext2_create(struct vnop_create_args *ap)
 		vnode_t a_dvp;
 		vnode_t *a_vpp;
 		struct componentname *a_cnp;
-		struct vattr *a_vap;
+		struct vnode_attr *a_vap;
+		vfs_context_t a_context;
 	} */
 {
 	int error;
    
-   ext2_trace_enter();
-
+	ext2_trace_enter();
+	if(ap->a_vap->va_uid != kauth_cred_getuid(vfs_context_ucred(ap->a_context)))
+		panic("UID not equal to VFS_CTX UID");
+	
 	error =
 	    ext2_makeinode(MAKEIMODE(ap->a_vap->va_type, ap->a_vap->va_mode),
 	    ap->a_dvp, ap->a_vpp, ap->a_cnp, ap->a_context);
@@ -467,13 +424,13 @@ ext2_create(struct vnop_create_args *ap)
  * Nothing to do.
  */
 static int
-ext2_open(
-	struct vnop_open_args /* {
+ext2_open(struct vnop_open_args  *ap)
+	/* {
 		vnode_t a_vp;
 		int  a_mode;
 		ucred_ta_cred;
 		proc_ta_td;
-	} */ *ap)
+	} */
 {
 
 	ext2_trace_enter();

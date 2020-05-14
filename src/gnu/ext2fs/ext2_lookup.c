@@ -715,8 +715,8 @@ searchloop:
 
 			if (ep->inode != 0)
 				size -= EXT2_DIR_REC_LEN(ep->name_len);
-			else if (ext2_is_dirent_tail(dp, ep))
-				size -= sizeof(struct ext2fs_direct_tail);
+//			else if (ext2_is_dirent_tail(dp, ep))
+//				size -= sizeof(struct ext2fs_direct_tail);
 			if (size > 0) {
 				if (size >= ss.slotneeded) {
 					ss.slotstatus = FOUND;
@@ -1906,8 +1906,8 @@ ext2_search_dirblock(struct inode *ip, void *data, int *foundp,
 
 			if (ep->inode != 0)
 				size -= EXT2_DIR_REC_LEN(ep->name_len);
-			else if (ext2_is_dirent_tail(ip, ep))
-				size -= sizeof(struct ext2fs_direct_tail);
+//			else if (ext2_is_dirent_tail(ip, ep))
+//				size -= sizeof(struct ext2fs_direct_tail);
 			if (size > 0) {
 				if (size >= ssp->slotneeded) {
 					ssp->slotstatus = FOUND;
