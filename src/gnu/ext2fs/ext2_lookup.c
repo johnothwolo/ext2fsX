@@ -1845,7 +1845,7 @@ ext2_checkpath_nolock(struct inode *source,
         if (put)
             vnode_put(vp);
         vallocp->va_ino = dotdot_ino;
-        if ((error = ext2fs_vfsops.vfs_vget(vnode_mount(vp), dotdot_ino, &vp, context)) != 0)
+        if ((error = EXT2_VGET(vnode_mount(vp), vallocp, &vp, context)) != 0)
 		{
 			vp = NULL;
 			break;

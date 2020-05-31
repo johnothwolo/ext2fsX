@@ -122,7 +122,7 @@ static int ext2_vptofh(vnode_t, int*, unsigned char *, vfs_context_t);
 
 static int ext2_sysctl(int *, u_int, user_addr_t, size_t *, user_addr_t, size_t, vfs_context_t);
 static int ext2_quotactl(mount_t , int, uid_t, caddr_t, vfs_context_t);
-static int vfs_stdstart(mount_t , int, vfs_context_t);
+static int ext2_start(mount_t , int, vfs_context_t);
 
 /* These assume SBSIZE == 1024 in fs.h */
 #ifdef SBLOCK
@@ -143,7 +143,7 @@ struct ext2_iter_cargs {
 
 __private_extern__ struct vfsops ext2fs_vfsops = {
 	.vfs_mount 		= ext2_mount,
-	.vfs_start 		= vfs_stdstart,
+	.vfs_start 		= ext2_start,
 	.vfs_unmount 	= ext2_unmount,
 	.vfs_root 		= ext2_root,		/* root inode via vget */
 	.vfs_quotactl 	= ext2_quotactl,
@@ -654,7 +654,7 @@ ext2_reload_callback(vnode_t vp, void *cargs)
 		args->ca_err = err;
 		return (VNODE_RETURNED_DONE);
 	}
-	ext2_ei2i((struct ext2_inode *) ((char *)buf_dataptr +
+	ext2_ei2i((struct ext2_inode *) ((char *)buf_dataptr(bp) +
 		EXT2_INODE_SIZE * ino_to_fsbo(fs, ip->i_number)), ip);
 	buf_brelse(bp);
 	//vnode_unlock(vp);
@@ -1495,12 +1495,12 @@ restart:
  *   those rights via. exflagsp and credanonp
  */
 static int
-ext2_fhtovp(mp, fhlen, fhp, vpp, context)
-	mount_t mp;
-	int fhlen;
-	unsigned char *fhp;
-	vnode_t *vpp;
-	vfs_context_t context;
+ext2_fhtovp(
+	mount_t mp,
+	int fhlen,
+	unsigned char *fhp,
+	vnode_t *vpp,
+	vfs_context_t context)
 {
 	struct inode *ip;
 	struct ufid *ufhp;
@@ -1535,11 +1535,11 @@ ext2_fhtovp(mp, fhlen, fhp, vpp, context)
  */
 /* ARGSUSED */
 static int
-ext2_vptofh(vp, fhlen, fhp, context)
-	vnode_t vp;
-	int *fhlen;
-	unsigned char *fhp;
-	vfs_context_t context;
+ext2_vptofh(
+	vnode_t vp,
+	int *fhlen,
+	unsigned char *fhp,
+	vfs_context_t context)
 {
 	struct inode *ip;
 	struct ufid *ufhp;
@@ -1686,10 +1686,7 @@ ext2_uninit(struct vfsconf *vfsp)
  */
 /* ARGSUSED */
 static int
-vfs_stdstart(mp, flags, context)
-	mount_t mp;
-	int flags;
-	vfs_context_t context;
+ext2_start(mount_t mp, int flags, vfs_context_t context)
 {
 	return (0);
 }
@@ -1699,12 +1696,7 @@ vfs_stdstart(mp, flags, context)
  */
 /* ARGSUSED */
 static int
-ext2_quotactl(mp, cmd, uid, arg, context)
-	mount_t mp;
-	int cmd;
-	uid_t uid;
-	caddr_t arg;
-	vfs_context_t context;
+ext2_quotactl(mount_t mp, int cmd, uid_t uid, caddr_t arg, vfs_context_t context)
 {
 	return (EOPNOTSUPP);
 }
