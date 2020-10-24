@@ -65,9 +65,7 @@
 #include <sys/disklabel.h>
 
 u_short
-dkcksum(lp)
-	register struct disklabel *lp;
-{
+dkcksum(register struct disklabel *lp){
 	register u_short *start, *end;
 	register u_short sum = 0;
 

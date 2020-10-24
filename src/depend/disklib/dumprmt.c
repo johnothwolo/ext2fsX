@@ -109,9 +109,7 @@ extern	int ntrec;		/* blocking factor on tape */
 union u_spcl u_spcl;
 
 int
-rmthost(host)
-	char *host;
-{
+rmthost(char *host){
 
 	rmtpeer = malloc(strlen(host) + 1);
 	if (rmtpeer)
@@ -184,9 +182,7 @@ rmtgetconn()
 }
 
 static int
-okname(cp0)
-	char *cp0;
-{
+okname(char *cp0){
 	register char *cp;
 	register int c;
 
@@ -260,9 +256,7 @@ rmtwrite(buf, count)
 }
 
 void
-rmtwrite0(count)
-	int count;
-{
+rmtwrite0(int count){
 	char line[30];
 
 	(void)sprintf(line, "W%d\n", count);
@@ -286,9 +280,7 @@ rmtwrite2()
 }
 
 int
-rmtseek(offset, pos)
-	int offset, pos;
-{
+rmtseek(int offset, pos){
 	char line[80];
 
 	(void)sprintf(line, "L%d\n%d\n", offset, pos);
@@ -312,9 +304,7 @@ rmtstatus()
 }
 
 int
-rmtioctl(cmd, count)
-	int cmd, count;
-{
+rmtioctl(int cmd, count){
 	char buf[256];
 
 	if (count < 0)
@@ -324,9 +314,7 @@ rmtioctl(cmd, count)
 }
 
 static int
-rmtcall(cmd, buf)
-	char *cmd, *buf;
-{
+rmtcall(char *cmd, *buf){
 
 	if (write(rmtape, buf, strlen(buf)) != strlen(buf))
 		rmtconnaborted();
@@ -334,9 +322,7 @@ rmtcall(cmd, buf)
 }
 
 static int
-rmtreply(cmd)
-	char *cmd;
-{
+rmtreply(char *cmd){
 	register char *cp;
 	char code[30], emsg[BUFSIZ];
 

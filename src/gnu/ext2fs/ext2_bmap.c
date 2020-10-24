@@ -157,9 +157,9 @@ ext2_bmaparray(vnode_t vp, ext2_daddr_t bn,
             flags = BLK_META;
         
         if (bp)
-			bqrelse(bp);
+			buf_brelse(bp);
         
-        if (NULL == (bp = buf_getblk(vp, (daddr64_t)metalbn, iosize, 0, 0, flags)))
+        if (NULL == (bp = buf_getblk(vp, (daddr64_t)metalbn, (int)iosize, 0, 0, flags)))
             break; // daddr was not set and indirect block was not in cache
         
 		/*
@@ -173,9 +173,8 @@ ext2_bmaparray(vnode_t vp, ext2_daddr_t bn,
             panic("ext2_bmaparray: indirect block not in cache");
 #endif
 
-        if (buf_valid(bp)) {
-            ;
-		} else {
+//		copyout(<#const void *kaddr#>, <#user_addr_t udaddr#>, <#size_t len#>)
+        if (!buf_valid(bp)) {
             buf_setblkno(bp, (daddr64_t)blkptrtodb(ump, daddr));
             buf_setflags(bp, B_READ);
             
@@ -183,7 +182,7 @@ ext2_bmaparray(vnode_t vp, ext2_daddr_t bn,
             vsargs.a_desc = &vnop_strategy_desc;
             vsargs.a_bp = bp;
             buf_strategy(devvp, &vsargs);
-			error = bufwait(bp);
+			error = buf_biowait(bp);
 			if (error) {
 				buf_brelse(bp);
 				return (error);
@@ -212,7 +211,7 @@ ext2_bmaparray(vnode_t vp, ext2_daddr_t bn,
         IULOCK(ip);
 	}
 	if (bp)
-		bqrelse(bp);
+		buf_brelse(bp);
    
 	if (0 == (*bnp = blkptrtodb(ump, daddr)))
 		*bnp = -1;

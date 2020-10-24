@@ -74,9 +74,7 @@ static const char whatid[] __attribute__ ((unused)) =
 #include "ext2_byteorder.h"
 
 void
-ext2_print_inode( in )
-	struct inode *in;
-{
+ext2_print_inode(struct inode *in){
 	int i;
 
 	ext2_debug( "Inode: %5d", in->i_number);

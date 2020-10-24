@@ -72,9 +72,7 @@ static void	ext2_fserr(struct ext2_sb_info *, u_int, char *);
  * the call in vfree might be redundant
  */
 void
-ext2_discard_prealloc(ip)
-	struct inode * ip;
-{
+ext2_discard_prealloc(struct inode * ip){
 #ifdef EXT2_PREALLOCATE
         if (ip->i_prealloc_count) {
                 unsigned long i = ip->i_prealloc_count;

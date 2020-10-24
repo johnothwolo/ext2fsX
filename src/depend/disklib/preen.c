@@ -220,9 +220,7 @@ checkfstab(preen, maxrun, docheck, chkit)
 }
 
 static struct disk *
-finddisk(name)
-	char *name;
-{
+finddisk(char *name){
 	register struct disk *dk, **dkp;
 	register char *p;
 	size_t len;
@@ -307,9 +305,7 @@ startdisk(dk, checkit)
 }
 
 char *
-blockcheck(origname)
-	char *origname;
-{
+blockcheck(char *origname){
 	struct stat stslash, stblock, stchar;
 	char *newname, *raw;
 	int retried = 0;
@@ -355,9 +351,7 @@ retry:
 }
 
 static char *
-unrawname(name)
-	char *name;
-{
+unrawname(char *name){
 	char *dp;
 	struct stat stb;
 
@@ -374,9 +368,7 @@ unrawname(name)
 }
 
 static char *
-rawname(name)
-	char *name;
-{
+rawname(char *name){
 	static char rawbuf[32];
 	char *dp;
 

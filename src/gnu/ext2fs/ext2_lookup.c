@@ -212,15 +212,15 @@ void ext2_dcacheremall(struct inode *dp)
  */
 #define a_ncookies a_numdirent
 int
-ext2_readdir(
-   struct vnop_readdir_args /* {
+ext2_readdir(struct vnop_readdir_args *ap)
+/* {
             vnode_t a_vp;
             struct uio *a_uio;
             int a_flags;
             int *a_eofflag;
             int *a_numdirent;
             vfs_context_t a_context;
-   } */ *ap)
+} */
 {
     vfs_context_t context = ap->a_context;
     uio_t uio = ap->a_uio, auio = NULL;
@@ -263,17 +263,17 @@ ext2_readdir(
 	    uio->uio_offset, uio->uio_resid, count);
 #endif
    
-   if (eof)
-      *eof = 0;
+	if (eof)
+		*eof = 0;
+
+	IXLOCK(ip);
    
-   IXLOCK(ip);
-   
-   if (startoffset >= ip->i_size) {
-      IULOCK(ip);
-      if (eof)
-        *eof = 1;
-      return (0);
-   }
+	if (startoffset >= ip->i_size) {
+	   IULOCK(ip);
+	   if (eof)
+		  *eof = 1;
+	   return (0);
+	}
    
     while (ip->i_flag & IN_LOOK) {
         ip->i_flag |= IN_LOOKWAIT;
@@ -283,69 +283,70 @@ ext2_readdir(
     int havelook = 1;
     ip->i_flag |= IN_LOOK;
    
-   /* Check for an indexed dir */
-   if (EXT3_HAS_COMPAT_FEATURE(ip->i_e2fs, EXT3_FEATURE_COMPAT_DIR_INDEX) &&
-      ((ip->i_e2flags & EXT3_INDEX_FL) /*||
-      ((ip->i_size >> ip->i_e2fs->s_blocksize_bits) == 1)*/)) {
-      /* -- BDB --
-         The last condition allows ext3_dx_readdir() to build an
-         in memory index of a non-indexed, single-block directory.
-         This is disabled for now, because I'm not sure how to detect
-         that this optimization has occured (EXT3_INDEX_FL is not set),
-         or that it would even work. */
+	/* Check for an indexed dir */
+	if (EXT3_HAS_COMPAT_FEATURE(ip->i_e2fs, EXT3_FEATURE_COMPAT_DIR_INDEX) &&
+		((ip->i_e2flags & EXT3_INDEX_FL)
+	/*|| ((ip->i_size >> ip->i_e2fs->s_blocksize_bits) == 1)*/)) {
+		/* -- BDB --
+		 The last condition allows ext3_dx_readdir() to build an
+		 in memory index of a non-indexed, single-block directory.
+		 This is disabled for now, because I'm not sure how to detect
+		 that this optimization has occured (EXT3_INDEX_FL is not set),
+		 or that it would even work.
+		 */
+	
+		struct filldir_args fda = {0, 0, 0};
       
-      struct filldir_args fda = {0, 0, 0};
-      
-      /* Make sure the caller is not trying to read more than
-         they are allowed. */
-      if (uio_offset(uio) && EXT3_HTREE_EOF == ip->f_pos) {
-         ip->i_flag &= ~IN_LOOK;
-         IWAKE(ip, flag, flag, IN_LOOKWAIT);
-         IULOCK(ip);
-         return (EIO);
-      }
-      
-      /*ip->i_dir_start_lookup = lblkno(ip->i_e2fs, uio->uio_offset);*/
-      if (0 == uio_isuserspace(uio)) {
-         /* Setup dirbuf so the cookie calc works */
-         user_addr_t iov = uio_curriovbase(uio);
-         if (iov)
-            dirbuf = (caddr_t)((uintptr_t)iov);
-         else {
-            error = EINVAL;
-            goto io_done;
-         }
-      } else
-         dirbuf = 0;
-      free_dirbuf = 0;
-      
-      fda.uio = uio;
-      // XXX ext3_dx* is not lock safe ATM, so don't unlock
-      error = ext3_dx_readdir(ap->a_vp, &fda, bsd_filldir);
-      if (error != ERR_BAD_DX_DIR) {
-         if (EXT2_FILLDIR_ENOSPC == error)
-            error = 0;
-         error = -error; /* Linux uses -ve codes */
-         /* we need to correct uio_offset */
-         uio_setoffset(uio, startoffset + fda.count);
-         ncookies = fda.cookies;
-         
-         /* Set EOF if needed */
-         if (eof && EXT3_HTREE_EOF == ip->f_pos)
-            *eof = 1;
-         goto io_done;
-      }
-      
-      /*
-      * We don't set the inode dirty flag since it's not
-      * critical that it get flushed back to the disk.
-      */
-      ip->i_e2flags &= ~EXT3_INDEX_FL;
-      /* Fall back to normal dir entries. */
-      ip->i_flag &= ~IN_LOOK;
-      havelook = 0;
-      IWAKE(ip, flag, flag, IN_LOOKWAIT);
-   }
+		/* Make sure the caller is not trying to read more than
+		 they are allowed. */
+		if (uio_offset(uio) && EXT3_HTREE_EOF == ip->f_pos) {
+			ip->i_flag &= ~IN_LOOK;
+			IWAKE(ip, flag, flag, IN_LOOKWAIT);
+			IULOCK(ip);
+			return (EIO);
+		}
+		
+		/*ip->i_dir_start_lookup = lblkno(ip->i_e2fs, uio->uio_offset);*/
+		if (0 == uio_isuserspace(uio)) {
+			/* Setup dirbuf so the cookie calc works */
+			user_addr_t iov = uio_curriovbase(uio);
+			if (iov)
+				dirbuf = (caddr_t)((uintptr_t)iov);
+			else {
+				error = EINVAL;
+				goto io_done;
+			}
+		} else
+			dirbuf = 0;
+		free_dirbuf = 0;
+		
+		fda.uio = uio;
+		// XXX ext3_dx* is not lock safe ATM, so don't unlock
+		error = ext3_dx_readdir(ap->a_vp, &fda, bsd_filldir);
+		if (error != ERR_BAD_DX_DIR) {
+			if (EXT2_FILLDIR_ENOSPC == error)
+				error = 0;
+			error = -error; /* Linux uses -ve codes */
+			/* we need to correct uio_offset */
+			uio_setoffset(uio, startoffset + fda.count);
+			ncookies = fda.cookies;
+			
+			/* Set EOF if needed */
+			if (eof && EXT3_HTREE_EOF == ip->f_pos)
+				*eof = 1;
+			goto io_done;
+		}
+		
+		/*
+		 * We don't set the inode dirty flag since it's not
+		 * critical that it get flushed back to the disk.
+		 */
+		ip->i_e2flags &= ~EXT3_INDEX_FL;
+		/* Fall back to normal dir entries. */
+		ip->i_flag &= ~IN_LOOK;
+		havelook = 0;
+		IWAKE(ip, flag, flag, IN_LOOKWAIT);
+	}
    
     // Verify we didn't get some partial dx entries
     if (startoffset != uio_offset(uio) || startresid != uio_resid(uio)) {
@@ -987,39 +988,39 @@ found:
 	 */
     IULOCK(dp); // XXX: Locking - i_ino is protected by IN_LOOK
     
-    if (vpp) {
-	pdp = vdp;
-	if (flags & ISDOTDOT) {
-        vallocargs.va_ino = dp->i_ino;
-        vallocargs.va_parent = pdp;
-        vallocargs.va_vctx = context;
-        vallocargs.va_cnp = cnp;
-		if (0 != (EXT2_VGET(mp, &vallocargs, &tdp, context))){
-            ext2_trace_return(error);
+	if (vpp) {
+		pdp = vdp;
+		if (flags & ISDOTDOT) {
+			vallocargs.va_ino = dp->i_ino;
+			vallocargs.va_parent = pdp;
+			vallocargs.va_vctx = context;
+			vallocargs.va_cnp = cnp;
+			if (0 != (EXT2_VGET(mp, &vallocargs, &tdp, context))){
+				ext2_trace_return(error);
+			}
+			
+			*vpp = tdp;
+		} else if (dp->i_number == dp->i_ino) {
+			vnode_get(vdp);	/* we want ourself, ie "." */
+			*vpp = vdp;
+		} else {
+		  vallocargs.va_ino = dp->i_ino;
+		  vallocargs.va_parent = pdp;
+		  vallocargs.va_vctx = context;
+		  vallocargs.va_cnp = cnp;
+			if ((error = EXT2_VGET(mp, &vallocargs, &tdp, context)) != 0){
+				ext2_trace_return(error);
+			}
+			
+			*vpp = tdp;
 		}
-        
-		*vpp = tdp;
-	} else if (dp->i_number == dp->i_ino) {
-        vnode_get(vdp);	/* we want ourself, ie "." */
-		*vpp = vdp;
-	} else {
-      vallocargs.va_ino = dp->i_ino;
-      vallocargs.va_parent = pdp;
-      vallocargs.va_vctx = context;
-      vallocargs.va_cnp = cnp;
-		if ((error = EXT2_VGET(mp, &vallocargs, &tdp, context)) != 0){
-			ext2_trace_return(error);
-		}
-        
-		*vpp = tdp;
-	}
 
-	/*
-	 * Insert name into cache if appropriate.
-	 */
-	if (cnp->cn_flags & MAKEENTRY)
-		cache_enter(vdp, *vpp, cnp);
-    } // (vpp)
+		/*
+		 * Insert name into cache if appropriate.
+		 */
+		if (cnp->cn_flags & MAKEENTRY)
+			cache_enter(vdp, *vpp, cnp);
+	} // (vpp)
     
     return (0);
 }
@@ -1109,10 +1110,7 @@ dolookup:
 }
 
 void
-ext2_dirbad(ip, offset, how)
-	struct inode *ip;
-	doff_t offset;
-	char *how;
+ext2_dirbad(struct inode *ip, doff_t offset, char *how)
 {
 	mount_t  mp;
 
@@ -1431,7 +1429,7 @@ ext2_direnter(struct inode *ip,
     IWAKE(dp, flag, flag, IN_LOOKWAIT);
     IULOCK(dp);
     
-    error = BUF_WRITE(bp);
+    error = buf_bwrite(bp);
 	if (!error && offset && offset < isize)
 		error = ext2_truncate(dvp, offset, IO_SYNC,
 		    vfs_context_ucred(context), vfs_context_proc(context));
@@ -1560,7 +1558,7 @@ ext2_dirremove(vnode_t dvp,
             IXLOCK(dp);
             ep->inode = 0;
             IULOCK(dp);
-            error = BUF_WRITE(bp);
+            error = buf_bwrite(bp);
         }        
         IXLOCK(dp);
         if (!error) {
@@ -1607,10 +1605,10 @@ ext2_dirremove(vnode_t dvp,
         #endif
         ep->rec_len = cpu_to_le16(le16_to_cpu(ep->rec_len) + dp->i_reclen);
         IULOCK(dp);
-        error = BUF_WRITE(bp);
+        error = buf_bwrite(bp);
         #ifdef DIAGNOSTIC
         if (bp2 && bp2 != bp)
-            BUF_WRITE(bp2);
+            buf_bwrite(bp2);
         else if (bp2)
             buf_brelse(bp2);
         #endif
@@ -1725,7 +1723,7 @@ ext2_dirrewrite_nolock(struct inode *dp,
     IWAKE(dp, flag, flag, IN_LOOKWAIT);
 	IULOCK(dp);
     if (!error)
-        error = BUF_WRITE(bp);
+        error = buf_bwrite(bp);
 	ext2_trace_return (error);
 }
 

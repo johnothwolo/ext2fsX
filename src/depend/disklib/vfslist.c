@@ -81,9 +81,7 @@ checkvfsname(vfsname, vfslist)
 }
 
 const char **
-makevfslist(fslist)
-	char *fslist;
-{
+makevfslist(char *fslist){
 	const char **av;
 	int i;
 	char *nextcp;

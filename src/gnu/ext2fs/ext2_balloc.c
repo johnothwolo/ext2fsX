@@ -60,14 +60,8 @@ static const char whatid[] __attribute__ ((unused)) =
  * the inode and the logical block number in a file.
  */
 int
-ext2_balloc2(
-	struct inode *ip,
-	ext2_daddr_t bn,
-	int size,
-	struct ucred *cred,
-	buf_t  *bpp,
-	int flags,
-    int *blk_alloc)
+ext2_balloc2(struct inode *ip, ext2_daddr_t bn,
+	int size, struct ucred *cred, buf_t  *bpp, int flags, int *blk_alloc)
 {
 	struct ext2_sb_info *fs;
 	ext2_daddr_t nb;
@@ -173,7 +167,7 @@ ext2_balloc2(
                 buf_setblkno(bp, (daddr64_t)fsbtodb(fs, newb));
                 IXLOCK(ip);
                 if (flags & B_CLRBUF)
-                    vfs_bio_clrbuf(bp);
+                    buf_clear(bp);
             } /* alloc_buf */
 		} /* (nb != 0) */
 		ip->i_db[bn] = newb;
@@ -225,7 +219,7 @@ ext2_balloc2(
 		IULOCK(ip);
         bp = buf_getblk(vp, (daddr64_t)indirs[1].in_lbn, fs->s_blocksize, 0, 0, BLK_META);
 		buf_setblkno(bp, (daddr64_t)fsbtodb(fs, nb));
-		vfs_bio_clrbuf(bp);
+		buf_clear(bp);
 		/*
 		 * Write synchronously so that indirect blocks
 		 * never point at garbage.
@@ -284,7 +278,7 @@ ext2_balloc2(
         IULOCK(ip);
 		nbp = buf_getblk(vp, (daddr64_t)indirs[i].in_lbn, fs->s_blocksize, 0, 0, BLK_META);
 		buf_setblkno(nbp, (daddr64_t)fsbtodb(fs, nb));
-		vfs_bio_clrbuf(nbp);
+		buf_clear(nbp);
 		/*
 		 * Write synchronously so that indirect blocks
 		 * never point at garbage.
@@ -338,7 +332,7 @@ ext2_balloc2(
             nbp = buf_getblk(vp, (daddr64_t)lbn, fs->s_blocksize, 0, 0, BLK_WRITE);
             buf_setblkno(nbp, (daddr64_t)fsbtodb(fs, nb));
             if (flags & B_CLRBUF)
-                vfs_bio_clrbuf(nbp);
+                buf_clear(nbp);
         } /* alloc_buf */
         if (blk_alloc) {
             *blk_alloc = fs->s_blocksize;

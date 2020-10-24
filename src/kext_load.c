@@ -66,42 +66,53 @@
 
 #define FS_TYPE			EXT2FS_NAME
 
+
 int checkLoadable()
 {
-        struct vfsconf vfc;
-        size_t buflen;
-        int name[4];
-        
-        name[0] = CTL_VFS;
-        name[1] = VFS_GENERIC;
+#if 0
+   struct vfsconf vfc;
+   size_t buflen;
+   int name[4];
+   
+   name[0] = CTL_VFS;
+   name[1] = VFS_GENERIC;
 #ifdef obsolete
-        name[2] = VFS_MAXTYPENUM;
-        
-        int maxtypenum, cnt;
-        buflen = 4;
-        if (sysctl(name, 3, &maxtypenum, &buflen, (void *)0, (size_t)0) < 0)
-                return (-1);
-        name[2] = VFS_CONF;
-        buflen = sizeof vfc;
-        for (cnt = 0; cnt < maxtypenum; cnt++) {
-                name[3] = cnt;
-                if (sysctl(name, 4, &vfc, &buflen, (void *)0, (size_t)0) < 0) {
-                        if (errno != EOPNOTSUPP && errno != ENOENT)
-                                return (-1);
-                        continue;
-                }
+   name[2] = VFS_MAXTYPENUM;
+     
+   int maxtypenum, cnt;
+   buflen = 4;
+   if (sysctl(name, 3, &maxtypenum, &buflen, (void *)0, (size_t)0) < 0)
+            return (-1);
+   name[2] = VFS_CONF;
+   buflen = sizeof vfc;
+   for (cnt = 0; cnt < maxtypenum; cnt++) {
+      name[3] = cnt;
+      if (sysctl(name, 4, &vfc, &buflen, (void *)0, (size_t)0) < 0) {
+            if (errno != EOPNOTSUPP && errno != ENOENT)
+                     return (-1);
+            continue;
+      }
 #endif
-        buflen = sizeof vfc;
-        name[2] = VFS_CONF;
-        name[3] = EXT2_SUPER_MAGIC;
-        if (sysctl(name, 4, &vfc, &buflen, (void *)0, (size_t)0) != -1) {
-                if (!strcmp(FS_TYPE, vfc.vfc_name))
-                        return (0);
-        }
-        errno = ENOENT;
-        return (-1);
+    buflen = sizeof vfc;
+    name[2] = VFS_CONF;
+    name[3] = EXT2_SUPER_MAGIC;
+    if (sysctl(name, 4, &vfc, &buflen, (void *)0, (size_t)0) != -1) {
+        if (!strcmp(FS_TYPE, vfc.vfc_name))
+            return (0);
+    }
+    errno = ENOENT;
+    return (-1);
 
+#endif
+    
+    int error;
+    struct vfsconf vfc;
+    
+    error = getvfsbyname(FS_TYPE, &vfc);
+
+    return error;
 }
+
 
 #define LOAD_COMMAND "/sbin/kextload"
 #define MODULE_PATH "/Library/Extensions/ext2fs.kext"

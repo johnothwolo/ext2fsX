@@ -377,7 +377,7 @@ done:
 	for (i = 0; i < NDADDR; i++)
 		if (newblks[i] != oip->i_db[i])
 			panic("ext2: itrunc2");
-   if (length == 0 && (vnode_hasdirtyblks(ovp) /* ??? || vnode_hascleanblks(ovp) */))
+	if (length == 0 && (vnode_hasdirtyblks(ovp) /* ??? || vnode_hascleanblks(ovp) */))
 		panic("ext2: itrunc3");
 #endif /* DIAGNOSTIC */
 	/*
@@ -477,7 +477,7 @@ ext2_indirtrunc(
 		vsargs.a_desc = &vnop_strategy_desc;
 		vsargs.a_bp = bp;
 		buf_strategy(devvp, &vsargs);
-		error = bufwait(bp);
+		error = buf_biowait(bp);
 	}
 	IXLOCK(ip);
 	if (error) {
@@ -625,7 +625,7 @@ int ext2_reclaim(struct vnop_reclaim_args
 	/*
 	 * Remove the inode from its hash chain.
 	 */
-	ext2_ihashrem(ip);
+	ext2_hash_remove(ip);
 	
 	while (ip->i_refct) {
 		struct timespec ts;

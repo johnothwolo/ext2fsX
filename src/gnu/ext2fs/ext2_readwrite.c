@@ -60,9 +60,6 @@
 static const char whatid[] __attribute__ ((unused)) =
 "@(#) $Id: ext2_readwrite.c,v 1.27 2006/08/22 00:30:19 bbergstrand Exp $";
 
-#define	BLKSIZE(a, b, c)	blksize(a, b, c)
-#define	FS			struct ext2_sb_info
-#define	I_FS			i_e2fs
 #define	READ			ext2_read
 #define	READ_S			"ext2_read"
 #define	WRITE			ext2_write
@@ -110,7 +107,7 @@ static int ext2_read_internal(vnode_t a_vp, struct uio *a_uio,
 	vnode_t vp;
 	struct inode *ip;
 	struct uio *uio;
-	FS *fs;
+	struct ext2_sb_info *fs;
 	buf_t  bp;
 	ext2_daddr_t lbn, nextlbn;
     daddr64_t lbn64;
@@ -127,7 +124,7 @@ static int ext2_read_internal(vnode_t a_vp, struct uio *a_uio,
     ISLOCK(ip);
 	mode = ip->i_mode;
     typeof(ip->i_size) isize = ip->i_size;
-    fs = ip->I_FS;
+    fs = ip->i_e2fs;
     IULOCK(ip);
 	uio = a_uio;
 
@@ -158,7 +155,7 @@ static int ext2_read_internal(vnode_t a_vp, struct uio *a_uio,
 		lbn = lblkno(fs, uio_offset(uio));
 		nextlbn = lbn + 1;
         // XXX If BLKSZIE actually used the inode we would need the inode lock
-		size = BLKSIZE(fs, ip, lbn);
+		size = blksize(fs, ip, lbn);
 		blkoffset = blkoff(fs, uio_offset(uio));
 
 		xfersize = EXT2_BLOCK_SIZE(fs) - blkoffset;
@@ -175,7 +172,7 @@ static int ext2_read_internal(vnode_t a_vp, struct uio *a_uio,
 			error = buf_bread(vp, lbn, size, NOCRED, &bp);
 		else if (lbn - 1 == ilastr && !vnode_isnoreadahead(vp)) {
 			// XXX If BLKSZIE actually used the inode we would need the inode lock
-            int nextsize = BLKSIZE(fs, ip, nextlbn);
+            long nextsize = blksize(fs, ip, nextlbn);
 			error = buf_breadn(vp, (daddr64_t)lbn,
 			    size, &lbn64, &nextsize, 1, NOCRED, &bp);
             nextlbn = (ext2_daddr_t)lbn64;
@@ -219,11 +216,11 @@ static int ext2_read_internal(vnode_t a_vp, struct uio *a_uio,
 			buf_markaged(bp);
         }
 
-		bqrelse(bp);
+		buf_brelse(bp);
 	}
    } /* if (UBCISVALID(vp)) */
 	if (bp != NULL)
-		bqrelse(bp);
+		buf_brelse(bp);
 	if (orig_resid > 0 && (error == 0 || uio_resid(uio) != orig_resid) &&
 	    (vfs_flags(vnode_mount(vp)) & MNT_NOATIME) == 0) {
 		IXLOCK(ip);
@@ -239,7 +236,7 @@ static int ext2_write_internal(vnode_t a_vp, struct uio *a_uio,
 	vnode_t vp;
 	uio_t uio;
 	struct inode *ip;
-	FS *fs;
+	struct ext2_sb_info *fs;
 	buf_t  bp;
 	ext2_daddr_t lbn;
 	off_t osize;
@@ -288,7 +285,7 @@ static int ext2_write_internal(vnode_t a_vp, struct uio *a_uio,
 		panic("%s: type", WRITE_S);
 	}
 
-	fs = ip->I_FS;
+	fs = ip->i_e2fs;
 
 	ext2_trace(" vn=%p,inode=%d,isize=%qu,woff=%qu,wsize=%d\n",
         vp, ip->i_number, ip->i_size, uio_offset(uio), uio_resid(uio));
@@ -459,7 +456,7 @@ static int ext2_write_internal(vnode_t a_vp, struct uio *a_uio,
             }
 		}
 
-		size = BLKSIZE(fs, ip, lbn) - buf_resid(bp);
+		size = blksize(fs, ip, lbn) - buf_resid(bp);
 		if (size < xfersize)
 			xfersize = size;
 

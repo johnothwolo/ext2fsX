@@ -80,14 +80,14 @@ int e2securelevel()
 /* VNode Ops */
 
 __private_extern__ int
-ext2_ioctl(ap)
-	struct vnop_ioctl_args /* {
+ext2_ioctl(struct vnop_ioctl_args *ap)
+/* {
       vnode_t a_vp;
       u_long a_command;
       caddr_t a_data;
       int a_fflag;
       vfs_context_t a_context;
-   } */ *ap;
+} */
 {
    struct inode *ip = VTOI(ap->a_vp);
    struct ext2_sb_info *fs;
@@ -195,9 +195,7 @@ ext2_ioctl(ap)
 }
 
 #if DIAGNOSTIC
-__private_extern__ void
-ext2_checkdir_locked(dvp)
-   vnode_t dvp;
+__private_extern__ void ext2_checkdir_locked(vnode_t dvp)
 {
    buf_t  bp;
    struct ext2_dir_entry_2 *ep;

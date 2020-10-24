@@ -89,9 +89,7 @@ struct ctldebug debug4 = { "lockf_debug", &lockf_debug };
  * Set a byte-range lock.
  */
 __private_extern__ int
-ext2_lf_setlock(lock)
-	register struct ext2lockf *lock;
-{
+ext2_lf_setlock(register struct ext2lockf *lock){
 	register struct ext2lockf *block;
 	struct inode *ip = lock->lf_inode;
 	struct ext2lockf **prev, *overlap, *ltmp;
@@ -326,9 +324,7 @@ ext2_lf_setlock(lock)
  * and remove it (or shrink it), then wakeup anyone we can.
  */
 __private_extern__ int
-ext2_lf_clearlock(unlock)
-	register struct ext2lockf *unlock;
-{
+ext2_lf_clearlock(register struct ext2lockf *unlock){
 	struct inode *ip = unlock->lf_inode;
 	register struct ext2lockf *lf = ip->i_lockf;
 	struct ext2lockf *overlap, **prev;
@@ -429,9 +425,7 @@ ext2_lf_getlock(lock, fl)
  * return the first blocking lock.
  */
 __private_extern__ struct ext2lockf *
-ext2_lf_getblock(lock)
-	register struct ext2lockf *lock;
-{
+ext2_lf_getblock(register struct ext2lockf *lock){
 	struct ext2lockf **prev, *overlap, *lf = lock->lf_inode->i_lockf;
 	int ovcase;
 
@@ -616,9 +610,7 @@ ext2_lf_split(lock1, lock2)
  * Wakeup a blocklist
  */
 __private_extern__ void
-ext2_lf_wakelock(listhead)
-	struct ext2lockf *listhead;
-{
+ext2_lf_wakelock(struct ext2lockf *listhead){
 	register struct ext2lockf *wakelock;
 
 	while (wakelock = listhead->lf_blkhd.tqh_first) {

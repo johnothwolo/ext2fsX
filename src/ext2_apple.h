@@ -82,15 +82,10 @@ struct ext2_args {
 #include <sys/disk.h>
 #include <sys/fcntl.h>
 
-//#include <xnu/bsd/miscfs/specfs/specdev.h>
-
 /* In BSD KPI, but not defined in headers */
 extern int groupmember(gid_t gid, struct ucred *cred);
 extern int vfs_init_io_attributes (struct vnode *, struct mount *);
 extern int spec_ioctl(struct vnop_ioctl_args*); // EVOP_DEVBLOCKSIZE
-//extern uid_t console_user; // in Unsupported KPI
-//extern int prtactive; /* 1 => print out reclaim of active vnodes */
-/**/
 
 #ifndef LCK_GRP_NULL
 #define LCK_GRP_NULL (lck_grp_t *)0
@@ -219,14 +214,12 @@ int EVOP_DEVBLOCKSIZE(vnode_t vp, u_int32_t *size, vfs_context_t ctx) {
  *
  * Must call while holding kernel funnel for SMP safeness.
  */
-__private_extern__ int e2securelevel();
+__private_extern__ int e2securelevel(void);
 #define securelevel_gt(cr,level) ( e2securelevel > (level) ? EPERM : 0 )
 #define securelevel_ge(cr,level) ( e2securelevel >= (level) ? EPERM : 0 )
 
 /* dev_t */
 #define devtoname(d) "unknown"
-
-#define mnt_iosize_max mnt_maxreadcnt
 
 /* vnode_t */
 #define VI_MTX(vp) NULL
@@ -257,21 +250,15 @@ int vop_stdfsync(struct vnop_fsync_args *ap)
 }
 #endif
 
-/* Vnode flags */
-#define VV_ROOT VROOT
-#define VI_BWAIT VBWAIT
-
 /* FreeBSD flag for vn_rdwr() */
 #define IO_NOMACCHECK 0
 
 /* FreeBSD Mount flags */
 #define MNT_NOCLUSTERR 0
 #define MNT_NOCLUSTERW 0
-//#define MNT_NOATIME 0
 
 /* Soft Updates */
 #define SF_SNAPSHOT 0
-#define SF_NOUNLINK 0
 /* No delete */
 #define NOUNLINK 0
 
@@ -288,20 +275,8 @@ int vn_write_suspend_wait(vnode_t vp, mount_t mp, int flag)
 }
 #endif
 
-#define vfs_bio_clrbuf clrbuf
-
-#define BIO_ERROR B_ERROR
-
 /* FreeBSD getblk flag */
 #define GB_LOCK_NOWAIT 0
-
-#define BUF_WRITE buf_bwrite
-#define BUF_STRATEGY VNOP_STRATEGY
-/* Buffer, Lock, InterLock */
-#define BUF_LOCK(b,l,il)
-
-#define bqrelse buf_brelse
-#define bufwait buf_biowait
 
 #define hashdestroy(tbl,type,cnt) FREE((tbl), (type))
 
@@ -346,9 +321,6 @@ static __inline void * memscan(void * addr, int c, size_t size)
 #define printk printf
 #define memcmp bcmp
 
-#define ERR_PTR(err) (void*)(err)
-
-#define EXT3_I(inode) (inode)
 
 #define KERN_CRIT "CRITICAL"
 

@@ -150,7 +150,7 @@ struct inode {
 	ext2_daddr_t i_lastr; /* last read... read-ahead */
 #ifdef DIAGNOSTIC
     thread_t  i_lockowner;
-    char      i_lockfile[64];
+    char      i_lockfile[64];		// the file currently holding the inode lock.
     int32_t   i_lockline;
     int32_t   i_dhashct;
 #endif

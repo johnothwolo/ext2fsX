@@ -75,10 +75,6 @@ static const char whatid[] __attribute__ ((unused)) =
 #include <gnu/ext2fs/fs.h>
 #include "ext2_apple.h"
 
-#define	BLKSIZE(a, b, c)	blksize(a, b, c)
-#define	FS			struct ext2_sb_info
-#define	I_FS			i_e2fs
-
 static int ext2_blkalloc(register struct inode *, int32_t, int, struct ucred *, int);
 
 /*
@@ -149,7 +145,7 @@ ext2_pageout(struct vnop_pageout_args *ap)
 	vm_offset_t pl_offset = ap->a_pl_offset;
 	int flags  = ap->a_flags;
 	register struct inode *ip;
-	register FS *fs;
+	register struct ext2_sb_info *fs;
 	int error ;
 	int devBlockSize;
 	size_t xfer_size = 0;
@@ -171,7 +167,7 @@ ext2_pageout(struct vnop_pageout_args *ap)
 				UPL_ABORT_FREE_ON_EMPTY);
 		ext2_trace_return(EROFS);
 	}
-	fs = ip->I_FS;
+	fs = ip->i_e2fs;
 
 	ISLOCK(ip);
 	typeof(ip->i_size) isize = ip->i_size;
@@ -266,7 +262,7 @@ static int
 ext2_blkalloc(register struct inode *ip, int32_t lbn, int size,
 			  struct ucred *cred, int flags)
 {
-	register FS *fs;
+	register struct ext2_sb_info *fs;
 	register int32_t nb;
 	buf_t  bp, nbp;
 	vnode_t vp = ITOV(ip);
@@ -581,7 +577,7 @@ ext2_blockmap(struct vnop_blockmap_args *ap)
 	int nblks;
 	register struct inode *ip;
 	int devBlockSize;
-	FS *fs;
+	struct ext2_sb_info *fs;
 	int retsize=0;
 	int error;
 
@@ -593,6 +589,8 @@ ext2_blockmap(struct vnop_blockmap_args *ap)
          "qbmask=%qd, inode=%u, offset=%qd, blkoff=%d",
          fs->s_qbmask, ip->i_number, ap->a_foffset, error);
 	}
+	
+	// is this necessary? if we don't panic we're obviously zero...
     error = 0;
 
 	bn = (ext2_daddr_t)lblkno(fs, ap->a_foffset);

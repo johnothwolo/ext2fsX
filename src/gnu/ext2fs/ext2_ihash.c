@@ -45,27 +45,25 @@ static const char whatid[] __attribute__ ((unused)) =
 #include <gnu/ext2fs/inode.h>
 #include <gnu/ext2fs/ext2_extern.h>
 
-#ifndef APPLE
-static MALLOC_DEFINE(M_EXT2IHASH, "EXT2 ihash", "EXT2 Inode hash tables");
-#else
 #define M_EXT2IHASH M_TEMP
-#endif
+
 /*
  * Structures associated with inode caching.
  */
 static LIST_HEAD(ihashhead, inode) *ihashtbl;
 static u_long	ihash;		/* size of hash table - 1 */
-#define	INOHASH(device, inum)	(&ihashtbl[(minor(device) + (inum)) & ihash])
 static lck_mtx_t *ext2_ihash_lock;
 
 #define hlock() do {lck_mtx_lock(ext2_ihash_lock);} while(0)
 #define hulock() do {lck_mtx_unlock(ext2_ihash_lock);} while(0)
+#define INOHASH(device, inum)	(&ihashtbl[(minor(device) + (inum)) & ihash])
+
 
 /*
  * Initialize inode hash table.
  */
 void
-ext2_ihashinit()
+ext2_hash_init()
 {
 
 	KASSERT(ihashtbl == NULL, ("ext2_ihashinit called twice"));
@@ -77,7 +75,7 @@ ext2_ihashinit()
  * Destroy the inode hash table.
  */
 void
-ext2_ihashuninit()
+ext2_hash_uninit()
 {
 	hlock();
 	hashdestroy(ihashtbl, M_EXT2IHASH, ihash);
@@ -91,9 +89,7 @@ ext2_ihashuninit()
  * to it. If it is in core, return it, even if it is locked.
  */
 vnode_t 
-ext2_ihashlookup(dev, inum)
-	dev_t dev;
-	ino_t inum;
+ext2_hash_lookup(dev_t dev, ino_t inum)
 {
 	struct inode *ip;
 
@@ -113,11 +109,7 @@ ext2_ihashlookup(dev, inum)
  * to it. If it is in core, but locked, wait for it.
  */
 int
-ext2_ihashget(dev, inum, flags, vpp)
-	dev_t dev;
-	ino_t inum;
-	int flags;
-	vnode_t *vpp;
+ext2_hash_get(dev_t dev, ino_t inum, int flags, vnode_t *vpp)
 {
 	struct inode *ip;
 	vnode_t vp;
@@ -168,8 +160,7 @@ loop:
  * Insert the inode into the hash table, and return it locked.
  */
 void
-ext2_ihashins(ip)
-	struct inode *ip;
+ext2_hash_insert(struct inode *ip)
 {
 	struct ihashhead *ipp;
 
@@ -184,8 +175,7 @@ ext2_ihashins(ip)
  * Remove the inode from the hash table.
  */
 void
-ext2_ihashrem(ip)
-	struct inode *ip;
+ext2_hash_remove(struct inode *ip)
 {
 	hlock();
 	if (ip->i_flag & IN_HASHED) {

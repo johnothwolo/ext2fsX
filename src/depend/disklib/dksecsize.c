@@ -46,9 +46,7 @@
 
 char *blockcheck __P((char *));
 
-long dksecsize (dev)
-     char *dev;
-{
+long dksecsize (char *dev){
     int    fd;        /* file descriptor for reading device label */
     char   *cdev;
     int    devblklen;

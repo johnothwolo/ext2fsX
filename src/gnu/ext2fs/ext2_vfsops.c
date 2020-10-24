@@ -494,11 +494,7 @@ ext2_check_sb_compat(
  * ext2_sb_info is kept in cpu byte order except for group info
  * which is kept in LE (on disk) order.
  */
-static int compute_sb_data(devvp, context, es, fs)
-	vnode_t devvp;
-	vfs_context_t context;
-	struct ext2_super_block * es;
-	struct ext2_sb_info * fs;
+static int compute_sb_data(vnode_t devvp, vfs_context_t context, struct ext2_super_block * es, struct ext2_sb_info * fs)
 {
     int db_count, error;
     int i, j;
@@ -736,7 +732,7 @@ ext2_mountfs(vnode_t devvp,
 	int ronly;
     u_int32_t devBlockSize=0;
    
-    getmicrotime(&tv); /* Curent time */
+    microtime(&tv); /* Current time */
 
 	/*
 	 * Disallow multiple mounts of the same device.
@@ -790,7 +786,9 @@ ext2_mountfs(vnode_t devvp,
 	es = (struct ext2_super_block *)(buf_dataptr(bp)+SBOFF);
 #ifdef INDEXRO
 #warning dx readonly active
-if (le16_to_cpu(es->s_magic) == EXT2_SUPER_MAGIC && (es->s_feature_compat & cpu_to_le32(EXT3_FEATURE_COMPAT_DIR_INDEX))) {
+if (le16_to_cpu(es->s_magic) == EXT2_SUPER_MAGIC &&
+	(es->s_feature_compat & cpu_to_le32(EXT3_FEATURE_COMPAT_DIR_INDEX)) &&
+	vfs_isforce(mp) != 0) {
 	// haven't tested dx write support yet, and with the inode locking there's likely problems
 	vfs_setflags(mp, MNT_RDONLY);
 	ronly = 1;
@@ -1290,7 +1288,7 @@ void ext2_vget_irelse (struct inode *ip)
 {
 	IASSERTLOCK(ip);
 	
-	ext2_ihashrem(ip);
+	ext2_hash_remove(ip);
 	do {
 		if (ip->i_flag & IN_INITWAIT) {
 			ip->i_flag &= ~IN_INITWAIT;
@@ -1354,7 +1352,7 @@ ext2_vget_internal(mount_t mp, evalloc_args_t *valloc_args,
 	ump = VFSTOEXT2(mp);
 	dev = ump->um_dev;
 restart:
-	if ((error = ext2_ihashget(dev, (ino_t)ino, 0, vpp)) != 0)
+	if ((error = ext2_hash_get(dev, (ino_t)ino, 0, vpp)) != 0)
 		ext2_trace_return(error);
 	if (*vpp != NULL)
 		return (0);
@@ -1367,7 +1365,7 @@ restart:
 	if (ext2fs_inode_hash_lock) {
 		while (ext2fs_inode_hash_lock) {
 			(void)OSCompareAndSwap(ext2fs_inode_hash_lock, -1, (UInt32*)&ext2fs_inode_hash_lock);
-			msleep(&ext2fs_inode_hash_lock, NULL, PVM, "e2vget", 0);
+			msleep(&ext2fs_inode_hash_lock, NULL, PVM, "ext2_vget", 0);
 		}
 		goto restart;
 	}
@@ -1399,7 +1397,7 @@ restart:
 	 */
 	IXLOCK(ip);
 	ip->i_flag |= IN_INIT;
-	ext2_ihashins(ip);
+	ext2_hash_insert(ip);
 
 	if (ext2fs_inode_hash_lock < 0)
 		wakeup(&ext2fs_inode_hash_lock);
@@ -1430,7 +1428,7 @@ restart:
 	*/
 	if(/* !(ip->i_flag & IN_E4EXTENTS) && */
 	   (S_ISDIR(ip->i_mode) || S_ISREG(ip->i_mode))) {
-		used_blocks = (ip->i_size+fs->s_blocksize-1) / fs->s_blocksize;
+		used_blocks = (ip->i_size + fs->s_blocksize - 1) / fs->s_blocksize;
 		for(i = used_blocks; i < EXT2_NDIR_BLOCKS; i++)
 			ip->i_db[i] = 0;
 	} else if ((eap->va_flags & EVALLOC_CREATE) && eap->va_createmode) {
@@ -1669,7 +1667,7 @@ static int
 ext2_init(struct vfsconf *vfsp)
 {
 
-	ext2_ihashinit();
+	ext2_hash_init();
 	return (0);
 }
 
@@ -1677,7 +1675,7 @@ static int
 ext2_uninit(struct vfsconf *vfsp)
 {
 
-	ext2_ihashuninit();
+	ext2_hash_uninit();
 	return (0);
 }
 
@@ -1840,7 +1838,7 @@ kern_return_t ext2fs_start (kmod_info_t * ki, void * d) {
 	fsc.vfe_vfsops = &ext2fs_vfsops;
 	fsc.vfe_vopcnt = 3;
 	fsc.vfe_opvdescs = vnops;
-	strncpy(&fsc.vfe_fsname[0], EXT2FS_NAME, MFSNAMELEN);
+	strlcpy(&fsc.vfe_fsname[0], EXT2FS_NAME, MFSNAMELEN);
 	// If we let the kernel assign our typenum, there is no way to access it
 	// until a vol is mounted. So, we have to use a static # so we can register
 	// our sysctl's.

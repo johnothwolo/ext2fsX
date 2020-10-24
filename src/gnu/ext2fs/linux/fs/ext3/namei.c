@@ -52,7 +52,7 @@ static buf_t ext3_append(handle_t *handle,
 	if ((bh = ext3_bread(handle, inode, *block, 1, err))) {
 		inode->i_size += inode->i_sb->s_blocksize;
    #ifdef linux
-		EXT3_I(inode)->i_disksize = inode->i_size;
+		(inode)->i_disksize = inode->i_size;
    #endif
 		ext3_journal_get_write_access(handle,bh);
 	}
@@ -585,7 +585,7 @@ int ext3_htree_fill_tree(vnode_t dir_file, __u32 start_hash,
 	dxtrace(printk("In htree_fill_tree, start hash: %x:%x\n", start_hash,
 		       start_minor_hash));
 	dir = VTOI(dir_file);
-	if (!(EXT3_I(dir)->i_flags & EXT3_INDEX_FL)) {
+	if (!((dir)->i_flags & EXT3_INDEX_FL)) {
 		hinfo.hash_version = EXT3_SB(dir->i_sb)->s_def_hash_version;
 		hinfo.seed = EXT3_SB(dir->i_sb)->s_hash_seed;
 		count = htree_dirblock_to_tree(dir_file, dir, 0, &hinfo,
@@ -718,7 +718,7 @@ static void ext3_update_dx_flag(struct inode *inode)
 {
 	if (!EXT3_HAS_COMPAT_FEATURE(inode->i_sb,
 				     EXT3_FEATURE_COMPAT_DIR_INDEX))
-		EXT3_I(inode)->i_flags &= ~EXT3_INDEX_FL;
+		(inode)->i_flags &= ~EXT3_INDEX_FL;
 }
 
 /*
@@ -1084,7 +1084,7 @@ static int make_indexed_dir(handle_t *handle, struct dentry *dentry,
 		brelse(bh);
 		return retval;
 	}
-	EXT3_I(dir)->i_flags |= EXT3_INDEX_FL;
+	(dir)->i_flags |= EXT3_INDEX_FL;
 	data1 = (char*)buf_dataptr(bh2);
 
 	/* The 0th block becomes the root, move the dirents out */

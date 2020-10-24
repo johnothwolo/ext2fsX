@@ -113,8 +113,8 @@ static errcode_t unix_write_byte(io_channel channel, unsigned long offset,
 				int size, const void *data);
 static errcode_t unix_set_option(io_channel channel, const char *option,
 				 const char *arg);
-static errcode_t unix_get_stats(io_channel channel, io_stats *stats)
-;
+static errcode_t unix_get_stats(io_channel channel, io_stats *stats);
+
 static void reuse_cache(io_channel channel, struct unix_private_data *data,
 		 struct unix_cache *cache, unsigned long long block);
 static errcode_t unix_read_blk64(io_channel channel, unsigned long long block,

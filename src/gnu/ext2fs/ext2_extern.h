@@ -82,12 +82,12 @@ void	ext2_dirbad(struct inode *ip, doff_t offset, char *how);
 void	ext2_ei2i(struct ext2_inode *, struct inode *);
 int	ext2_getlbns(vnode_t , ext2_daddr_t, struct indir *, int *);
 void	ext2_i2ei(struct inode *, struct ext2_inode *);
-int	ext2_ihashget(dev_t, ino_t, int, vnode_t *);
-void	ext2_ihashinit(void);
-void	ext2_ihashins(struct inode *);
-vnode_t ext2_ihashlookup(dev_t, ino_t);
-void	ext2_ihashrem(struct inode *);
-void	ext2_ihashuninit(void);
+int	ext2_hash_get(dev_t, ino_t, int, vnode_t *);
+void	ext2_hash_init(void);
+void	ext2_hash_insert(struct inode *);
+vnode_t ext2_hash_lookup(dev_t, ino_t);
+void	ext2_hash_remove(struct inode *);
+void	ext2_hash_uninit(void);
 void	ext2_itimes(vnode_t);
 #ifdef FANCY_REALLOC
 int	ext2_reallocblks(struct vnop_reallocblks_args *);

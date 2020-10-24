@@ -453,13 +453,13 @@ ext2_open(struct vnop_open_args  *ap)
  * Update the times on the inode.
  */
 static int
-ext2_close(
-	struct vnop_close_args /* {
+ext2_close(struct vnop_close_args *ap)
+/* {
 		vnode_t a_vp;
 		int  a_fflag;
 		ucred_ta_cred;
 		proc_ta_td;
-	} */ *ap)
+ } */
 {
    vnode_t vp = ap->a_vp;
    
