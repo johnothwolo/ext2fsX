@@ -2153,7 +2153,7 @@
 		D387FCA10595597500C31A93 /* spawn.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = spawn.c; sourceTree = "<group>"; };
 		D387FCA20595597500C31A93 /* super.c */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 3; lastKnownFileType = sourcecode.c.c; path = super.c; sourceTree = "<group>"; };
 		D38A5F0806711DDB00E9E666 /* efssmartd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = efssmartd.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D3D485770405AC0900A80164 /* kext_load.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = kext_load.c; path = src/kext_load.c; sourceTree = "<group>"; };
+		D3D485770405AC0900A80164 /* kext_load.c */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.c.c; name = kext_load.c; path = src/kext_load.c; sourceTree = "<group>"; };
 		D3D485870405C3B900A80164 /* ext2util.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = ext2util.c; path = src/ext2util.c; sourceTree = "<group>"; };
 		D3D4AF27057913CB00A80164 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D3D4AF28057913CB00A80164 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = System/Library/Frameworks/PreferencePanes.framework; sourceTree = SDKROOT; };
@@ -4624,6 +4624,7 @@
 				55FB835413C15EC1006C2DAD /* ext2_balloc.c */,
 				55FB835513C15EC1006C2DAD /* ext2_bmap.c */,
 				52D0E3C8245101FC00670866 /* ext2_dinode.h */,
+				52D0E3D1245150AF00670866 /* ext2_debug.c */,
 				55FB835613C15EC1006C2DAD /* ext2_extern.h */,
 				52D0E3C12450879100670866 /* ext2_extents.h */,
 				55FB835713C15EC1006C2DAD /* ext2_fs.h */,
@@ -4634,7 +4635,6 @@
 				55FB835C13C15EC1006C2DAD /* ext2_linux_balloc.c */,
 				55FB835D13C15EC1006C2DAD /* ext2_linux_ialloc.c */,
 				55FB835E13C15EC1006C2DAD /* ext2_lookup.c */,
-				52D0E3D1245150AF00670866 /* ext2_debug.c */,
 				55FB835F13C15EC1006C2DAD /* ext2_mount.h */,
 				55FB836013C15EC1006C2DAD /* ext2_readwrite.c */,
 				55FB836113C15EC1006C2DAD /* ext2_subr.c */,
@@ -5330,78 +5330,102 @@
 				LastUpgradeCheck = 1100;
 				TargetAttributes = {
 					551BAD7C13C157B700080BD5 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					5577058D13C3CD5600457317 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55E5A54B13C1A17400BF3DD3 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55E5A59A13C1A55600BF3DD3 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55F64092153600FA00F6E73D = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55F640D91536169400F6E73D = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55F640F21536284700F6E73D = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55F6410D1536301D00F6E73D = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55F6412F153637CF00F6E73D = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55F644EE153760A100F6E73D = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55F6451F1537781800F6E73D = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55FCD7131B12DA9E00A57C43 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55FCD7481B12DBCD00A57C43 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					55FCD7501B12DBFD00A57C43 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					D32B1F8B09946A3B001A78A0 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Manual;
 					};
 					D32B2037099470A7001A78A0 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					D32B209009947656001A78A0 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					D32B20BD0994777A001A78A0 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					D32B20D5099477DD001A78A0 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					D32B20EF09947828001A78A0 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					D3660BF90643ED20009810C9 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					D38226D306697F7000AD3D37 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					D38A5F0706711DDB00E9E666 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 					D39ED63004060E7300A80164 = {
+						DevelopmentTeam = CW9NBAZ8M7;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -5504,7 +5528,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "script=\"${SYSTEM_DEVELOPER_DIR}/ProjectBuilder Extras/Kernel Extension Support/KEXTPreprocess\";\nif [ -x \"$script\" ]; then\n    . \"$script\"\nfi";
+			shellScript = "script=\"${SYSTEM_DEVELOPER_DIR}/ProjectBuilder Extras/Kernel Extension Support/KEXTPreprocess\";\nif [ -x \"$script\" ]; then\n    . \"$script\"\nfi\n";
 		};
 		D32B1FA509946A3B001A78A0 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6792,11 +6816,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CW9NBAZ8M7;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_KERNEL,
@@ -6834,10 +6858,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CW9NBAZ8M7;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_KERNEL,
@@ -7027,7 +7051,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = tux;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CW9NBAZ8M7;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(BUILT_PRODUCTS_DIR)/ExtFSDiskManager.framework/Headers/ExtFSDiskManager.h";
@@ -7054,7 +7080,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = tux;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CW9NBAZ8M7;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(BUILT_PRODUCTS_DIR)/ExtFSDiskManager.framework/Headers/ExtFSDiskManager.h";
@@ -7298,7 +7326,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -7319,11 +7347,12 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = CW9NBAZ8M7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -7383,7 +7412,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -7404,11 +7433,12 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = CW9NBAZ8M7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

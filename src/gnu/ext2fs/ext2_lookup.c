@@ -83,8 +83,8 @@ __private_extern__ int dirchk = 0;
 __private_extern__ u_int32_t lookcacheinval = 0;
 
 SYSCTL_NODE(_vfs, OID_AUTO, e2fs, CTLFLAG_RD, 0, "EXT2FS filesystem");
-SYSCTL_INT(_vfs_e2fs, EXT2_SYSCTL_INT_DIRCHECK, dircheck, CTLFLAG_RW, &dirchk, 0, "");
-SYSCTL_UINT(_vfs_e2fs, EXT2_SYSCTL_INT_LOOKCACHEINVAL, lookcacheinval, CTLFLAG_RD, &lookcacheinval, 0, "");
+SYSCTL_INT(_vfs_e2fs, OID_AUTO, dircheck, CTLFLAG_RW, &dirchk, 0, "");
+SYSCTL_UINT(_vfs_e2fs, OID_AUTO, lookcacheinval, CTLFLAG_RD, &lookcacheinval, 0, "");
 
 /* 
    DIRBLKSIZE in ffs is DEV_BSIZE (in most cases 512)

@@ -181,7 +181,7 @@ ext2_vget_internal(mount_t mp, evalloc_args_t *valloc_args,
 				   vnode_t *vpp, vfs_context_t context);
 
 /* Sysctl OID numbers. */
-#define EXT2_SYSCTL_INT_DIRCHECK 1
-#define EXT2_SYSCTL_INT_LOOKCACHEINVAL 2
+#define EXT2_SYSCTL_INT_DIRCHECK 3
+#define EXT2_SYSCTL_INT_LOOKCACHEINVAL 4
 
 #endif /* !_SYS_GNU_EXT2FS_EXT2_EXTERN_H_ */

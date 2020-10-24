@@ -1842,8 +1842,12 @@ kern_return_t ext2fs_start (kmod_info_t * ki, void * d) {
 	// If we let the kernel assign our typenum, there is no way to access it
 	// until a vol is mounted. So, we have to use a static # so we can register
 	// our sysctl's.
-	fsc.vfe_fstypenum = (int)EXT2_SUPER_MAGIC;
-	fsc.vfe_flags = VFS_TBLTHREADSAFE/*|VFS_TBLNOTYPENUM*/|VFS_TBLLOCALVOL;
+//	fsc.vfe_fstypenum = (int)EXT2_SUPER_MAGIC;
+	
+	fsc.vfe_flags = VFS_TBLTHREADSAFE| VFS_TBL64BITREADY| VFS_TBLNOTYPENUM
+	/* had to specify. Something already has the sysctl oid in catalina. This doesn't happen in my Mojave VM. Could it be my installation? */
+	|VFS_TBLLOCALVOL;
+	
 	kret = vfs_fsadd(&fsc, &ext2_tableid);
 	if (kret) {
 		printf ("EXT2-fs: ext2fs_start: Failed to register with kernel, error = %d\n", kret);
@@ -1852,7 +1856,7 @@ kern_return_t ext2fs_start (kmod_info_t * ki, void * d) {
 	}
 	
 	/* This is required for vfs_sysctl() to call our handler. */
-	sysctl__vfs_e2fs.oid_number = fsc.vfe_fstypenum;
+//	sysctl__vfs_e2fs.oid_number = //fsc.vfe_fstypenum;
 	/* Register our sysctl's */
 	for (i=0; e2sysctl_list[i]; ++i) {
 		#ifdef DIAGNOSTIC
