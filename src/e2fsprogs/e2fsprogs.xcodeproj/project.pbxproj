@@ -1,0 +1,231 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXFileReference section */
+		52CAB947245051E400ADFE08 /* INSTALL.dllbin */ = {isa = PBXFileReference; lastKnownFileType = text; path = INSTALL.dllbin; sourceTree = "<group>"; };
+		52CAB948245051E400ADFE08 /* misc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = misc; sourceTree = "<group>"; };
+		52CAB949245051E400ADFE08 /* .missing-copyright */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ".missing-copyright"; sourceTree = "<group>"; };
+		52CAB94A245051E400ADFE08 /* install-utils */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "install-utils"; sourceTree = "<group>"; };
+		52CAB94B245051E400ADFE08 /* install-sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "install-sh"; sourceTree = "<group>"; };
+		52CAB94C245051E400ADFE08 /* config.rpath */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = config.rpath; sourceTree = "<group>"; };
+		52CAB94D245051E400ADFE08 /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
+		52CAB94E245051E400ADFE08 /* INSTALL */ = {isa = PBXFileReference; lastKnownFileType = text; path = INSTALL; sourceTree = "<group>"; };
+		52CAB94F245051E400ADFE08 /* .fix-Changelog */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ".fix-Changelog"; sourceTree = "<group>"; };
+		52CAB950245051E400ADFE08 /* debian */ = {isa = PBXFileReference; lastKnownFileType = folder; path = debian; sourceTree = "<group>"; };
+		52CAB951245051E400ADFE08 /* util */ = {isa = PBXFileReference; lastKnownFileType = folder; path = util; sourceTree = "<group>"; };
+		52CAB952245051E400ADFE08 /* configure */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = configure; sourceTree = "<group>"; };
+		52CAB953245051E400ADFE08 /* intl */ = {isa = PBXFileReference; lastKnownFileType = folder; path = intl; sourceTree = "<group>"; };
+		52CAB954245051E400ADFE08 /* ChangeLog */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
+		52CAB955245051E400ADFE08 /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
+		52CAB956245051E400ADFE08 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; path = include; sourceTree = "<group>"; };
+		52CAB957245051E400ADFE08 /* .hgtags */ = {isa = PBXFileReference; lastKnownFileType = text; path = .hgtags; sourceTree = "<group>"; };
+		52CAB958245051E400ADFE08 /* ChangeSet */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChangeSet; sourceTree = "<group>"; };
+		52CAB959245051E400ADFE08 /* SHLIBS */ = {isa = PBXFileReference; lastKnownFileType = text; path = SHLIBS; sourceTree = "<group>"; };
+		52CAB95A245051E400ADFE08 /* tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tests; sourceTree = "<group>"; };
+		52CAB95B245051E400ADFE08 /* config.guess */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = config.guess; sourceTree = "<group>"; };
+		52CAB95C245051E400ADFE08 /* RELEASE-NOTES */ = {isa = PBXFileReference; lastKnownFileType = text; path = "RELEASE-NOTES"; sourceTree = "<group>"; };
+		52CAB95D245051E400ADFE08 /* contrib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = contrib; sourceTree = "<group>"; };
+		52CAB95E245051E400ADFE08 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		52CAB95F245051E400ADFE08 /* configure.in */ = {isa = PBXFileReference; lastKnownFileType = text; path = configure.in; sourceTree = "<group>"; };
+		52CAB960245051E400ADFE08 /* INSTALL.elfbin */ = {isa = PBXFileReference; lastKnownFileType = text; path = INSTALL.elfbin; sourceTree = "<group>"; };
+		52CAB961245051E400ADFE08 /* ABOUT-NLS */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ABOUT-NLS"; sourceTree = "<group>"; };
+		52CAB962245051E400ADFE08 /* MCONFIG.in */ = {isa = PBXFileReference; lastKnownFileType = text; path = MCONFIG.in; sourceTree = "<group>"; };
+		52CAB963245051E400ADFE08 /* ext2ed */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ext2ed; sourceTree = "<group>"; };
+		52CAB964245051E400ADFE08 /* .release-checklist */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".release-checklist"; sourceTree = "<group>"; };
+		52CAB965245051E400ADFE08 /* config.sub */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = config.sub; sourceTree = "<group>"; };
+		52CAB966245051E400ADFE08 /* COPYING */ = {isa = PBXFileReference; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		52CAB967245051E400ADFE08 /* po */ = {isa = PBXFileReference; lastKnownFileType = folder; path = po; sourceTree = "<group>"; };
+		52CAB968245051E400ADFE08 /* SUBMITTING-PATCHES */ = {isa = PBXFileReference; lastKnownFileType = text; path = "SUBMITTING-PATCHES"; sourceTree = "<group>"; };
+		52CAB969245051E400ADFE08 /* e2fsprogs.spec.in */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2fsprogs.spec.in; sourceTree = "<group>"; };
+		52CAB96A245051E400ADFE08 /* .head-Changelog */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ".head-Changelog"; sourceTree = "<group>"; };
+		52CAB96B245051E400ADFE08 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
+		52CAB96C245051E400ADFE08 /* doc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = doc; sourceTree = "<group>"; };
+		52CAB96D245051E400ADFE08 /* e2fsck */ = {isa = PBXFileReference; lastKnownFileType = folder; path = e2fsck; sourceTree = "<group>"; };
+		52CAB96E245051E400ADFE08 /* e2fsprogs.lsm */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2fsprogs.lsm; sourceTree = "<group>"; };
+		52CAB96F245051E400ADFE08 /* mkinstalldirs */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = mkinstalldirs; sourceTree = "<group>"; };
+		52CAB970245051E400ADFE08 /* wordwrap.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = wordwrap.pl; sourceTree = "<group>"; };
+		52CAB971245051E400ADFE08 /* resize */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resize; sourceTree = "<group>"; };
+		52CAB972245051E400ADFE08 /* e2fsprogs.spec */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2fsprogs.spec; sourceTree = "<group>"; };
+		52CAB973245051E400ADFE08 /* Makefile.in */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
+		52CAB974245051E400ADFE08 /* aclocal.m4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = aclocal.m4; sourceTree = "<group>"; };
+		52CAB975245051E400ADFE08 /* depfix.sed */ = {isa = PBXFileReference; lastKnownFileType = text; path = depfix.sed; sourceTree = "<group>"; };
+		52CAB976245051E400ADFE08 /* debugfs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = debugfs; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		52CAB941245051E400ADFE08 = {
+			isa = PBXGroup;
+			children = (
+				52CAB947245051E400ADFE08 /* INSTALL.dllbin */,
+				52CAB948245051E400ADFE08 /* misc */,
+				52CAB949245051E400ADFE08 /* .missing-copyright */,
+				52CAB94A245051E400ADFE08 /* install-utils */,
+				52CAB94B245051E400ADFE08 /* install-sh */,
+				52CAB94C245051E400ADFE08 /* config.rpath */,
+				52CAB94D245051E400ADFE08 /* version.h */,
+				52CAB94E245051E400ADFE08 /* INSTALL */,
+				52CAB94F245051E400ADFE08 /* .fix-Changelog */,
+				52CAB950245051E400ADFE08 /* debian */,
+				52CAB951245051E400ADFE08 /* util */,
+				52CAB952245051E400ADFE08 /* configure */,
+				52CAB953245051E400ADFE08 /* intl */,
+				52CAB954245051E400ADFE08 /* ChangeLog */,
+				52CAB955245051E400ADFE08 /* config */,
+				52CAB956245051E400ADFE08 /* include */,
+				52CAB957245051E400ADFE08 /* .hgtags */,
+				52CAB958245051E400ADFE08 /* ChangeSet */,
+				52CAB959245051E400ADFE08 /* SHLIBS */,
+				52CAB95A245051E400ADFE08 /* tests */,
+				52CAB95B245051E400ADFE08 /* config.guess */,
+				52CAB95C245051E400ADFE08 /* RELEASE-NOTES */,
+				52CAB95D245051E400ADFE08 /* contrib */,
+				52CAB95E245051E400ADFE08 /* README */,
+				52CAB95F245051E400ADFE08 /* configure.in */,
+				52CAB960245051E400ADFE08 /* INSTALL.elfbin */,
+				52CAB961245051E400ADFE08 /* ABOUT-NLS */,
+				52CAB962245051E400ADFE08 /* MCONFIG.in */,
+				52CAB963245051E400ADFE08 /* ext2ed */,
+				52CAB964245051E400ADFE08 /* .release-checklist */,
+				52CAB965245051E400ADFE08 /* config.sub */,
+				52CAB966245051E400ADFE08 /* COPYING */,
+				52CAB967245051E400ADFE08 /* po */,
+				52CAB968245051E400ADFE08 /* SUBMITTING-PATCHES */,
+				52CAB969245051E400ADFE08 /* e2fsprogs.spec.in */,
+				52CAB96A245051E400ADFE08 /* .head-Changelog */,
+				52CAB96B245051E400ADFE08 /* lib */,
+				52CAB96C245051E400ADFE08 /* doc */,
+				52CAB96D245051E400ADFE08 /* e2fsck */,
+				52CAB96E245051E400ADFE08 /* e2fsprogs.lsm */,
+				52CAB96F245051E400ADFE08 /* mkinstalldirs */,
+				52CAB970245051E400ADFE08 /* wordwrap.pl */,
+				52CAB971245051E400ADFE08 /* resize */,
+				52CAB972245051E400ADFE08 /* e2fsprogs.spec */,
+				52CAB973245051E400ADFE08 /* Makefile.in */,
+				52CAB974245051E400ADFE08 /* aclocal.m4 */,
+				52CAB975245051E400ADFE08 /* depfix.sed */,
+				52CAB976245051E400ADFE08 /* debugfs */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		52CAB946245051E400ADFE08 /* e2fsprogs */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = 52CAB977245051E400ADFE08 /* Build configuration list for PBXLegacyTarget "e2fsprogs" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = /Users/john/Documents/ext2fsx/src/e2fsprogs;
+			dependencies = (
+			);
+			name = e2fsprogs;
+			passBuildSettingsInEnvironment = 1;
+			productName = e2fsprogs;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		52CAB942245051E400ADFE08 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = 52CAB945245051E400ADFE08 /* Build configuration list for PBXProject "e2fsprogs" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 52CAB941245051E400ADFE08;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				52CAB946245051E400ADFE08 /* e2fsprogs */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		52CAB943245051E400ADFE08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		52CAB944245051E400ADFE08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		52CAB978245051E400ADFE08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = e2fsprogs;
+			};
+			name = Debug;
+		};
+		52CAB979245051E400ADFE08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = e2fsprogs;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		52CAB945245051E400ADFE08 /* Build configuration list for PBXProject "e2fsprogs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52CAB943245051E400ADFE08 /* Debug */,
+				52CAB944245051E400ADFE08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		52CAB977245051E400ADFE08 /* Build configuration list for PBXLegacyTarget "e2fsprogs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52CAB978245051E400ADFE08 /* Debug */,
+				52CAB979245051E400ADFE08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 52CAB942245051E400ADFE08 /* Project object */;
+}
