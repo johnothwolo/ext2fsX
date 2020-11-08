@@ -42,6 +42,6 @@ __ext2_debug(const char *file, int line,
 	vsnprintf(err_buf, sizeof(err_buf), fmt, args);
 	va_end(args);
 	printf("EXT2-fs DEBUG (%s, %d): %s(): %s\n", filename ? filename : "",
-			line, function ? function : "", err_buf);
+		   line, function ? function : "", err_buf);
 //	lck_spin_unlock(&ntfs_err_buf_lock);
 }

@@ -35,7 +35,7 @@ static const char whatid[] __attribute__ ((unused)) =
 #include <gnu/ext2fs/ext2_fs_sb.h>
 #include <ext2_byteorder.h>
 
-#define super_block ext2_sb_info
+#define super_block m_ext2fs
 #define s_id fs_fsmnt
 
 const char *ext3_decode_error(struct super_block * sb, int errno, char nbuf[16])

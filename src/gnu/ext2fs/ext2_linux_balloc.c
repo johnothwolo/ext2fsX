@@ -73,7 +73,7 @@ static void read_block_bitmap (mount_t mp,
 	)
 {
 	struct ext2mount *ump = VFSTOEXT2(mp);
-	struct ext2_sb_info *sb = ump->um_e2fs;
+	struct m_ext2fs *sb = ump->um_e2fs;
 	struct ext2_group_desc * gdp;
 	buf_t bp;
 	int    error;
@@ -118,7 +118,7 @@ static int load__block_bitmap (mount_t mp,
 	)
 {
 	int i, j;
-	struct ext2_sb_info *sb = VFSTOEXT2(mp)->um_e2fs;
+	struct m_ext2fs *sb = VFSTOEXT2(mp)->um_e2fs;
 	unsigned long block_bitmap_number;
 	buf_t block_bitmap;
 
@@ -211,7 +211,7 @@ static __inline int load_block_bitmap (mount_t   mp,
 void ext2_free_blocks (mount_t mp, unsigned long block,
 	unsigned long count)
 {
-	struct ext2_sb_info *sb = VFSTOEXT2(mp)->um_e2fs;
+	struct m_ext2fs *sb = VFSTOEXT2(mp)->um_e2fs;
 	buf_t bp;
 	buf_t bp2;
 	unsigned long block_group;
@@ -219,7 +219,7 @@ void ext2_free_blocks (mount_t mp, unsigned long block,
 	unsigned long i;
 	int bitmap_nr;
 	struct ext2_group_desc * gdp;
-	struct ext2_super_block * es = sb->s_es;
+	struct ext2fs * es = sb->s_es;
 
 	if (!sb) {
 		ext2_debug ("ext2_free_blocks: nonexistent device");
@@ -257,9 +257,9 @@ void ext2_free_blocks (mount_t mp, unsigned long block,
 	    (in_range (le32_to_cpu(gdp->bg_block_bitmap), block, count) ||
 	     in_range (le32_to_cpu(gdp->bg_inode_bitmap), block, count) ||
 	     in_range (block, le32_to_cpu(gdp->bg_inode_table),
-		       sb->s_itb_per_group) ||
+		       sb->e2fs_itpg) ||
 	     in_range (block + count - 1, le32_to_cpu(gdp->bg_inode_table),
-		       sb->s_itb_per_group)))
+		       sb->e2fs_itpg)))
 		panic ( "ext2_free_blocks: "
 			    "Freeing blocks in system zones - "
 			    "Block = %lu, count = %lu",
@@ -308,14 +308,14 @@ int ext2_new_block (mount_t mp, unsigned long goal,
 		    u_int32_t * prealloc_count,
 		    u_int32_t * prealloc_block)
 {
-	struct ext2_sb_info *sb = VFSTOEXT2(mp)->um_e2fs;
+	struct m_ext2fs *sb = VFSTOEXT2(mp)->um_e2fs;
 	buf_t bp = NULL;
 	buf_t bp2;
 	char *p, *r, *data;
 	int i, j, k, tmp, sync;
 	int bitmap_nr;
 	struct ext2_group_desc * gdp;
-	struct ext2_super_block * es = sb->s_es;
+	struct ext2fs * es = sb->s_es;
 
 #if defined(EXT2FS_DEBUG) && EXT2FS_DEBUG > 1
 	static int goal_hits = 0, goal_attempts = 0;
@@ -468,7 +468,7 @@ got_block:
 	if (/* test_opt (sb, CHECK_STRICT) && we are always strict. */
 	    (tmp == le32_to_cpu(gdp->bg_block_bitmap) ||
 	     tmp == le32_to_cpu(gdp->bg_inode_bitmap) ||
-	     in_range (tmp, le32_to_cpu(gdp->bg_inode_table), sb->s_itb_per_group))) {
+	     in_range (tmp, le32_to_cpu(gdp->bg_inode_table), sb->e2fs_itpg))) {
 		panic ( "ext2_new_block: "
 			    "Allocating block in system zone - "
 			    "%dth block = %u in group %u", j, tmp, i);

@@ -64,7 +64,7 @@ struct ext2_group_desc * get_group_desc (mount_t mp,
 	unsigned int block_group,
 	buf_t* bp)
 {
-	struct ext2_sb_info *sb = VFSTOEXT2(mp)->um_e2fs;
+	struct m_ext2fs *sb = VFSTOEXT2(mp)->um_e2fs;
 	unsigned long group_desc;
 	unsigned long desc;
 	struct ext2_group_desc * gdp;
@@ -103,7 +103,7 @@ static void read_inode_bitmap (mount_t   mp,
 	)
 {
 	struct ext2mount *ump = VFSTOEXT2(mp);
-	struct ext2_sb_info *sb = ump->um_e2fs;
+	struct m_ext2fs *sb = ump->um_e2fs;
 	struct ext2_group_desc * gdp;
 	buf_t bp;
 	int	error;
@@ -148,7 +148,7 @@ static int load_inode_bitmap (mount_t mp,
 	#endif
 	)
 {
-	struct ext2_sb_info *sb = VFSTOEXT2(mp)->um_e2fs;
+	struct m_ext2fs *sb = VFSTOEXT2(mp)->um_e2fs;
 	int i, j;
 	unsigned long inode_bitmap_number;
 	buf_t inode_bitmap;
@@ -218,7 +218,7 @@ static int load_inode_bitmap (mount_t mp,
 
 void ext2_free_inode (struct inode * inode)
 {
-	struct ext2_sb_info * sb;
+	struct m_ext2fs * sb;
 	mount_t mp;
 	buf_t bp;
 	buf_t bp2;
@@ -226,7 +226,7 @@ void ext2_free_inode (struct inode * inode)
 	unsigned long bit;
 	int bitmap_nr;
 	struct ext2_group_desc * gdp;
-	struct ext2_super_block * es;
+	struct ext2fs * es;
 
 	if (!inode)
 		return;
@@ -344,7 +344,7 @@ static void inc_inode_version (struct inode * inode,
  */
 ino_t ext2_new_inode (const struct inode * dir, int mode)
 {
-	struct ext2_sb_info * sb;
+	struct m_ext2fs * sb;
 	mount_t mp;
 	buf_t bp;
 	buf_t bp2;
@@ -352,7 +352,7 @@ ino_t ext2_new_inode (const struct inode * dir, int mode)
 	int bitmap_nr;
 	struct ext2_group_desc * gdp;
 	struct ext2_group_desc * tmp;
-	struct ext2_super_block * es;
+	struct ext2fs * es;
 	char *data;
 
 	if (!dir)

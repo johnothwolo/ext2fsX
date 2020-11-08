@@ -1,6 +1,6 @@
+/*	$NetBSD: ext2fs_hash.c,v 1.2 2016/08/13 07:40:10 christos Exp $	*/
+
 /*-
- * SPDX-License-Identifier: (BSD-2-Clause-FreeBSD AND RSA-MD)
- *
  * Copyright (c) 2010, 2013 Zheng Liu <lz@freebsd.org>
  * Copyright (c) 2012, Vyacheslav Matyushin
  * All rights reserved.
@@ -26,7 +26,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD$
+ * $FreeBSD: head/sys/fs/ext2fs/ext2_hash.c 294504 2016-01-21 14:50:28Z pfg $
  */
 
 /*
@@ -53,38 +53,20 @@
  * documentation and/or software.
  */
 
+#include <sys/cdefs.h>
+static const char whatid[] __attribute__ ((unused)) = "$NetBSD: ext2fs_hash.c,v 1.2 2016/08/13 07:40:10 christos Exp $";
+
 #include <sys/param.h>
 #include <sys/systm.h>
 #include <sys/conf.h>
 #include <sys/vnode.h>
-//#include <sys/sdt.h>
 #include <sys/stat.h>
 #include <sys/mount.h>
 
-#include <gnu/ext2fs/fs.h>
+#include <gnu/ext2fs/ext2_htree.h>
+#include <gnu/ext2fs/ext2_hash.h>
 #include <gnu/ext2fs/inode.h>
-#include <gnu/ext2fs/ext2_mount.h>
-#include <gnu/ext2fs/ext2_fs.h>
-#include <gnu/ext2fs/ext2_fs_sb.h>
-//#include <gnu/ext2fs/htree.h>
 #include <gnu/ext2fs/ext2_extern.h>
-
-
-//SDT_PROVIDER_DECLARE(ext2fs);
-/*
- * ext2fs trace probe:
- * arg0: verbosity. Higher numbers give more verbose messages
- * arg1: Textual message
- */
-//SDT_PROBE_DEFINE2(ext2fs, , trace, hash, "int", "char*");
-
-/* F, G, and H are MD4 functions */
-#define F(x, y, z) (((x) & (y)) | ((~x) & (z)))
-#define G(x, y, z) (((x) & (y)) | ((x) & (z)) | ((y) & (z)))
-#define H(x, y, z) ((x) ^ (y) ^ (z))
-
-/* ROTATE_LEFT rotates x left n bits */
-#define ROTATE_LEFT(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
 
 /*
  * FF, GG, and HH are transformations for rounds 1, 2, and 3.
@@ -105,108 +87,8 @@
 	(a) = ROTATE_LEFT ((a), (s)); \
 }
 
-/*
- * MD4 basic transformation.  It transforms state based on block.
- *
- * This is a half md4 algorithm since Linux uses this algorithm for dir
- * index.  This function is derived from the RSA Data Security, Inc. MD4
- * Message-Digest Algorithm and was modified as necessary.
- *
- * The return value of this function is uint32_t in Linux, but actually we don't
- * need to check this value, so in our version this function doesn't return any
- * value.
- */
 static void
-ext2_half_md4(uint32_t hash[4], uint32_t data[8])
-{
-	uint32_t a = hash[0], b = hash[1], c = hash[2], d = hash[3];
-
-	/* Round 1 */
-	FF(a, b, c, d, data[0],  3);
-	FF(d, a, b, c, data[1],  7);
-	FF(c, d, a, b, data[2], 11);
-	FF(b, c, d, a, data[3], 19);
-	FF(a, b, c, d, data[4],  3);
-	FF(d, a, b, c, data[5],  7);
-	FF(c, d, a, b, data[6], 11);
-	FF(b, c, d, a, data[7], 19);
-
-	/* Round 2 */
-	GG(a, b, c, d, data[1],  3);
-	GG(d, a, b, c, data[3],  5);
-	GG(c, d, a, b, data[5],  9);
-	GG(b, c, d, a, data[7], 13);
-	GG(a, b, c, d, data[0],  3);
-	GG(d, a, b, c, data[2],  5);
-	GG(c, d, a, b, data[4],  9);
-	GG(b, c, d, a, data[6], 13);
-
-	/* Round 3 */
-	HH(a, b, c, d, data[3],  3);
-	HH(d, a, b, c, data[7],  9);
-	HH(c, d, a, b, data[2], 11);
-	HH(b, c, d, a, data[6], 15);
-	HH(a, b, c, d, data[1],  3);
-	HH(d, a, b, c, data[5],  9);
-	HH(c, d, a, b, data[0], 11);
-	HH(b, c, d, a, data[4], 15);
-
-	hash[0] += a;
-	hash[1] += b;
-	hash[2] += c;
-	hash[3] += d;
-}
-
-/*
- * Tiny Encryption Algorithm.
- */
-static void
-ext2_tea(uint32_t hash[4], uint32_t data[8])
-{
-	uint32_t tea_delta = 0x9E3779B9;
-	uint32_t sum;
-	uint32_t x = hash[0], y = hash[1];
-	int n = 16;
-	int i = 1;
-
-	while (n-- > 0) {
-		sum = i * tea_delta;
-		x += ((y << 4) + data[0]) ^ (y + sum) ^ ((y >> 5) + data[1]);
-		y += ((x << 4) + data[2]) ^ (x + sum) ^ ((x >> 5) + data[3]);
-		i++;
-	}
-
-	hash[0] += x;
-	hash[1] += y;
-}
-
-static uint32_t
-ext2_legacy_hash(const char *name, int len, int unsigned_char)
-{
-	uint32_t h0, h1 = 0x12A3FE2D, h2 = 0x37ABE8F9;
-	uint32_t multi = 0x6D22F5;
-	const unsigned char *uname = (const unsigned char *)name;
-	const signed char *sname = (const signed char *)name;
-	int val, i;
-
-	for (i = 0; i < len; i++) {
-		if (unsigned_char)
-			val = (u_int)*uname++;
-		else
-			val = (int)*sname++;
-
-		h0 = h2 + (h1 ^ (val * multi));
-		if (h0 & 0x80000000)
-			h0 -= 0x7FFFFFFF;
-		h2 = h1;
-		h1 = h0;
-	}
-
-	return (h1 << 1);
-}
-
-static void
-ext2_prep_hashbuf(const char *src, int slen, uint32_t *dst, int dlen,
+ext2fs_prep_hashbuf(const char *src, int slen, uint32_t *dst, int dlen,
     int unsigned_char)
 {
 	uint32_t padding = slen | (slen << 8) | (slen << 16) | (slen << 24);
@@ -253,8 +135,108 @@ ext2_prep_hashbuf(const char *src, int slen, uint32_t *dst, int dlen,
 	}
 }
 
+static uint32_t
+ext2fs_legacy_hash(const char *name, int len, int unsigned_char)
+{
+	uint32_t h0, h1 = 0x12A3FE2D, h2 = 0x37ABE8F9;
+	uint32_t multi = 0x6D22F5;
+	const unsigned char *uname = (const unsigned char *)name;
+	const signed char *sname = (const signed char *)name;
+	int val, i;
+
+	for (i = 0; i < len; i++) {
+		if (unsigned_char)
+			val = (u_int)*uname++;
+		else
+			val = (int)*sname++;
+
+		h0 = h2 + (h1 ^ (val * multi));
+		if (h0 & 0x80000000)
+			h0 -= 0x7FFFFFFF;
+		h2 = h1;
+		h1 = h0;
+	}
+
+	return h1 << 1;
+}
+
+/*
+ * MD4 basic transformation.  It transforms state based on block.
+ *
+ * This is a half md4 algorithm since Linux uses this algorithm for dir
+ * index.  This function is derived from the RSA Data Security, Inc. MD4
+ * Message-Digest Algorithm and was modified as necessary.
+ *
+ * The return value of this function is uint32_t in Linux, but actually we don't
+ * need to check this value, so in our version this function doesn't return any
+ * value.
+ */
+static void
+ext2fs_half_md4(uint32_t hash[4], uint32_t data[8])
+{
+	uint32_t a = hash[0], b = hash[1], c = hash[2], d = hash[3];
+
+	/* Round 1 */
+	FF(a, b, c, d, data[0],  3);
+	FF(d, a, b, c, data[1],  7);
+	FF(c, d, a, b, data[2], 11);
+	FF(b, c, d, a, data[3], 19);
+	FF(a, b, c, d, data[4],  3);
+	FF(d, a, b, c, data[5],  7);
+	FF(c, d, a, b, data[6], 11);
+	FF(b, c, d, a, data[7], 19);
+
+	/* Round 2 */
+	GG(a, b, c, d, data[1],  3);
+	GG(d, a, b, c, data[3],  5);
+	GG(c, d, a, b, data[5],  9);
+	GG(b, c, d, a, data[7], 13);
+	GG(a, b, c, d, data[0],  3);
+	GG(d, a, b, c, data[2],  5);
+	GG(c, d, a, b, data[4],  9);
+	GG(b, c, d, a, data[6], 13);
+
+	/* Round 3 */
+	HH(a, b, c, d, data[3],  3);
+	HH(d, a, b, c, data[7],  9);
+	HH(c, d, a, b, data[2], 11);
+	HH(b, c, d, a, data[6], 15);
+	HH(a, b, c, d, data[1],  3);
+	HH(d, a, b, c, data[5],  9);
+	HH(c, d, a, b, data[0], 11);
+	HH(b, c, d, a, data[4], 15);
+
+	hash[0] += a;
+	hash[1] += b;
+	hash[2] += c;
+	hash[3] += d;
+}
+
+/*
+ * Tiny Encryption Algorithm.
+ */
+static void
+ext2fs_tea(uint32_t hash[4], uint32_t data[8])
+{
+	uint32_t tea_delta = 0x9E3779B9;
+	uint32_t sum;
+	uint32_t x = hash[0], y = hash[1];
+	int n = 16;
+	int i = 1;
+
+	while (n-- > 0) {
+		sum = i * tea_delta;
+		x += ((y << 4) + data[0]) ^ (y + sum) ^ ((y >> 5) + data[1]);
+		y += ((x << 4) + data[2]) ^ (x + sum) ^ ((x >> 5) + data[3]);
+		i++;
+	}
+
+	hash[0] += x;
+	hash[1] += y;
+}
+
 int
-ext2_htree_hash(const char *name, int len,
+ext2fs_htree_hash(const char *name, int len,
     uint32_t *hash_seed, int hash_version,
     uint32_t *hash_major, uint32_t *hash_minor)
 {
@@ -264,7 +246,7 @@ ext2_htree_hash(const char *name, int len,
 	int unsigned_char = 0;
 
 	if (!name || !hash_major)
-		return (-1);
+		return -1;
 
 	if (len < 1 || len > 255)
 		goto error;
@@ -283,8 +265,8 @@ ext2_htree_hash(const char *name, int len,
 		/* FALLTHROUGH */
 	case EXT2_HTREE_TEA:
 		while (len > 0) {
-			ext2_prep_hashbuf(name, len, data, 16, unsigned_char);
-			ext2_tea(hash, data);
+			ext2fs_prep_hashbuf(name, len, data, 16, unsigned_char);
+			ext2fs_tea(hash, data);
 			len -= 16;
 			name += 16;
 		}
@@ -295,15 +277,15 @@ ext2_htree_hash(const char *name, int len,
 		unsigned_char = 1;
 		/* FALLTHROUGH */
 	case EXT2_HTREE_LEGACY:
-		major = ext2_legacy_hash(name, len, unsigned_char);
+		major = ext2fs_legacy_hash(name, len, unsigned_char);
 		break;
 	case EXT2_HTREE_HALF_MD4_UNSIGNED:
 		unsigned_char = 1;
 		/* FALLTHROUGH */
 	case EXT2_HTREE_HALF_MD4:
 		while (len > 0) {
-			ext2_prep_hashbuf(name, len, data, 32, unsigned_char);
-			ext2_half_md4(hash, data);
+			ext2fs_prep_hashbuf(name, len, data, 32, unsigned_char);
+			ext2fs_half_md4(hash, data);
 			len -= 32;
 			name += 32;
 		}
@@ -311,7 +293,6 @@ ext2_htree_hash(const char *name, int len,
 		minor = hash[2];
 		break;
 	default:
-		//SDT_PROBE2(ext2fs, , trace, hash, 1, "unexpected hash version");
 		goto error;
 	}
 
@@ -322,11 +303,11 @@ ext2_htree_hash(const char *name, int len,
 	if (hash_minor)
 		*hash_minor = minor;
 
-	return (0);
+	return 0;
 
 error:
 	*hash_major = 0;
 	if (hash_minor)
 		*hash_minor = 0;
-	return (-1);
+	return -1;
 }

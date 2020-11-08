@@ -173,7 +173,6 @@ ext2_bmaparray(vnode_t vp, ext2_daddr_t bn,
             panic("ext2_bmaparray: indirect block not in cache");
 #endif
 
-//		copyout(<#const void *kaddr#>, <#user_addr_t udaddr#>, <#size_t len#>)
         if (!buf_valid(bp)) {
             buf_setblkno(bp, (daddr64_t)blkptrtodb(ump, daddr));
             buf_setflags(bp, B_READ);

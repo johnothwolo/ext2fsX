@@ -49,7 +49,7 @@ static const char niwhatid[] __attribute__ ((unused)) =
    This macro expects the in core superblock. */
 #define EXT3_BLOCK_SIZE_BITS(s) ((s)->s_blocksize_bits)
 
-#define super_block ext2_sb_info
+#define super_block m_ext2fs
 #define i_sb i_e2fs
 #define s_id fs_fsmnt
 

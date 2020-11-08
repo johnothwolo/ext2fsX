@@ -73,12 +73,9 @@ static int ext2_indirtrunc(struct inode *, int32_t, int32_t, int32_t, int,
  * IN_LAZYMOD to reflect the presumably successful write, and if waitfor is
  * set, then wait for the write to complete.
  */
-int
-ext2_update(
-	vnode_t vp,
-	int waitfor)
+int ext2_update(vnode_t vp, int waitfor)
 {
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 	buf_t  bp;
 	struct inode *ip;
 	int error;
@@ -133,7 +130,7 @@ ext2_truncate(
 	struct inode *oip;
 	int32_t bn, lbn, lastiblock[NIADDR], indir_lbn[NIADDR];
 	int32_t oldblks[NDADDR + NIADDR], newblks[NDADDR + NIADDR];
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 	buf_t  bp;
 	int offset, size, level;
 	long count, nblocks, blocksreleased = 0;
@@ -316,7 +313,7 @@ ext2_truncate(
 			blocksreleased += count;
 			if (lastiblock[level] < 0) {
 				oip->i_ib[level] = 0;
-				ext2_blkfree(oip, bn, fs->s_frag_size);
+				ext2_blkfree(oip, bn, fs->e2fs_fsize);
 				blocksreleased += nblocks;
 			}
 		}
@@ -413,7 +410,7 @@ ext2_indirtrunc(
 	long *countp)
 {
 	buf_t  bp;
-	struct ext2_sb_info *fs = ip->i_e2fs;
+	struct m_ext2fs *fs = ip->i_e2fs;
 	vnode_t vp;
 	ext2_daddr_t *bap, *copy, nb, nlbn, last;
 	long blkcount, factor;

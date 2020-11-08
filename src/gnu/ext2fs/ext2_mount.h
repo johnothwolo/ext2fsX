@@ -45,7 +45,7 @@ struct ext2mount {
 	dev_t	um_dev;			/* device mounted */
 	vnode_t um_devvp;		/* block device mounted vnode */
 
-	struct	ext2_sb_info *um_e2fs;		/* EXT2FS */
+	struct	m_ext2fs *um_e2fs;		/* EXT2FS */
 #define em_e2fsb um_e2fs->s_es
 
 	u_long	um_nindir;			/* indirect ptrs per block */

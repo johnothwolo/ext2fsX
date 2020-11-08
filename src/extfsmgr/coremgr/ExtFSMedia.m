@@ -84,7 +84,7 @@ static void *e_mediaIconCacheLck = nil;
 
 #ifndef NOEXT2
 struct superblock {
-   struct ext2_super_block *s_es;
+   struct ext2fs *s_es;
 };
 #define e2super e_sb
 #define e2sblock e2super->s_es

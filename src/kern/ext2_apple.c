@@ -90,7 +90,7 @@ ext2_ioctl(struct vnop_ioctl_args *ap)
 } */
 {
    struct inode *ip = VTOI(ap->a_vp);
-   struct ext2_sb_info *fs;
+   struct m_ext2fs *fs;
    int err = 0, super;
    u_int32_t flags, oldflags;
    kauth_cred_t cred = vfs_context_ucred(ap->a_context);
@@ -181,7 +181,7 @@ ext2_ioctl(struct vnop_ioctl_args *ap)
       
       case IOCBASECMD(EXT2_IOC_GETSBLOCK):
          lock_super(fs);
-         bcopy(fs->s_es, ap->a_data, sizeof(struct ext2_super_block));
+         bcopy(fs->s_es, ap->a_data, sizeof(struct ext2fs));
          unlock_super(fs);
       break;
       

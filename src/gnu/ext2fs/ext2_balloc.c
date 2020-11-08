@@ -63,7 +63,7 @@ int
 ext2_balloc2(struct inode *ip, ext2_daddr_t bn,
 	int size, struct ucred *cred, buf_t  *bpp, int flags, int *blk_alloc)
 {
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 	ext2_daddr_t nb;
 	buf_t bp, nbp;
 	vnode_t vp = ITOV(ip);
@@ -329,13 +329,13 @@ ext2_balloc2(struct inode *ip, ext2_daddr_t bn,
 		}
         
         if (alloc_buf) {
-            nbp = buf_getblk(vp, (daddr64_t)lbn, fs->s_blocksize, 0, 0, BLK_WRITE);
+            nbp = buf_getblk(vp, (daddr64_t)lbn, (int)fs->s_blocksize, 0, 0, BLK_WRITE);
             buf_setblkno(nbp, (daddr64_t)fsbtodb(fs, nb));
             if (flags & B_CLRBUF)
                 buf_clear(nbp);
         } /* alloc_buf */
         if (blk_alloc) {
-            *blk_alloc = fs->s_blocksize;
+            *blk_alloc = (int)fs->s_blocksize;
         }
         if (alloc_buf)
             *bpp = nbp;
@@ -354,7 +354,7 @@ ext2_balloc2(struct inode *ip, ext2_daddr_t bn,
                 return (error);
             }
         } else {
-            nbp = buf_getblk(vp, (daddr64_t)lbn, fs->s_blocksize, 0, 0, BLK_WRITE);
+            nbp = buf_getblk(vp, (daddr64_t)lbn, (int)fs->s_blocksize, 0, 0, BLK_WRITE);
             buf_setblkno(nbp, (daddr64_t)fsbtodb(fs, nb));
         }
         *bpp = nbp;

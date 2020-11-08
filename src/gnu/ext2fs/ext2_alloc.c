@@ -59,7 +59,7 @@ static const char whatid[] __attribute__ ((unused)) =
 #include <gnu/ext2fs/ext2_extern.h>
 #include <ext2_byteorder.h>
 
-static void	ext2_fserr(struct ext2_sb_info *, u_int, char *);
+static void	ext2_fserr(struct m_ext2fs *, u_int, char *);
 
 /*
  * Linux calls this functions at the following locations:
@@ -107,7 +107,7 @@ ext2_alloc(struct inode *ip,
 		   struct ucred *cred,
 		   ext2_daddr_t *bnp)
 {
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 	ext2_daddr_t bno;
     mount_t mp = ITOVFS(ip);
 	
@@ -229,7 +229,7 @@ ext2_reallocblks(struct vop_reallocblks_args *ap)
 return ENOSPC;
 #else
 
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 	struct inode *ip;
 	vnode_t vp;
 	buf_t  sbp, ebp;
@@ -382,7 +382,7 @@ int
 ext2_valloc(vnode_t pvp, int mode, evalloc_args_t *vaargsp, vnode_t *vpp)
 {
 	struct inode *pip;
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 	struct inode *ip;
 	ino_t ino;
 	struct timespec ts;
@@ -402,7 +402,7 @@ ext2_valloc(vnode_t pvp, int mode, evalloc_args_t *vaargsp, vnode_t *vpp)
 
 	if (ino == 0)
 		goto noinodes;
-   
+    
 	
 	vaargsp->va_ino = ino;
 	vaargsp->va_flags |= EVALLOC_CREATE;
@@ -420,7 +420,7 @@ ext2_valloc(vnode_t pvp, int mode, evalloc_args_t *vaargsp, vnode_t *vpp)
 	  the question is whether using VGET was such good idea at all -
 	  Linux doesn't read the old inode in when it's allocating a
 	  new one. I will set at least i_size & i_blocks the zero. 
-	*/ 
+	*/
 	IXLOCK(ip);
     ip->i_mode = 0;
 	ip->i_size = 0;
@@ -531,13 +531,13 @@ ext2_blkfree(struct inode *ip,
 			 ext2_daddr_t bno,
 			 long size)
 {
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 
 	fs = ip->i_e2fs;
 	/*
 	 *	call Linux code with mount *, block number, count
 	 */
-	ext2_free_blocks(ITOVFS(ip), bno, size / fs->s_frag_size);
+	ext2_free_blocks(ITOVFS(ip), bno, size / fs->e2fs_fsize);
 }
 
 /*
@@ -550,13 +550,13 @@ ext2_vfree(vnode_t pvp,
 		   ino_t ino,
 		   int mode)
 {
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 	struct inode *pip;
 	mode_t save_i_mode;
 
 	pip = VTOI(pvp);
 	fs = pip->i_e2fs;
-	if ((u_int)ino > fs->s_inodes_per_group * fs->s_groups_count)
+	if ((u_int)ino > fs->e2fs_ipg * fs->s_groups_count)
 		panic("ext2_vfree: range: dev = (%d, %d), ino = %d, fs = %s",
 		    major(pip->i_dev), minor(pip->i_dev), ino, fs->fs_fsmnt);
 
@@ -585,8 +585,9 @@ ext2_vfree(vnode_t pvp,
  *	fs: error message
  */
 static void
-ext2_fserr(struct ext2_sb_info *fs, u_int uid, char *cp)
+ext2_fserr(struct m_ext2fs *fs, u_int uid, char *cp)
 {
 
 	ext2_debug("uid %d on %s: %s\n", uid, fs->fs_fsmnt, cp);
 }
+

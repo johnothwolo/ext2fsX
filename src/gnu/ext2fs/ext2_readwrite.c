@@ -107,7 +107,7 @@ static int ext2_read_internal(vnode_t a_vp, struct uio *a_uio,
 	vnode_t vp;
 	struct inode *ip;
 	struct uio *uio;
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 	buf_t  bp;
 	ext2_daddr_t lbn, nextlbn;
     daddr64_t lbn64;
@@ -236,7 +236,7 @@ static int ext2_write_internal(vnode_t a_vp, struct uio *a_uio,
 	vnode_t vp;
 	uio_t uio;
 	struct inode *ip;
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 	buf_t  bp;
 	ext2_daddr_t lbn;
 	off_t osize;

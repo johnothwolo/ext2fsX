@@ -73,7 +73,7 @@ ext2_blkatoff(vp, offset, res, bpp)
 	buf_t  *bpp;
 {
 	struct inode *ip;
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 	buf_t  bp;
 	ext2_daddr_t lbn;
 	int bsize, error;

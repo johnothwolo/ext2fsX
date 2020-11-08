@@ -79,6 +79,12 @@
 		52D0E3C22450879100670866 /* ext2_extents.h in Headers */ = {isa = PBXBuildFile; fileRef = 52D0E3C12450879100670866 /* ext2_extents.h */; };
 		52D0E3CA245101FC00670866 /* ext2_dinode.h in Headers */ = {isa = PBXBuildFile; fileRef = 52D0E3C8245101FC00670866 /* ext2_dinode.h */; };
 		52D0E3D2245150AF00670866 /* ext2_debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D0E3D1245150AF00670866 /* ext2_debug.c */; };
+		52D6B781254DFA2A00DE52FE /* ext2_htree.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D6B780254DFA2A00DE52FE /* ext2_htree.c */; };
+		52D6B784254DFB7500DE52FE /* ext2_hash.h in Headers */ = {isa = PBXBuildFile; fileRef = 52D6B782254DFB7500DE52FE /* ext2_hash.h */; };
+		52D6B785254DFB7500DE52FE /* ext2_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D6B783254DFB7500DE52FE /* ext2_hash.c */; };
+		52D8D612254FB09D00A3AAF6 /* qsort.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D8D611254FB09D00A3AAF6 /* qsort.c */; };
+		52D8D614254FBE0900A3AAF6 /* ext2_extern.h in Headers */ = {isa = PBXBuildFile; fileRef = 52D8D613254FBE0800A3AAF6 /* ext2_extern.h */; };
+		52D8D616254FBE9500A3AAF6 /* kheapsort.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D8D615254FBE9500A3AAF6 /* kheapsort.c */; };
 		551BADB913C158D400080BD5 /* ext2fs.util in CopyFiles */ = {isa = PBXBuildFile; fileRef = D32B209F09947656001A78A0 /* ext2fs.util */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		551BADBB13C1596300080BD5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D376F3C7040DF6C200A80164 /* InfoPlist.strings */; };
 		5528A0C7153F1F7C00765DA1 /* e2fsck.conf.5 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5528A0C6153F1F7100765DA1 /* e2fsck.conf.5 */; };
@@ -983,6 +989,13 @@
 		52D0E3C12450879100670866 /* ext2_extents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ext2_extents.h; sourceTree = "<group>"; };
 		52D0E3C8245101FC00670866 /* ext2_dinode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ext2_dinode.h; sourceTree = "<group>"; };
 		52D0E3D1245150AF00670866 /* ext2_debug.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ext2_debug.c; sourceTree = "<group>"; };
+		52D6B780254DFA2A00DE52FE /* ext2_htree.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ext2_htree.c; sourceTree = "<group>"; };
+		52D6B782254DFB7500DE52FE /* ext2_hash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ext2_hash.h; sourceTree = "<group>"; };
+		52D6B783254DFB7500DE52FE /* ext2_hash.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ext2_hash.c; sourceTree = "<group>"; };
+		52D6B786254DFBD800DE52FE /* ext2_htree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ext2_htree.h; sourceTree = "<group>"; };
+		52D8D611254FB09D00A3AAF6 /* qsort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = qsort.c; sourceTree = "<group>"; };
+		52D8D613254FBE0800A3AAF6 /* ext2_extern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ext2_extern.h; sourceTree = "<group>"; };
+		52D8D615254FBE9500A3AAF6 /* kheapsort.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = kheapsort.c; sourceTree = "<group>"; };
 		551BAD7D13C157B700080BD5 /* ext2.fs */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ext2.fs; sourceTree = BUILT_PRODUCTS_DIR; };
 		551BAD7E13C157B700080BD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5528A0C6153F1F7100765DA1 /* e2fsck.conf.5 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e2fsck.conf.5; sourceTree = "<group>"; };
@@ -2096,7 +2109,6 @@
 		55FB835313C15EC1006C2DAD /* ext2_alloc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ext2_alloc.c; sourceTree = "<group>"; };
 		55FB835413C15EC1006C2DAD /* ext2_balloc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ext2_balloc.c; sourceTree = "<group>"; };
 		55FB835513C15EC1006C2DAD /* ext2_bmap.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ext2_bmap.c; sourceTree = "<group>"; };
-		55FB835613C15EC1006C2DAD /* ext2_extern.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ext2_extern.h; sourceTree = "<group>"; };
 		55FB835713C15EC1006C2DAD /* ext2_fs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ext2_fs.h; sourceTree = "<group>"; };
 		55FB835813C15EC1006C2DAD /* ext2_fs_sb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ext2_fs_sb.h; sourceTree = "<group>"; };
 		55FB835913C15EC1006C2DAD /* ext2_ihash.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ext2_ihash.c; sourceTree = "<group>"; };
@@ -4625,10 +4637,14 @@
 				55FB835513C15EC1006C2DAD /* ext2_bmap.c */,
 				52D0E3C8245101FC00670866 /* ext2_dinode.h */,
 				52D0E3D1245150AF00670866 /* ext2_debug.c */,
-				55FB835613C15EC1006C2DAD /* ext2_extern.h */,
 				52D0E3C12450879100670866 /* ext2_extents.h */,
+				52D8D613254FBE0800A3AAF6 /* ext2_extern.h */,
 				55FB835713C15EC1006C2DAD /* ext2_fs.h */,
 				55FB835813C15EC1006C2DAD /* ext2_fs_sb.h */,
+				52D6B782254DFB7500DE52FE /* ext2_hash.h */,
+				52D6B783254DFB7500DE52FE /* ext2_hash.c */,
+				52D6B786254DFBD800DE52FE /* ext2_htree.h */,
+				52D6B780254DFA2A00DE52FE /* ext2_htree.c */,
 				55FB835913C15EC1006C2DAD /* ext2_ihash.c */,
 				55FB835A13C15EC1006C2DAD /* ext2_inode.c */,
 				55FB835B13C15EC1006C2DAD /* ext2_inode_cnv.c */,
@@ -4712,6 +4728,8 @@
 				55FB837813C15EC1006C2DAD /* ext2_lockf.c */,
 				55FB837913C15EC1006C2DAD /* ext2_lockf.h */,
 				55FB837A13C15EC1006C2DAD /* linux_namei_compat.c */,
+				52D8D611254FB09D00A3AAF6 /* qsort.c */,
+				52D8D615254FBE9500A3AAF6 /* kheapsort.c */,
 			);
 			path = kern;
 			sourceTree = "<group>";
@@ -4918,6 +4936,8 @@
 			files = (
 				52D0E3CA245101FC00670866 /* ext2_dinode.h in Headers */,
 				52D0E3C22450879100670866 /* ext2_extents.h in Headers */,
+				52D6B784254DFB7500DE52FE /* ext2_hash.h in Headers */,
+				52D8D614254FBE0900A3AAF6 /* ext2_extern.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5790,8 +5810,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				55F641AB153652D500F6E73D /* ext2_alloc.c in Sources */,
+				52D8D616254FBE9500A3AAF6 /* kheapsort.c in Sources */,
 				55F641AC153652FA00F6E73D /* ext2_balloc.c in Sources */,
 				55F641AD153652FA00F6E73D /* ext2_bmap.c in Sources */,
+				52D8D612254FB09D00A3AAF6 /* qsort.c in Sources */,
 				55F641AE153652FA00F6E73D /* ext2_ihash.c in Sources */,
 				55F641AF153652FB00F6E73D /* ext2_inode.c in Sources */,
 				52D0E3D2245150AF00670866 /* ext2_debug.c in Sources */,
@@ -5799,12 +5821,14 @@
 				55F641B1153652FB00F6E73D /* ext2_linux_balloc.c in Sources */,
 				55F641B2153652FB00F6E73D /* ext2_linux_ialloc.c in Sources */,
 				55F641B3153652FB00F6E73D /* ext2_lookup.c in Sources */,
+				52D6B785254DFB7500DE52FE /* ext2_hash.c in Sources */,
 				55F641B4153652FB00F6E73D /* ext2_subr.c in Sources */,
 				55F641B5153652FB00F6E73D /* ext2_vfsops.c in Sources */,
 				55F641B6153652FB00F6E73D /* ext2_vnops.c in Sources */,
 				55F641B71536530600F6E73D /* hash.c in Sources */,
 				55F641B81536530A00F6E73D /* super.c in Sources */,
 				55F641B91536530F00F6E73D /* rbtree.c in Sources */,
+				52D6B781254DFA2A00DE52FE /* ext2_htree.c in Sources */,
 				55F641E21536982D00F6E73D /* ext2_apple.c in Sources */,
 				55F641E3153698C600F6E73D /* ext2_io_apple.c in Sources */,
 			);
@@ -7373,6 +7397,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/src\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -7457,6 +7482,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/src\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CFLAGS = (
 					"-DHAVE_STDLIB_H",

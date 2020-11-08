@@ -171,7 +171,7 @@ do { \
 				 (s)->s_first_ino)
 #endif
 #else /* !notyet */
-#define	EXT2_INODES_PER_BLOCK(s)	((s)->s_inodes_per_block)
+#define	EXT2_INODES_PER_BLOCK(s)	((s)->e2fs_ipb)
 /* Should be sizeof(struct ext2_inode): */
 #define EXT2_INODE_SIZE			128
 #define EXT2_FIRST_INO			11
@@ -188,7 +188,7 @@ do { \
 # define EXT2_FRAGS_PER_BLOCK(s)	((s)->u.ext2_sb.s_frags_per_block)
 #else
 # if defined(_KERNEL) && (defined(__FreeBSD__) || defined(APPLE))
-# define EXT2_FRAG_SIZE(s)		((s)->s_frag_size)
+# define EXT2_FRAG_SIZE(s)		((s)->e2fs_fsize)
 # else
 # define EXT2_FRAG_SIZE(s)		(EXT2_MIN_FRAG_SIZE << (s)->s_log_frag_size)
 # endif
@@ -245,9 +245,9 @@ struct ext2_group_desc
 # define EXT2_INODES_PER_GROUP(s)	((s)->u.ext2_sb.s_inodes_per_group)
 # define EXT2_DESC_PER_BLOCK_BITS(s)	((s)->u.ext2_sb.s_desc_per_block_bits)
 #else
-# define EXT2_BLOCKS_PER_GROUP(s)	((s)->s_blocks_per_group)
+# define EXT2_BLOCKS_PER_GROUP(s)	((s)->e2fs_bpg)
 # define EXT2_DESC_PER_BLOCK(s)		(EXT2_BLOCK_SIZE(s) / sizeof (struct ext2_group_desc))
-# define EXT2_INODES_PER_GROUP(s)	((s)->s_inodes_per_group)
+# define EXT2_INODES_PER_GROUP(s)	((s)->e2fs_ipg)
 #endif
 
 /*
@@ -298,7 +298,7 @@ struct ext2_group_desc
 #define	EXT2_IOC_SETVERSION		_IOW('v', 2, long)
 /* Darwin only */
 #ifdef __APPLE__
-#define	EXT2_IOC_GETSBLOCK	_IOR('s', 1, struct ext2_super_block)
+#define	EXT2_IOC_GETSBLOCK	_IOR('s', 1, struct ext2fs)
 #endif
 
 /*
@@ -494,9 +494,9 @@ struct ext2_inode_large {
 /*
  * Structure of the super block
  */
-#define ext3_super_block ext2_super_block
+#define ext3_super_block ext2fs
 #define ext4_super_block ext3_super_block
-struct ext2_super_block {
+struct ext2fs {
 	__u32	s_inodes_count;		/* Inodes count */
 	__u32	s_blocks_count;		/* Blocks count */
 	__u32	s_r_blocks_count;	/* Reserved blocks (for superuser) count */

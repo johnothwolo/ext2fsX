@@ -37,19 +37,19 @@
 /*
  * second extended-fs super-block data in memory
  */
-struct ext2_sb_info {
-	unsigned long s_frag_size;	/* Size of a fragment in bytes */
-	unsigned long s_frags_per_block;/* Number of fragments per block */
-	unsigned long s_inodes_per_block;/* Number of inodes per block */
-	unsigned long s_frags_per_group;/* Number of fragments in a group */
-	unsigned long s_blocks_per_group;/* Number of blocks in a group */
-	unsigned long s_inodes_per_group;/* Number of inodes in a group */
-	unsigned long s_itb_per_group;	/* Number of inode table blocks per group */
-	unsigned long s_db_per_group;	/* Number of descriptor blocks per group */
+struct m_ext2fs {
+	unsigned long e2fs_fsize;	/* Size of a fragment in bytes */
+	unsigned long e2fs_fpb;/* Number of fragments per block */
+	unsigned long e2fs_ipb;/* Number of inodes per block */
+	unsigned long e2fs_fpg;/* Number of fragments in a group */
+	unsigned long e2fs_bpg;/* Number of blocks in a group */
+	unsigned long e2fs_ipg;/* Number of inodes in a group */
+	unsigned long e2fs_itpg;	/* Number of inode table blocks per group */
+	unsigned long e2fs_dbpg;	/* Number of descriptor blocks per group */
 	unsigned long s_desc_per_block;	/* Number of group descriptors per block */
 	unsigned long s_groups_count;	/* Number of groups in the fs */
 	struct buffer_head * s_sbh;	/* Buffer containing the super block */
-	struct ext2_super_block * s_es;	/* Pointer to the super block in the buffer */
+	struct ext2fs * s_es;	/* Pointer to the super block in the buffer */
 	buf_t* s_group_desc;
 	unsigned short s_loaded_inode_bitmaps;
 	unsigned short s_loaded_block_bitmaps;
@@ -57,7 +57,6 @@ struct ext2_sb_info {
 	buf_t s_inode_bitmap[EXT2_MAX_GROUP_LOADED];
 	unsigned long s_block_bitmap_number[EXT2_MAX_GROUP_LOADED];
 	buf_t s_block_bitmap[EXT2_MAX_GROUP_LOADED];
-	int s_rename_lock;
 	unsigned long  s_mount_opt;
 	unsigned short s_resuid;
 	unsigned short s_resgid;
@@ -84,12 +83,13 @@ struct ext2_sb_info {
    lck_mtx_t *s_lock; /* lock to protect access to in core sb */
    uid_t s_uid_noperm; /* used when mounted w/o permissions in effect */
    gid_t s_gid_noperm; /* ditto */
+   int32_t  s_uhash;	  /* 3 if hash should be signed, 0 if not */
 
 	char    fs_fsmnt[MAXMNTLEN];            /* name mounted on */
 };
 
 static inline int
-e2fs_overflow(struct ext2_sb_info *fs, off_t lower, off_t value)
+e2fs_overflow(struct m_ext2fs *fs, off_t lower, off_t value)
 {
 	return (value < lower || value > fs->s_maxfilesize);
 }

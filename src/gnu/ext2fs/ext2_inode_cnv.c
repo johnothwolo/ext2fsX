@@ -65,12 +65,12 @@ static const char whatid[] __attribute__ ((unused)) =
 #include "ext2_apple.h"
 #endif
 
-#include "gnu/ext2fs/fs.h"
-#include "gnu/ext2fs/inode.h"
-#include "gnu/ext2fs/ext2_fs.h"
-#include "gnu/ext2fs/ext2_fs_sb.h"
-#include "gnu/ext2fs/ext2_extern.h"
-#include "gnu/ext2fs/ext2_mount.h"
+#include <gnu/ext2fs/fs.h>
+#include <gnu/ext2fs/inode.h>
+#include <gnu/ext2fs/ext2_fs.h>
+#include <gnu/ext2fs/ext2_fs_sb.h>
+#include <gnu/ext2fs/ext2_extern.h>
+#include <gnu/ext2fs/ext2_mount.h>
 #include "ext2_byteorder.h"
 
 void
@@ -99,9 +99,7 @@ ext2_print_inode(struct inode *in){
  *	raw ext2 inode to inode
  */
 void
-ext2_ei2i(ei, ip)
-	struct ext2_inode *ei;
-	struct inode *ip;
+ext2_ei2i(struct ext2_inode *ei, struct inode *ip)
 {
         int i;
 
@@ -162,9 +160,7 @@ ext2_ei2i(ei, ip)
  *	inode to raw ext2 inode
  */
 void
-ext2_i2ei(ip, ei)
-	struct inode *ip;
-	struct ext2_inode *ei;
+ext2_i2ei(struct inode *ip,struct ext2_inode *ei)
 {
 	int i;
 
@@ -222,7 +218,7 @@ ext2_i2ei(ip, ei)
    if (S_ISREG(ip->i_mode)) {
       ei->i_size_high = cpu_to_le32(ip->i_size >> 32);
       if (ip->i_size > 0x7fffffffULL) {
-         struct ext2_sb_info *sb = ip->i_e2fs;
+         struct m_ext2fs *sb = ip->i_e2fs;
          if (!EXT2_HAS_RO_COMPAT_FEATURE(sb,
             EXT2_FEATURE_RO_COMPAT_LARGE_FILE) ||
             EXT2_SB(sb)->s_es->s_rev_level == cpu_to_le32(EXT2_GOOD_OLD_REV)) {

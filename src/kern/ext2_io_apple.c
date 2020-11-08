@@ -145,7 +145,7 @@ ext2_pageout(struct vnop_pageout_args *ap)
 	vm_offset_t pl_offset = ap->a_pl_offset;
 	int flags  = ap->a_flags;
 	register struct inode *ip;
-	register struct ext2_sb_info *fs;
+	register struct m_ext2fs *fs;
 	int error ;
 	int devBlockSize;
 	size_t xfer_size = 0;
@@ -262,7 +262,7 @@ static int
 ext2_blkalloc(register struct inode *ip, int32_t lbn, int size,
 			  struct ucred *cred, int flags)
 {
-	register struct ext2_sb_info *fs;
+	register struct m_ext2fs *fs;
 	register int32_t nb;
 	buf_t  bp, nbp;
 	vnode_t vp = ITOV(ip);
@@ -518,7 +518,7 @@ ext2_blktooff (struct vnop_blktooff_args *ap)
 {
    
    struct inode *ip;
-   struct ext2_sb_info *fs;
+   struct m_ext2fs *fs;
    /*typeof(ap->a_lblkno)*/ daddr64_t bn = ap->a_lblkno;
    
    ext2_trace_enter();
@@ -539,7 +539,7 @@ __private_extern__ int
 ext2_offtoblk (struct vnop_offtoblk_args *ap)
 {
    struct inode *ip;
-   struct ext2_sb_info *fs;
+   struct m_ext2fs *fs;
    
    ext2_trace_enter();
    
@@ -577,7 +577,7 @@ ext2_blockmap(struct vnop_blockmap_args *ap)
 	int nblks;
 	register struct inode *ip;
 	int devBlockSize;
-	struct ext2_sb_info *fs;
+	struct m_ext2fs *fs;
 	int retsize=0;
 	int error;
 

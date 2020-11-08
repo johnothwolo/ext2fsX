@@ -82,9 +82,9 @@ __private_extern__ int dirchk = 0;
 
 __private_extern__ u_int32_t lookcacheinval = 0;
 
-SYSCTL_NODE(_vfs, OID_AUTO, e2fs, CTLFLAG_RD, 0, "EXT2FS filesystem");
-SYSCTL_INT(_vfs_e2fs, OID_AUTO, dircheck, CTLFLAG_RW, &dirchk, 0, "");
-SYSCTL_UINT(_vfs_e2fs, OID_AUTO, lookcacheinval, CTLFLAG_RD, &lookcacheinval, 0, "");
+//SYSCTL_NODE(_vfs, OID_AUTO, e2fs, CTLFLAG_RD, 0, "EXT2FS filesystem");
+//SYSCTL_INT(_vfs_e2fs, OID_AUTO, dircheck, CTLFLAG_RW, &dirchk, 0, "");
+//SYSCTL_UINT(_vfs_e2fs, OID_AUTO, lookcacheinval, CTLFLAG_RD, &lookcacheinval, 0, "");
 
 /* 
    DIRBLKSIZE in ffs is DEV_BSIZE (in most cases 512)
@@ -563,13 +563,13 @@ int ext2_lookupi(vnode_t vdp, vnode_t *vpp, struct componentname *cnp, vfs_conte
     
     dp->i_lastnamei = nameiop;
 
-//   /*
-//   * Try to lookup dir entry using htree directory index.
-//   *
-//   * If we got an error or we want to find '.' or '..' entry,
-//   * we will fall back to linear search.
-//   */
-//	if (!ext2_is_dot_entry(cnp) && ext2_htree_has_idx(dp)) {
+   /*
+   * Try to lookup dir entry using htree directory index.
+   *
+   * If we got an error or we want to find '.' or '..' entry,
+   * we will fall back to linear search.
+   */
+//	if (!ext2_is_dot_entry(cnp) && is_dx(dp)) {
 //		switch (ext2_htree_lookup(dp, cnp->cn_nameptr, cnp->cn_namelen,
 //			&bp, &entryoffsetinblock, &dp->i_offset, &prevoff,
 //			&enduseful, &ss)) {
@@ -589,9 +589,9 @@ int ext2_lookupi(vnode_t vdp, vnode_t *vpp, struct componentname *cnp, vfs_conte
 //					break;
 //		}
 //	}
-//
-//
-//
+
+
+
    if (is_dx(dp)) {
       struct dentry dentry, dparent = {NULL, {NULL, 0}, dp};
       /* For some reason, ext3_dx_find_entry() doesn't handle
@@ -599,7 +599,7 @@ int ext2_lookupi(vnode_t vdp, vnode_t *vpp, struct componentname *cnp, vfs_conte
       if ((1 == cnp->cn_namelen && !strncmp(cnp->cn_nameptr, ".", 1)) ||
          (2 == cnp->cn_namelen && !strncmp(cnp->cn_nameptr, "..", 2)))
          goto dx_fallback;
-      
+
       dentry.d_parent = &dparent;
       dentry.d_name.name = cnp->cn_nameptr;
       dentry.d_name.len = cnp->cn_namelen;
@@ -1027,13 +1027,13 @@ found:
 
 
 int
-ext2_lookup(
-	struct vnop_lookup_args /* {
-		vnode_t a_dvp;
-		vnode_t *a_vpp;
-		struct componentname *a_cnp;
-        vfs_context_t a_context;
-	} */ *ap)
+ext2_lookup(struct vnop_lookup_args *ap)
+/* {
+	vnode_t a_dvp;
+	vnode_t *a_vpp;
+	struct componentname *a_cnp;
+	vfs_context_t a_context;
+} */
 {
 	*ap->a_vpp = NULL;
     
@@ -1189,7 +1189,7 @@ ext2_direnter(struct inode *ip,
 	off_t spacefree;
 	char *dirbuf;
 	uint64_t     DIRBLKSIZ = ip->i_e2fs->s_blocksize;
-    struct ext2_sb_info *fs;
+    struct m_ext2fs *fs;
     int dx_fallback = 0;
     struct dentry dentry, dparent = {NULL, {NULL, 0}, NULL};
     handle_t h = {cnp, context};
@@ -1198,8 +1198,7 @@ ext2_direnter(struct inode *ip,
     fs = dp->i_e2fs;
 	newdir.inode = cpu_to_le32(ip->i_number);
 	newdir.name_len = cnp->cn_namelen;
-	if (EXT2_HAS_INCOMPAT_FEATURE(ip->i_e2fs,
-	    EXT2_FEATURE_INCOMPAT_FILETYPE))
+	if (EXT2_HAS_INCOMPAT_FEATURE(ip->i_e2fs, EXT2_FEATURE_INCOMPAT_FILETYPE))
 		newdir.file_type = DTTOFT(IFTODT(ip->i_mode));
 	else
 		newdir.file_type = EXT2_FT_UNKNOWN;
@@ -1953,4 +1952,99 @@ ext2_search_dirblock(struct inode *ip, void *data, int *foundp,
 	}
 
 	return (0);
+}
+
+/*
+ * Insert an entry into the directory block.
+ * Compact the contents.
+ */
+
+int
+ext2fs_add_entry(struct vnode* dvp, struct ext2fs_direct *entry,
+	size_t newentrysize)
+{
+	struct ext2fs_direct_2 *ep, *nep;
+	struct inode *dp;
+	struct buf *bp;
+	u_int dsize;
+	int error, loc, spacefree;
+	char *dirbuf;
+
+	dp = VTOI(dvp);
+
+	/*
+	 * If dp->i_count is non-zero, then namei found space
+	 * for the new entry in the range dp->i_offset to
+	 * dp->i_offset + dp->i_count in the directory.
+	 * To use this space, we may have to compact the entries located
+	 * there, by copying them together towards the beginning of the
+	 * block, leaving the free space in one usable chunk at the end.
+	 */
+
+	/*
+	 * Increase size of directory if entry eats into new space.
+	 * This should never push the size past a new multiple of
+	 * DIRBLKSIZE.
+	 *
+	 * N.B. - THIS IS AN ARTIFACT OF 4.2 AND SHOULD NEVER HAPPEN.
+	 */
+	if (dp->i_offset + dp->i_count > dp->i_size)
+		dp->i_size = dp->i_offset + dp->i_count;
+	/*
+	 * Get the block containing the space for the new directory entry.
+	 */
+	if ((error = ext2_blkatoff(dvp, (off_t)dp->i_offset, &dirbuf,
+	    &bp)) != 0)
+		ext2_trace_return (error);
+	/*
+	 * Find space for the new entry. In the simple case, the entry at
+	 * offset base will have the space. If it does not, then namei
+	 * arranged that compacting the region dp->i_offset to
+	 * dp->i_offset + dp->i_count would yield the
+	 * space.
+	 */
+//	newentrysize = EXT2_DIR_REC_LEN(entry->e2d_namlen);
+	ep = (struct ext2fs_direct_2 *)dirbuf;
+	dsize = EXT2_DIR_REC_LEN(ep->e2d_namlen);
+	spacefree = ep->e2d_reclen - dsize;
+	for (loc = ep->e2d_reclen; loc < dp->i_count; ) {
+		nep = (struct ext2fs_direct_2 *)(dirbuf + loc);
+		if (ep->e2d_ino) {
+			/* trim the existing slot */
+			ep->e2d_reclen = dsize;
+			ep = (struct ext2fs_direct_2 *)((char *)ep + dsize);
+		} else {
+			/* overwrite; nothing there; header is ours */
+			spacefree += dsize;
+		}
+		dsize = EXT2_DIR_REC_LEN(nep->e2d_namlen);
+		spacefree += nep->e2d_reclen - dsize;
+		loc += nep->e2d_reclen;
+		bcopy((caddr_t)nep, (caddr_t)ep, dsize);
+	}
+	/*
+	 * Update the pointer fields in the previous entry (if any),
+	 * copy in the new entry, and write out the block.
+	 */
+	if (ep->e2d_ino == 0) {
+		if (spacefree + dsize < newentrysize)
+			panic("ext2_direnter: compact1");
+		entry->e2d_reclen = spacefree + dsize;
+	} else {
+		if (spacefree < newentrysize)
+			panic("ext2_direnter: compact2");
+		entry->e2d_reclen = spacefree;
+		ep->e2d_reclen = dsize;
+		ep = (struct ext2fs_direct_2 *)((char *)ep + dsize);
+	}
+	bcopy((caddr_t)entry, (caddr_t)ep, (u_int)newentrysize);
+//	ext2_dirent_csum_set(dp, (struct ext2fs_direct_2 *)buf_dataptr(bp));
+	if ((vfs_flags(vnode_mount(dvp)) & MNT_ASYNC) != 0) {
+		buf_bdwrite(bp);
+		error = 0;
+	} else {
+		error = buf_bwrite(bp);
+	}
+	dp->i_flag |= IN_CHANGE | IN_UPDATE;
+	ext2_trace_return (error);
 }

@@ -117,14 +117,14 @@
 	((loc) >> (fs->s_bshift))
 
 #define fragroundup(fs, size)	/* calculates roundup(size, fs->fs_fsize) */ \
-	roundup(size, fs->s_frag_size)
+	roundup(size, fs->e2fs_fsize)
 	/* was (((size) + (fs)->fs_qfmask) & (fs)->fs_fmask) */
 
 /*
  * Determining the size of a file block in the file system.
  * easy w/o fragments
  */
-#define blksize(fs, ip, lbn) ((fs)->s_frag_size)
+#define blksize(fs, ip, lbn) ((fs)->e2fs_fsize)
 
 /*
  * INOPB is the number of inodes in a secondary storage block.

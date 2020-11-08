@@ -49,7 +49,7 @@
 struct dx_hash_info;
 struct dir_private_info;
 struct ext2_inode;
-struct ext2_sb_info;
+struct m_ext2fs;
 struct ext2_dir_entry_2;
 struct indir;
 struct inode;
@@ -126,9 +126,19 @@ int	ext2_inactive(struct vnop_inactive_args *);
 int	ext2_htree_has_idx(struct inode *);
 int	ext2_htree_hash(const char *, int, uint32_t *, int, uint32_t *,
 uint32_t *);
+int	ext2_htree_add_entry(struct vnode *, struct ext2fs_direct_2 *,
+	    struct componentname *, vfs_context_t ctx);
+int	ext2_htree_create_index(struct vnode *, struct componentname *,
+	    struct ext2fs_direct_2 *, vfs_context_t ctx);
 //int	ext2_is_dirent_tail(struct inode *, struct ext2_dir_entry_2 *);
-int	ext2_htree_lookup(struct inode *, const char *, int, struct buf **, int *, doff_t *, doff_t *, doff_t *, struct ext2fs_searchslot *);
+//int	ext2_htree_lookup(struct inode *ip, const char *name, int namelen, struct buf **bpp, int *entryoffp, doff_t *offp, doff_t *prevoffp, doff_t *endusefulp, struct ext2fs_searchslot *ss);
 int	ext2_search_dirblock(struct inode *, void *, int *, const char *, int, int *, doff_t *, doff_t *, doff_t *, struct ext2fs_searchslot *);
+int ext2fs_add_entry(struct vnode* dvp, struct ext2fs_direct *entry,
+					 size_t newentrysize);
+int ext2fs_htree_hash(const char *name, int len,
+    uint32_t *hash_seed, int hash_version,
+				  uint32_t *hash_major, uint32_t *hash_minor);
+
 uint64_t	ext2_gd_get_i_tables(struct ext2_group_desc *);
 int	ext2_new_block(mount_t   mp, unsigned long goal,
 	    u_int32_t *prealloc_count, u_int32_t *prealloc_block);
@@ -139,14 +149,14 @@ void	ext2_free_blocks(mount_t  mp, unsigned long block,
 void	ext2_free_inode(struct inode * inode);
 
 /* ext3_super.c */
-extern void __ext3_std_error (struct ext2_sb_info *, const char *, int);
+extern void __ext3_std_error (struct m_ext2fs *, const char *, int);
 #define ext3_std_error(sb, errno) \
 do { \
 	if ((errno)) \
 		__ext3_std_error((sb), __FUNCTION__, (errno)); \
 } while (0)
-extern void ext3_warning (struct ext2_sb_info *, const char *, const char *, ...);
-extern void ext3_update_dynamic_rev(struct ext2_sb_info *);
+extern void ext3_warning (struct m_ext2fs *, const char *, const char *, ...);
+extern void ext3_update_dynamic_rev(struct m_ext2fs *);
 
 /* ext3_dx.c */
 extern int ext3_htree_store_dirent(vnode_t dir_file, __u32 hash,
@@ -179,6 +189,8 @@ static __inline__ int ext2_balloc(struct inode *ip,
 int
 ext2_vget_internal(mount_t mp, evalloc_args_t *valloc_args,
 				   vnode_t *vpp, vfs_context_t context);
+
+int kheapsort(void *vbase_heapsort, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
 
 /* Sysctl OID numbers. */
 #define EXT2_SYSCTL_INT_DIRCHECK 3

@@ -552,13 +552,13 @@ ext2_getattr(
  * Set attribute vnode op. called from several syscalls
  */
 static int
-ext2_setattr(
-	struct vnop_setattr_args /* {
+ext2_setattr(struct vnop_setattr_args *ap)
+	/* {
 		vnode_t a_vp;
 		struct vattr *a_vap;
 		ucred_ta_cred;
 		proc_ta_td;
-	} */ *ap)
+	} */
 {
 	struct vnode_attr *vap = ap->a_vap;
 	vnode_t vp = ap->a_vp;
@@ -2064,9 +2064,10 @@ ext2_vinit(mount_t  mntp, evinit_args_t *args, vnode_t *vpp)
     if (0 == (args->vi_flags & EXT2_VINIT_INO_LCKD))
         IULOCK(ip);
     
-    if (VNON == vfsargs.vnfs_vtype)
+	if (VNON == vfsargs.vnfs_vtype){
+		ext2_debug("got mode %d", ip->i_mode);
         return (ENOENT);
-    
+	}
     switch(vfsargs.vnfs_vtype) {
 	case VCHR:
 	case VBLK:
