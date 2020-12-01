@@ -190,8 +190,9 @@ int EVOP_DEVBLOCKSIZE(vnode_t vp, u_int32_t *size, vfs_context_t ctx) {
 
 /* vnode_t */
 /* XXX Is this really a correct assumption? */
-#define UBCINFOEXISTS(vp) (VREG == vnode_vtype((vp)))
-#define UBCISVALID(vp) (VREG == vnode_vtype((vp)))
+/* ubc_getcred() returns NOCRED if the UBCINFOEXISTS(vp) is false */
+#define UBCINFOEXISTS(vp) (VREG == vnode_vtype((vp)) && ubc_getcred((vp)) != NOCRED)
+#define UBCISVALID(vp) (UBCINFOEXISTS((vp)))
 
 /* FreeBSD emulation support */
 

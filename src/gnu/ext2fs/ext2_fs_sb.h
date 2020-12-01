@@ -48,6 +48,7 @@ struct m_ext2fs {
 	unsigned long e2fs_dbpg;	/* Number of descriptor blocks per group */
 	unsigned long s_desc_per_block;	/* Number of group descriptors per block */
 	unsigned long s_groups_count;	/* Number of groups in the fs */
+	unsigned long e2fs_isize;	  /* Size of inode */
 	struct buffer_head * s_sbh;	/* Buffer containing the super block */
 	struct ext2fs * s_es;	/* Pointer to the super block in the buffer */
 	buf_t* s_group_desc;

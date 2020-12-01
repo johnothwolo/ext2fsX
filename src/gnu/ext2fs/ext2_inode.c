@@ -106,8 +106,8 @@ int ext2_update(vnode_t vp, int waitfor)
 	if (waitfor && (vfs_flags(vnode_mount(vp)) & MNT_ASYNC) == 0)
 		return (buf_bwrite(bp));
    
-   buf_bdwrite(bp);
-   return (0);
+	buf_bdwrite(bp);
+	ext2_trace_return (0);
 }
 
 #define	SINGLE	0	/* index of single indirect block */
@@ -537,11 +537,11 @@ ext2_indirtrunc(
  *	discard preallocated blocks
  */
 int
-ext2_inactive(
-        struct vnop_inactive_args /* {
+ext2_inactive(struct vnop_inactive_args *ap)
+	/* {
 		vnode_t a_vp;
 		vfs_context_t a_context;
-	} */ *ap)
+	} */
 {
 	vnode_t vp = ap->a_vp;
 	struct inode *ip = VTOI(vp);

@@ -1648,7 +1648,7 @@ ext2_strategy(struct vnop_strategy_args *ap)
 	} */
 {
 	struct inode *ip = VTOI(buf_vnode(ap->a_bp));
-    return (buf_strategy(ip->i_devvp, ap));
+    ext2_trace_return (buf_strategy(ip->i_devvp, ap));
 }
 
 #if 0

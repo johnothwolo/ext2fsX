@@ -174,6 +174,7 @@ do { \
 #define	EXT2_INODES_PER_BLOCK(s)	((s)->e2fs_ipb)
 /* Should be sizeof(struct ext2_inode): */
 #define EXT2_INODE_SIZE			128
+#define EXT2_INODE_SIZE_GET(fs)	(fs)->e2fs_isize
 #define EXT2_FIRST_INO			11
 #endif /* notyet */
 

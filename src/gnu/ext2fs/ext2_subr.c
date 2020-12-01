@@ -49,6 +49,7 @@
 
 #include <gnu/ext2fs/inode.h>
 #include <gnu/ext2fs/ext2_extern.h>
+#include <gnu/ext2fs/ext2_fs.h>
 #include <gnu/ext2fs/ext2_fs_sb.h>
 #include <gnu/ext2fs/fs.h>
 
@@ -66,11 +67,7 @@ void	ext2_checkoverlap(buf_t  , struct inode *);
  * remaining space in the directory.
  */
 int
-ext2_blkatoff(vp, offset, res, bpp)
-	vnode_t vp;
-	off_t offset;
-	char **res;
-	buf_t  *bpp;
+ext2_blkatoff(vnode_t vp, off_t offset, char **res, buf_t *bpp)
 {
 	struct inode *ip;
 	struct m_ext2fs *fs;
@@ -84,6 +81,8 @@ ext2_blkatoff(vp, offset, res, bpp)
 	lbn = lblkno(fs, offset);
 	bsize = blksize(fs, ip, lbn);
     IULOCK(ip);
+	
+	ext2_debug("lbn: %d, bsize: %d", lbn, bsize);
 
 	*bpp = NULL;
 	if ((error = buf_bread(vp, (daddr64_t)lbn, bsize, NOCRED, &bp)) != 0) {
@@ -97,10 +96,7 @@ ext2_blkatoff(vp, offset, res, bpp)
 }
 
 #ifdef DDB
-void
-ext2_checkoverlap(bp, ip)
-	buf_t  bp;
-	struct inode *ip;
+void ext2_checkoverlap(buf_t bp, struct inode *ip)
 {
 	buf_t  ebp, *ep;
 	ext2_daddr_t start, last;

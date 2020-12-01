@@ -591,6 +591,29 @@ static int compute_sb_data(vnode_t devvp, vfs_context_t context, struct ext2fs *
 	    return EIO;
     }
 
+		if (es->s_rev_level == EXT2_GOOD_OLD_REV) {
+			fs->e2fs_isize = EXT2_GOOD_OLD_INODE_SIZE;
+		} else {
+			fs->e2fs_isize = es->s_inode_size;
+
+			/*
+			 * Check first ino.
+			 */
+			if (es->s_first_ino < EXT2_FIRSTINO) {
+				ext2_trace_return (EINVAL);
+			}
+
+			/*
+			 * Simple sanity check for superblock inode size value.
+			 */
+			if (EXT2_INODE_SIZE_GET(fs) < EXT2_GOOD_OLD_INODE_SIZE ||
+				EXT2_INODE_SIZE_GET(fs) > fs->s_blocksize ||
+				(fs->e2fs_isize & (fs->e2fs_isize - 1)) != 0) {
+				ext2_trace_return (EINVAL);
+			}
+		}
+
+	
     for (i = 0; i < EXT2_MAX_GROUP_LOADED; i++) {
 	    fs->s_inode_bitmap_number[i] = 0;
 	    fs->s_inode_bitmap[i] = NULL;
@@ -599,6 +622,7 @@ static int compute_sb_data(vnode_t devvp, vfs_context_t context, struct ext2fs *
     }
     fs->s_loaded_inode_bitmaps = 0;
     fs->s_loaded_block_bitmaps = 0;
+	
     return 0;
 }
 
@@ -1408,7 +1432,12 @@ restart:
 
 	/* Read in the disk contents for the inode, copy into the inode. */
 //	ext2_debug("ext2_vget(%llu) dbn= %llu ", ino, fsbtodb(fs, ino_to_fsba(fs, (ino_t)ino)));
-
+	daddr64_t fsba = ino_to_fsba(fs, ino);
+	daddr64_t ino_block = fsbtodb(fs, fsba);
+	
+	ext2_debug("reading fsba: %d", fsba);
+	ext2_debug("reading block: %d", ino_block);
+	
 	if ((error = buf_bread(ump->um_devvp, (daddr64_t)fsbtodb(fs, ino_to_fsba(fs, ino)),
 	    (int)fs->s_blocksize, NOCRED, &bp)) != 0) {
 		ext2_vget_irelse(ip);
@@ -1417,8 +1446,9 @@ restart:
 		ext2_trace_return(error);
 	}
 	/* convert ext2 inode to dinode */
-	ext2_ei2i((struct ext2_inode *) ((char *)buf_dataptr(bp) + EXT2_INODE_SIZE *
-			ino_to_fsbo(fs, ino)), ip);
+	// The inode size isn't always 128!!!!
+	ext2_ei2i((struct ext2_inode *) ((char *)buf_dataptr(bp) + EXT2_INODE_SIZE_GET(fs) *
+									 ino_to_fsbo(fs, ino)), ip);
 	ip->i_block_group = ino_to_cg(fs, ino);
 	ip->i_next_alloc_block = 0;
 	ip->i_next_alloc_goal = 0;

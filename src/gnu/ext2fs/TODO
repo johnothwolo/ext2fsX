@@ -1,0 +1,2 @@
+Fix ext2_vfsops.c:1427.
+Not all tools format the filesystem with a 128 Inode size. Reference freebsd sb_compute_data and port the e2fs_isize logic

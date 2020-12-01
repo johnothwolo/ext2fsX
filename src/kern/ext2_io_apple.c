@@ -410,7 +410,7 @@ ext2_blkalloc(register struct inode *ip, int32_t lbn, int size,
 #if 0
 			pref = ext2_blkpref(ip, lbn, 0, (int32_t *)0, 0);
 #else
-            pref = ext2_blkpref(ip, lbn, indirs[i].in_off, bap, buf_lblkno(bp));
+            pref = ext2_blkpref(ip, lbn, indirs[i].in_off, bap, (int)buf_lblkno(bp));
 #endif
 		error = ext2_alloc(ip, lbn, pref, (int)EXT2_BLOCK_SIZE(fs), cred, &newb);
         IULOCK(ip);
@@ -420,7 +420,7 @@ ext2_blkalloc(register struct inode *ip, int32_t lbn, int size,
 		}
 		nb = newb;
 		*allocblk++ = nb;
-		nbp = buf_getblk(vp, (daddr64_t)((unsigned)indirs[i].in_lbn), EXT2_BLOCK_SIZE(fs), 0, 0, BLK_META);
+		nbp = buf_getblk(vp, (daddr64_t)((unsigned)indirs[i].in_lbn), (int)EXT2_BLOCK_SIZE(fs), 0, 0, BLK_META);
 		buf_setblkno(nbp, (daddr64_t)((unsigned)fsbtodb(fs, nb)));
 		clrbuf(nbp);
 		/*
@@ -451,7 +451,7 @@ ext2_blkalloc(register struct inode *ip, int32_t lbn, int size,
 	 */
 	if (nb == 0) {
 		IXLOCK(ip);
-        pref = ext2_blkpref(ip, lbn, indirs[i].in_off, &bap[0], buf_lblkno(bp));
+        pref = ext2_blkpref(ip, lbn, indirs[i].in_off, &bap[0], (int)buf_lblkno(bp));
 		if ((error = ext2_alloc(ip,
 		    lbn, pref, (int)EXT2_BLOCK_SIZE(fs), cred, &newb))) {
 			IULOCK(ip);
@@ -579,7 +579,7 @@ ext2_blockmap(struct vnop_blockmap_args *ap)
 	int devBlockSize;
 	struct m_ext2fs *fs;
 	int retsize=0;
-	int error;
+	int error = 0;
 
 	ip = VTOI(vp);
 	fs = ip->i_e2fs;
@@ -589,9 +589,6 @@ ext2_blockmap(struct vnop_blockmap_args *ap)
          "qbmask=%qd, inode=%u, offset=%qd, blkoff=%d",
          fs->s_qbmask, ip->i_number, ap->a_foffset, error);
 	}
-	
-	// is this necessary? if we don't panic we're obviously zero...
-    error = 0;
 
 	bn = (ext2_daddr_t)lblkno(fs, ap->a_foffset);
     devBlockSize = fs->s_d_blocksize;
